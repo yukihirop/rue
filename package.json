@@ -1,0 +1,9 @@
+{
+  "name": "rue",
+  "version": "1.0.0",
+  "description": "A vue framework that makes you feel like you're developing on rails (Rails on Vue = Rue)",
+  "main": "index.js",
+  "repository": "https://github.com/yukihirop/rue",
+  "author": "yukihirop",
+  "license": "MIT"
+}
