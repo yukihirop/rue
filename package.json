@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/yukihirop/rue",
   "author": "yukihirop",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
 }
