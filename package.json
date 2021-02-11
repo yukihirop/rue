@@ -7,12 +7,13 @@
   "author": "yukihirop",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf packages/**/lib",
-    "build": "yarn clean && yarn build:activemodel",
-    "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "fmt": "prettier --write **/src/**/*.ts",
-    "test": "yarn test:activemodel",
-    "test:activemodel": "cd packages/activemodel && yarn test && cd -"
+    "build": "yarn build:activemodel && yarn build:activerecord",
+    "build:activemodel": "cd packages/activemodel && yarn build && cd -",
+    "build:activerecord": "cd packages/activerecord && yarn build && cd -",
+    "test": "yarn test:activemodel && yarn test:activerecord",
+    "test:activemodel": "cd packages/activemodel && yarn test && cd -",
+    "test:activerecord": "cd packages/activerecord && yarn test && cd -"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
