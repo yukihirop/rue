@@ -71,7 +71,7 @@ describe('Validations', () => {
     });
   });
 
-  describe('isValid', () => {
+  describe('#isValid', () => {
     describe('when default', () => {
       const instance = new Validations();
 

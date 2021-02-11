@@ -2,4 +2,8 @@
 export { Core as Validation } from './core';
 
 // types
-export type { Options as Validation$Options } from './types';
+export type {
+  Options as Validation$Options,
+  ObjType as Validation$ObjType,
+  Errors as Validation$Errors,
+} from './types';

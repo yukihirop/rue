@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf packages/**/lib",
-    "build": "yarn clean && tsc -b packages/activemodel",
+    "build": "yarn clean && yarn build:activemodel",
+    "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "fmt": "prettier --write **/src/**/*.ts",
     "test": "yarn test:activemodel",
     "test:activemodel": "cd packages/activemodel && yarn test && cd -"
