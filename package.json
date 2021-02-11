@@ -5,5 +5,24 @@
   "main": "index.js",
   "repository": "https://github.com/yukihirop/rue",
   "author": "yukihirop",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf packages/**/lib",
+    "build": "yarn clean && tsc -b packages/activemodel",
+    "fmt": "prettier --write **/src/**/*.ts",
+    "test": "yarn test:activemodel",
+    "test:activemodel": "cd packages/activemodel && yarn test && cd -"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "jest": "^26.1.0",
+    "lerna": "^3.22.1",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.1.1",
+    "typescript": "^4.1.3"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
