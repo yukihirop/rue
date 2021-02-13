@@ -2,9 +2,11 @@
 import { ErrCodes, errObj } from '@/errors';
 import { Association } from '@/associations';
 import { cacheForRecords as Cache } from '@/registries';
+import { Filter$WhereChain } from '@/filters';
 
 // types
 import type * as t from './types';
+import type * as ft from '@/filters';
 
 export const RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
 export const RECORD_ID = '__rue_record_id__';
@@ -12,6 +14,8 @@ export const RECORD_ALL = 'all';
 
 export class Core extends Association {
   public errors: t.Validation$Errors;
+
+  private static whereChain: Filter$WhereChain<Core>;
 
   constructor(data: t.Params = {}) {
     super();
@@ -67,34 +71,25 @@ export class Core extends Association {
     }
   }
 
-  static where<T extends Core>(params: { [key: string]: any }): Promise<Array<T>> {
-    return this.all<T>().then((records: Array<T>) => {
-      const result = records.reduce((acc: Array<T>, record: T) => {
-        const isMatch = Object.keys(params)
-          .map((key: string) => {
-            const val = params[key];
-            if (Array.isArray(val)) {
-              return val.includes(record[key]);
-            } else {
-              return (record as any)[key] === val;
-            }
-          })
-          .every(Boolean);
-        if (isMatch) acc.push(record);
-        return acc;
-      }, [] as Array<T>);
-      return Promise.resolve(result);
-    });
+  static where<T extends Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
+    if (this.whereChain == undefined) {
+      this.whereChain = new Filter$WhereChain<T>(() => this.all<T>());
+    }
+
+    this.whereChain.where<T>(params);
+    return this.whereChain;
   }
 
   static findBy<T extends Core>(params: { [key: string]: any }): Promise<T> {
-    return this.where<T>(params).then((records) => {
-      if (records.length > 0) {
-        return Promise.resolve(records[0]);
-      } else {
-        return Promise.reject(undefined);
-      }
-    });
+    return this.where<T>(params)
+      .toPromiseArray()
+      .then((records) => {
+        if (records.length > 0) {
+          return Promise.resolve(records[0]);
+        } else {
+          return Promise.reject(undefined);
+        }
+      });
   }
 
   static destroyAll<T extends Core = any>(filter?: (self: T) => boolean): Array<T> {

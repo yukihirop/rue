@@ -47,7 +47,8 @@ export class Core extends Model {
     foreignKey: t.ForeignKey
   ) {
     Registry.create(this.name, Association.hasMany, {
-      [relationName]: (self: T) => (klass as any).where({ [foreignKey]: self.primaryKey }),
+      [relationName]: (self: T) =>
+        (klass as any).where({ [foreignKey]: self.primaryKey }).toPromiseArray(),
     });
   }
 
@@ -68,7 +69,8 @@ export class Core extends Model {
 
     IntermediateTable.create(this.name, klass.name, []);
     Registry.create(this.name, Association.hasAndBelongsToMany, {
-      [relationName]: (self: T) => (klass as any).where({ primaryKey: foreignKeysFn(self) }),
+      [relationName]: (self: T) =>
+        (klass as any).where({ primaryKey: foreignKeysFn(self) }).toPromiseArray(),
     });
   }
 
