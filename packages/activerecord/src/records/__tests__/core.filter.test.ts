@@ -1,7 +1,7 @@
 import { Core as Record, RECORD_AUTO_INCREMENNT_ID, RECORD_ID, RECORD_ALL } from '../core';
 import { cacheForRecords as Cache } from '@/registries';
 
-describe('Record', () => {
+describe('Record(Filter)', () => {
   describe('[static] where', () => {
     describe('when default', () => {
       type TestWhereParams = {

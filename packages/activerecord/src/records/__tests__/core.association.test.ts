@@ -1,10 +1,9 @@
 import { Core as Record } from '../core';
-import { cacheForIntermeditateTables as IntermediateTable } from '@/registries';
 
 // types
 import type * as rt from '@/associations';
 
-describe('Record(associations)', () => {
+describe('Record(Association)', () => {
   describe('[static] belongsTo', () => {
     type TestAssociationBelongsToParams = {
       name: String;
