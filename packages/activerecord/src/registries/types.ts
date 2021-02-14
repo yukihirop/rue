@@ -21,7 +21,13 @@ export type RegistryValue =
 
 export type Associations = {
   [associationName in AssociationList]: {
-    [uniqueRelationName: string]: (self: any) => Promise<any>;
+    [uniqueRelationName: string]: (self: any) => Promise<Record[]>;
+  };
+};
+
+export type Scopes = {
+  scope: {
+    [uniqueScopeName: string]: (...args) => Promise<Record[]>;
   };
 };
 

@@ -7,9 +7,9 @@ import { Impl } from './impl';
 import type * as t from './types';
 import type * as ft from '@/filters';
 
-export const RECORD_AUTO_INCREMENNT_ID = Impl['RECORD_AUTO_INCREMENNT_ID'];
-export const RECORD_ALL = Impl['RECORD_ALL'];
-export const RECORD_ID = Impl['RECORD_ID'];
+export const RECORD_AUTO_INCREMENNT_ID = Impl['RECORD_AUTO_INCREMENNT_ID'] as string;
+export const RECORD_ALL = Impl['RECORD_ALL'] as string;
+export const RECORD_ID = Impl['RECORD_ID'] as string;
 
 export class Core extends Impl {
   public errors: t.Validation$Errors;
@@ -71,12 +71,8 @@ export class Core extends Impl {
   }
 
   static where<T extends Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
-    if (this.whereChain == undefined) {
-      this.whereChain = new Filter$WhereChain<T>(() => this.all<T>());
-    }
-
-    this.whereChain.where<T>(params);
-    return this.whereChain;
+    const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
+    return whereChain.where<T>(params);
   }
 
   inspect(): string {

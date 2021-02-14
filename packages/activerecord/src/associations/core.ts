@@ -1,7 +1,5 @@
-// rue packages
-import { Model } from '@rue/activemodel';
-
 // locals
+import { Impl } from './impl';
 import {
   registryForAssociations as Registry,
   cacheForIntermeditateTables as IntermediateTable,
@@ -18,7 +16,7 @@ export const enum Association {
   hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
-export class Core extends Model {
+export class Core extends Impl {
   public primaryKey: t.PrimaryKey;
 
   static belongsTo<T extends Core = any>(

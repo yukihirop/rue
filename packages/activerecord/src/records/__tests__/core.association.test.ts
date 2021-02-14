@@ -302,4 +302,48 @@ describe('Record(Association)', () => {
       });
     });
   });
+
+  describe('[static] scope', () => {
+    type TestScopeParams = {
+      primaryKey: rt.Association$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class TestScopeRecord extends Record {
+      public primaryKey: TestScopeParams['primaryKey'];
+      public name: TestScopeParams['name'];
+      public age: TestScopeParams['age'];
+
+      // scope
+      static fromName: rt.Association$Scope<TestScopeRecord>;
+
+      protected static fetchAll<T = TestScopeParams>(): Promise<T[]> {
+        // @ts-ignore
+        return Promise.resolve([
+          { primaryKey: 1, name: 'name_1', age: 1 },
+          { primaryKey: 2, name: 'name_2', age: 2 },
+        ]);
+      }
+    }
+
+    TestScopeRecord.scope('fromName', (name) => TestScopeRecord.where({ name: name }));
+
+    it('should correctly', (done) => {
+      TestScopeRecord.fromName('name_1').then((records) => {
+        expect(records.length).toEqual(1);
+        expect(records[0].primaryKey).toEqual(1);
+        expect(records[0].name).toEqual('name_1');
+        expect(records[0].age).toEqual(1);
+        done();
+      });
+      TestScopeRecord.fromName('name_2').then((records) => {
+        expect(records.length).toEqual(1);
+        expect(records[0].primaryKey).toEqual(2);
+        expect(records[0].name).toEqual('name_2');
+        expect(records[0].age).toEqual(2);
+        done();
+      });
+    });
+  });
 });

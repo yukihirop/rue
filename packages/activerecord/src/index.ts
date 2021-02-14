@@ -12,6 +12,7 @@ export type {
   Association$BelongsTo,
   Association$HasOne,
   Association$HasMany,
+  Association$Scope,
 } from './associations';
 export type { Record$Params, Record$ObjType, Record$Validation$Errors } from './records';
 export type { ErrObj as Record$ErrObj, ErrMessage as Record$ErrMessage } from './errors';

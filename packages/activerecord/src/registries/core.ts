@@ -72,7 +72,8 @@ export class Core<T> {
 
 // define singletons
 const registryForAssociations = new Core<t.Associations>('Associations');
+const registryForScopes = new Core<t.Scopes>('Scopes');
 const cacheForRecords = new Core<t.Records>('Records');
 const cacheForIntermeditateTables = new Core<t.IntermediateTables>('IntermeditateTables');
 
-export { registryForAssociations, cacheForRecords, cacheForIntermeditateTables };
+export { registryForAssociations, registryForScopes, cacheForRecords, cacheForIntermeditateTables };

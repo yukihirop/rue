@@ -5,3 +5,6 @@ export type BelongsTo<T> = () => Promise<T>;
 export type HasOne<T> = () => Promise<T>;
 export type HasMany<T> = () => Promise<T[]>;
 export type HasAndBelongsToMany<T> = () => Promise<T[]>;
+
+// from modules
+export type { CollectionProxy$Scope } from './modules';

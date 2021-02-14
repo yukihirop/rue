@@ -1,1 +1,6 @@
-export { registryForAssociations, cacheForRecords, cacheForIntermeditateTables } from './core';
+export {
+  registryForAssociations,
+  registryForScopes,
+  cacheForRecords,
+  cacheForIntermeditateTables,
+} from './core';

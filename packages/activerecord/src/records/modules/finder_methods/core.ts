@@ -4,7 +4,7 @@ import { Record } from '@/records';
 // types
 import * as ut from '@/utils';
 
-// this is bound to an instance of Record
+// this is bound to an instance(class) of Record
 export const FinderMethods: ut.Module = {
   isModule: true,
 
