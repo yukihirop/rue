@@ -18,7 +18,7 @@ export class Core {
     };
   } = {};
 
-  public errors: { [propKey: string]: Array<et.ErrObj> };
+  public errors: t.Errors;
 
   constructor() {
     this.errors = {};
@@ -72,10 +72,11 @@ export class Core {
       });
     });
 
+    const flattenErrors = this.errors;
     // unflatten errors
     this.errors = unflatten(this.errors, '.');
 
-    return !Object.values(this.errors).some((e) => e.length > 0);
+    return !Object.values(flattenErrors).some((e) => e.length > 0);
   }
 
   _toObj(opts?: { flat: boolean }): { [key: string]: any } {
@@ -87,14 +88,13 @@ export class Core {
 
   // override
   static objType(): t.ObjType {
-    throw 'Please implement in Inherited Class.';
+    throw "Please implement '[static] objType' in Inherited Class.";
   }
 
   static translate(key: string, opts?: any): string {
-    throw 'Please implement in Inherited Class.';
+    throw "Please implement '[static] translate' in Inherited Class.";
   }
 
-  // @ts-ignore
   static validates<T = any, U extends Core = any>(propKey: string, opts: t.Options<T, U>) {
     if (this.beforeValidHooks[this.name] == undefined) {
       this.beforeValidHooks[this.name] = {};

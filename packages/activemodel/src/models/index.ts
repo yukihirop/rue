@@ -1,4 +1,4 @@
 export { Core as Model } from './core';
 
 // types
-export type { Params as ModelParams } from './types';
+export type { Params as Model$Params, ObjType as Model$ObjType } from './types';

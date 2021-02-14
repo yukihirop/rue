@@ -42,7 +42,7 @@ describe('Model', () => {
     });
   });
 
-  describe('toObj', () => {
+  describe('#toObj', () => {
     type Test7Params = {
       profile: {
         name: string;
@@ -72,7 +72,7 @@ describe('Model', () => {
     });
   });
 
-  describe('humanPropertyName', () => {
+  describe('#humanPropertyName', () => {
     type Test4Params = {
       profile: {
         name: string;
