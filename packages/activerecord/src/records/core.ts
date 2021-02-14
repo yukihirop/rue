@@ -14,8 +14,6 @@ export const RECORD_ID = Impl['RECORD_ID'] as string;
 export class Core extends Impl {
   public errors: t.Validation$Errors;
 
-  private static whereChain: Filter$WhereChain<Core>;
-
   constructor(data: t.Params = {}) {
     super();
 

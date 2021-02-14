@@ -21,7 +21,7 @@
     "url": "git+https://github.com/yukihirop/rue.git"
   },
   "scripts": {
-    "build": "rimraf ./lib && tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib",
     "fmt": "prettier --write **/src/**/*.ts",
     "test": "jest --config ./jest.config.js",
     "test:debug": "node --inspect -r ts-node/register ./node_modules/jest/bin/jest.js --silent=false --verbose --runInBand"
@@ -37,6 +37,7 @@
     "jest": "^26.6.3",
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
+    "tscpaths": "^0.0.9",
     "typescript": "^4.1.5"
   }
 }

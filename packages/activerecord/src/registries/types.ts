@@ -1,7 +1,6 @@
 // locals
 import { Record } from '@/records';
 import { AssociationList } from '@/associations';
-import { RECORD_AUTO_INCREMENNT_ID, RECORD_ALL } from '@/records/core';
 
 // types
 import * as at from '@/associations';
@@ -36,6 +35,6 @@ export type IntermediateTables = {
 };
 
 export type Records = {
-  [RECORD_AUTO_INCREMENNT_ID]: number;
-  [RECORD_ALL]: Array<Record>;
+  __rue_auto_increment_record_id__: number;
+  all: Array<Record>;
 };
