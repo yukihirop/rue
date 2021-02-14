@@ -1,5 +1,6 @@
+// locals
 import { Core as Model } from '../core';
-import { Core } from '../core';
+import { registryForTranslator as Registry } from '@/registries';
 
 describe('Model', () => {
   describe('constructor', () => {
@@ -36,9 +37,9 @@ describe('Model', () => {
     }
 
     it('should correctly', () => {
-      expect(Core._cache['Test2Model']).toEqual(undefined);
+      expect(Registry.data['Test2Model']).toEqual(undefined);
       Test2Model.loadTranslator();
-      expect(Core._cache['Test2Model']['__rue_translate__'].toString()).not.toEqual('');
+      expect(Registry.data['Test2Model']['__rue_translate__'].toString()).not.toEqual('');
     });
   });
 

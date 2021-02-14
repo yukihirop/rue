@@ -1,8 +1,10 @@
 import { Core as Validations } from '../core';
 import i18n from '@/locales';
+import { registryForValidations as Registry } from '@/registries';
 
 // types
 import type * as t from '@/validations/types';
+import type * as rt from '@/registries';
 
 describe('Validations', () => {
   describe('constructor', () => {
@@ -67,7 +69,7 @@ describe('Validations', () => {
     }
     TestValidations.validates('name', { presence: true, length: { is: 4 } });
     it('should return correctly', () => {
-      expect(TestValidations.beforeValidHooks['TestValidations']['name'].length).toEqual(2);
+      expect(Registry.read<rt.ValidationFn[]>('TestValidations', 'name').length).toEqual(2);
     });
   });
 

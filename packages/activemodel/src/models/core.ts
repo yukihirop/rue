@@ -4,36 +4,21 @@ import flatten from 'obj-flatten';
 // local
 import { Validation } from '@/validations';
 import { Translation } from './methods';
+import { registryForTranslator as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
 import type { Validation$Errors } from '@/validations';
+import type * as rt from '@/registries';
 
 const TRANSLATE_CACHE_KEY = '__rue_translate__';
 
 export class Core extends Validation {
   public errors: Validation$Errors;
 
-  static _cache: t.Params = {};
-
-  private static _getCacheModel(klassName: string, key: string) {
-    if (!Core._cache[klassName]) {
-      Core._cache[klassName] = {};
-    }
-    return Core._cache[klassName][key];
-  }
-
-  // Set to Core because it needs to be called from the instance
-  private static _setCacheModel(key: string, val: any) {
-    if (!Core._cache[this.name]) {
-      Core._cache[this.name] = {};
-    }
-    Core._cache[this.name][key] = val;
-  }
-
   static loadTranslator() {
-    // cache translate
-    this._setCacheModel(TRANSLATE_CACHE_KEY, this.translate);
+    // register translate
+    Registry.create(this.name, TRANSLATE_CACHE_KEY, this.translate);
   }
 
   constructor(data: t.Params = {}) {
@@ -52,9 +37,7 @@ export class Core extends Validation {
 
   humanPropertyName(key: string): string {
     const klassName = this.constructor.name;
-    const translate = Core._getCacheModel(klassName, TRANSLATE_CACHE_KEY) as (
-      propKey: string
-    ) => string;
+    const translate = Registry.read<rt.Translator>(klassName, TRANSLATE_CACHE_KEY);
     return Translation.humanPropertyName(key, translate);
   }
 }
