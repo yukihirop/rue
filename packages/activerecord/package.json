@@ -30,7 +30,8 @@
     "url": "https://github.com/yukihirop/rue/issues"
   },
   "dependencies": {
-    "@rue/activemodel": "^1.0.0"
+    "@rue/activemodel": "^1.0.0",
+    "@rue/activesupport": "^0.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

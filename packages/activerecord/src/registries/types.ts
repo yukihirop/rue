@@ -5,19 +5,6 @@ import { AssociationList } from '@/associations';
 // types
 import * as at from '@/associations';
 
-export type RegistryData<T> = {
-  [klassName: string]: T;
-};
-
-export type RegistryType = 'array' | 'object' | 'value';
-
-export type RegistryValue =
-  | {
-      [key: string]: any;
-    }
-  | any[]
-  | any;
-
 export type Associations = {
   [associationName in AssociationList]: {
     [uniqueRelationName: string]: (self: any) => Promise<Record[]>;
