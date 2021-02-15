@@ -1,5 +1,6 @@
 // e.g.)
 // {
+//   isModule: true,
 //   create(){ / * something */ },
 //   update(){ /* something */ },
 // }

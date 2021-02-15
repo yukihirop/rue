@@ -1,23 +1,9 @@
 // locals
 import { Record } from '@/records';
 import { AssociationList } from '@/associations';
-import { RECORD_AUTO_INCREMENNT_ID, RECORD_ALL } from '@/records/core';
 
 // types
 import * as at from '@/associations';
-
-export type RegistryData<T> = {
-  [klassName: string]: T;
-};
-
-export type RegistryType = 'array' | 'object' | 'value';
-
-export type RegistryValue =
-  | {
-      [key: string]: any;
-    }
-  | any[]
-  | any;
 
 export type Associations = {
   [associationName in AssociationList]: {
@@ -36,6 +22,6 @@ export type IntermediateTables = {
 };
 
 export type Records = {
-  [RECORD_AUTO_INCREMENNT_ID]: number;
-  [RECORD_ALL]: Array<Record>;
+  __rue_auto_increment_record_id__: number;
+  all: Array<Record>;
 };

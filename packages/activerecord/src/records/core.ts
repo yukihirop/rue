@@ -14,8 +14,6 @@ export const RECORD_ID = Impl['RECORD_ID'] as string;
 export class Core extends Impl {
   public errors: t.Validation$Errors;
 
-  private static whereChain: Filter$WhereChain<Core>;
-
   constructor(data: t.Params = {}) {
     super();
 
@@ -73,17 +71,5 @@ export class Core extends Impl {
   static where<T extends Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
     const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
-  }
-
-  inspect(): string {
-    const klassName = this.constructor.name;
-    let sorted = {};
-
-    const keys = Object.keys(this).sort();
-    keys.forEach(function (key) {
-      sorted[key] = this[key];
-    }, this);
-
-    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;
   }
 }

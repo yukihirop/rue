@@ -1,7 +1,6 @@
 // local
 import { Record } from '@/records';
 import { Association } from '@/associations';
-import { moduleExtend, moduleInclude } from '@/utils';
 import { PersistenceModule, FinderMethodsModule } from '@/records/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
@@ -20,11 +19,11 @@ interface Impl {
 }
 
 // includes module
-moduleInclude(Impl, PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
+Impl.moduleInclude(PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
 
 // extend module
-moduleExtend(Impl, PersistenceModule, { only: ['destroyAll'] });
-moduleExtend(Impl, FinderMethodsModule, { only: ['findBy'] });
+Impl.moduleExtend(PersistenceModule, { only: ['destroyAll'] });
+Impl.moduleExtend(FinderMethodsModule, { only: ['findBy'] });
 
 // deletgate constants
 Impl['RECORD_AUTO_INCREMENNT_ID'] = PersistenceModule.RECORD_AUTO_INCREMENNT_ID;

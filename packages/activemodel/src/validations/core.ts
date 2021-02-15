@@ -4,20 +4,14 @@ import unflatten from 'obj-unflatten';
 
 // local
 import * as Validator from './validators';
+import { registryForValidations as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
 import type * as et from '@/errors';
+import type * as rt from '@/registries';
 
 export class Core {
-  static beforeValidHooks: {
-    [klassName: string]: {
-      [propKey: string]: Array<
-        (propVal: string | number | any, self?: any) => Array<et.ErrObj> | boolean | []
-      >;
-    };
-  } = {};
-
   public errors: t.Errors;
 
   constructor() {
@@ -33,12 +27,12 @@ export class Core {
     const klassName = this.constructor.name;
 
     // Returns true if validation is not set
-    if (Core.beforeValidHooks[klassName] == undefined || null) return true;
+    if (Registry.data[klassName] == undefined || null) return true;
 
-    Object.keys(Core.beforeValidHooks[klassName]).forEach((propKey: string) => {
+    Object.keys(Registry.data[klassName]).forEach((propKey: string) => {
       this.errors[propKey] = this.errors[propKey] || [];
 
-      const fnArray = Core.beforeValidHooks[klassName][propKey];
+      const fnArray = Registry.read<rt.ValidationFn[]>(klassName, propKey);
       let propVal = this._toObj({ flat: true })[propKey];
 
       // It may be a reactive object, and if it is destructively changed, it will lead to a problem, so verify it with a copy.
@@ -96,12 +90,12 @@ export class Core {
   }
 
   static validates<T = any, U extends Core = any>(propKey: string, opts: t.Options<T, U>) {
-    if (this.beforeValidHooks[this.name] == undefined) {
-      this.beforeValidHooks[this.name] = {};
+    if (Registry.data[this.name] == undefined) {
+      Registry.data[this.name] = {};
     }
 
-    if (this.beforeValidHooks[this.name][propKey] == undefined) {
-      this.beforeValidHooks[this.name][propKey] = [];
+    if (Registry.read(this.name, propKey) == undefined) {
+      Registry.update(this.name, propKey, []);
     }
 
     const translate = this.__t.bind(this);
@@ -150,124 +144,126 @@ export class Core {
     };
 
     if (opts.presence != undefined) {
-      this.beforeValidHooks[this.name][propKey].push((propVal: T, self: U) =>
-        ifEval<T, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validatePresence<T>(
-              propKey,
-              propVal,
-              opts.presence!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: T, self: U) =>
+          ifEval<T, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validatePresence<T>(
+                propKey,
+                propVal,
+                opts.presence!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.absence != undefined) {
-      this.beforeValidHooks[this.name][propKey].push((propVal: T, self: U) =>
-        ifEval<T, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateAbsence<T>(
-              propKey,
-              propVal,
-              opts.absence!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: T, self: U) =>
+          ifEval<T, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateAbsence<T>(
+                propKey,
+                propVal,
+                opts.absence!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.length != undefined && Object.keys(opts.length).length > 0) {
-      this.beforeValidHooks[this.name][
-        propKey
-      ].push((propVal: string | any[] | { [key in string | number]: any }, self: U) =>
-        ifEval<string | any[] | { [key in string | number]: any }, U>(propVal, self) &&
-        !skipValidation(propVal)
-          ? Validator.validateLength<string | any[] | { [key in string | number]: any }, U>(
-              self,
-              propKey,
-              propVal,
-              opts.length!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: string | any[] | { [key in string | number]: any }, self: U) =>
+          ifEval<string | any[] | { [key in string | number]: any }, U>(propVal, self) &&
+          !skipValidation(propVal)
+            ? Validator.validateLength<string | any[] | { [key in string | number]: any }, U>(
+                self,
+                propKey,
+                propVal,
+                opts.length!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.inclusion != undefined && Object.keys(opts.inclusion).length > 0) {
-      this.beforeValidHooks[this.name][
-        propKey
-      ].push((propVal: string | number | boolean, self: U) =>
-        ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateInclusion(
-              propKey,
-              propVal,
-              opts.inclusion!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: string | number | boolean, self: U) =>
+          ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateInclusion(
+                propKey,
+                propVal,
+                opts.inclusion!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.exclusion != undefined && Object.keys(opts.exclusion).length > 0) {
-      this.beforeValidHooks[this.name][
-        propKey
-      ].push((propVal: string | number | boolean, self: U) =>
-        ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateExclusion(
-              propKey,
-              propVal,
-              opts.exclusion!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: string | number | boolean, self: U) =>
+          ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateExclusion(
+                propKey,
+                propVal,
+                opts.exclusion!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.condition != undefined && opts.condition.length == 2) {
-      this.beforeValidHooks[this.name][propKey].push((propVal: T, self: U) =>
-        ifEval<T, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateCondition<T, U>(
-              self,
-              propKey,
-              propVal,
-              opts.condition!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: T, self: U) =>
+          ifEval<T, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateCondition<T, U>(
+                self,
+                propKey,
+                propVal,
+                opts.condition!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.format != undefined && Object.keys(opts.format).length > 0) {
-      this.beforeValidHooks[this.name][propKey].push((propVal: string, self: U) =>
-        ifEval<string, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateFormat(
-              propKey,
-              propVal,
-              opts.format!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: string, self: U) =>
+          ifEval<string, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateFormat(
+                propKey,
+                propVal,
+                opts.format!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
 
     if (opts.numericality != undefined && Object.keys(opts.numericality).length > 0) {
-      this.beforeValidHooks[this.name][propKey].push((propVal: number, self: U) =>
-        ifEval<number, U>(propVal, self) && !skipValidation(propVal)
-          ? Validator.validateNumericality(
-              propKey,
-              propVal,
-              opts.numericality!,
-              translate,
-              messageEval(propKey, propVal, self)
-            )
-          : []
-      );
+      Registry.create(this.name, propKey, [
+        (propVal: number, self: U) =>
+          ifEval<number, U>(propVal, self) && !skipValidation(propVal)
+            ? Validator.validateNumericality(
+                propKey,
+                propVal,
+                opts.numericality!,
+                translate,
+                messageEval(propKey, propVal, self)
+              )
+            : [],
+      ]);
     }
   }
 

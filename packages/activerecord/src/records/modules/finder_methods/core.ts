@@ -2,10 +2,10 @@
 import { Record } from '@/records';
 
 // types
-import * as ut from '@/utils';
+import * as ut from '@rue/activesupport';
 
 // this is bound to an instance(class) of Record
-export const FinderMethods: ut.Module = {
+export const FinderMethods: ut.Support$Module = {
   isModule: true,
 
   // @static
