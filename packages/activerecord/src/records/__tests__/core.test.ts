@@ -79,46 +79,4 @@ describe('Record', () => {
       });
     });
   });
-
-  describe('#inspect', () => {
-    type TestInspectParams = {
-      profile: {
-        name: string;
-        age: number;
-      };
-    };
-    class TestInspectRecord extends Record {
-      public profile: TestInspectParams['profile'];
-
-      // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestInspectParams>(): Promise<T[]> {
-        // @ts-ignore
-        return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
-        ]);
-      }
-
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-    }
-
-    describe('when default', () => {
-      const record = new TestInspectRecord({ profile: { name: 'name_3', age: 30 } });
-      it('should correctly', () => {
-        record.save();
-        const expected = `TestInspectRecord {
-  "__rue_record_id__": 1,
-  "errors": {},
-  "profile": {
-    "name": "name_3",
-    "age": 30
-  }
-}`;
-        expect(record.inspect()).toEqual(expected);
-      });
-    });
-  });
 });

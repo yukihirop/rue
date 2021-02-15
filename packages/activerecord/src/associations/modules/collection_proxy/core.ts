@@ -5,10 +5,10 @@ import { Filter$WhereChain } from '@/filters';
 
 // types
 import * as t from './types';
-import * as ut from '@/utils';
+import * as ut from '@rue/activesupport';
 
 // this is bound to an instance(class) of Association
-export const CollectionProxy: ut.Module = {
+export const CollectionProxy: ut.Support$Module = {
   isModule: true,
 
   // @static

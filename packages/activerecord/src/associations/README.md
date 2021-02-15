@@ -6,6 +6,8 @@
 - [x] [static]hasOne
 - [x] [static]hasMany
 - [x] [static]hasAndBelongsToMany
+- [x] hasAndBelongsToMany
+- [x] releaseHasAndBelongsToMany
 
 ## Reference
 

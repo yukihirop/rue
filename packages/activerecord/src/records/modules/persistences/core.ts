@@ -7,10 +7,10 @@ import { cacheForRecords as Cache } from '@/registries';
 import { Record } from '@/records';
 
 // types
-import * as ut from '@/utils';
+import * as ut from '@rue/activesupport';
 
 // this is bound to an instance(class) of Record
-export const Persistence: ut.Module = {
+export const Persistence: ut.Support$Module = {
   isModule: true,
 
   RECORD_AUTO_INCREMENNT_ID: '__rue_auto_increment_record_id__',

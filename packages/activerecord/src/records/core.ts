@@ -72,16 +72,4 @@ export class Core extends Impl {
     const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
   }
-
-  inspect(): string {
-    const klassName = this.constructor.name;
-    let sorted = {};
-
-    const keys = Object.keys(this).sort();
-    keys.forEach(function (key) {
-      sorted[key] = this[key];
-    }, this);
-
-    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;
-  }
 }
