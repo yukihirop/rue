@@ -10,4 +10,6 @@ export type Validations = {
   [propKey: string]: Array<ValidationFn>;
 };
 
-export type Translator = (propKey: string) => string;
+export type Translator = {
+  translate: (propKey: string) => string;
+};

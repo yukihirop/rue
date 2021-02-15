@@ -39,7 +39,7 @@ describe('Model', () => {
     it('should correctly', () => {
       expect(Registry.data['Test2Model']).toEqual(undefined);
       Test2Model.loadTranslator();
-      expect(Registry.data['Test2Model']['__rue_translate__'].toString()).not.toEqual('');
+      expect(Registry.data['ActiveModel']['translate'].toString()).not.toEqual('');
     });
   });
 
@@ -70,29 +70,6 @@ describe('Model', () => {
           'profile.age': 3,
         });
       });
-    });
-  });
-
-  describe('#humanPropertyName', () => {
-    type Test4Params = {
-      profile: {
-        name: string;
-        age: number;
-      };
-    };
-    class Test4Model extends Model {
-      public profile?: Test4Params['profile'];
-
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-    }
-    Test4Model.loadTranslator();
-    const model = new Test4Model({ profile: { name: 'name_4', age: 4 } });
-
-    it('should correctly', () => {
-      expect(model.humanPropertyName('profile.name')).toEqual('test.profile.name');
-      expect(model.humanPropertyName('profile.age')).toEqual('test.profile.age');
     });
   });
 });
