@@ -2,14 +2,14 @@
 
 ## Validators
 
-- [x]absence
-- [x]presence
-- [x]inclusion
-- [x]exclusion
-- [x]length
-- [x]numericality
-- [x]format
-- [x]condition
+- [x] absence
+- [x] presence
+- [x] inclusion
+- [x] exclusion
+- [x] length
+- [x] numericality
+- [x] format
+- [x] condition
 
 ## Reference
 
