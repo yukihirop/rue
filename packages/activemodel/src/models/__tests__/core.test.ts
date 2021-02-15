@@ -4,20 +4,20 @@ import { registryForTranslator as Registry } from '@/registries';
 
 describe('Model', () => {
   describe('constructor', () => {
-    class Test1Model extends Model {
+    class TestConstructorModel extends Model {
       public name: string;
       public age: number;
     }
 
     describe('when data is empty', () => {
-      const model = new Test1Model();
+      const model = new TestConstructorModel();
       it('should correctly', () => {
         expect(model.errors).toEqual({});
       });
     });
 
     describe('when data is not empty', () => {
-      const model = new Test1Model({ name: 'name', age: 20 });
+      const model = new TestConstructorModel({ name: 'name', age: 20 });
       it('should correctly', () => {
         expect(model.errors).toEqual({});
         expect(model.name).toEqual('name');
@@ -27,7 +27,7 @@ describe('Model', () => {
   });
 
   describe('[static] loadTranslator', () => {
-    class Test2Model extends Model {
+    class TestLoadTranslatorModel extends Model {
       public name: string;
       public age: number;
 
@@ -37,24 +37,24 @@ describe('Model', () => {
     }
 
     it('should correctly', () => {
-      expect(Registry.data['Test2Model']).toEqual(undefined);
-      Test2Model.loadTranslator();
+      expect(Registry.data['ActiveModel']).toEqual(undefined);
+      TestLoadTranslatorModel.loadTranslator();
       expect(Registry.data['ActiveModel']['translate'].toString()).not.toEqual('');
     });
   });
 
   describe('#toObj', () => {
-    type Test7Params = {
+    type TestToObjParams = {
       profile: {
         name: string;
         age: number;
       };
     };
-    class Test3Model extends Model {
-      public profile?: Test7Params['profile'];
+    class TestToObjModel extends Model {
+      public profile?: TestToObjParams['profile'];
     }
 
-    const model = new Test3Model({ profile: { name: 'name_3', age: 3 } });
+    const model = new TestToObjModel({ profile: { name: 'name_3', age: 3 } });
 
     describe("when specify 'flat' is 'false' (default)", () => {
       it('should correctly', () => {
