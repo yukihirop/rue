@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "fmt": "prettier --write **/src/**/*.ts",
-    "build": "yarn build:activemodel && yarn build:activerecord",
+    "build": "yarn build:activemodel && yarn build:activerecord && yarn build:activesupport",
     "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "build:activerecord": "cd packages/activerecord && yarn build && cd -",
     "build:activesupport": "cd packages/activesupport && yarn build && cd -",
