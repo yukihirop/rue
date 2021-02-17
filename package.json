@@ -8,14 +8,16 @@
   "license": "MIT",
   "scripts": {
     "fmt": "prettier --write **/src/**/*.ts",
-    "build": "yarn build:activemodel && yarn build:activerecord && yarn build:activesupport",
+    "build": "yarn build:activemodel && yarn build:activerecord && yarn build:activesupport && yarn build:repl",
     "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "build:activerecord": "cd packages/activerecord && yarn build && cd -",
     "build:activesupport": "cd packages/activesupport && yarn build && cd -",
-    "test": "yarn test:activemodel && yarn test:activerecord && yarn test:activesupport",
+    "build:repl": "cd packages/repl && yarn build && cd -",
+    "test": "yarn test:activemodel && yarn test:activerecord && yarn test:activesupport && yarn test:repl",
     "test:activemodel": "cd packages/activemodel && yarn test && cd -",
     "test:activerecord": "cd packages/activerecord && yarn test && cd -",
-    "test:activesupport": "cd packages/activesupport && yarn test && cd -"
+    "test:activesupport": "cd packages/activesupport && yarn test && cd -",
+    "test:repl": "cd packages/repl && yarn test && cd -"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
