@@ -1,0 +1,58 @@
+{
+  "name": "@rue/cli",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yukihirop <te108186@gmail.com>",
+  "homepage": "https://github.com/yukihirop/rue#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "bin": {
+    "rue": "./bin/run"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukihirop/rue.git"
+  },
+  "scripts": {
+    "rue": "./bin/run",
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib",
+    "fmt": "prettier --write **/src/**/*.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/yukihirop/rue/issues"
+  },
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "rue",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "tscpaths": "^0.0.9",
+    "typescript": "^4.1.5"
+  },
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/plugin-help": "^3.2.2",
+    "@rue/repl": "^0.0.0",
+    "cross-spawn": "^7.0.3",
+    "dotenv-expand": "^5.1.0",
+    "dotenv-flow": "^3.2.0",
+    "pkg-dir": "^5.0.0",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0"
+  }
+}
