@@ -16,7 +16,8 @@ import type * as t from './types';
 
 export class Core {
   private static projectRoot: string = pkgDir.sync() || process.cwd();
-  private static esmRequire = require('esm')(module);
+  // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
+  private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
   private static PROGRESS_BAR_MESSAGE = 'Loading Rue Modules :current/:total';
 
   static async run(opts: replt.ReplOptions) {
@@ -25,12 +26,21 @@ export class Core {
   }
 
   private static async initializeREPL(opts: replt.ReplOptions) {
+    Core.resolveModuleAliases();
     const modules = await this.loadRueModules();
     const repl = REPL.start(opts);
 
     this.loadRueModulesForREPL(repl, modules);
 
     return repl;
+  }
+
+  // ref: https://github.com/kenotron/simple-esm-module-alias/blob/master/index.js
+  private static resolveModuleAliases() {
+    // TODO: Use @rue/config
+    Core.esmRequire('module-alias').addAliases({
+      '@': Core.projectRoot + '/src',
+    });
   }
 
   private static loadRueModulesForREPL(repl: REPLServer, modules: t.Modules) {
