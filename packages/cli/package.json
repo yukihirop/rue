@@ -35,7 +35,9 @@
     "commands": "./lib/commands",
     "bin": "rue",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-not-found",
+      "@oclif/plugin-autocomplete"
     ]
   },
   "devDependencies": {
@@ -46,7 +48,9 @@
   },
   "dependencies": {
     "@oclif/command": "^1.8.0",
+    "@oclif/plugin-autocomplete": "^0.3.0",
     "@oclif/plugin-help": "^3.2.2",
+    "@oclif/plugin-not-found": "^1.2.4",
     "@rue/repl": "^0.0.0",
     "cross-spawn": "^7.0.3",
     "dotenv-expand": "^5.1.0",
