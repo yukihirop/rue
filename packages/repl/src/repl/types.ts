@@ -1,1 +1,1 @@
-export type Modules = Record<string, any>[];
+export type Modules = Record<string, Function>;

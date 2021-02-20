@@ -18,18 +18,38 @@ import { Impl } from './impl';
 import type * as t from './types';
 
 export class Core extends Impl {
-  private static projectRoot: string = pkgDir.sync() || process.cwd();
+  static projectRoot: string = pkgDir.sync() || process.cwd();
   // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
   private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
-  private static PROGRESS_BAR_MESSAGE = 'Loading Rue Modules :current/:total';
+  private static PROGRESS_BAR_MESSAGE = '[Rue] Loading Rue Modules :current/:total';
 
   static async run(opts: replt.ReplOptions) {
     const repl = await this.initializeREPL(opts);
     repl.on('exit', () => process.exit());
+    await this.setupFileWatchers(repl);
   }
 
-  private static async initializeREPL(opts: replt.ReplOptions) {
+  static async getRueModulePaths(): Promise<string[]> {
+    const paths = await globby(['src/**/{forms,models,records}/**/*.{js,ts}'], {
+      cwd: Core.projectRoot,
+      gitignore: true,
+    });
+
+    return [...paths.map((p) => path.join(Core.projectRoot, p))];
+  }
+
+  static async loadRueModulesForREPL(repl: REPLServer, modules?: t.Modules) {
+    if (modules && Object.keys(modules).length > 0) {
+      Object.assign(repl.context, modules);
+    } else {
+      const modules = await this.loadRueModules();
+      Object.assign(repl.context, modules);
+    }
+  }
+
+  private static async initializeREPL(opts: replt.ReplOptions): Promise<replt.REPLServer> {
     Core.resolveModuleAliases();
+
     const modules = await this.loadRueModules();
     const repl = REPL.start(opts);
 
@@ -45,10 +65,6 @@ export class Core extends Impl {
     Core.esmRequire('module-alias').addAliases({
       '@': Core.projectRoot + '/src',
     });
-  }
-
-  private static loadRueModulesForREPL(repl: REPLServer, modules: t.Modules) {
-    Object.assign(repl.context, modules);
   }
 
   private static async loadRueModules(): Promise<t.Modules> {
@@ -84,15 +100,6 @@ export class Core extends Impl {
     percentage.terminate();
 
     return modules;
-  }
-
-  private static async getRueModulePaths(): Promise<string[]> {
-    const paths = await globby(['src/**/{forms,models,records}/**/*.{js,ts}'], {
-      cwd: Core.projectRoot,
-      gitignore: true,
-    });
-
-    return [...paths.map((p) => path.join(Core.projectRoot, p))];
   }
 
   private static forceRequire(modulePath: string): any {
