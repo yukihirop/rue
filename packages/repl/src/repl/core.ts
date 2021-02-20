@@ -11,10 +11,13 @@ import globby from 'globby';
 import pkgDir from 'pkg-dir';
 import ProgressBar from 'progress';
 
+// locals
+import { Impl } from './impl';
+
 // types
 import type * as t from './types';
 
-export class Core {
+export class Core extends Impl {
   private static projectRoot: string = pkgDir.sync() || process.cwd();
   // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
   private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
@@ -31,6 +34,7 @@ export class Core {
     const repl = REPL.start(opts);
 
     this.loadRueModulesForREPL(repl, modules);
+    this.setupHistory(repl);
 
     return repl;
   }
