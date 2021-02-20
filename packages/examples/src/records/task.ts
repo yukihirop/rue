@@ -26,12 +26,12 @@ export class Task extends ActiveRecord {
       { primaryKey: 3, content: 'Work since morning', status: 'failure', accountId: 2 },
       { primaryKey: 4, content: 'Get it done to the end', status: 'wip', accountId: 2 },
     ]);
-  } 
+  }
 }
 
 // Register Validations
 Task.validates('content', { presence: true });
-Task.validates('status', { inclusion: { in: ['success', 'failure', 'wip' ]}});
+Task.validates('status', { inclusion: { in: ['success', 'failure', 'wip'] } });
 
 // Register Relashionships
 Task.belongsTo('account', Account, 'accountId');
