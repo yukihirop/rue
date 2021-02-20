@@ -13,6 +13,7 @@ import ProgressBar from 'progress';
 
 // locals
 import { Impl } from './impl';
+import { defineCommands } from '@/commands';
 
 // types
 import type * as t from './types';
@@ -21,7 +22,7 @@ export class Core extends Impl {
   static projectRoot: string = pkgDir.sync() || process.cwd();
   // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
   private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
-  private static PROGRESS_BAR_MESSAGE = '[Rue] Loading Rue Modules :current/:total';
+  private static PROGRESS_BAR_MESSAGE = '[Rue] Loading Rue Modules :current/:total.';
 
   static async run(opts: replt.ReplOptions) {
     const repl = await this.initializeREPL(opts);
@@ -50,11 +51,15 @@ export class Core extends Impl {
   private static async initializeREPL(opts: replt.ReplOptions): Promise<replt.REPLServer> {
     Core.resolveModuleAliases();
 
+    console.log(`[Node] Welcome to Node.js v${process.env.NODENV_VERSION}.`);
+    console.log(`[Node] Type ".help" for more information.`);
+
     const modules = await this.loadRueModules();
     const repl = REPL.start(opts);
 
     this.loadRueModulesForREPL(repl, modules);
     this.setupHistory(repl);
+    defineCommands(repl);
 
     return repl;
   }
