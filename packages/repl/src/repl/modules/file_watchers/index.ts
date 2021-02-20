@@ -1,0 +1,1 @@
+export { FileWatchers } from './core';

@@ -25,6 +25,50 @@ describe('Support(Info)', () => {
     });
   });
 
+  describe('[static] getMethodsWithNamespace', () => {
+    class TestGetMethodsWithNamespaceChild extends Support {
+      createChild() {
+        return 'create';
+      }
+      updateChild() {
+        return 'update';
+      }
+      readChild() {
+        return 'read';
+      }
+      destroyChild() {
+        return 'destroy';
+      }
+    }
+
+    class TestGetMethodsWithNamespace extends TestGetMethodsWithNamespaceChild {
+      create() {
+        return 'create';
+      }
+      update() {
+        return 'update';
+      }
+      read() {
+        return 'read';
+      }
+      destroy() {
+        return 'destroy';
+      }
+    }
+
+    it('should correctly', () => {
+      expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
+        TestGetMethodsWithNamespace: ['create', 'update', 'read', 'destroy'],
+        TestGetMethodsWithNamespaceChild: [
+          'createChild',
+          'updateChild',
+          'readChild',
+          'destroyChild',
+        ],
+      });
+    });
+  });
+
   describe('[static] getProperties', () => {
     describe('when do not initialize in constructor', () => {
       class TestGetProperties extends Support {

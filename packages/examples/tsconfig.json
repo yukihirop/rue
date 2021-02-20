@@ -1,5 +1,7 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
@@ -13,7 +15,9 @@
     "outDir": "lib",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "allowJs": true
   }
