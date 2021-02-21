@@ -1,5 +1,6 @@
 // rue packages
 import { Model } from '@rue/activemodel';
+import { Support } from '@rue/activesupport';
 
 // locals
 import { Record } from '@/records';
@@ -15,6 +16,6 @@ class Impl extends Model {
 
 interface Impl {}
 
-Impl.moduleExtend(CollectionProxyModule, { only: ['scope'] });
+Support.rueModuleExtend(Impl, CollectionProxyModule, { only: ['scope'] });
 
 export { Impl };

@@ -1,3 +1,6 @@
+// rue packages
+import { Support } from '@rue/activesupport';
+
 // local
 import { Record } from '@/records';
 import { Association } from '@/associations';
@@ -19,15 +22,15 @@ interface Impl {
 }
 
 // includes module
-Impl.moduleInclude(PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
+Support.rueModuleInclude(Impl, PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
 
 // extend module
-Impl.moduleExtend(PersistenceModule, { only: ['destroyAll'] });
-Impl.moduleExtend(FinderMethodsModule, { only: ['findBy'] });
+Support.rueModuleExtend(Impl, PersistenceModule, { only: ['destroyAll'] });
+Support.rueModuleExtend(Impl, FinderMethodsModule, { only: ['findBy'] });
 
 // deletgate constants
-Impl['RECORD_AUTO_INCREMENNT_ID'] = PersistenceModule.RECORD_AUTO_INCREMENNT_ID;
-Impl['RECORD_ID'] = PersistenceModule.RECORD_ID;
-Impl['RECORD_ALL'] = PersistenceModule.RECORD_ALL;
+Impl['RECORD_AUTO_INCREMENNT_ID'] = PersistenceModule.constant.RECORD_AUTO_INCREMENNT_ID;
+Impl['RECORD_ID'] = PersistenceModule.constant.RECORD_ID;
+Impl['RECORD_ALL'] = PersistenceModule.constant.RECORD_ALL;
 
 export { Impl };
