@@ -1,5 +1,5 @@
 // functions
-import { moduleExtend } from '@/modules';
+import { rueModuleExtend } from '@/modules';
 
 // modules
 import { InfoModule } from './modules';
@@ -16,7 +16,7 @@ class Impl {
 interface Impl {}
 
 // module extend
-moduleExtend(Impl, InfoModule, {
+rueModuleExtend(Impl, InfoModule, {
   only: ['getMethods', 'getMethodsWithNamespace', 'getProperties'],
 });
 

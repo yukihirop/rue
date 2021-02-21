@@ -58,6 +58,7 @@ describe('Support(Info)', () => {
 
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
+        Function: ['apply', 'bind', 'call', 'toString'],
         TestGetMethodsWithNamespace: ['create', 'update', 'read', 'destroy'],
         TestGetMethodsWithNamespaceChild: [
           'createChild',
