@@ -7,7 +7,10 @@ export { Registry } from './registries';
 // prettier-ignore
 export type {
   Module as Support$Module,
-  ModuleOptions as Support$ModuleOptions
+  ModuleOptions as Support$ModuleOptions,
+  IRueModule as Support$IRueModule,
+  RueModuleOptions as Support$RueModuleOptions,
+  RueModuleBody as Support$RueModuleBody,
 } from './modules';
 
 // prettier-ignore

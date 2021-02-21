@@ -36,29 +36,38 @@ export function moduleExtend<T extends Function>(
   }
 }
 
-export function defineRueModule(name: string, body: t.RueModuleBody): t.RueModule {
+export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = { [name]: function () {} }[name];
   rueModule[RUE_MODULE] = true;
   rueModule[RUE_ANCESTOR_MODULE] = Object;
   rueModule['body'] = body;
+  rueModule['constant'] = body.constant!;
+  rueModule['static'] = body.static!;
+  rueModule['instance'] = body.instance!;
+
+  // define constants
+  Object.keys(body.constant || {}).forEach((constName: string) => {
+    rueModule[constName] = body.constant[constName];
+  });
 
   // define static methods
-  Object.keys(body.static).forEach((methodName: string) => {
+  Object.keys(body.static || {}).forEach((methodName: string) => {
     rueModule[methodName] = body.static[methodName];
   });
 
   // define instance methods
-  Object.keys(body.instance).forEach((methodName: string) => {
+  Object.keys(body.instance || {}).forEach((methodName: string) => {
     rueModule.prototype[methodName] = body.instance[methodName];
   });
 
-  return rueModule as t.RueModule;
+  // @ts-ignore
+  return rueModule as t.IRueModule;
 }
 
 export function rueModuleInclude<T extends Function>(
   klass: T,
-  rueModule: t.RueModule,
+  rueModule: t.IRueModule,
   opts: t.RueModuleOptions
 ) {
   if (rueModule[RUE_MODULE]) {
@@ -71,10 +80,9 @@ export function rueModuleInclude<T extends Function>(
       klass[RUE_ANCESTOR_MODULE] = rueModule;
     }
 
-    const instance = new (rueModule as any)();
-    Object.keys(instance).forEach((methodName) => {
+    Object.keys(rueModule.instance || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
-        klass.prototype[methodName] = rueModule[methodName];
+        klass.prototype[methodName] = rueModule.instance[methodName];
       }
     });
   } else {
@@ -84,7 +92,7 @@ export function rueModuleInclude<T extends Function>(
 
 export function rueModuleExtend<T extends Function>(
   klass: T,
-  rueModule: t.RueModule,
+  rueModule: t.IRueModule,
   opts: t.RueModuleOptions
 ) {
   if (rueModule[RUE_MODULE]) {
@@ -96,9 +104,15 @@ export function rueModuleExtend<T extends Function>(
       klass[RUE_ANCESTOR_MODULE] = rueModule;
     }
 
-    Object.keys(rueModule).forEach((methodName) => {
+    Object.keys(rueModule.static || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
-        klass[methodName] = rueModule[methodName];
+        klass[methodName] = rueModule.static[methodName];
+      }
+    });
+
+    Object.keys(rueModule.constant || {}).forEach((constName) => {
+      if (opts && opts.only && opts.only.includes(constName)) {
+        klass[constName] = rueModule.constant[constName];
       }
     });
   } else {

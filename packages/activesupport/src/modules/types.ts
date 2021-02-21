@@ -14,21 +14,24 @@ export type ModuleOptions = {
   only: string[];
 };
 
-export type RueModule = () => {} & {
+export interface IRueModule extends Function {
   __rue_module__: true;
   __rue_ancestor_module__: Function;
   body: RueModuleBody;
-  prototype: {
-    [methodName: string]: Function;
-  };
-};
+  constant?: RueModuleBody['constant'];
+  static?: RueModuleBody['static'];
+  instance?: RueModuleBody['instance'];
+}
 
 export type RueModuleBody = {
+  constant?: {
+    [propName: string]: any;
+  };
   instance?: {
-    [methodName: string]: Function;
+    [propName: string]: Function;
   };
   static?: {
-    [methodName: string]: Function;
+    [propName: string]: Function;
   };
 };
 

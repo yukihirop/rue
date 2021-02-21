@@ -8,4 +8,4 @@ export {
 } from './core';
 
 // types
-export { Module, ModuleOptions, RueModule, RueModuleOptions, RueModuleBody } from './types';
+export { Module, ModuleOptions, IRueModule, RueModuleOptions, RueModuleBody } from './types';
