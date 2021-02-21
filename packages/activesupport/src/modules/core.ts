@@ -40,13 +40,7 @@ export function rueModuleInclude<T extends Function>(
 ) {
   if (rueModule[RUE_MODULE]) {
     // Update Rue Module Chain
-    const maybyAncestorModule = klass[RUE_ANCESTOR_MODULE];
-
-    if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
-    } else {
-      klass[RUE_ANCESTOR_MODULE] = rueModule;
-    }
+    updateRueModuleChain(klass, rueModule);
 
     Object.keys(rueModule.instance || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
@@ -65,12 +59,7 @@ export function rueModuleExtend<T extends Function>(
 ) {
   if (rueModule[RUE_MODULE]) {
     // Update Rue Module Chain
-    const maybyAncestorModule = klass[RUE_ANCESTOR_MODULE];
-    if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
-    } else {
-      klass[RUE_ANCESTOR_MODULE] = rueModule;
-    }
+    updateRueModuleChain(klass, rueModule);
 
     Object.keys(rueModule.static || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
@@ -85,5 +74,29 @@ export function rueModuleExtend<T extends Function>(
     });
   } else {
     throw 'rueModuleExtend';
+  }
+}
+
+function updateRueModuleChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
+  const proto = Object.getPrototypeOf(klass);
+
+  // when extends class
+  if (proto.name !== '') {
+    const maybyAncestorModule = proto[RUE_ANCESTOR_MODULE];
+
+    if (maybyAncestorModule) {
+      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
+    } else {
+      proto[RUE_ANCESTOR_MODULE] = rueModule;
+    }
+    // when do not extends class
+  } else {
+    const maybyAncestorModule = klass[RUE_ANCESTOR_MODULE];
+
+    if (maybyAncestorModule) {
+      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
+    } else {
+      klass[RUE_ANCESTOR_MODULE] = rueModule;
+    }
   }
 }

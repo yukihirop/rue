@@ -25,7 +25,6 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       return _getMethods(target, []);
     },
 
-    // @static
     // Support Rue Module
     getMethodsWithNamespace(obj?: Function | object): t.MethodWithNamespace[] {
       let target = new this();
@@ -40,7 +39,6 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       }
     },
 
-    // @static
     getProperties(obj: Function): string[] {
       let target = new this();
       if (obj) target = obj;
@@ -49,7 +47,6 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       return Object.keys(descriptors);
     },
 
-    // @static
     _getStaticMethodsWithNamespace(self: any, obj?: Function): t.MethodWithNamespace[] {
       let target = new self();
       if (obj) target = obj;
@@ -115,7 +112,6 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       return _getMethods(target, {} as t.MethodWithNamespace);
     },
 
-    // @static
     _getInstanceMethodsWithNamespace(self: any, obj?: object): t.MethodWithNamespace[] {
       let target = new self();
       if (obj) target = obj;
