@@ -2,7 +2,6 @@
 
 ## Methods
 
-- [x] [static]moduleInclude
 - [x] [static]moduleExclude
 - [x] [static]inspect
 

@@ -1,13 +1,7 @@
 // locals
 
 // functions
-import {
-  moduleInclude,
-  moduleExtend,
-  rueModuleExtend,
-  rueModuleInclude,
-  defineRueModule,
-} from '@/modules';
+import { moduleExtend, rueModuleExtend, rueModuleInclude, defineRueModule } from '@/modules';
 // classes
 import { Impl } from './impl';
 
@@ -15,10 +9,6 @@ import { Impl } from './impl';
 import * as mt from '@/modules';
 
 export class Core extends Impl {
-  static moduleInclude<T extends Function>(klass: T, module: mt.Module, opts?: mt.ModuleOptions) {
-    moduleInclude(klass, module, opts);
-  }
-
   static moduleExtend<T extends Function>(klass: T, module: mt.Module, opts?: mt.ModuleOptions) {
     moduleExtend(klass, module, opts);
   }
