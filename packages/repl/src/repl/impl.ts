@@ -18,7 +18,7 @@ class Impl {
 interface Impl {}
 
 // extend module
-Support.moduleExtend(Impl, HistoryModule, { only: ['setupHistory'] });
-Support.moduleExtend(Impl, FileWatchersModule, { only: ['setupFileWatchers'] });
+Support.rueModuleExtend(Impl, HistoryModule, { only: ['setupHistory'] });
+Support.rueModuleExtend(Impl, FileWatchersModule, { only: ['setupFileWatchers'] });
 
 export { Impl };
