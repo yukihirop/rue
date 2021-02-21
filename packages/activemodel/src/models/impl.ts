@@ -14,9 +14,9 @@ interface Impl {
   humanPropName(propKey: string): string;
 }
 
-Support.moduleInclude(Impl, TranslationModule, { only: ['humanPropertyName', 'humanPropName'] });
+Support.rueModuleInclude(Impl, TranslationModule, { only: ['humanPropertyName', 'humanPropName'] });
 
 // delegate constants
-Impl['TRANSLATE_KEY'] = TranslationModule.TRANSLATE_KEY;
+Impl['TRANSLATE_KEY'] = TranslationModule.constant.TRANSLATE_KEY;
 
 export { Impl };
