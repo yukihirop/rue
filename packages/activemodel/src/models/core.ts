@@ -6,16 +6,16 @@ import type * as st from '@rue/activesupport';
 import flatten from 'obj-flatten';
 
 // local
-import { Impl } from './impl';
+import { ActiveModel$Impl } from './impl';
 import { registryForTranslator as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
 import type { Validation$Errors } from '@/validations';
 
-const TRANSLATE_KEY = Impl['TRANSLATE_KEY'];
+const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
 
-export class Core extends Impl {
+export class ActiveModel$Core extends ActiveModel$Impl {
   public errors: Validation$Errors;
 
   static loadTranslator() {

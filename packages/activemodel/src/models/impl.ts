@@ -6,17 +6,19 @@ import { Validation } from '@/validations';
 import { TranslationModule } from './modules';
 
 // define static methods interface
-class Impl extends Validation {}
+class ActiveModel$Impl extends Validation {}
 
-interface Impl {
+interface ActiveModel$Impl {
   // TranslationModule
   humanPropertyName(propKey: string): string;
   humanPropName(propKey: string): string;
 }
 
-Support.rueModuleInclude(Impl, TranslationModule, { only: ['humanPropertyName', 'humanPropName'] });
+Support.rueModuleInclude(ActiveModel$Impl, TranslationModule, {
+  only: ['humanPropertyName', 'humanPropName'],
+});
 
 // delegate constants
-Impl['TRANSLATE_KEY'] = TranslationModule.constant.TRANSLATE_KEY;
+ActiveModel$Impl['TRANSLATE_KEY'] = TranslationModule.constant.TRANSLATE_KEY;
 
-export { Impl };
+export { ActiveModel$Impl };
