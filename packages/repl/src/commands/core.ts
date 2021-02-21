@@ -24,9 +24,13 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      let obj = _this.context[objName];
-      if (!obj) obj = evalInContext(objName, _this.context);
-      console.log(Support.getMethodsWithNamespace(obj));
+      try {
+        let obj = _this.context[objName];
+        if (!obj) obj = evalInContext(objName, _this.context);
+        console.log(Support.getMethodsWithNamespace(obj));
+      } catch (e) {
+        console.error(e);
+      }
 
       _this.displayPrompt();
     },
@@ -37,9 +41,47 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      let obj = _this.context[objName];
-      if (!obj) obj = evalInContext(objName, _this.context);
-      console.log(Support.getProperties(obj));
+      try {
+        let obj = _this.context[objName];
+        if (!obj) obj = evalInContext(objName, _this.context);
+        console.log(Support.getProperties(obj));
+      } catch (e) {
+        console.error(e);
+      }
+
+      _this.displayPrompt();
+    },
+  },
+  proto: {
+    help: '[Rue] Display Object.getPrototypeOf result',
+    action: function (objName: string) {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      try {
+        let obj = _this.context[objName];
+        if (!obj) obj = evalInContext(objName, _this.context);
+        console.log(Object.getPrototypeOf(obj));
+      } catch (e) {
+        console.error(e);
+      }
+
+      _this.displayPrompt();
+    },
+  },
+  desc: {
+    help: '[Rue] Display Object.getOwnPropertyDescriptors result',
+    action: function (objName: string) {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      try {
+        let obj = _this.context[objName];
+        if (!obj) obj = evalInContext(objName, _this.context);
+        console.log(Object.getOwnPropertyDescriptors(obj));
+      } catch (e) {
+        console.error(e);
+      }
 
       _this.displayPrompt();
     },
