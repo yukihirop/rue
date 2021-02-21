@@ -1,14 +1,14 @@
 // types
 import * as t from './types';
 
-const RUE_MODULE = '__rue_module__';
-const RUE_ANCESTOR_MODULE = '__rue_ancestor_module__';
+export const RUE_MODULE = '__rue_module__';
+export const RUE_ANCESTOR = '__rue_ancestor__';
 
 export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = { [name]: function () {} }[name];
   rueModule[RUE_MODULE] = true;
-  rueModule[RUE_ANCESTOR_MODULE] = Object;
+  rueModule[RUE_ANCESTOR] = Object;
   rueModule['body'] = body;
   rueModule['constant'] = body.constant!;
   rueModule['static'] = body.static!;
@@ -82,21 +82,21 @@ function updateRueModuleChain<T extends Function>(klass: T, rueModule: t.IRueMod
 
   // when extends class
   if (proto.name !== '') {
-    const maybyAncestorModule = proto[RUE_ANCESTOR_MODULE];
+    const maybyAncestorModule = proto[RUE_ANCESTOR];
 
     if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
+      maybyAncestorModule[RUE_ANCESTOR] = rueModule;
     } else {
-      proto[RUE_ANCESTOR_MODULE] = rueModule;
+      proto[RUE_ANCESTOR] = rueModule;
     }
     // when do not extends class
   } else {
-    const maybyAncestorModule = klass[RUE_ANCESTOR_MODULE];
+    const maybyAncestorModule = klass[RUE_ANCESTOR];
 
     if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR_MODULE] = rueModule;
+      maybyAncestorModule[RUE_ANCESTOR] = rueModule;
     } else {
-      klass[RUE_ANCESTOR_MODULE] = rueModule;
+      klass[RUE_ANCESTOR] = rueModule;
     }
   }
 }

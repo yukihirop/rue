@@ -1,5 +1,6 @@
 // locals
 import { defineRueModule } from '@/modules';
+import { RUE_MODULE, RUE_ANCESTOR } from '@/modules/core';
 
 // types
 import * as t from './types';
@@ -58,7 +59,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
             let namespace = '';
 
             // static method in Module
-            if (obj['__rue_module__']) {
+            if (obj[RUE_MODULE]) {
               namespace = `${obj['name']} (Module)`;
             } else {
               namespace = obj['name'];
@@ -80,7 +81,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       };
 
       const _getMethods = (o: any, methods: t.MethodWithNamespace[]): t.MethodWithNamespace[] => {
-        if (o && o['__rue_module__']) {
+        if (o && o[RUE_MODULE]) {
           return _getMethods(
             Info.static._getAncestorRueModuleOf(o),
             Object.assign(methods, getOwnMethods(o))
@@ -90,9 +91,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
             return methods;
           } else {
             // End point class inheriting rue module
-            const isInheritRueModuleEndPointClass = Object.keys(o).includes(
-              '__rue_ancestor_module__'
-            );
+            const isInheritRueModuleEndPointClass = Object.keys(o).includes(RUE_ANCESTOR);
             if (isInheritRueModuleEndPointClass) {
               return _getMethods(
                 Info.static._getAncestorRueModuleOf(o),
@@ -123,7 +122,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
             let namespace = '';
 
             // instance method in Module
-            if (obj.constructor['__rue_module__']) {
+            if (obj.constructor[RUE_MODULE]) {
               namespace = `${obj.constructor.name} (Module)`;
             } else {
               namespace = obj.constructor.name;
@@ -148,12 +147,12 @@ export const Info = defineRueModule('ActiveSupport$Info', {
         o: object | Function,
         methods: t.MethodWithNamespace[]
       ): t.MethodWithNamespace[] => {
-        if (o && o.constructor['__rue_module__']) {
+        if (o && o.constructor[RUE_MODULE]) {
           return _getMethods(
             Info.static._getAncestorRueModuleOf(o.constructor),
             Object.assign(methods, getOwnMethods(o.constructor['prototype']))
           );
-        } else if (o && o['__rue_module__']) {
+        } else if (o && o[RUE_MODULE]) {
           return _getMethods(
             Info.static._getAncestorRueModuleOf(o),
             Object.assign(methods, getOwnMethods(o['prototype']))
@@ -164,7 +163,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
           } else {
             // End point class inheriting rue module
             const isInheritRueModuleEndPointClass = Object.keys(o.constructor).includes(
-              '__rue_ancestor_module__'
+              RUE_ANCESTOR
             );
             if (isInheritRueModuleEndPointClass) {
               const ancestorModule = Info.static._getAncestorRueModuleOf(o.constructor);
@@ -188,7 +187,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
     },
 
     _getAncestorRueModuleOf(klass: Function): Function {
-      return klass['__rue_ancestor_module__'];
+      return klass[RUE_ANCESTOR];
     },
   },
 });
