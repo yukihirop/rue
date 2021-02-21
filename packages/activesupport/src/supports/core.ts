@@ -3,12 +3,12 @@
 // functions
 import { rueModuleExtend, rueModuleInclude, defineRueModule } from '@/modules';
 // classes
-import { Impl } from './impl';
+import { ActiveSupport$Impl } from './impl';
 
 // types
 import * as mt from '@/modules';
 
-export class Core extends Impl {
+export class ActiveSupport$Core extends ActiveSupport$Impl {
   static rueModuleInclude<T extends Function>(
     klass: T,
     module: mt.IRueModule,

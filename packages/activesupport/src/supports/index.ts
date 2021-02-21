@@ -1,1 +1,1 @@
-export { Core as Support } from './core';
+export { ActiveSupport$Core as Support } from './core';

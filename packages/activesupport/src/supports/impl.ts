@@ -7,17 +7,17 @@ import { InfoModule } from './modules';
 // types
 import * as mit from './modules/info';
 
-class Impl {
+class ActiveSupport$Impl {
   static getMethods: (obj?: Function) => string[];
   static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];
 }
 
-interface Impl {}
+interface ActiveSupport$Impl {}
 
 // module extend
-rueModuleExtend(Impl, InfoModule, {
+rueModuleExtend(ActiveSupport$Impl, InfoModule, {
   only: ['getMethods', 'getMethodsWithNamespace', 'getProperties'],
 });
 
-export { Impl };
+export { ActiveSupport$Impl };
