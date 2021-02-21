@@ -7,14 +7,14 @@ import { Association } from '@/associations';
 import { PersistenceModule, FinderMethodsModule } from '@/records/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
-class Impl extends Association {
+class ActiveRecord$Impl extends Association {
   // PersistennceModule
   static destroyAll: <T extends Record>(filter?: (self: T) => boolean) => T[];
   // FinderMethodsModule
   static findBy: <T extends Record>(params: { [key: string]: any }) => Promise<T>;
 }
 
-interface Impl {
+interface ActiveRecord$Impl {
   // PersistenceModule
   save(): boolean;
   saveOrThrow(): void | boolean;
@@ -22,15 +22,18 @@ interface Impl {
 }
 
 // includes module
-Support.rueModuleInclude(Impl, PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
+Support.rueModuleInclude(ActiveRecord$Impl, PersistenceModule, {
+  only: ['save', 'saveOrThrow', 'destroy'],
+});
 
 // extend module
-Support.rueModuleExtend(Impl, PersistenceModule, { only: ['destroyAll'] });
-Support.rueModuleExtend(Impl, FinderMethodsModule, { only: ['findBy'] });
+Support.rueModuleExtend(ActiveRecord$Impl, PersistenceModule, { only: ['destroyAll'] });
+Support.rueModuleExtend(ActiveRecord$Impl, FinderMethodsModule, { only: ['findBy'] });
 
 // deletgate constants
-Impl['RECORD_AUTO_INCREMENNT_ID'] = PersistenceModule.constant.RECORD_AUTO_INCREMENNT_ID;
-Impl['RECORD_ID'] = PersistenceModule.constant.RECORD_ID;
-Impl['RECORD_ALL'] = PersistenceModule.constant.RECORD_ALL;
+ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] =
+  PersistenceModule.constant.RECORD_AUTO_INCREMENNT_ID;
+ActiveRecord$Impl['RECORD_ID'] = PersistenceModule.constant.RECORD_ID;
+ActiveRecord$Impl['RECORD_ALL'] = PersistenceModule.constant.RECORD_ALL;
 
-export { Impl };
+export { ActiveRecord$Impl };
