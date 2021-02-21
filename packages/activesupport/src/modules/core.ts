@@ -4,22 +4,6 @@ import * as t from './types';
 const RUE_MODULE = '__rue_module__';
 const RUE_ANCESTOR_MODULE = '__rue_ancestor_module__';
 
-export function moduleExtend<T extends Function>(
-  klass: T,
-  module: t.Module,
-  opts?: t.ModuleOptions
-) {
-  if (module.isModule) {
-    Object.keys(module).forEach((methodName) => {
-      if (opts && opts.only && opts.only.includes(methodName)) {
-        klass[methodName] = module[methodName];
-      }
-    });
-  } else {
-    throw 'moduleExtend';
-  }
-}
-
 export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = { [name]: function () {} }[name];

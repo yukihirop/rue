@@ -2,7 +2,6 @@
 
 ## Methods
 
-- [x] [static]moduleExclude
 - [x] [static]inspect
 
 ### ActiveSupport$Info
