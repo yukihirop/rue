@@ -18,7 +18,7 @@ const Info: mt.Module = {
         .map(([name]) => name);
 
     const _getMethods = (o: object, methods: string[]): string[] =>
-      o === Object.prototype
+      o === Object.prototype || o == null
         ? methods
         : _getMethods(Object.getPrototypeOf(o), methods.concat(getOwnMethods(o)));
 
@@ -26,39 +26,18 @@ const Info: mt.Module = {
   },
 
   // @static
-  getMethodsWithNamespace(obj?: Function): string[] {
+  // Support Rue Module
+  getMethodsWithNamespace(obj?: Function | object): t.MethodWithNamespace[] {
     let target = new this();
     if (obj) target = obj;
 
-    const getOwnMethods = (obj: object): t.MethodWithNamespace =>
-      Object.entries(Object.getOwnPropertyDescriptors(obj))
-        .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
-        .reduce((acc, [name]) => {
-          let namespace = '';
-
-          if (obj.constructor.name === 'Function') {
-            namespace = obj['name'];
-          } else {
-            if (obj['isModule']) {
-              namespace = `${obj.constructor.name} (Module)`;
-            } else {
-              namespace = obj.constructor.name;
-            }
-          }
-
-          if (!acc[namespace]) acc[namespace] = [];
-          acc[namespace].push(name);
-
-          return acc;
-        }, {});
-
-    const _getMethods = (o: object, methods: t.MethodWithNamespace[]): t.MethodWithNamespace[] =>
-      o === Object.prototype
-        ? methods
-        : _getMethods(Object.getPrototypeOf(o), Object.assign(methods, getOwnMethods(o)));
-
-    // @ts-ignore
-    return _getMethods(target, {} as t.MethodWithNamespace);
+    if (typeof target === 'function') {
+      return Info._getStaticMethodsWithNamespace(this, obj);
+    } else if (typeof target === 'object') {
+      return Info._getInstanceMethodsWithNamespace(this, obj);
+    } else {
+      return Info._getInstanceMethodsWithNamespace(this, obj);
+    }
   },
 
   // @static
@@ -68,6 +47,146 @@ const Info: mt.Module = {
 
     const descriptors = Object.getOwnPropertyDescriptors(target);
     return Object.keys(descriptors);
+  },
+
+  // @static
+  _getStaticMethodsWithNamespace(self: any, obj?: Function): t.MethodWithNamespace[] {
+    let target = new self();
+    if (obj) target = obj;
+
+    const getOwnMethods = (obj: any): t.MethodWithNamespace => {
+      return Object.entries(Object.getOwnPropertyDescriptors(obj))
+        .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+        .reduce((acc, [name]) => {
+          let namespace = '';
+
+          // static method in Module
+          if (obj['__rue_module__']) {
+            namespace = `${obj['name']} (Module)`;
+          } else {
+            namespace = obj['name'];
+          }
+
+          // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
+          // cosmetic namespace
+          if (namespace === '') {
+            namespace = 'Function (prototype)';
+          } else if (namespace === undefined) {
+            namespace = 'Object (prototype)';
+          }
+
+          if (!acc[namespace]) acc[namespace] = [];
+          acc[namespace].push(name);
+
+          return acc;
+        }, {});
+    };
+
+    const _getMethods = (o: any, methods: t.MethodWithNamespace[]): t.MethodWithNamespace[] => {
+      if (o && o['__rue_module__']) {
+        return _getMethods(
+          Info._getAncestorRueModuleOf(o),
+          Object.assign(methods, getOwnMethods(o))
+        );
+      } else {
+        if (o == Object.prototype || o == null) {
+          return methods;
+        } else {
+          // End point class inheriting rue module
+          const isInheritRueModuleEndPointClass = Object.keys(o).includes(
+            '__rue_ancestor_module__'
+          );
+          if (isInheritRueModuleEndPointClass) {
+            return _getMethods(
+              Info._getAncestorRueModuleOf(o),
+              Object.assign(methods, getOwnMethods(o))
+            );
+          } else {
+            return _getMethods(Object.getPrototypeOf(o), Object.assign(methods, getOwnMethods(o)));
+          }
+        }
+      }
+    };
+
+    // @ts-ignore
+    return _getMethods(target, {} as t.MethodWithNamespace);
+  },
+
+  // @static
+  _getInstanceMethodsWithNamespace(self: any, obj?: object): t.MethodWithNamespace[] {
+    let target = new self();
+    if (obj) target = obj;
+
+    const getOwnMethods = (obj: object): t.MethodWithNamespace => {
+      return Object.entries(Object.getOwnPropertyDescriptors(obj))
+        .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+        .reduce((acc, [name]) => {
+          let namespace = '';
+
+          // instance method in Module
+          if (obj.constructor['__rue_module__']) {
+            namespace = `${obj.constructor.name} (Module)`;
+          } else {
+            namespace = obj.constructor.name;
+          }
+
+          // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
+          // cosmetic namespace
+          if (namespace === '') {
+            namespace = 'Function (prototype)';
+          } else if (namespace === undefined) {
+            namespace = 'Object (prototype)';
+          }
+
+          if (!acc[namespace]) acc[namespace] = [];
+          acc[namespace].push(name);
+
+          return acc;
+        }, {});
+    };
+
+    const _getMethods = (
+      o: object | Function,
+      methods: t.MethodWithNamespace[]
+    ): t.MethodWithNamespace[] => {
+      if (o && o.constructor['__rue_module__']) {
+        return _getMethods(
+          Info._getAncestorRueModuleOf(o.constructor),
+          Object.assign(methods, getOwnMethods(o.constructor['prototype']))
+        );
+      } else if (o && o['__rue_module__']) {
+        return _getMethods(
+          Info._getAncestorRueModuleOf(o),
+          Object.assign(methods, getOwnMethods(o['prototype']))
+        );
+      } else {
+        if (o == Object.prototype || o == null) {
+          return methods;
+        } else {
+          // End point class inheriting rue module
+          const isInheritRueModuleEndPointClass = Object.keys(o.constructor).includes(
+            '__rue_ancestor_module__'
+          );
+          if (isInheritRueModuleEndPointClass) {
+            const ancestorModule = Info._getAncestorRueModuleOf(o.constructor);
+
+            return _getMethods(
+              Object.getPrototypeOf(new ancestorModule()),
+              Object.assign(methods, getOwnMethods(o.constructor.prototype))
+            );
+          } else {
+            return _getMethods(Object.getPrototypeOf(o), Object.assign(methods, getOwnMethods(o)));
+          }
+        }
+      }
+    };
+
+    // @ts-ignore
+    return _getMethods(target, {} as t.MethodWithNamespace);
+  },
+
+  _getAncestorRueModuleOf(klass: Function): Function {
+    return klass['__rue_ancestor_module__'];
   },
 };
 
