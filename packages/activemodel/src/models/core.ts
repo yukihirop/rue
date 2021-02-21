@@ -1,6 +1,5 @@
 // rue packages
 import { Support } from '@rue/activesupport';
-import type * as st from '@rue/activesupport';
 
 // third party
 import flatten from 'obj-flatten';
@@ -21,14 +20,6 @@ export class ActiveModel$Core extends ActiveModel$Impl {
   static loadTranslator() {
     // register translate
     Registry.create('ActiveModel', TRANSLATE_KEY, this.translate);
-  }
-
-  static moduleInclude(module: st.Support$Module, opts?: st.Support$ModuleOptions) {
-    Support.moduleInclude(this, module, opts);
-  }
-
-  static moduleExtend(module: st.Support$Module, opts?: st.Support$ModuleOptions) {
-    Support.moduleExtend(this, module, opts);
   }
 
   static getMethods(): string[] {
