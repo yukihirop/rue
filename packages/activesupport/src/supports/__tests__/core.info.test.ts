@@ -139,6 +139,7 @@ describe('Support(Info)', () => {
           'ActiveSupport$Core',
           'ActiveSupport$Impl',
           'ActiveSupport$Info (Module)',
+          'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',
         ]);
@@ -151,6 +152,7 @@ describe('Support(Info)', () => {
           'ActiveSupport$Core',
           'ActiveSupport$Impl',
           'ActiveSupport$Info (Module)',
+          'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',
         ]);

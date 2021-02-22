@@ -8,7 +8,15 @@ import { InfoModule } from './modules';
 import * as mt from '@/modules';
 import * as mit from './modules/info';
 
-abstract class ActiveSupport$Impl {
+export abstract class ActiveSupport$ImplBase {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = true;
+}
+
+abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
+
   static getMethods: (obj?: Function) => string[];
   static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];

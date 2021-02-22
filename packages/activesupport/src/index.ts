@@ -1,10 +1,8 @@
-import { RueAncestor } from './modules/types';
 // classes
-export { Support } from './supports';
+export { Support, Support$ImplBase } from './supports';
 export { Registry } from './registries';
 
 // types
-
 // prettier-ignore
 export type {
   Module as Support$Module,

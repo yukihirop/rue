@@ -1,5 +1,5 @@
 // rue packages
-import { Support } from '@rue/activesupport';
+import { Support, Support$ImplBase } from '@rue/activesupport';
 
 // local
 import { Record } from '@/records';
@@ -8,6 +8,9 @@ import { PersistenceModule, FinderMethodsModule } from '@/records/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends Association {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+
   // PersistennceModule
   static destroyAll: <T extends Record>(filter?: (self: T) => boolean) => T[];
   // FinderMethodsModule
