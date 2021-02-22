@@ -3,12 +3,14 @@ import * as t from './types';
 
 export const RUE_MODULE = '__rue_module__';
 export const RUE_ANCESTOR = '__rue_ancestor__';
+export const RUE_LAST_ANCESTOR_MODULE = '__rue_last_ancestor_module__';
 
 export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = { [name]: function () {} }[name];
   rueModule[RUE_MODULE] = true;
   rueModule[RUE_ANCESTOR] = Object;
+  rueModule[RUE_LAST_ANCESTOR_MODULE] = undefined;
   rueModule['body'] = body;
   rueModule['constant'] = body.constant!;
   rueModule['static'] = body.static!;
@@ -39,8 +41,8 @@ export function rueModuleInclude<T extends Function>(
   opts: t.RueModuleOptions
 ) {
   if (rueModule[RUE_MODULE]) {
-    // Update Rue Module Chain
-    updateRueModuleChain(klass, rueModule);
+    // Update Rue Ancestor Chain
+    updateRueAncestorChain(klass, rueModule);
 
     Object.keys(rueModule.instance || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
@@ -58,8 +60,8 @@ export function rueModuleExtend<T extends Function>(
   opts: t.RueModuleOptions
 ) {
   if (rueModule[RUE_MODULE]) {
-    // Update Rue Module Chain
-    updateRueModuleChain(klass, rueModule);
+    // Update Rue Ancestor Chain
+    updateRueAncestorChain(klass, rueModule);
 
     Object.keys(rueModule.static || {}).forEach((methodName) => {
       if (opts && opts.only && opts.only.includes(methodName)) {
@@ -77,26 +79,52 @@ export function rueModuleExtend<T extends Function>(
   }
 }
 
-function updateRueModuleChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
-  const proto = Object.getPrototypeOf(klass);
-
-  // when extends class
-  if (proto.name !== '') {
-    const maybyAncestorModule = proto[RUE_ANCESTOR];
-
-    if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR] = rueModule;
-    } else {
-      proto[RUE_ANCESTOR] = rueModule;
+// C:Core
+// I:Impl
+//
+// C=>I=>M1=>M2=>C=>I=>M1=>M2
+// C=>I=>M1=>M2=>M3=>C=>
+function updateRueAncestorChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
+  // not klass[RUE_LAST_ANCESTOR_MODULE]
+  // Even if you refer to it directly, you will see what is inherited.
+  if (
+    klass.hasOwnProperty(RUE_LAST_ANCESTOR_MODULE) &&
+    klass[RUE_LAST_ANCESTOR_MODULE][RUE_MODULE]
+  ) {
+    if (klass[RUE_LAST_ANCESTOR_MODULE][RUE_MODULE] != rueModule) {
+      klass[RUE_LAST_ANCESTOR_MODULE][RUE_ANCESTOR] = rueModule;
+      klass[RUE_LAST_ANCESTOR_MODULE] = rueModule;
     }
-    // when do not extends class
+    const superclass = Object.getPrototypeOf(klass);
+    if (superclass) {
+      if (rueModule[RUE_LAST_ANCESTOR_MODULE]) {
+        updateRueGrandsonChain(superclass, rueModule[RUE_LAST_ANCESTOR_MODULE]);
+      } else {
+        rueModule[RUE_ANCESTOR] = superclass;
+      }
+    }
   } else {
-    const maybyAncestorModule = klass[RUE_ANCESTOR];
+    const superclass = Object.getPrototypeOf(klass);
 
-    if (maybyAncestorModule) {
-      maybyAncestorModule[RUE_ANCESTOR] = rueModule;
+    // C=>[I]=>{M1=>M11=>M12}=>C=>I
+    klass[RUE_LAST_ANCESTOR_MODULE] = rueModule;
+    klass[RUE_ANCESTOR] = rueModule;
+
+    // C=>[I]=>M1=>M11=>{M12}=>C=>I
+    if (rueModule[RUE_LAST_ANCESTOR_MODULE]) {
+      rueModule[RUE_LAST_ANCESTOR_MODULE][RUE_ANCESTOR] = superclass;
     } else {
-      klass[RUE_ANCESTOR] = rueModule;
+      rueModule[RUE_ANCESTOR] = superclass;
     }
+  }
+}
+
+function updateRueGrandsonChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
+  const oldRueModleAncestor = rueModule[RUE_ANCESTOR];
+
+  if (oldRueModleAncestor && oldRueModleAncestor == Object) {
+    rueModule[RUE_ANCESTOR] = klass;
+  } else if (oldRueModleAncestor && oldRueModleAncestor !== Object) {
+    updateRueGrandsonChain(klass, oldRueModleAncestor as t.IRueModule);
   }
 }

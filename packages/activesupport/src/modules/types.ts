@@ -16,7 +16,7 @@ export type ModuleOptions = {
 
 export interface IRueModule extends Function {
   __rue_module__: true;
-  __rue_ancestor__: Function;
+  __rue_ancestor__: Function | IRueModule;
   body: RueModuleBody;
   constant?: RueModuleBody['constant'];
   static?: RueModuleBody['static'];
@@ -38,3 +38,5 @@ export type RueModuleBody = {
 export type RueModuleOptions = {
   only: string[];
 };
+
+export type RueAncestor = string;

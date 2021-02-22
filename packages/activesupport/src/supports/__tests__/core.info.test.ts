@@ -128,4 +128,33 @@ describe('Support(Info)', () => {
       });
     });
   });
+
+  describe('[static] getAncestors', () => {
+    describe('when default', () => {
+      class TestGetAncestors extends Support {}
+
+      it('should correctly', () => {
+        expect(TestGetAncestors.getAncestors()).toEqual([
+          'TestGetAncestors',
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (Module)',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give args', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(Support)).toEqual([
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (Module)',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+  });
 });

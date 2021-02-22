@@ -3,6 +3,7 @@ import { defineRueModule } from '@/modules';
 import { RUE_MODULE, RUE_ANCESTOR } from '@/modules/core';
 
 // types
+import * as mt from '@/modules';
 import * as t from './types';
 
 // this is bound to an instance(class) of Support
@@ -46,6 +47,60 @@ export const Info = defineRueModule('ActiveSupport$Info', {
 
       const descriptors = Object.getOwnPropertyDescriptors(target);
       return Object.keys(descriptors);
+    },
+
+    getAncestors(func?: Function): mt.RueAncestor[] {
+      let target = this;
+      if (func) target = func;
+
+      let ancestors = [target['name']];
+
+      const _getAncestors = (f: Function, ancestors: mt.RueAncestor[]) => {
+        // not f[RUE_ANCESTOR]
+        // Even if you refer to it directly, you will see what is inherited.
+        if (f.hasOwnProperty(RUE_ANCESTOR)) {
+          const maybeRueModule = f[RUE_ANCESTOR];
+
+          if (maybeRueModule == Object) {
+            return ancestors;
+          } else if (maybeRueModule) {
+            let ancestorName = maybeRueModule['name'];
+
+            if (maybeRueModule[RUE_MODULE]) ancestorName = `${maybeRueModule['name']} (Module)`;
+
+            // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
+            // cosmetic namespace
+            if (ancestorName === '') {
+              ancestorName = 'Function (prototype)';
+            } else if (ancestorName === undefined) {
+              ancestorName = 'Object (prototype)';
+            }
+
+            ancestors.push(ancestorName);
+            return _getAncestors(maybeRueModule, ancestors);
+          }
+        } else {
+          const proto = Object.getPrototypeOf(f);
+          if (proto == null) {
+            return ancestors;
+          } else {
+            let ancestorName = proto['name'];
+
+            // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
+            // cosmetic namespace
+            if (ancestorName === '') {
+              ancestorName = 'Function (prototype)';
+            } else if (ancestorName === undefined) {
+              ancestorName = 'Object (prototype)';
+            }
+
+            ancestors.push(ancestorName);
+            return _getAncestors(proto, ancestors);
+          }
+        }
+      };
+
+      return _getAncestors(target, ancestors);
     },
 
     _getStaticMethodsWithNamespace(self: any, obj?: Function): t.MethodWithNamespace[] {
