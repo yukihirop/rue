@@ -17,6 +17,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       const getOwnMethods = (obj: object) =>
         Object.entries(Object.getOwnPropertyDescriptors(obj))
           .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+          .filter(([name]) => !name.startsWith('_'))
           .map(([name]) => name);
 
       const _getMethods = (o: object, methods: string[]): string[] =>
@@ -110,6 +111,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       const getOwnMethods = (obj: any): t.MethodWithNamespace => {
         return Object.entries(Object.getOwnPropertyDescriptors(obj))
           .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+          .filter(([name]) => !name.startsWith('_'))
           .reduce((acc, [name]) => {
             let namespace = '';
 
@@ -173,6 +175,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       const getOwnMethods = (obj: object): t.MethodWithNamespace => {
         return Object.entries(Object.getOwnPropertyDescriptors(obj))
           .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+          .filter(([name]) => !name.startsWith('_'))
           .reduce((acc, [name]) => {
             let namespace = '';
 
