@@ -1,6 +1,6 @@
 // locals
 import { defineRueModule } from '@/modules';
-import { RUE_MODULE, RUE_ANCESTOR } from '@/modules/core';
+import { RUE_MODULE, RUE_ANCESTOR, RUE_ABSTRACT_CLASS } from '@/modules/core';
 
 // types
 import * as t from './types';
@@ -15,6 +15,8 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       const publicOnlyFilter = (name: string) => !name.startsWith('_');
       const removePrototypeFilter = (obj: Function) => (name: string) =>
         obj.name != '' ? name != 'prototype' : true;
+      const skipImplClassFilter = (obj: Function) => (name: string) =>
+        obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;
 
       const getOwnMethods = (obj: Function) => {
         return Object.entries(Object.getOwnPropertyDescriptors(obj))
@@ -52,8 +54,12 @@ export const Info = defineRueModule('ActiveSupport$Info', {
           klassOrModuleName = 'Object (prototype)';
         }
 
+        // prettier-ignore
         return {
-          [klassOrModuleName]: methods.filter(publicOnlyFilter).filter(removePrototypeFilter(obj)),
+          [klassOrModuleName]: methods
+            .filter(publicOnlyFilter)
+            .filter(removePrototypeFilter(obj))
+            .filter(skipImplClassFilter(obj)),
         };
       };
 

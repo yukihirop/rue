@@ -4,6 +4,7 @@ import * as t from './types';
 export const RUE_MODULE = '__rue_module__';
 export const RUE_ANCESTOR = '__rue_ancestor__';
 export const RUE_LAST_ANCESTOR_MODULE = '__rue_last_ancestor_module__';
+export const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
 
 export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
