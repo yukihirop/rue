@@ -2,6 +2,9 @@ import { REPLServer } from 'repl';
 // rue packages
 import { Support } from '@rue/activesupport';
 
+// locals
+import { Repl } from '@/repl';
+
 // types
 import * as t from './types';
 import * as replt from 'repl';
@@ -100,6 +103,18 @@ const commands: t.Commands = {
       } catch (e) {
         console.error(e);
       }
+
+      _this.displayPrompt();
+    },
+  },
+  loaded: {
+    help: '[Rue] Display loaded Classes or RueModules',
+    action: async function () {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      const modules = await Repl.loadRueModules();
+      console.log(Object.keys(modules));
 
       _this.displayPrompt();
     },
