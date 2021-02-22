@@ -38,5 +38,3 @@ export type RueModuleBody = {
 export type RueModuleOptions = {
   only: string[];
 };
-
-export type RueAncestor = string;

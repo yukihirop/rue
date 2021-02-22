@@ -10,7 +10,6 @@ export type {
   IRueModule as Support$IRueModule,
   RueModuleOptions as Support$RueModuleOptions,
   RueModuleBody as Support$RueModuleBody,
-  RueAncestor as Support$RueAncestor,
 } from './modules';
 
 // prettier-ignore

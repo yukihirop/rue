@@ -5,7 +5,6 @@ import { rueModuleExtend } from '@/modules';
 import { InfoModule } from './modules';
 
 // types
-import * as mt from '@/modules';
 import * as mit from './modules/info';
 
 export abstract class ActiveSupport$ImplBase {
@@ -20,7 +19,7 @@ abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
   static getMethods: (obj?: Function) => string[];
   static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];
-  static getAncestors: (func?: Function) => mt.RueAncestor[];
+  static getAncestors: <T = string>(obj?: Function | object, transformer?: (obj: Function) => T) => T[];
 }
 
 interface ActiveSupport$Impl {}

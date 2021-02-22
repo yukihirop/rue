@@ -146,7 +146,7 @@ describe('Support(Info)', () => {
       });
     });
 
-    describe('when give args', () => {
+    describe('when give args (Function)', () => {
       it('should correctly', () => {
         expect(Support.getAncestors(Support)).toEqual([
           'ActiveSupport$Core',
@@ -155,6 +155,32 @@ describe('Support(Info)', () => {
           'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give args (object)', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(new Support())).toEqual([
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (Module)',
+          'ActiveSupport$ImplBase',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give transformer', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(undefined, (obj) => `test.${obj['name']}`)).toEqual([
+          'test.ActiveSupport$Core',
+          'test.ActiveSupport$Impl',
+          'test.ActiveSupport$Info',
+          'test.ActiveSupport$ImplBase',
+          'test.',
+          'test.undefined',
         ]);
       });
     });

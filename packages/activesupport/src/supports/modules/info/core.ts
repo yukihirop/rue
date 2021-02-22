@@ -50,13 +50,8 @@ export const Info = defineRueModule('ActiveSupport$Info', {
       return Object.keys(descriptors);
     },
 
-    getAncestors(func?: Function): mt.RueAncestor[] {
-      let target = this;
-      if (func) target = func;
-
-      let ancestors = [target['name']];
-
-      const _getAncestors = (f: Function, ancestors: mt.RueAncestor[]) => {
+    getAncestors<T = string>(obj?: Function | object, transformer?: (obj: Function) => T): T[] {
+      const _getAncestors = <T>(f: Function, ancestors: T[], transformer: (obj: Function) => T) => {
         // not f[RUE_ANCESTOR]
         // Even if you refer to it directly, you will see what is inherited.
         if (f.hasOwnProperty(RUE_ANCESTOR)) {
@@ -65,43 +60,58 @@ export const Info = defineRueModule('ActiveSupport$Info', {
           if (maybeRueModule == Object) {
             return ancestors;
           } else if (maybeRueModule) {
-            let ancestorName = maybeRueModule['name'];
-
-            if (maybeRueModule[RUE_MODULE]) ancestorName = `${maybeRueModule['name']} (Module)`;
-
-            // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
-            // cosmetic namespace
-            if (ancestorName === '') {
-              ancestorName = 'Function (prototype)';
-            } else if (ancestorName === undefined) {
-              ancestorName = 'Object (prototype)';
-            }
-
-            ancestors.push(ancestorName);
-            return _getAncestors(maybeRueModule, ancestors);
+            ancestors.push(transformer(maybeRueModule));
+            return _getAncestors(maybeRueModule, ancestors, transformer);
           }
         } else {
           const proto = Object.getPrototypeOf(f);
           if (proto == null) {
             return ancestors;
           } else {
-            let ancestorName = proto['name'];
-
-            // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
-            // cosmetic namespace
-            if (ancestorName === '') {
-              ancestorName = 'Function (prototype)';
-            } else if (ancestorName === undefined) {
-              ancestorName = 'Object (prototype)';
-            }
-
-            ancestors.push(ancestorName);
-            return _getAncestors(proto, ancestors);
+            ancestors.push(transformer(proto));
+            return _getAncestors(proto, ancestors, transformer);
           }
         }
       };
 
-      return _getAncestors(target, ancestors);
+      const defaultTransformer = (obj: Function): string => {
+        let ancestorName;
+
+        if (obj[RUE_MODULE]) {
+          ancestorName = `${obj['name']} (Module)`;
+        } else {
+          ancestorName = obj['name'];
+        }
+
+        // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
+        // cosmetic namespace
+        if (ancestorName === '') {
+          ancestorName = 'Function (prototype)';
+        } else if (ancestorName === undefined) {
+          ancestorName = 'Object (prototype)';
+        }
+
+        return ancestorName;
+      };
+
+
+      let target;
+      if (obj) {
+        target = obj;
+        if (typeof obj === 'object') target = obj.constructor;
+      } else {
+        target = this;
+        if (typeof this === 'object') target = this.constructor;
+      }
+
+      let ancestors;
+      if (transformer) {
+        ancestors = [transformer(target)];
+        return _getAncestors(target, ancestors, transformer);
+      } else {
+        ancestors = [defaultTransformer(target)];
+        return _getAncestors(target, ancestors, defaultTransformer);
+      }
     },
 
     _getStaticMethodsWithNamespace(self: any, obj?: Function): t.MethodWithNamespace[] {
