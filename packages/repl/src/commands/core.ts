@@ -1,3 +1,4 @@
+import { REPLServer } from 'repl';
 // rue packages
 import { Support } from '@rue/activesupport';
 
@@ -79,6 +80,23 @@ const commands: t.Commands = {
         let obj = _this.context[objName];
         if (!obj) obj = evalInContext(objName, _this.context);
         console.log(Object.getOwnPropertyDescriptors(obj));
+      } catch (e) {
+        console.error(e);
+      }
+
+      _this.displayPrompt();
+    },
+  },
+  ancs: {
+    help: '[Rue] Display ancestors (like Ruby)',
+    action: function (objName: string) {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      try {
+        let obj = _this.context[objName];
+        if (!obj) obj = evalInContext(objName, _this.context);
+        console.log(Support.getAncestors(obj));
       } catch (e) {
         console.error(e);
       }
