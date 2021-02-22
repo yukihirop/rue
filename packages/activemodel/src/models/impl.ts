@@ -6,7 +6,7 @@ import { Validation } from '@/validations';
 import { TranslationModule } from './modules';
 
 // define static methods interface
-class ActiveModel$Impl extends Validation {}
+abstract class ActiveModel$Impl extends Validation {}
 
 interface ActiveModel$Impl {
   // TranslationModule

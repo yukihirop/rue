@@ -9,7 +9,7 @@ import { CollectionProxyModule } from './modules';
 // types
 import * as mt from './modules';
 
-class ActiveRecord$Associations$Impl extends Model {
+abstract class ActiveRecord$Associations$Impl extends Model {
   // CollectionProxyModule
   static scope: <T extends Record>(scopeName: string, fn: mt.CollectionProxy$ScopeFn<T>) => void;
 }

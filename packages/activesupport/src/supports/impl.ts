@@ -8,7 +8,7 @@ import { InfoModule } from './modules';
 import * as mt from '@/modules';
 import * as mit from './modules/info';
 
-class ActiveSupport$Impl {
+abstract class ActiveSupport$Impl {
   static getMethods: (obj?: Function) => string[];
   static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];

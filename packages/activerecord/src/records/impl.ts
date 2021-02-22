@@ -7,7 +7,7 @@ import { Association } from '@/associations';
 import { PersistenceModule, FinderMethodsModule } from '@/records/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
-class ActiveRecord$Impl extends Association {
+abstract class ActiveRecord$Impl extends Association {
   // PersistennceModule
   static destroyAll: <T extends Record>(filter?: (self: T) => boolean) => T[];
   // FinderMethodsModule

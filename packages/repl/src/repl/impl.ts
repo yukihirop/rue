@@ -9,7 +9,7 @@ import { HistoryModule, FileWatchersModule } from './modules';
 import * as replt from 'repl';
 import * as t from '@/repl/types';
 
-class Impl {
+abstract class Impl {
   // HistoryModule
   static setupHistory: (repl: replt.REPLServer) => void;
   static setupFileWatchers: (repl: replt.REPLServer, modules?: t.Modules) => Promise<void>;
