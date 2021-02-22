@@ -9,26 +9,8 @@ import * as st from '@/index';
 // this is bound to an instance(class) of Support
 export const Info = defineRueModule('ActiveSupport$Info', {
   static: {
-    // https://qiita.com/suin/items/b807769388c54c57a8be
-    getMethods(obj?: Function): string[] {
-      let target = new this();
-      if (obj) target = obj;
-
-      const getOwnMethods = (obj: object) =>
-        Object.entries(Object.getOwnPropertyDescriptors(obj))
-          .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
-          .filter(([name]) => !name.startsWith('_'))
-          .map(([name]) => name);
-
-      const _getMethods = (o: object, methods: string[]): string[] =>
-        o === Object.prototype || o == null
-          ? methods
-          : _getMethods(Object.getPrototypeOf(o), methods.concat(getOwnMethods(o)));
-
-      return _getMethods(target, []);
-    },
-
     // Support Rue Module
+    // https://qiita.com/suin/items/b807769388c54c57a8be
     getMethodsWithNamespace(obj?: Function | object): t.MethodWithNamespace[] {
       const publicOnlyFilter = (name: string) => !name.startsWith('_');
       const removePrototypeFilter = (obj: Function) => (name: string) =>
@@ -71,9 +53,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
         }
 
         return {
-          [klassOrModuleName]: methods
-            .filter(publicOnlyFilter)
-            .filter(removePrototypeFilter(obj)),
+          [klassOrModuleName]: methods.filter(publicOnlyFilter).filter(removePrototypeFilter(obj)),
         };
       };
 

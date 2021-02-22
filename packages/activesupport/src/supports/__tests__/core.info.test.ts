@@ -1,30 +1,6 @@
 import { Support } from '@/supports';
 
 describe('Support(Info)', () => {
-  describe('[static] getMethods', () => {
-    class TestGetMethods extends Support {
-      public name: string;
-      private age: number;
-
-      create() {
-        return 'create';
-      }
-      update() {
-        return 'update';
-      }
-      read() {
-        return 'read';
-      }
-      destroy() {
-        return 'destroy';
-      }
-    }
-
-    it('should correctly', () => {
-      expect(TestGetMethods.getMethods()).toEqual(['create', 'update', 'read', 'destroy']);
-    });
-  });
-
   describe('[static] getMethodsWithNamespace', () => {
     class TestGetMethodsWithNamespaceChild extends Support {
       createChild() {
@@ -59,19 +35,9 @@ describe('Support(Info)', () => {
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
         ActiveSupport$Core: ['rueModuleInclude', 'rueModuleExtend', 'defineRueModule', 'inspect'],
-        ActiveSupport$Impl: [
-          'getMethods',
-          'getMethodsWithNamespace',
-          'getProperties',
-          'getAncestors',
-        ],
+        ActiveSupport$Impl: ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
         ActiveSupport$ImplBase: [],
-        'ActiveSupport$Info (Module)': [
-          'getMethods',
-          'getMethodsWithNamespace',
-          'getProperties',
-          'getAncestors',
-        ],
+        'ActiveSupport$Info (Module)': ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
         'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
         'Object (prototype)': [
           'hasOwnProperty',

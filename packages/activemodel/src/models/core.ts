@@ -22,10 +22,6 @@ export class ActiveModel$Core extends ActiveModel$Impl {
     Registry.create('ActiveModel', TRANSLATE_KEY, this.translate);
   }
 
-  static getMethods(): string[] {
-    return Support.getMethods();
-  }
-
   static getProperties(): string[] {
     return Support.getProperties();
   }

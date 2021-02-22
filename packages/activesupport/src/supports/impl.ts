@@ -16,8 +16,7 @@ abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
   // Prepared for checking with hasOwnProperty ()
   static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
 
-  static getMethods: (obj?: Function) => string[];
-  static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
+  static getMethodsWithNamespace: (obj?: Function | object) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];
   static getAncestors: <T = string>(
     obj?: Function | object,
@@ -29,7 +28,7 @@ interface ActiveSupport$Impl {}
 
 // module extend
 rueModuleExtend(ActiveSupport$Impl, InfoModule, {
-  only: ['getMethods', 'getMethodsWithNamespace', 'getProperties', 'getAncestors'],
+  only: ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
 });
 
 export { ActiveSupport$Impl };
