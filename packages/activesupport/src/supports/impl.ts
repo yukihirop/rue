@@ -19,7 +19,10 @@ abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
   static getMethods: (obj?: Function) => string[];
   static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];
-  static getAncestors: <T = string>(obj?: Function | object, transformer?: (obj: Function) => T) => T[];
+  static getAncestors: <T = string>(
+    obj?: Function | object,
+    transformer?: (obj: Function) => T
+  ) => T[];
 }
 
 interface ActiveSupport$Impl {}

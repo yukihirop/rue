@@ -58,14 +58,31 @@ describe('Support(Info)', () => {
 
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
-        Function: ['apply', 'bind', 'call', 'toString'],
-        TestGetMethodsWithNamespace: ['create', 'update', 'read', 'destroy'],
-        TestGetMethodsWithNamespaceChild: [
-          'createChild',
-          'updateChild',
-          'readChild',
-          'destroyChild',
+        ActiveSupport$Core: ['rueModuleInclude', 'rueModuleExtend', 'defineRueModule', 'inspect'],
+        ActiveSupport$Impl: [
+          'getMethods',
+          'getMethodsWithNamespace',
+          'getProperties',
+          'getAncestors',
         ],
+        ActiveSupport$ImplBase: [],
+        'ActiveSupport$Info (Module)': [
+          'getMethods',
+          'getMethodsWithNamespace',
+          'getProperties',
+          'getAncestors',
+        ],
+        'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
+        'Object (prototype)': [
+          'hasOwnProperty',
+          'isPrototypeOf',
+          'propertyIsEnumerable',
+          'toString',
+          'valueOf',
+          'toLocaleString',
+        ],
+        TestGetMethodsWithNamespace: [],
+        TestGetMethodsWithNamespaceChild: [],
       });
     });
   });
