@@ -8,7 +8,27 @@ export const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
 
 export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
-  let rueModule = { [name]: function () {} }[name];
+  let rueModule = {
+    [name]: function () {
+      `
+This is Rue Module.
+Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
+It has the following as internal properties.
+
+・__rue_module__ = true (readonly)
+・__rue_ancestor__ = Object (Function | RueModule)
+・__rue_last_ancestor_module__ = undefied (RueModule)
+
+It also has the following properties.
+
+・body
+・constant
+・static
+・instance
+
+e.g.) RueModule.body`;
+    },
+  }[name];
   rueModule[RUE_MODULE] = true;
   rueModule[RUE_ANCESTOR] = Object;
   rueModule[RUE_LAST_ANCESTOR_MODULE] = undefined;
