@@ -113,6 +113,45 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
+  show: {
+    help:
+      '[Rue] Display method definition (format: <Class>.<staticMethod> or <Class>.prototype.<instanceMethod> or <Instance>.<method>)',
+    action: function (objName: string) {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      if (objName) {
+        let [maybeKlassName, maybeProto, methodName] = objName.split('.');
+        
+        const isStatic =
+          typeof _this.context[maybeKlassName] === 'function' &&
+          !maybeProto &&
+          methodName == undefined;
+        
+        const isInstance =
+          (typeof _this.context[maybeKlassName] === 'function' &&
+            maybeProto &&
+            methodName !== '') ||
+          (typeof evalInContext(maybeKlassName, _this.context) === 'object' &&
+            maybeProto &&
+            methodName == undefined);
+
+        if (isInstance || isStatic) {
+          execAction(objName, _this, (obj) => {
+            console.log(obj.toString());
+          });
+        } else {
+          console.error(
+            `'${objName}' is an unsupported format or does not exist on the REPL context.`
+          );
+        }
+      } else {
+        console.error(`'undefined' does not exist on the REPL context.`);
+      }
+
+      _this.displayPrompt();
+    },
+  },
 };
 
 export const defineCommands = (repl: replt.REPLServer) => {
