@@ -1,4 +1,4 @@
-import { Core as Registry } from '../core';
+import { ActiveSupport$Registry$Core as Registry } from '../core';
 
 type TestReigstryType = {
   profile: {

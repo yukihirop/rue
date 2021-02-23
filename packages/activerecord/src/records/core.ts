@@ -1,17 +1,17 @@
 // local
 import { cacheForRecords as Cache } from '@/registries';
 import { Filter$WhereChain } from '@/filters';
-import { Impl } from './impl';
+import { ActiveRecord$Impl } from './impl';
 
 // types
 import type * as t from './types';
 import type * as ft from '@/filters';
 
-export const RECORD_AUTO_INCREMENNT_ID = Impl['RECORD_AUTO_INCREMENNT_ID'] as string;
-export const RECORD_ALL = Impl['RECORD_ALL'] as string;
-export const RECORD_ID = Impl['RECORD_ID'] as string;
+export const RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] as string;
+export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
+export const RECORD_ID = ActiveRecord$Impl['RECORD_ID'] as string;
 
-export class Core extends Impl {
+export class ActiveRecord$Core extends ActiveRecord$Impl {
   public errors: t.Validation$Errors;
 
   constructor(data: t.Params = {}) {
@@ -42,7 +42,7 @@ export class Core extends Impl {
     Cache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
   }
 
-  static all<T extends Core>(): Promise<Array<T>> {
+  static all<T extends ActiveRecord$Core>(): Promise<Array<T>> {
     const klassName = this.name;
 
     if (Cache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
@@ -68,7 +68,7 @@ export class Core extends Impl {
     }
   }
 
-  static where<T extends Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
+  static where<T extends ActiveRecord$Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
     const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
   }

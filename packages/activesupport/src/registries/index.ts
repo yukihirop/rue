@@ -1,5 +1,5 @@
 // classes
-export { Core as Registry } from './core';
+export { ActiveSupport$Registry$Core as Registry } from './core';
 
 // types
 

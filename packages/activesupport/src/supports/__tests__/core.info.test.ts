@@ -1,30 +1,6 @@
 import { Support } from '@/supports';
 
 describe('Support(Info)', () => {
-  describe('[static] getMethods', () => {
-    class TestGetMethods extends Support {
-      public name: string;
-      private age: number;
-
-      create() {
-        return 'create';
-      }
-      update() {
-        return 'update';
-      }
-      read() {
-        return 'read';
-      }
-      destroy() {
-        return 'destroy';
-      }
-    }
-
-    it('should correctly', () => {
-      expect(TestGetMethods.getMethods()).toEqual(['create', 'update', 'read', 'destroy']);
-    });
-  });
-
   describe('[static] getMethodsWithNamespace', () => {
     class TestGetMethodsWithNamespaceChild extends Support {
       createChild() {
@@ -58,13 +34,25 @@ describe('Support(Info)', () => {
 
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
-        TestGetMethodsWithNamespace: ['create', 'update', 'read', 'destroy'],
-        TestGetMethodsWithNamespaceChild: [
-          'createChild',
-          'updateChild',
-          'readChild',
-          'destroyChild',
+        ActiveSupport$Core: ['rueModuleInclude', 'rueModuleExtend', 'defineRueModule', 'inspect'],
+        ActiveSupport$Impl: [],
+        ActiveSupport$ImplBase: [],
+        'ActiveSupport$Info (RueModule)': [
+          'getMethodsWithNamespace',
+          'getProperties',
+          'getAncestors',
         ],
+        'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
+        'Object (prototype)': [
+          'hasOwnProperty',
+          'isPrototypeOf',
+          'propertyIsEnumerable',
+          'toString',
+          'valueOf',
+          'toLocaleString',
+        ],
+        TestGetMethodsWithNamespace: [],
+        TestGetMethodsWithNamespaceChild: [],
       });
     });
   });
@@ -124,6 +112,63 @@ describe('Support(Info)', () => {
 
       it('should correctly', () => {
         expect(TestGetPropertiesInitialized.getProperties()).toEqual(['name', 'age', 'sex']);
+      });
+    });
+  });
+
+  describe('[static] getAncestors', () => {
+    describe('when default', () => {
+      class TestGetAncestors extends Support {}
+
+      it('should correctly', () => {
+        expect(TestGetAncestors.getAncestors()).toEqual([
+          'TestGetAncestors',
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (RueModule)',
+          'ActiveSupport$ImplBase',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give args (Function)', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(Support)).toEqual([
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (RueModule)',
+          'ActiveSupport$ImplBase',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give args (object)', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(new Support())).toEqual([
+          'ActiveSupport$Core',
+          'ActiveSupport$Impl',
+          'ActiveSupport$Info (RueModule)',
+          'ActiveSupport$ImplBase',
+          'Function (prototype)',
+          'Object (prototype)',
+        ]);
+      });
+    });
+
+    describe('when give transformer', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(undefined, (obj) => `test.${obj['name']}`)).toEqual([
+          'test.ActiveSupport$Core',
+          'test.ActiveSupport$Impl',
+          'test.ActiveSupport$Info',
+          'test.ActiveSupport$ImplBase',
+          'test.',
+          'test.undefined',
+        ]);
       });
     });
   });

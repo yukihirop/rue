@@ -2,5 +2,6 @@
 
 ## Methods
 
-- [x] [static]getMethods
+- [x] [static]getMethodsWithNamespace
 - [x] [static]getProperties
+- [x] [static]getAncestors

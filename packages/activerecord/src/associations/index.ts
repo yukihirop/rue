@@ -1,5 +1,8 @@
 // classes
-export { Core as Association, Association as AssociationList } from './core';
+export {
+  ActiveRecord$Associations$Core as Association,
+  Association as AssociationList,
+} from './core';
 
 // types
 export type {

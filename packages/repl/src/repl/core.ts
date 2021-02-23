@@ -31,10 +31,25 @@ export class Core extends Impl {
   }
 
   static async getRueModulePaths(): Promise<string[]> {
-    const paths = await globby(['src/**/{forms,models,records}/**/*.{js,ts}'], {
-      cwd: Core.projectRoot,
-      gitignore: true,
-    });
+    const paths = await globby(
+      [
+        `node_modules/@rue/activesupport/lib/**/*.js`,
+        `node_modules/@rue/activemodel/lib/**/*.js`,
+        `node_modules/@rue/activerecord/lib/**/*.js`,
+        'src/**/{forms,models,records}/**/*.{js,ts}',
+        `!node_modules/@rue/activesupport/{src,lib}/**/__tests__/*.test.{js,ts}`,
+        `!node_modules/@rue/activemodel/{src,lib}/**/__tests__/*.test.{js,ts}`,
+        `!node_modules/@rue/activerecord/{src,lib}/**/__tests__/*.test.{js,ts}`,
+        // Avoid matching the test code in the rue package
+        '!src/**/__tests__/*.test.{js,ts}',
+        // Duplicate name does not load correctly
+        `!node_modules/@rue/activemodel/{src,lib}/**/validators/*.{js,ts}`,
+      ],
+      {
+        cwd: Core.projectRoot,
+        gitignore: true,
+      }
+    );
 
     return [...paths.map((p) => path.join(Core.projectRoot, p))];
   }
@@ -72,7 +87,7 @@ export class Core extends Impl {
     });
   }
 
-  private static async loadRueModules(): Promise<t.Modules> {
+  static async loadRueModules(): Promise<t.Modules> {
     const paths = await this.getRueModulePaths();
     const percentage = new ProgressBar(Core.PROGRESS_BAR_MESSAGE, {
       total: paths.length,
@@ -90,9 +105,19 @@ export class Core extends Impl {
 
         try {
           const module = this.forceRequire(modulePath);
-          const contextObj = module.default || module;
-
-          percentage.tick();
+          let contextObj = module.default || module;
+          // Use as to name the name before returning
+          const defaultName = Object.keys(contextObj)[0];
+          if (defaultName) {
+            const maybeFn = contextObj[defaultName];
+            const rename = maybeFn['name'];
+            if (rename && typeof maybeFn === 'function' && Object.keys(module).length == 1) {
+              percentage.tick();
+              contextObj = { [rename]: maybeFn };
+            } else {
+              contextObj = {};
+            }
+          }
 
           return contextObj;
         } catch (e) {

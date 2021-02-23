@@ -11,7 +11,7 @@ import type * as t from './types';
 import type * as et from '@/errors';
 import type * as rt from '@/registries';
 
-export class Core {
+export class ActiveModel$Validations$Core {
   public errors: t.Errors;
 
   constructor() {
@@ -89,7 +89,10 @@ export class Core {
     throw "Please implement '[static] translate' in Inherited Class.";
   }
 
-  static validates<T = any, U extends Core = any>(propKey: string, opts: t.Options<T, U>) {
+  static validates<T = any, U extends ActiveModel$Validations$Core = any>(
+    propKey: string,
+    opts: t.Options<T, U>
+  ) {
     if (Registry.data[this.name] == undefined) {
       Registry.data[this.name] = {};
     }

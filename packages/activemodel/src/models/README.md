@@ -3,9 +3,6 @@
 ## Methods
 
 - [x] [static]loadTranslator
-- [x] [static]moduleInclude
-- [x] [static]moduleExtend
-- [x] [static]getMethods
 - [x] [static]getProperties
 - [x] toObj
 

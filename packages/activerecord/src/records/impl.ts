@@ -1,17 +1,23 @@
+// rue packages
+import { Support, Support$ImplBase } from '@rue/activesupport';
+
 // local
 import { Record } from '@/records';
 import { Association } from '@/associations';
 import { PersistenceModule, FinderMethodsModule } from '@/records/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
-class Impl extends Association {
+abstract class ActiveRecord$Impl extends Association {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+
   // PersistennceModule
   static destroyAll: <T extends Record>(filter?: (self: T) => boolean) => T[];
   // FinderMethodsModule
   static findBy: <T extends Record>(params: { [key: string]: any }) => Promise<T>;
 }
 
-interface Impl {
+interface ActiveRecord$Impl {
   // PersistenceModule
   save(): boolean;
   saveOrThrow(): void | boolean;
@@ -19,15 +25,18 @@ interface Impl {
 }
 
 // includes module
-Impl.moduleInclude(PersistenceModule, { only: ['save', 'saveOrThrow', 'destroy'] });
+Support.rueModuleInclude(ActiveRecord$Impl, PersistenceModule, {
+  only: ['save', 'saveOrThrow', 'destroy'],
+});
 
 // extend module
-Impl.moduleExtend(PersistenceModule, { only: ['destroyAll'] });
-Impl.moduleExtend(FinderMethodsModule, { only: ['findBy'] });
+Support.rueModuleExtend(ActiveRecord$Impl, PersistenceModule, { only: ['destroyAll'] });
+Support.rueModuleExtend(ActiveRecord$Impl, FinderMethodsModule, { only: ['findBy'] });
 
 // deletgate constants
-Impl['RECORD_AUTO_INCREMENNT_ID'] = PersistenceModule.RECORD_AUTO_INCREMENNT_ID;
-Impl['RECORD_ID'] = PersistenceModule.RECORD_ID;
-Impl['RECORD_ALL'] = PersistenceModule.RECORD_ALL;
+ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] =
+  PersistenceModule.constant.RECORD_AUTO_INCREMENNT_ID;
+ActiveRecord$Impl['RECORD_ID'] = PersistenceModule.constant.RECORD_ID;
+ActiveRecord$Impl['RECORD_ALL'] = PersistenceModule.constant.RECORD_ALL;
 
-export { Impl };
+export { ActiveRecord$Impl };

@@ -1,4 +1,4 @@
-import { WhereChain } from '../where_chain';
+import { ActiveRecord$Filters$WhereChain as WhereChain } from '../where_chain';
 
 describe('WhereChain', () => {
   describe('constructor', () => {

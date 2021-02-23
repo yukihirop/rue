@@ -1,5 +1,5 @@
 // locals
-import { Impl } from './impl';
+import { ActiveRecord$Associations$Impl } from './impl';
 import {
   registryForAssociations as Registry,
   cacheForIntermeditateTables as IntermediateTable,
@@ -16,10 +16,10 @@ export const enum Association {
   hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
-export class Core extends Impl {
+export class ActiveRecord$Associations$Core extends ActiveRecord$Associations$Impl {
   public primaryKey: t.PrimaryKey;
 
-  static belongsTo<T extends Core = any>(
+  static belongsTo<T extends ActiveRecord$Associations$Core = any>(
     relationName: string,
     klass: Function,
     foreignKey: string
@@ -29,7 +29,7 @@ export class Core extends Impl {
     });
   }
 
-  static hasOne<T extends Core = any>(
+  static hasOne<T extends ActiveRecord$Associations$Core = any>(
     relationName: string,
     klass: Function,
     foreignKey: t.ForeignKey
@@ -39,7 +39,7 @@ export class Core extends Impl {
     });
   }
 
-  static hasMany<T extends Core = any>(
+  static hasMany<T extends ActiveRecord$Associations$Core = any>(
     relationName: string,
     klass: Function,
     foreignKey: t.ForeignKey
@@ -50,7 +50,10 @@ export class Core extends Impl {
     });
   }
 
-  static hasAndBelongsToMany<T extends Core = any>(relationName, klass: Function) {
+  static hasAndBelongsToMany<T extends ActiveRecord$Associations$Core = any>(
+    relationName,
+    klass: Function
+  ) {
     const foreignKeysFn = (self: T) => {
       const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
         this.name,
@@ -72,7 +75,9 @@ export class Core extends Impl {
     });
   }
 
-  hasAndBelongsToMany<T extends Core = any>(record: T): { [key: string]: t.ForeignKey } {
+  hasAndBelongsToMany<T extends ActiveRecord$Associations$Core = any>(
+    record: T
+  ): { [key: string]: t.ForeignKey } {
     const klassNameLeft = this.constructor.name;
     const klassNameRight = record.constructor.name;
 
@@ -98,7 +103,9 @@ export class Core extends Impl {
     }
   }
 
-  releaseAndBelongsToMany<T extends Core = any>(record: T): { [key: string]: t.ForeignKey } {
+  releaseAndBelongsToMany<T extends ActiveRecord$Associations$Core = any>(
+    record: T
+  ): { [key: string]: t.ForeignKey } {
     const klassNameLeft = this.constructor.name;
     const klassNameRight = record.constructor.name;
 

@@ -1,4 +1,9 @@
-import { Core as Record, RECORD_AUTO_INCREMENNT_ID, RECORD_ID, RECORD_ALL } from '../core';
+import {
+  ActiveRecord$Core as Record,
+  RECORD_AUTO_INCREMENNT_ID,
+  RECORD_ID,
+  RECORD_ALL,
+} from '../core';
 import { cacheForRecords as Cache } from '@/registries';
 
 describe('Record(Filter)', () => {
@@ -44,7 +49,7 @@ describe('Record(Filter)', () => {
               .where<TestWhereRecord>({ age: 1 })
               .inspect()
           ).toEqual(
-            `WhereChain {
+            `ActiveRecord$Filters$WhereChain {
   \"params\": {
     \"name\": \"name_1\",
     \"age\": 1
@@ -62,7 +67,7 @@ describe('Record(Filter)', () => {
               .rewhere<TestWhereRecord>({ name: 'name_2' })
               .inspect()
           ).toEqual(
-            `WhereChain {
+            `ActiveRecord$Filters$WhereChain {
   \"params\": {
     \"name\": \"name_2\"
   }

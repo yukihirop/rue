@@ -1,38 +1,25 @@
 // rue packages
 import { Support } from '@rue/activesupport';
-import type * as st from '@rue/activesupport';
 
 // third party
 import flatten from 'obj-flatten';
 
 // local
-import { Impl } from './impl';
+import { ActiveModel$Impl } from './impl';
 import { registryForTranslator as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
 import type { Validation$Errors } from '@/validations';
 
-const TRANSLATE_KEY = Impl['TRANSLATE_KEY'];
+const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
 
-export class Core extends Impl {
+export class ActiveModel$Core extends ActiveModel$Impl {
   public errors: Validation$Errors;
 
   static loadTranslator() {
     // register translate
     Registry.create('ActiveModel', TRANSLATE_KEY, this.translate);
-  }
-
-  static moduleInclude(module: st.Support$Module, opts?: st.Support$ModuleOptions) {
-    Support.moduleInclude(this, module, opts);
-  }
-
-  static moduleExtend(module: st.Support$Module, opts?: st.Support$ModuleOptions) {
-    Support.moduleExtend(this, module, opts);
-  }
-
-  static getMethods(): string[] {
-    return Support.getMethods();
   }
 
   static getProperties(): string[] {

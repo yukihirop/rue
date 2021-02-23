@@ -1,5 +1,5 @@
 // methods
-export { moduleInclude, moduleExtend } from './core';
+export { rueModuleInclude, rueModuleExtend, defineRueModule } from './core';
 
 // types
-export { Module, ModuleOptions } from './types';
+export { IRueModule, RueModuleOptions, RueModuleBody } from './types';

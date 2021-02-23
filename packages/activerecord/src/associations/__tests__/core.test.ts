@@ -1,5 +1,5 @@
 // classes
-import { Core as Association } from '../core';
+import { ActiveRecord$Associations$Core as Association } from '../core';
 import { registryForAssociations as Registry } from '@/registries';
 import { cacheForIntermeditateTables as IntermediateTable } from '@/registries';
 

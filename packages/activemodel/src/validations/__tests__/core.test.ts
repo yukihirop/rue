@@ -1,4 +1,4 @@
-import { Core as Validations } from '../core';
+import { ActiveModel$Validations$Core as Validations } from '../core';
 import i18n from '@/locales';
 import { registryForValidations as Registry } from '@/registries';
 

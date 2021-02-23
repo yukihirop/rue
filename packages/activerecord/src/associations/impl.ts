@@ -1,5 +1,6 @@
 // rue packages
 import { Model } from '@rue/activemodel';
+import { Support, Support$ImplBase } from '@rue/activesupport';
 
 // locals
 import { Record } from '@/records';
@@ -8,13 +9,16 @@ import { CollectionProxyModule } from './modules';
 // types
 import * as mt from './modules';
 
-class Impl extends Model {
+abstract class ActiveRecord$Associations$Impl extends Model {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+
   // CollectionProxyModule
   static scope: <T extends Record>(scopeName: string, fn: mt.CollectionProxy$ScopeFn<T>) => void;
 }
 
-interface Impl {}
+interface ActiveRecord$Associations$Impl {}
 
-Impl.moduleExtend(CollectionProxyModule, { only: ['scope'] });
+Support.rueModuleExtend(ActiveRecord$Associations$Impl, CollectionProxyModule, { only: ['scope'] });
 
-export { Impl };
+export { ActiveRecord$Associations$Impl };

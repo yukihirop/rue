@@ -1,5 +1,5 @@
 // functions
-import { moduleExtend } from '@/modules';
+import { rueModuleExtend } from '@/modules';
 
 // modules
 import { InfoModule } from './modules';
@@ -7,17 +7,28 @@ import { InfoModule } from './modules';
 // types
 import * as mit from './modules/info';
 
-class Impl {
-  static getMethods: (obj?: Function) => string[];
-  static getMethodsWithNamespace: (obj?: Function) => mit.Info$MethodWithNamespace;
-  static getProperties: (obj?: Function) => string[];
+export abstract class ActiveSupport$ImplBase {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = true;
 }
 
-interface Impl {}
+abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
+
+  static getMethodsWithNamespace: (obj?: Function | object) => mit.Info$MethodWithNamespace;
+  static getProperties: (obj?: Function) => string[];
+  static getAncestors: <T = string>(
+    obj?: Function | object,
+    transformer?: (obj: Function) => T
+  ) => T[];
+}
+
+interface ActiveSupport$Impl {}
 
 // module extend
-moduleExtend(Impl, InfoModule, {
-  only: ['getMethods', 'getMethodsWithNamespace', 'getProperties'],
+rueModuleExtend(ActiveSupport$Impl, InfoModule, {
+  only: ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
 });
 
-export { Impl };
+export { ActiveSupport$Impl };

@@ -1,22 +1,27 @@
 // rue packages
-import { Support } from '@rue/activesupport';
+import { Support, Support$ImplBase } from '@rue/activesupport';
 
 // locals
 import { Validation } from '@/validations';
 import { TranslationModule } from './modules';
 
 // define static methods interface
-class Impl extends Validation {}
+abstract class ActiveModel$Impl extends Validation {
+  // Prepared for checking with hasOwnProperty ()
+  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+}
 
-interface Impl {
+interface ActiveModel$Impl {
   // TranslationModule
   humanPropertyName(propKey: string): string;
   humanPropName(propKey: string): string;
 }
 
-Support.moduleInclude(Impl, TranslationModule, { only: ['humanPropertyName', 'humanPropName'] });
+Support.rueModuleInclude(ActiveModel$Impl, TranslationModule, {
+  only: ['humanPropertyName', 'humanPropName'],
+});
 
 // delegate constants
-Impl['TRANSLATE_KEY'] = TranslationModule.TRANSLATE_KEY;
+ActiveModel$Impl['TRANSLATE_KEY'] = TranslationModule.constant.TRANSLATE_KEY;
 
-export { Impl };
+export { ActiveModel$Impl };

@@ -1,7 +1,7 @@
 // types
 import * as t from './types';
 
-export class Core<T> {
+export class ActiveSupport$Registry$Core<T> {
   public registryName: string;
   public data: t.RegistryData<T>;
 
