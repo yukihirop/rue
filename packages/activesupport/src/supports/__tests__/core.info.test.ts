@@ -37,7 +37,11 @@ describe('Support(Info)', () => {
         ActiveSupport$Core: ['rueModuleInclude', 'rueModuleExtend', 'defineRueModule', 'inspect'],
         ActiveSupport$Impl: [],
         ActiveSupport$ImplBase: [],
-        'ActiveSupport$Info (Module)': ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
+        'ActiveSupport$Info (RueModule)': [
+          'getMethodsWithNamespace',
+          'getProperties',
+          'getAncestors',
+        ],
         'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
         'Object (prototype)': [
           'hasOwnProperty',
@@ -121,7 +125,7 @@ describe('Support(Info)', () => {
           'TestGetAncestors',
           'ActiveSupport$Core',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (Module)',
+          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',
@@ -134,7 +138,7 @@ describe('Support(Info)', () => {
         expect(Support.getAncestors(Support)).toEqual([
           'ActiveSupport$Core',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (Module)',
+          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',
@@ -147,7 +151,7 @@ describe('Support(Info)', () => {
         expect(Support.getAncestors(new Support())).toEqual([
           'ActiveSupport$Core',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (Module)',
+          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
           'Function (prototype)',
           'Object (prototype)',

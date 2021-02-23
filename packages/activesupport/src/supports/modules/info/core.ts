@@ -29,7 +29,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
         let methods;
 
         if (obj[RUE_MODULE]) {
-          klassOrModuleName = `${obj['name']} (Module)`;
+          klassOrModuleName = `${obj['name']} (RueModule)`;
 
           if (isInstance) {
             methods = Object.keys(obj['instance'] || []);
@@ -110,7 +110,7 @@ export const Info = defineRueModule('ActiveSupport$Info', {
         let ancestorName;
 
         if (obj[RUE_MODULE]) {
-          ancestorName = `${obj['name']} (Module)`;
+          ancestorName = `${obj['name']} (RueModule)`;
         } else {
           ancestorName = obj['name'];
         }
