@@ -20,6 +20,20 @@ function evalInContext(str: string, context: any) {
   }.call(context);
 }
 
+function execAction(objName: string, repl: replt.REPLServer, callback: (obj: any) => any) {
+  try {
+    let obj = repl.context[objName];
+    if (!obj) obj = evalInContext(objName, repl.context);
+    if (obj) {
+      callback(obj);
+    } else {
+      console.error(`'${objName}' does not exist on the REPL context.`);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 // this is bound to an instance(class) of Repl(Builtin)
 const commands: t.Commands = {
   ls: {
@@ -28,13 +42,9 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      try {
-        let obj = _this.context[objName];
-        if (!obj) obj = evalInContext(objName, _this.context);
+      execAction(objName, _this, (obj) => {
         console.log(Support.getMethodsWithNamespace(obj));
-      } catch (e) {
-        console.error(e);
-      }
+      });
 
       _this.displayPrompt();
     },
@@ -45,13 +55,9 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      try {
-        let obj = _this.context[objName];
-        if (!obj) obj = evalInContext(objName, _this.context);
+      execAction(objName, _this, (obj) => {
         console.log(Support.getProperties(obj));
-      } catch (e) {
-        console.error(e);
-      }
+      });
 
       _this.displayPrompt();
     },
@@ -62,13 +68,9 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      try {
-        let obj = _this.context[objName];
-        if (!obj) obj = evalInContext(objName, _this.context);
+      execAction(objName, _this, (obj) => {
         console.log(Object.getPrototypeOf(obj));
-      } catch (e) {
-        console.error(e);
-      }
+      });
 
       _this.displayPrompt();
     },
@@ -79,13 +81,9 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      try {
-        let obj = _this.context[objName];
-        if (!obj) obj = evalInContext(objName, _this.context);
+      execAction(objName, _this, (obj) => {
         console.log(Object.getOwnPropertyDescriptors(obj));
-      } catch (e) {
-        console.error(e);
-      }
+      });
 
       _this.displayPrompt();
     },
@@ -96,13 +94,9 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      try {
-        let obj = _this.context[objName];
-        if (!obj) obj = evalInContext(objName, _this.context);
+      execAction(objName, _this, (obj) => {
         console.log(Support.getAncestors(obj));
-      } catch (e) {
-        console.error(e);
-      }
+      });
 
       _this.displayPrompt();
     },

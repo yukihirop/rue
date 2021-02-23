@@ -112,13 +112,12 @@ export class Core extends Impl {
             const maybeFn = contextObj[defaultName];
             const rename = maybeFn['name'];
             if (rename && typeof maybeFn === 'function' && Object.keys(module).length == 1) {
+              percentage.tick();
               contextObj = { [rename]: maybeFn };
             } else {
               contextObj = {};
             }
           }
-
-          percentage.tick();
 
           return contextObj;
         } catch (e) {

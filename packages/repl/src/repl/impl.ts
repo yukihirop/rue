@@ -7,7 +7,6 @@ import { HistoryModule, FileWatchersModule } from './modules';
 // types
 import * as replt from 'repl';
 import * as t from '@/repl/types';
-import * as ast from '@rue/activesupport';
 
 abstract class Impl {
   // Prepared for checking with hasOwnProperty ()
