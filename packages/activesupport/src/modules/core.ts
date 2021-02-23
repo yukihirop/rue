@@ -5,21 +5,23 @@ export const RUE_MODULE = '__rue_module__';
 export const RUE_ANCESTOR = '__rue_ancestor__';
 export const RUE_LAST_ANCESTOR_MODULE = '__rue_last_ancestor_module__';
 export const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
+const RUE_DESCRIPTION = '__rue_description__';
 
-export function defineRueModule(name: string, body: t.RueModuleBody): t.IRueModule {
+export function defineRueModule(moduleName: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = {
-    [name]: function () {
-      `
-This is Rue Module.
+    [moduleName]: class {
+      // RueModule description for display
+      static readonly [RUE_DESCRIPTION] = `
+This is Rue Module(~ abstract class).
 Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
-It has the following as internal properties.
+It has the following as internal static properties.
 
 ・__rue_module__ = true (readonly)
 ・__rue_ancestor__ = Object (Function | RueModule)
 ・__rue_last_ancestor_module__ = undefied (RueModule)
 
-It also has the following properties.
+It also has the following static properties.
 
 ・body
 ・constant
@@ -27,15 +29,47 @@ It also has the following properties.
 ・instance
 
 e.g.) RueModule.body`;
+
+      static readonly [RUE_MODULE] = true;
+      static [RUE_ANCESTOR] = Object;
+      static [RUE_LAST_ANCESTOR_MODULE] = undefined;
+      static body = body;
+      static constant = body.constant;
+      static static = body.static;
+      static instance = body.instance;
+
+      constructor() {
+        // RueModule description for display
+        `
+This is Rue Module(~ abstract class).
+Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
+It has the following as internal static properties.
+
+・__rue_module__ = true (readonly)
+・__rue_ancestor__ = Object (Function | RueModule)
+・__rue_last_ancestor_module__ = undefied (RueModule)
+
+It also has the following static properties.
+
+・body
+・constant
+・static
+・instance
+
+e.g.) RueModule.body`;
+        throw `Could not create ${moduleName} instance. Cause: ${moduleName} is RueModule (~ abstract class)`;
+      }
     },
-  }[name];
-  rueModule[RUE_MODULE] = true;
-  rueModule[RUE_ANCESTOR] = Object;
-  rueModule[RUE_LAST_ANCESTOR_MODULE] = undefined;
-  rueModule['body'] = body;
-  rueModule['constant'] = body.constant!;
-  rueModule['static'] = body.static!;
-  rueModule['instance'] = body.instance!;
+  }[moduleName];
+
+  // Class name override
+  // https://qiita.com/suin/items/97247695ded57c927316
+  Object.defineProperty(rueModule, 'name', {
+    writable: false,
+    configurable: false,
+    enumerable: true,
+    value: moduleName,
+  });
 
   // define constants
   Object.keys(body.constant || {}).forEach((constName: string) => {
