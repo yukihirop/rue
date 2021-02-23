@@ -1,6 +1,8 @@
 export interface IRueModule extends Function {
-  __rue_module__: true;
+  readonly __rue_description__: string;
+  readonly __rue_module__: true;
   __rue_ancestor__: Function | IRueModule;
+  __rue_last_ancestor_module__?: IRueModule;
   body: RueModuleBody;
   constant?: RueModuleBody['constant'];
   static?: RueModuleBody['static'];
