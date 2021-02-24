@@ -1,0 +1,47 @@
+{
+  "name": "@rue/generator",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yukihirop <te108186@gmail.com>",
+  "homepage": "https://github.com/yukihirop/rue#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukihirop/rue.git"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib",
+    "fmt": "prettier --write **/src/**/*.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/yukihirop/rue/issues"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^16.2.6",
+    "@types/prismjs": "^1.16.3",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "tscpaths": "^0.0.9",
+    "typescript": "^4.2.2",
+    "typescript-parser": "^2.6.1"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "dayjs": "^1.10.4",
+    "globby": "^11.0.2",
+    "jsdom": "^16.4.0",
+    "prismjs": "^1.23.0",
+    "typescript-parser": "^2.6.1"
+  }
+}
