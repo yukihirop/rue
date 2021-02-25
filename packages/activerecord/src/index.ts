@@ -31,3 +31,7 @@ export type {
   ErrObj as Record$ErrObj,
   ErrMessage as Record$ErrMessage
 } from './errors';
+
+// docs
+import docs from './docs.json';
+export { docs };

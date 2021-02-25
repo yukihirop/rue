@@ -13,3 +13,7 @@ export type { ErrObj as Model$ErrObj, ErrMessage as Model$ErrMessage } from './e
 
 // enums
 export type { ErrCodes } from './errors';
+
+// dodcs
+import docs from './docs.json';
+export { docs };
