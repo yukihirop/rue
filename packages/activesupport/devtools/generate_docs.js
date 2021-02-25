@@ -3,6 +3,6 @@ const { Generator$Docs } = require('@rue/generator');
 
 Generator$Docs.generate(['src/**/*.ts', '!src/**/__tests__/*.test.ts'], {
   pkgName: 'activesupport',
-  outputPath: 'src/docs.json',
+  outputPath: '../../packages/docs/src/activesupport.json',
   cwd: path.resolve('.'),
 });

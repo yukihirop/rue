@@ -2,7 +2,7 @@
   "ActiveSupport$Registry$Core": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/registries/core.ts",
-      "updatedAt": "2021/02/25 22:50:22 +09:00"
+      "updatedAt": "2021/02/25 23:31:50 +09:00"
     },
     "instance": {
       "create": {
@@ -60,7 +60,7 @@
   "ActiveSupport$Core": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/core.ts",
-      "updatedAt": "2021/02/25 22:50:22 +09:00"
+      "updatedAt": "2021/02/25 23:31:50 +09:00"
     },
     "static": {
       "rueModuleInclude": {

@@ -21,9 +21,16 @@
     "url": "git+https://github.com/yukihirop/rue.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "yarn bundle && rimraf ./lib/* && cp -r ./src/* ./lib",
+    "fmt": "prettier --write **/src/**/*.js",
+    "bundle": "node ./devtools/bundle_docs.js"
   },
   "bugs": {
     "url": "https://github.com/yukihirop/rue/issues"
+  },
+  "devDependencies": {
+    "deepmerge": "^4.2.2",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2"
   }
 }

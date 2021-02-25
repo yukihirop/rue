@@ -15,8 +15,4 @@ export type {
   RegistryData as Registry$Data,
   RegistryValue as Registry$Value,
   RegistryType as Registry$Type,
-} from './registries'
-
-// docs
-import docs from './docs.json';
-export { docs };
+} from './registries';
