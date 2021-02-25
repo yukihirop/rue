@@ -4,6 +4,7 @@ import { Support } from '@rue/activesupport';
 
 // locals
 import { Repl } from '@/repl';
+import { Repl$Commands$Docs } from './docs';
 
 // types
 import * as t from './types';
@@ -120,34 +121,7 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      if (objName) {
-        let [maybeKlassName, maybeProto, methodName] = objName.split('.');
-        
-        const isStatic =
-          typeof _this.context[maybeKlassName] === 'function' &&
-          !maybeProto &&
-          methodName == undefined;
-        
-        const isInstance =
-          (typeof _this.context[maybeKlassName] === 'function' &&
-            maybeProto &&
-            methodName !== '') ||
-          (typeof evalInContext(maybeKlassName, _this.context) === 'object' &&
-            maybeProto &&
-            methodName == undefined);
-
-        if (isInstance || isStatic) {
-          execAction(objName, _this, (obj) => {
-            console.log(obj.toString());
-          });
-        } else {
-          console.error(
-            `'${objName}' is an unsupported format or does not exist on the REPL context.`
-          );
-        }
-      } else {
-        console.error(`'undefined' does not exist on the REPL context.`);
-      }
+      Repl$Commands$Docs.displayDefinition(objName, _this);
 
       _this.displayPrompt();
     },
