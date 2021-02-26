@@ -1,6 +1,3 @@
-// functions
-import { rueModuleExtend } from '@/modules';
-
 // modules
 import { InfoModule } from './modules';
 
@@ -27,7 +24,7 @@ abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
 interface ActiveSupport$Impl {}
 
 // module extend
-rueModuleExtend(ActiveSupport$Impl, InfoModule, {
+InfoModule.rueModuleExtendedFrom(ActiveSupport$Impl, {
   only: ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
 });
 

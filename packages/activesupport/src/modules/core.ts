@@ -7,6 +7,64 @@ export const RUE_LAST_ANCESTOR_MODULE = '__rue_last_ancestor_module__';
 export const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
 const RUE_DESCRIPTION = '__rue_description__';
 
+export abstract class RueModule {
+  static readonly __rue_module__ = true;
+  static __rue_ancestor__ = Object;
+  static __rue_last_ancestor_module__ = undefined;
+  static readonly __rue_description__ = `
+This is Rue Module(~ abstract class).
+Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
+It has the following as internal static properties.
+
+・__rue_module__ = true (readonly)
+・__rue_ancestor__ = Object (Function | RueModule)
+・__rue_last_ancestor_module__ = undefied (RueModule)`;
+
+  constructor() {
+    // RueModule description for display
+    `
+This is Rue Module(~ abstract class).
+Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
+It has the following as internal static properties.
+
+・__rue_module__ = true (readonly)
+・__rue_ancestor__ = Object (Function | RueModule)
+・__rue_last_ancestor_module__ = undefied (RueModule)`;
+
+    throw `Could not create ${this.constructor.name} instance. Cause: ${this.constructor.name} is RueModule (~ abstract class)`;
+  }
+
+  static rueModuleIncludedFrom<T extends Function>(klass: T, opts: t.RueModuleOptions) {
+    if (this[RUE_MODULE]) {
+      // Update Rue Ancestor Chain
+      updateRueAncestorChain(klass, this);
+
+      Object.keys(Object.getOwnPropertyDescriptors(this.prototype)).forEach((methodName) => {
+        if (opts && opts.only && opts.only.includes(methodName)) {
+          if (methodName != 'constructor') klass.prototype[methodName] = this.prototype[methodName];
+        }
+      });
+    } else {
+      throw 'rueModuleIncludedFrom';
+    }
+  }
+
+  static rueModuleExtendedFrom<T extends Function>(klass: T, opts: t.RueModuleOptions) {
+    if (this[RUE_MODULE]) {
+      // Update Rue Ancestor Chain
+      updateRueAncestorChain(klass, this);
+
+      Object.keys(Object.getOwnPropertyDescriptors(this)).forEach((methodName) => {
+        if (opts && opts.only && opts.only.includes(methodName)) {
+          if (methodName != 'name') klass[methodName] = this[methodName];
+        }
+      });
+    } else {
+      throw 'rueModuleExtendedFrom';
+    }
+  }
+}
+
 export function defineRueModule(moduleName: string, body: t.RueModuleBody): t.IRueModule {
   // https://stackoverflow.com/a/48899028/9434894
   let rueModule = {
@@ -139,7 +197,7 @@ export function rueModuleExtend<T extends Function>(
 //
 // C=>I=>M1=>M2=>C=>I=>M1=>M2
 // C=>I=>M1=>M2=>M3=>C=>
-function updateRueAncestorChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
+function updateRueAncestorChain<T extends Function>(klass: T, rueModule: t.IRueModule | RueModule) {
   // not klass[RUE_LAST_ANCESTOR_MODULE]
   // Even if you refer to it directly, you will see what is inherited.
   if (
@@ -174,7 +232,7 @@ function updateRueAncestorChain<T extends Function>(klass: T, rueModule: t.IRueM
   }
 }
 
-function updateRueGrandsonChain<T extends Function>(klass: T, rueModule: t.IRueModule) {
+function updateRueGrandsonChain<T extends Function>(klass: T, rueModule: t.IRueModule | RueModule) {
   const oldRueModleAncestor = rueModule[RUE_ANCESTOR];
 
   if (oldRueModleAncestor && oldRueModleAncestor == Object) {

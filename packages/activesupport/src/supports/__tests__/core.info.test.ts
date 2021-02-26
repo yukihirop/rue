@@ -38,9 +38,11 @@ describe('Support(Info)', () => {
         ActiveSupport$Impl: [],
         ActiveSupport$ImplBase: [],
         'ActiveSupport$Info (RueModule)': [
+          'length',
           'getMethodsWithNamespace',
           'getProperties',
           'getAncestors',
+          'name',
         ],
         'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
         'Object (prototype)': [

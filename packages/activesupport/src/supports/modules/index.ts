@@ -1,1 +1,1 @@
-export { Info as InfoModule } from './info';
+export { ActiveSupport$Info as InfoModule } from './info';
