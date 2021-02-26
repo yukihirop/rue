@@ -4,6 +4,7 @@ import { Support } from '@rue/activesupport';
 
 // locals
 import { Repl } from '@/repl';
+import { Repl$Commands$Docs } from './docs';
 
 // types
 import * as t from './types';
@@ -109,6 +110,18 @@ const commands: t.Commands = {
 
       const modules = await Repl.loadRueModules();
       console.log(Object.keys(modules));
+
+      _this.displayPrompt();
+    },
+  },
+  show: {
+    help:
+      '[Rue] Display method definition (format: <Class> or <Class>.<staticMethod> or <Class>.prototype.<instanceMethod>)',
+    action: function (objName: string) {
+      const _this = this as replt.REPLServer;
+      _this.clearBufferedCommand();
+
+      Repl$Commands$Docs.displayDefinition(objName, _this);
 
       _this.displayPrompt();
     },

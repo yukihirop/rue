@@ -1,0 +1,36 @@
+{
+  "name": "@rue/docs",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yukihirop <te108186@gmail.com>",
+  "homepage": "https://github.com/yukihirop/rue#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukihirop/rue.git"
+  },
+  "scripts": {
+    "build": "yarn bundle && rimraf ./lib/* && cp -r ./src/* ./lib",
+    "fmt": "prettier --write **/src/**/*.js",
+    "bundle": "node ./devtools/bundle_docs.js"
+  },
+  "bugs": {
+    "url": "https://github.com/yukihirop/rue/issues"
+  },
+  "devDependencies": {
+    "deepmerge": "^4.2.2",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2"
+  }
+}
