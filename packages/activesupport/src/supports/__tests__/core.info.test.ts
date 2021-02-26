@@ -34,7 +34,7 @@ describe('Support(Info)', () => {
 
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
-        ActiveSupport$Core: ['inspect'],
+        ActiveSupport$Base: ['inspect'],
         ActiveSupport$Impl: [],
         ActiveSupport$ImplBase: [],
         'ActiveSupport$Info (RueModule)': [
@@ -125,7 +125,7 @@ describe('Support(Info)', () => {
       it('should correctly', () => {
         expect(TestGetAncestors.getAncestors()).toEqual([
           'TestGetAncestors',
-          'ActiveSupport$Core',
+          'ActiveSupport$Base',
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
@@ -138,7 +138,7 @@ describe('Support(Info)', () => {
     describe('when give args (Function)', () => {
       it('should correctly', () => {
         expect(Support.getAncestors(Support)).toEqual([
-          'ActiveSupport$Core',
+          'ActiveSupport$Base',
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
@@ -151,7 +151,7 @@ describe('Support(Info)', () => {
     describe('when give args (object)', () => {
       it('should correctly', () => {
         expect(Support.getAncestors(new Support())).toEqual([
-          'ActiveSupport$Core',
+          'ActiveSupport$Base',
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
@@ -164,7 +164,7 @@ describe('Support(Info)', () => {
     describe('when give transformer', () => {
       it('should correctly', () => {
         expect(Support.getAncestors(undefined, (obj) => `test.${obj['name']}`)).toEqual([
-          'test.ActiveSupport$Core',
+          'test.ActiveSupport$Base',
           'test.ActiveSupport$Impl',
           'test.ActiveSupport$Info',
           'test.ActiveSupport$ImplBase',

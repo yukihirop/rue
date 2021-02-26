@@ -1,7 +1,7 @@
 // locals
 import { ActiveSupport$Impl } from './impl';
 
-export class ActiveSupport$Core extends ActiveSupport$Impl {
+export class ActiveSupport$Base extends ActiveSupport$Impl {
   static inspect(instance: any): string {
     const klassName = instance.constructor.name;
     let sorted = {};
