@@ -1,5 +1,5 @@
 // rue packages
-import { Support, Support$ImplBase } from '@rue/activesupport';
+import { Support$ImplBase } from '@rue/activesupport';
 
 // locals
 import { Validation } from '@/validations';
@@ -17,11 +17,12 @@ interface ActiveModel$Impl {
   humanPropName(propKey: string): string;
 }
 
-Support.rueModuleInclude(ActiveModel$Impl, TranslationModule, {
+TranslationModule.rueModuleIncludedFrom(ActiveModel$Impl, {
   only: ['humanPropertyName', 'humanPropName'],
 });
 
-// delegate constants
-ActiveModel$Impl['TRANSLATE_KEY'] = TranslationModule.constant.TRANSLATE_KEY;
+TranslationModule.rueModuleExtendedFrom(ActiveModel$Impl, {
+  only: ['TRANSLATE_KEY'],
+});
 
 export { ActiveModel$Impl };

@@ -1,6 +1,6 @@
 // rue packages
 import { Model } from '@rue/activemodel';
-import { Support, Support$ImplBase } from '@rue/activesupport';
+import { Support$ImplBase } from '@rue/activesupport';
 
 // locals
 import { Record } from '@/records';
@@ -19,6 +19,6 @@ abstract class ActiveRecord$Associations$Impl extends Model {
 
 interface ActiveRecord$Associations$Impl {}
 
-Support.rueModuleExtend(ActiveRecord$Associations$Impl, CollectionProxyModule, { only: ['scope'] });
+CollectionProxyModule.rueModuleExtendedFrom(ActiveRecord$Associations$Impl, { only: ['scope'] });
 
 export { ActiveRecord$Associations$Impl };

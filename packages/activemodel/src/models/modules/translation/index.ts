@@ -1,2 +1,2 @@
-// classes
-export { Translation } from './core';
+// modules
+export { ActiveSupport$Translation } from './core';

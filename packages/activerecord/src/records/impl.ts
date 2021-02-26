@@ -1,5 +1,5 @@
 // rue packages
-import { Support, Support$ImplBase } from '@rue/activesupport';
+import { Support$ImplBase } from '@rue/activesupport';
 
 // local
 import { Record } from '@/records';
@@ -12,6 +12,9 @@ abstract class ActiveRecord$Impl extends Association {
   static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
 
   // PersistennceModule
+  static RECORD_ID = PersistenceModule.RECORD_ID;
+  static RECORD_ALL = PersistenceModule.RECORD_ALL;
+  static RECORD_AUTO_INCREMENNT_ID = PersistenceModule.RECORD_AUTO_INCREMENNT_ID;
   static destroyAll: <T extends Record>(filter?: (self: T) => boolean) => T[];
   // FinderMethodsModule
   static findBy: <T extends Record>(params: { [key: string]: any }) => Promise<T>;
@@ -25,18 +28,14 @@ interface ActiveRecord$Impl {
 }
 
 // includes module
-Support.rueModuleInclude(ActiveRecord$Impl, PersistenceModule, {
+PersistenceModule.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['save', 'saveOrThrow', 'destroy'],
 });
 
 // extend module
-Support.rueModuleExtend(ActiveRecord$Impl, PersistenceModule, { only: ['destroyAll'] });
-Support.rueModuleExtend(ActiveRecord$Impl, FinderMethodsModule, { only: ['findBy'] });
-
-// deletgate constants
-ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] =
-  PersistenceModule.constant.RECORD_AUTO_INCREMENNT_ID;
-ActiveRecord$Impl['RECORD_ID'] = PersistenceModule.constant.RECORD_ID;
-ActiveRecord$Impl['RECORD_ALL'] = PersistenceModule.constant.RECORD_ALL;
+PersistenceModule.rueModuleExtendedFrom(ActiveRecord$Impl, {
+  only: ['destroyAll', 'RECORD_AUTO_INCREMENNT_ID', 'RECORD_ID', 'RECORD_ALL'],
+});
+FinderMethodsModule.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['findBy'] });
 
 export { ActiveRecord$Impl };
