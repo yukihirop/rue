@@ -1,13 +1,15 @@
-export type MethodData = {
+export type DeclarationData = {
   [methodName: string]: {
     text: string;
     highlightText: string;
-    isAsync: boolean;
-    isAbstract: boolean;
-    visibility: 'private' | 'public' | 'protected';
     line: [number, number];
+    isAsync?: boolean;
+    isAbstract?: boolean;
+    visibility?: 'private' | 'public' | 'protected';
   };
 };
+
+export type MethodData = Required<DeclarationData>;
 
 export type ClassDoc = {
   [className: string]: {
@@ -15,6 +17,8 @@ export type ClassDoc = {
       filePath: string;
       updatedAt: string;
     };
+    class: DeclarationData;
+    $constructor?: MethodData;
     instance?: MethodData;
     static?: MethodData;
   };

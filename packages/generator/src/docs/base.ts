@@ -46,19 +46,39 @@ export class Generator$Docs$Base {
         parsedArr.forEach((parsedData) => {
           const [parsed, filepath] = parsedData;
           const tsText = fs.readFileSync(filepath as string, 'utf8');
+          const metadata = {
+            filepath: `${this.basePath}/${pkgName}/${filepath}`,
+            updatedAt: dayjs().format(this.dateFormat),
+          };
 
-          parsed.declarations.forEach((declaration: tpt.ClassDeclaration) => {
-            const klassName = declaration.name;
-            const methodDecs = declaration.methods;
+          parsed.declarations.forEach((classDec: tpt.ClassDeclaration) => {
+            const {
+              name: klassName,
+              start,
+              end,
+              methods: methodDecs,
+              ctor: constructorDec,
+            } = classDec;
 
-            if (methodDecs) {
+            if (constructorDec || methodDecs) {
+              // Class Docs
+              const classText = tsText.substr(start, end - start);
+              console.log(`[Rue] Generate Docs | generate docs: '${klassName}' from '${filepath}'`);
+              this._mergeDeep(result, {
+                [klassName]: {
+                  metadata,
+                  class: {
+                    text: classText,
+                    highlightText: this._highlight(classText),
+                    line: this._makeLineData(tsText, classText),
+                  },
+                },
+              });
+
+              // Methods Docs
               methodDecs.forEach((methodDec: tpt.MethodDeclaration) => {
                 const { start, end, name: methodName, isStatic, isAsync, visibility } = methodDec;
                 const methodText = tsText.substr(start, end - start);
-                const metadata = {
-                  filepath: `${this.basePath}/${pkgName}/${filepath}`,
-                  updatedAt: dayjs().format(this.dateFormat),
-                };
                 const methodData = {
                   [methodName]: {
                     text: methodText,
@@ -68,7 +88,7 @@ export class Generator$Docs$Base {
                     line: this._makeLineData(tsText, methodText),
                   },
                 };
-                let methodType = isStatic ? 'static' : 'instance';
+                const methodType = isStatic ? 'static' : 'instance';
                 if (isStatic) {
                   console.log(
                     `[Rue] Generate Docs | generate docs: '${klassName}.${methodName}' from '${filepath}'`
@@ -84,6 +104,25 @@ export class Generator$Docs$Base {
                     [methodType]: methodData,
                   },
                 });
+              });
+            }
+
+            // Constructor Docs
+            if (constructorDec) {
+              const { start: startCon, end: endCon } = constructorDec;
+              const constructorText = tsText.substr(startCon, endCon - startCon);
+              console.log(
+                `[Rue] Generate Docs | generate docs: '${klassName}.prototype.constructor' from '${filepath}'`
+              );
+              this._mergeDeep(result, {
+                [klassName]: {
+                  metadata,
+                  $constructor: {
+                    text: constructorText,
+                    highlightText: this._highlight(constructorText),
+                    line: this._makeLineData(tsText, constructorText),
+                  },
+                },
               });
             }
           });
