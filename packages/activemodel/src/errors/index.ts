@@ -1,8 +1,8 @@
 // classes
-export { ActiveModel$Error } from './core';
+export { ActiveModel$Error } from './base';
 
 // functions
-export { createErrObj as errObj } from './core';
+export { createErrObj as errObj } from './base';
 
 // types
 export * from './types';

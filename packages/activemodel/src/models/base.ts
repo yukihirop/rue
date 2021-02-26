@@ -14,7 +14,7 @@ import type { Validation$Errors } from '@/validations';
 
 const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
 
-export class ActiveModel$Core extends ActiveModel$Impl {
+export class ActiveModel$Base extends ActiveModel$Impl {
   public errors: Validation$Errors;
 
   static loadTranslator() {

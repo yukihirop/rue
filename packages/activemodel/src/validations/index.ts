@@ -1,5 +1,5 @@
 // classes
-export { ActiveModel$Validations$Core as Validation } from './core';
+export { ActiveModel$Validations$Base as Validation } from './base';
 
 // types
 export type {

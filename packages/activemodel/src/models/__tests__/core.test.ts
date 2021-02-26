@@ -1,5 +1,5 @@
 // locals
-import { ActiveModel$Core as Model } from '../core';
+import { ActiveModel$Base as Model } from '../base';
 import { registryForTranslator as Registry } from '@/registries';
 
 describe('Model', () => {

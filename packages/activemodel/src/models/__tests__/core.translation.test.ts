@@ -1,5 +1,5 @@
 // locals
-import { ActiveModel$Core as Model } from '../core';
+import { ActiveModel$Base as Model } from '../base';
 
 describe('Model(Translation)', () => {
   describe('#humanPropertyName(alias to #humanPropName)', () => {
