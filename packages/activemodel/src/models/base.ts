@@ -10,12 +10,12 @@ import { registryForTranslator as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
-import type { Validation$Errors } from '@/validations';
+import type { Validations$Errors } from '@/models/modules/validations';
 
 const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
 
 export class ActiveModel$Base extends ActiveModel$Impl {
-  public errors: Validation$Errors;
+  public errors: Validations$Errors;
 
   static loadTranslator() {
     // register translate
@@ -28,6 +28,7 @@ export class ActiveModel$Base extends ActiveModel$Impl {
 
   constructor(data: t.Params = {}) {
     super();
+    this.errors = {};
     Object.keys(data).forEach((key) => {
       (this as any)[key] = data[key];
     });

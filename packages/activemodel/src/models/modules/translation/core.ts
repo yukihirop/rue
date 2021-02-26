@@ -7,13 +7,14 @@ import { registryForTranslator as Registry } from '@/registries';
 // types
 import * as rt from '@/registries';
 
-export class ActiveSupport$Translation extends RueModule {
+// this is bound to an instance(class) of ActiveModel$Base
+export class ActiveModel$Translation extends RueModule {
   static TRANSLATE_KEY = 'translate';
 
   humanPropertyName(propKey: string): string {
     const translate = Registry.read<rt.Translator['translate']>(
       'ActiveModel',
-      ActiveSupport$Translation.TRANSLATE_KEY
+      ActiveModel$Translation.TRANSLATE_KEY
     );
     return translate(propKey);
   }

@@ -1,3 +1,6 @@
+// rue packages
+import { RueModule } from '@rue/activesupport';
+
 // thrid party
 import flatten from 'obj-flatten';
 import unflatten from 'obj-unflatten';
@@ -11,12 +14,9 @@ import type * as t from './types';
 import type * as et from '@/errors';
 import type * as rt from '@/registries';
 
-export class ActiveModel$Validations$Base {
+// this is bound to an instance(class) of ActiveModel$Base
+export class ActiveModel$Validations extends RueModule {
   public errors: t.Errors;
-
-  constructor() {
-    this.errors = {};
-  }
 
   isInvalid(): boolean {
     return !this.isValid();
@@ -89,7 +89,7 @@ export class ActiveModel$Validations$Base {
     throw "Please implement '[static] translate' in Inherited Class.";
   }
 
-  static validates<T = any, U extends ActiveModel$Validations$Base = any>(
+  static validates<T = any, U extends ActiveModel$Validations = any>(
     propKey: string,
     opts: t.Options<T, U>
   ) {

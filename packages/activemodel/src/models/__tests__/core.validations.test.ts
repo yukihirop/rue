@@ -1,14 +1,14 @@
-import { ActiveModel$Validations$Base as Validations } from '../base';
+import { ActiveModel$Base as Model } from '../base';
 import i18n from '@/locales';
 import { registryForValidations as Registry } from '@/registries';
 
 // types
-import type * as t from '@/validations/types';
+import type * as t from '@/models/modules/validations/types';
 import type * as rt from '@/registries';
 
-describe('Validations', () => {
+describe('Model', () => {
   describe('constructor', () => {
-    const instance = new Validations();
+    const instance = new Model();
     it('return correctly', () => {
       expect(instance.errors).toEqual({});
     });
@@ -18,20 +18,20 @@ describe('Validations', () => {
     describe('when default', () => {
       it('return correctly', () => {
         expect(() => {
-          Validations.objType();
+          Model.objType();
         }).toThrow();
       });
     });
 
     describe('when override inherited class', () => {
-      class TestConstructorValidations extends Validations {
+      class TestConstructorModel extends Model {
         static objType(): t.ObjType {
           return 'model';
         }
       }
 
       it('can override', () => {
-        expect(TestConstructorValidations.objType()).toEqual('model');
+        expect(TestConstructorModel.objType()).toEqual('model');
       });
     });
   });
@@ -40,26 +40,26 @@ describe('Validations', () => {
     describe('when default', () => {
       it('return correctly', () => {
         expect(() => {
-          Validations.translate('propKey', {});
+          Model.translate('propKey', {});
         }).toThrow();
       });
     });
 
     describe('when override inherited class', () => {
-      class TestTranslateValidations extends Validations {
+      class TestTranslateModel extends Model {
         static translate(key: string, opts?: any): string {
           return `test.${key}`;
         }
       }
 
       it('can override', () => {
-        expect(TestTranslateValidations.translate('propKey', {})).toEqual('test.propKey');
+        expect(TestTranslateModel.translate('propKey', {})).toEqual('test.propKey');
       });
     });
   });
 
   describe('[static] validates', () => {
-    class TestValidatesValidations extends Validations {
+    class TestValidatesModel extends Model {
       public name: string;
 
       constructor() {
@@ -67,17 +67,15 @@ describe('Validations', () => {
         this.name = 'name';
       }
     }
-    TestValidatesValidations.validates('name', { presence: true, length: { is: 4 } });
+    TestValidatesModel.validates('name', { presence: true, length: { is: 4 } });
     it('should return correctly', () => {
-      expect(Registry.read<rt.ValidationFn[]>('TestValidatesValidations', 'name').length).toEqual(
-        2
-      );
+      expect(Registry.read<rt.ValidationFn[]>('TestValidatesModel', 'name').length).toEqual(2);
     });
   });
 
   describe('#isValid', () => {
     describe('when default', () => {
-      const instance = new Validations();
+      const instance = new Model();
 
       it('return true', () => {
         const result = instance.isValid();
@@ -88,7 +86,7 @@ describe('Validations', () => {
 
     describe('when override inherited class', () => {
       describe('when return true', () => {
-        class TestIsValidSkillValidations extends Validations {
+        class TestIsValidSkillModel extends Model {
           public name: string;
           public year: number;
 
@@ -107,14 +105,14 @@ describe('Validations', () => {
           }
         }
 
-        // register validations
-        TestIsValidSkillValidations.validates('name', { presence: true });
-        TestIsValidSkillValidations.validates('year', {
+        // register Model
+        TestIsValidSkillModel.validates('name', { presence: true });
+        TestIsValidSkillModel.validates('year', {
           presence: true,
           numericality: { onlyInteger: true },
         });
 
-        class TestIsValidValidations extends Validations {
+        class TestIsValidModel extends Model {
           public profile: {
             name: string;
             year: number;
@@ -124,7 +122,7 @@ describe('Validations', () => {
           public ipv4: string;
           public ipv6: string;
           public tags: string;
-          public skills: TestIsValidSkillValidations[];
+          public skills: TestIsValidSkillModel[];
 
           // override
           static objType(): t.ObjType {
@@ -146,34 +144,34 @@ describe('Validations', () => {
             this.ipv6 = '2001:0db8:1234:5678:90ab:cdef:0000:0000';
             this.tags = 'rails,vue,typescript';
             this.skills = [
-              new TestIsValidSkillValidations({ name: 'ruby', year: 5 }),
-              new TestIsValidSkillValidations({ name: 'javascript', year: 4 }),
-              new TestIsValidSkillValidations({ name: 'typescript', year: 3 }),
-              new TestIsValidSkillValidations({ name: 'vue', year: 3 }),
+              new TestIsValidSkillModel({ name: 'ruby', year: 5 }),
+              new TestIsValidSkillModel({ name: 'javascript', year: 4 }),
+              new TestIsValidSkillModel({ name: 'typescript', year: 3 }),
+              new TestIsValidSkillModel({ name: 'vue', year: 3 }),
             ];
           }
         }
 
-        // register validations
-        TestIsValidValidations.validates('profile.name', { presence: true });
-        TestIsValidValidations.validates('profile.year', {
+        // register Model
+        TestIsValidModel.validates('profile.name', { presence: true });
+        TestIsValidModel.validates('profile.year', {
           numericality: { onlyInteger: true, greaterThanOrEqualTo: 20 },
         });
-        TestIsValidValidations.validates('profile.sex', { inclusion: { in: ['man', 'weman'] } });
-        TestIsValidValidations.validates('profile.email', { format: { with: 'email' } });
-        TestIsValidValidations.validates('ipv4', { format: { with: 'IPv4' } });
-        TestIsValidValidations.validates('ipv6', { format: { with: 'IPv6' } });
-        TestIsValidValidations.validates('tags', {
+        TestIsValidModel.validates('profile.sex', { inclusion: { in: ['man', 'weman'] } });
+        TestIsValidModel.validates('profile.email', { format: { with: 'email' } });
+        TestIsValidModel.validates('ipv4', { format: { with: 'IPv4' } });
+        TestIsValidModel.validates('ipv6', { format: { with: 'IPv6' } });
+        TestIsValidModel.validates('tags', {
           length: { maximum: 3, tokenizer: (propVal, self) => propVal.split(',') },
         });
-        TestIsValidValidations.validates<TestIsValidSkillValidations[]>('skills', {
+        TestIsValidModel.validates<TestIsValidSkillModel[]>('skills', {
           condition: [
             'valid all skills or not',
             (propVal, self) => propVal.map((model) => model.isValid()).every(Boolean),
           ],
         });
 
-        const instance = new TestIsValidValidations();
+        const instance = new TestIsValidModel();
 
         it('return true', () => {
           const result = instance.isValid();
@@ -189,7 +187,7 @@ describe('Validations', () => {
       });
 
       describe('when return errors', () => {
-        class TestIsValidErrorsSkillValidations extends Validations {
+        class TestIsValidErrorsSkillModel extends Model {
           public name: string;
           public year: number;
 
@@ -208,14 +206,14 @@ describe('Validations', () => {
           }
         }
 
-        // register validations
-        TestIsValidErrorsSkillValidations.validates('name', { presence: true });
-        TestIsValidErrorsSkillValidations.validates('year', {
+        // register Model
+        TestIsValidErrorsSkillModel.validates('name', { presence: true });
+        TestIsValidErrorsSkillModel.validates('year', {
           presence: true,
           numericality: { onlyInteger: true },
         });
 
-        class TestIsValidErrorsValidations extends Validations {
+        class TestIsValidErrorsModel extends Model {
           public profile: {
             name: string;
             year: number;
@@ -225,7 +223,7 @@ describe('Validations', () => {
           public ipv4: string;
           public ipv6: string;
           public tags: string;
-          public skills: TestIsValidErrorsSkillValidations[];
+          public skills: TestIsValidErrorsSkillModel[];
 
           // override
           static objType(): t.ObjType {
@@ -247,88 +245,88 @@ describe('Validations', () => {
             this.ipv6 = '1234567890';
             this.tags = 'rails,vue,typescript,react';
             this.skills = [
-              new TestIsValidErrorsSkillValidations({ name: undefined, year: 0.4 }),
-              new TestIsValidErrorsSkillValidations({ name: null, year: 0.3 }),
+              new TestIsValidErrorsSkillModel({ name: undefined, year: 0.4 }),
+              new TestIsValidErrorsSkillModel({ name: null, year: 0.3 }),
             ];
           }
         }
 
-        // register validations
-        TestIsValidErrorsValidations.validates('profile.name', { presence: true });
-        TestIsValidErrorsValidations.validates('profile.year', {
+        // register Model
+        TestIsValidErrorsModel.validates('profile.name', { presence: true });
+        TestIsValidErrorsModel.validates('profile.year', {
           numericality: { onlyInteger: true, greaterThanOrEqualTo: 20 },
         });
-        TestIsValidErrorsValidations.validates('profile.sex', {
+        TestIsValidErrorsModel.validates('profile.sex', {
           inclusion: { in: ['man', 'weman'] },
         });
-        TestIsValidErrorsValidations.validates('profile.email', {
+        TestIsValidErrorsModel.validates('profile.email', {
           format: { with: 'email' },
           length: { maximum: 1 },
         });
-        TestIsValidErrorsValidations.validates('ipv4', { format: { with: 'IPv4' } });
-        TestIsValidErrorsValidations.validates('ipv6', { format: { with: 'IPv6' } });
-        TestIsValidErrorsValidations.validates('tags', {
+        TestIsValidErrorsModel.validates('ipv4', { format: { with: 'IPv4' } });
+        TestIsValidErrorsModel.validates('ipv6', { format: { with: 'IPv6' } });
+        TestIsValidErrorsModel.validates('tags', {
           length: { maximum: 3, tokenizer: (propVal, self) => propVal.split(','), is: 1 },
         });
-        TestIsValidErrorsValidations.validates<TestIsValidErrorsSkillValidations[]>('skills', {
+        TestIsValidErrorsModel.validates<TestIsValidErrorsSkillModel[]>('skills', {
           condition: [
             'valid all skills',
             (propVal, self) => propVal.map((model) => model.isValid()).every(Boolean),
           ],
         });
 
-        const instance = new TestIsValidErrorsValidations();
+        const instance = new TestIsValidErrorsModel();
 
         it('return errors', () => {
           const result = instance.isValid();
           expect(result).toEqual(false);
           expect(instance.errors['profile']['name'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.profile.name' can't be empty."
+            "'models.TestIsValidErrorsModel.profile.name' can't be empty."
           );
           expect(instance.errors['profile']['year'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.profile.year' is not only integer."
+            "'models.TestIsValidErrorsModel.profile.year' is not only integer."
           );
           expect(instance.errors['profile']['sex'][0].message).toEqual(
-            '\'models.TestIsValidErrorsValidations.profile.sex\' is not included in the \'["man","weman"]\'.'
+            '\'models.TestIsValidErrorsModel.profile.sex\' is not included in the \'["man","weman"]\'.'
           );
           expect(instance.errors['profile']['email'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.profile.email' is too long (maximum '1' characters)."
+            "'models.TestIsValidErrorsModel.profile.email' is too long (maximum '1' characters)."
           );
           expect(instance.errors['profile']['email'][1].message).toEqual(
-            "'models.TestIsValidErrorsValidations.profile.email' do not meet the format: 'email'."
+            "'models.TestIsValidErrorsModel.profile.email' do not meet the format: 'email'."
           );
           expect(instance.errors['ipv4'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.ipv4' do not meet the format: 'IPv4'."
+            "'models.TestIsValidErrorsModel.ipv4' do not meet the format: 'IPv4'."
           );
           expect(instance.errors['ipv6'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.ipv6' do not meet the format: 'IPv6'."
+            "'models.TestIsValidErrorsModel.ipv6' do not meet the format: 'IPv6'."
           );
           expect(instance.errors['tags'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.tags' is too long (maximum '3' words)."
+            "'models.TestIsValidErrorsModel.tags' is too long (maximum '3' words)."
           );
           expect(instance.errors['tags'][1].message).toEqual(
-            "'models.TestIsValidErrorsValidations.tags' is not equal length ('1' characters)."
+            "'models.TestIsValidErrorsModel.tags' is not equal length ('1' characters)."
           );
           expect(instance.errors['skills'][0].message).toEqual(
-            "'models.TestIsValidErrorsValidations.skills' do not meet the condition: 'valid all skills'."
+            "'models.TestIsValidErrorsModel.skills' do not meet the condition: 'valid all skills'."
           );
           expect(instance.skills[0].errors['name'][0].message).toEqual(
-            "'models.TestIsValidErrorsSkillValidations.name' can't be empty."
+            "'models.TestIsValidErrorsSkillModel.name' can't be empty."
           );
           expect(instance.skills[0].errors['year'][0].message).toEqual(
-            "'models.TestIsValidErrorsSkillValidations.year' is not only integer."
+            "'models.TestIsValidErrorsSkillModel.year' is not only integer."
           );
           expect(instance.skills[1].errors['name'][0].message).toEqual(
-            "'models.TestIsValidErrorsSkillValidations.name' can't be empty."
+            "'models.TestIsValidErrorsSkillModel.name' can't be empty."
           );
           expect(instance.skills[1].errors['year'][0].message).toEqual(
-            "'models.TestIsValidErrorsSkillValidations.year' is not only integer."
+            "'models.TestIsValidErrorsSkillModel.year' is not only integer."
           );
         });
       });
 
       describe('when skip (using if)', () => {
-        class TestIsValidSkipSkillValidations extends Validations {
+        class TestIsValidSkipSkillModel extends Model {
           public name: string;
           public year: number;
 
@@ -347,18 +345,18 @@ describe('Validations', () => {
           }
         }
 
-        // register validations
-        TestIsValidSkipSkillValidations.validates<string>('name', {
+        // register Model
+        TestIsValidSkipSkillModel.validates<string>('name', {
           presence: true,
           if: (propVal, self) => propVal == '',
         });
-        TestIsValidSkipSkillValidations.validates<number>('year', {
+        TestIsValidSkipSkillModel.validates<number>('year', {
           presence: true,
           numericality: { onlyInteger: true },
           if: (propVal, self) => propVal == 0,
         });
 
-        class TestIsValidSkipValidations extends Validations {
+        class TestIsValidSkipModel extends Model {
           public profile: {
             name: string;
             year: number;
@@ -368,7 +366,7 @@ describe('Validations', () => {
           public ipv4: string;
           public ipv6: string;
           public tags: string;
-          public skills: TestIsValidSkipSkillValidations[];
+          public skills: TestIsValidSkipSkillModel[];
 
           // override
           static objType(): t.ObjType {
@@ -390,42 +388,42 @@ describe('Validations', () => {
             this.ipv6 = '1234567890';
             this.tags = 'rails,vue,typescript,react';
             this.skills = [
-              new TestIsValidSkipSkillValidations({ name: undefined, year: 0.4 }),
-              new TestIsValidSkipSkillValidations({ name: null, year: 0.3 }),
+              new TestIsValidSkipSkillModel({ name: undefined, year: 0.4 }),
+              new TestIsValidSkipSkillModel({ name: null, year: 0.3 }),
             ];
           }
         }
 
-        // register validations
-        TestIsValidSkipValidations.validates<string>('profile.name', {
+        // register Model
+        TestIsValidSkipModel.validates<string>('profile.name', {
           presence: true,
           if: (propVal, self) => propVal == 'dhh',
         });
-        TestIsValidSkipValidations.validates<number>('profile.year', {
+        TestIsValidSkipModel.validates<number>('profile.year', {
           numericality: { onlyInteger: true, greaterThanOrEqualTo: 20 },
           if: (propVal, self) => propVal == 0,
         });
-        TestIsValidSkipValidations.validates<string>('profile.sex', {
+        TestIsValidSkipModel.validates<string>('profile.sex', {
           inclusion: { in: ['man', 'weman'] },
           if: (propVal, self) => propVal == 'unknownn',
         });
-        TestIsValidSkipValidations.validates<string>('profile.email', {
+        TestIsValidSkipModel.validates<string>('profile.email', {
           format: { with: 'email' },
           if: (propVal, self) => propVal.startsWith('test'),
         });
-        TestIsValidSkipValidations.validates<string>('ipv4', {
+        TestIsValidSkipModel.validates<string>('ipv4', {
           format: { with: 'IPv4' },
           if: (propVal, self) => propVal == '',
         });
-        TestIsValidSkipValidations.validates<string>('ipv6', {
+        TestIsValidSkipModel.validates<string>('ipv6', {
           format: { with: 'IPv6' },
           if: (propVal, self) => propVal == '',
         });
-        TestIsValidSkipValidations.validates<string>('tags', {
+        TestIsValidSkipModel.validates<string>('tags', {
           length: { maximum: 3, tokenizer: (propVal, self) => propVal.split(',') },
           if: (propVal, self) => propVal == '',
         });
-        TestIsValidSkipValidations.validates<TestIsValidSkipSkillValidations[]>('skills', {
+        TestIsValidSkipModel.validates<TestIsValidSkipSkillModel[]>('skills', {
           condition: [
             'valid all skills',
             (propVal, self) => propVal.map((model) => model.isValid()).every(Boolean),
@@ -433,7 +431,7 @@ describe('Validations', () => {
           if: (propVal, self) => propVal == [],
         });
 
-        const instance = new TestIsValidSkipValidations();
+        const instance = new TestIsValidSkipModel();
 
         it('should skip', () => {
           const result = instance.isValid();
@@ -452,7 +450,7 @@ describe('Validations', () => {
       });
 
       describe('when skip (allow_null/allow_blank/allow_undefined)', () => {
-        class TestIsValidAllowSkillValidations extends Validations {
+        class TestIsValidAllowSkillModel extends Model {
           public name: string;
           public year: number;
 
@@ -471,19 +469,19 @@ describe('Validations', () => {
           }
         }
 
-        // register validations
-        TestIsValidAllowSkillValidations.validates<string>('name', {
+        // register Model
+        TestIsValidAllowSkillModel.validates<string>('name', {
           presence: true,
           allow_null: true,
           allow_undefined: true,
         });
-        TestIsValidAllowSkillValidations.validates<number>('year', {
+        TestIsValidAllowSkillModel.validates<number>('year', {
           presence: true,
           numericality: { onlyInteger: true },
           allow_null: true,
         });
 
-        class TestIsValidAllowValidations extends Validations {
+        class TestIsValidAllowModel extends Model {
           public profile: {
             name: string;
             year: number;
@@ -493,7 +491,7 @@ describe('Validations', () => {
           public ipv4: string;
           public ipv6: string;
           public tags: string;
-          public skills: TestIsValidAllowSkillValidations[];
+          public skills: TestIsValidAllowSkillModel[];
 
           // override
           static objType(): t.ObjType {
@@ -515,49 +513,49 @@ describe('Validations', () => {
             this.ipv6 = undefined;
             this.tags = '';
             this.skills = [
-              new TestIsValidAllowSkillValidations({ name: undefined, year: undefined }),
-              new TestIsValidAllowSkillValidations({ name: null, year: null }),
+              new TestIsValidAllowSkillModel({ name: undefined, year: undefined }),
+              new TestIsValidAllowSkillModel({ name: null, year: null }),
             ];
           }
         }
 
-        // register validations
-        TestIsValidAllowValidations.validates<string>('profile.name', {
+        // register Model
+        TestIsValidAllowModel.validates<string>('profile.name', {
           presence: true,
           allow_blank: true,
         });
-        TestIsValidAllowValidations.validates<number>('profile.year', {
+        TestIsValidAllowModel.validates<number>('profile.year', {
           numericality: { onlyInteger: true, greaterThanOrEqualTo: 20 },
           allow_null: true,
         });
-        TestIsValidAllowValidations.validates<string>('profile.sex', {
+        TestIsValidAllowModel.validates<string>('profile.sex', {
           inclusion: { in: ['man', 'weman'] },
           allow_undefined: true,
         });
-        TestIsValidAllowValidations.validates<string>('profile.email', {
+        TestIsValidAllowModel.validates<string>('profile.email', {
           format: { with: 'email' },
           allow_blank: true,
         });
-        TestIsValidAllowValidations.validates<string>('ipv4', {
+        TestIsValidAllowModel.validates<string>('ipv4', {
           format: { with: 'IPv4' },
           allow_null: true,
         });
-        TestIsValidAllowValidations.validates<string>('ipv6', {
+        TestIsValidAllowModel.validates<string>('ipv6', {
           format: { with: 'IPv6' },
           allow_undefined: true,
         });
-        TestIsValidAllowValidations.validates<string>('tags', {
+        TestIsValidAllowModel.validates<string>('tags', {
           length: { maximum: 3, tokenizer: (propVal, self) => propVal.split(',') },
           allow_blank: true,
         });
-        TestIsValidAllowValidations.validates<TestIsValidAllowSkillValidations[]>('skills', {
+        TestIsValidAllowModel.validates<TestIsValidAllowSkillModel[]>('skills', {
           condition: [
             'valid all skills',
             (propVal, self) => propVal.map((model) => model.isValid()).every(Boolean),
           ],
         });
 
-        const instance = new TestIsValidAllowValidations();
+        const instance = new TestIsValidAllowModel();
 
         it('should skip', () => {
           const result = instance.isValid();
@@ -578,7 +576,7 @@ describe('Validations', () => {
       });
 
       describe('when return errors (override message fn)', () => {
-        class TestIsValidOverrideMsgSkillValidations extends Validations {
+        class TestIsValidOverrideMsgSkillModel extends Model {
           public name: string;
           public year: number;
 
@@ -597,18 +595,18 @@ describe('Validations', () => {
           }
         }
 
-        // register validations
-        TestIsValidOverrideMsgSkillValidations.validates('name', {
+        // register Model
+        TestIsValidOverrideMsgSkillModel.validates('name', {
           presence: true,
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgSkillValidations.validates('year', {
+        TestIsValidOverrideMsgSkillModel.validates('year', {
           presence: true,
           numericality: { onlyInteger: true },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
 
-        class TestIsValidOverrideMsgValidations extends Validations {
+        class TestIsValidOverrideMsgModel extends Model {
           public profile: {
             name: string;
             year: number;
@@ -618,7 +616,7 @@ describe('Validations', () => {
           public ipv4: string;
           public ipv6: string;
           public tags: string;
-          public skills: TestIsValidOverrideMsgSkillValidations[];
+          public skills: TestIsValidOverrideMsgSkillModel[];
 
           // override
           static objType(): t.ObjType {
@@ -640,45 +638,45 @@ describe('Validations', () => {
             this.ipv6 = '1234567890';
             this.tags = 'rails,vue,typescript,react';
             this.skills = [
-              new TestIsValidOverrideMsgSkillValidations({ name: undefined, year: 0.4 }),
-              new TestIsValidOverrideMsgSkillValidations({ name: null, year: 0.3 }),
+              new TestIsValidOverrideMsgSkillModel({ name: undefined, year: 0.4 }),
+              new TestIsValidOverrideMsgSkillModel({ name: null, year: 0.3 }),
             ];
           }
         }
 
-        // register validations
-        TestIsValidOverrideMsgValidations.validates('profile.name', {
+        // register Model
+        TestIsValidOverrideMsgModel.validates('profile.name', {
           presence: true,
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('profile.year', {
+        TestIsValidOverrideMsgModel.validates('profile.year', {
           numericality: { onlyInteger: true, greaterThanOrEqualTo: 20 },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('profile.sex', {
+        TestIsValidOverrideMsgModel.validates('profile.sex', {
           inclusion: { in: ['man', 'weman'] },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('profile.email', {
+        TestIsValidOverrideMsgModel.validates('profile.email', {
           format: { with: 'email' },
           length: { maximum: 1 },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('ipv4', {
+        TestIsValidOverrideMsgModel.validates('ipv4', {
           format: { with: 'IPv4' },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('ipv6', {
+        TestIsValidOverrideMsgModel.validates('ipv6', {
           format: { with: 'IPv6' },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates('tags', {
+        TestIsValidOverrideMsgModel.validates('tags', {
           length: { maximum: 3, tokenizer: (propVal, self) => propVal.split(','), is: 1 },
           message: (tPropKey, propVal, self) => `${tPropKey}|${propVal}`,
         });
-        TestIsValidOverrideMsgValidations.validates<
-          TestIsValidOverrideMsgSkillValidations[],
-          TestIsValidOverrideMsgValidations
+        TestIsValidOverrideMsgModel.validates<
+          TestIsValidOverrideMsgSkillModel[],
+          TestIsValidOverrideMsgModel
         >('skills', {
           condition: [
             'valid all skills',
@@ -688,52 +686,52 @@ describe('Validations', () => {
             `${tPropKey}|${JSON.stringify(propVal)}|${self.profile.year}`,
         });
 
-        const instance = new TestIsValidOverrideMsgValidations();
+        const instance = new TestIsValidOverrideMsgModel();
 
         it('return errors', () => {
           const result = instance.isValid();
           expect(result).toEqual(false);
           expect(instance.errors['profile']['name'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.profile.name|undefined'
+            'models.TestIsValidOverrideMsgModel.profile.name|undefined'
           );
           expect(instance.errors['profile']['year'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.profile.year|0.1'
+            'models.TestIsValidOverrideMsgModel.profile.year|0.1'
           );
           expect(instance.errors['profile']['sex'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.profile.sex|unknown'
+            'models.TestIsValidOverrideMsgModel.profile.sex|unknown'
           );
           expect(instance.errors['profile']['email'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.profile.email|email address'
+            'models.TestIsValidOverrideMsgModel.profile.email|email address'
           );
           expect(instance.errors['profile']['email'][1].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.profile.email|email address'
+            'models.TestIsValidOverrideMsgModel.profile.email|email address'
           );
           expect(instance.errors['ipv4'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.ipv4|123456789'
+            'models.TestIsValidOverrideMsgModel.ipv4|123456789'
           );
           expect(instance.errors['ipv6'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.ipv6|1234567890'
+            'models.TestIsValidOverrideMsgModel.ipv6|1234567890'
           );
           expect(instance.errors['tags'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.tags|rails,vue,typescript,react'
+            'models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
           );
           expect(instance.errors['tags'][1].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.tags|rails,vue,typescript,react'
+            'models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
           );
           expect(instance.errors['skills'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgValidations.skills|[{"errors":{},"year":0.4},{"errors":{},"name":null,"year":0.3}]|0.1'
+            'models.TestIsValidOverrideMsgModel.skills|[{"errors":{},"year":0.4},{"errors":{},"name":null,"year":0.3}]|0.1'
           );
           expect(instance.skills[0].errors['name'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgSkillValidations.name|undefined'
+            'models.TestIsValidOverrideMsgSkillModel.name|undefined'
           );
           expect(instance.skills[0].errors['year'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgSkillValidations.year|0.4'
+            'models.TestIsValidOverrideMsgSkillModel.year|0.4'
           );
           expect(instance.skills[1].errors['name'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgSkillValidations.name|null'
+            'models.TestIsValidOverrideMsgSkillModel.name|null'
           );
           expect(instance.skills[1].errors['year'][0].message).toEqual(
-            'models.TestIsValidOverrideMsgSkillValidations.year|0.3'
+            'models.TestIsValidOverrideMsgSkillModel.year|0.3'
           );
         });
       });

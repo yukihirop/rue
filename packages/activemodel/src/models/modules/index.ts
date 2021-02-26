@@ -1,1 +1,2 @@
-export { ActiveSupport$Translation as TranslationModule } from './translation';
+export { ActiveModel$Translation } from './translation';
+export { ActiveModel$Validations } from './validations';
