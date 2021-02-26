@@ -1,5 +1,5 @@
 // methods
-export { RueModule, rueModuleInclude, rueModuleExtend, defineRueModule } from './core';
+export { RueModule } from './core';
 
 // types
-export { IRueModule, RueModuleOptions, RueModuleBody } from './types';
+export { RueModuleOptions } from './types';

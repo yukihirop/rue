@@ -1,29 +1,29 @@
 // locals
 import { RueModule } from '@/modules';
-import { RUE_MODULE, RUE_ANCESTOR, RUE_ABSTRACT_CLASS } from '@/modules/core';
 
 // types
 import * as t from './types';
-import * as st from '@/index';
 
 // this is bound to an instance(class) of Support
 export class ActiveSupport$Info extends RueModule {
   // Support Rue Module
   // https://qiita.com/suin/items/b807769388c54c57a8be
-  static getMethodsWithNamespace(obj?: Function | object): t.MethodWithNamespace[] {
+  static getMethodsWithNamespace(obj?: Function | object | RueModule): t.MethodWithNamespace[] {
+    const { RUE_MODULE, RUE_ABSTRACT_CLASS } = RueModule;
+
     const publicOnlyFilter = (name: string) => !name.startsWith('_');
     const removePrototypeFilter = (obj: Function) => (name: string) =>
       obj.name != '' ? name != 'prototype' : true;
     const skipImplClassFilter = (obj: Function) => (name: string) =>
       obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;
 
-    const getOwnMethods = (obj: Function) => {
+    const getOwnMethods = (obj: Function | RueModule) => {
       return Object.entries(Object.getOwnPropertyDescriptors(obj))
         .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
         .map(([name]) => name);
     };
 
-    const transformerFn = (isInstance: boolean) => (obj: Function | st.Support$IRueModule) => {
+    const transformerFn = (isInstance: boolean) => (obj: Function | RueModule) => {
       let klassOrModuleName;
       let methods;
 
@@ -31,7 +31,7 @@ export class ActiveSupport$Info extends RueModule {
         klassOrModuleName = `${obj['name']} (RueModule)`;
 
         if (isInstance) {
-          methods = Object.keys(Object.getOwnPropertyDescriptors(obj.prototype) || []);
+          methods = Object.keys(Object.getOwnPropertyDescriptors(obj['prototype']) || []);
         } else {
           methods = Object.keys(Object.getOwnPropertyDescriptors(obj) || []);
         }
@@ -57,8 +57,8 @@ export class ActiveSupport$Info extends RueModule {
       return {
           [klassOrModuleName]: methods
             .filter(publicOnlyFilter)
-            .filter(removePrototypeFilter(obj))
-            .filter(skipImplClassFilter(obj)),
+            .filter(removePrototypeFilter(obj as Function))
+            .filter(skipImplClassFilter(obj as Function)),
         };
     };
 
@@ -85,6 +85,8 @@ export class ActiveSupport$Info extends RueModule {
     obj?: Function | object,
     transformer?: (obj: Function) => T
   ): T[] {
+    const { RUE_MODULE, RUE_ANCESTOR } = RueModule;
+
     const _getAncestors = <T>(f: Function, ancestors: T[], transformer: (obj: Function) => T) => {
       // not f[RUE_ANCESTOR]
       // Even if you refer to it directly, you will see what is inherited.

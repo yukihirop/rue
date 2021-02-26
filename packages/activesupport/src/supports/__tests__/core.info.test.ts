@@ -34,7 +34,7 @@ describe('Support(Info)', () => {
 
     it('should correctly', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
-        ActiveSupport$Core: ['rueModuleInclude', 'rueModuleExtend', 'defineRueModule', 'inspect'],
+        ActiveSupport$Core: ['inspect'],
         ActiveSupport$Impl: [],
         ActiveSupport$ImplBase: [],
         'ActiveSupport$Info (RueModule)': [
