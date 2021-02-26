@@ -11,7 +11,7 @@ export const RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Impl['RECORD_AUTO_INCREMEN
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
 export const RECORD_ID = ActiveRecord$Impl['RECORD_ID'] as string;
 
-export class ActiveRecord$Core extends ActiveRecord$Impl {
+export class ActiveRecord$Base extends ActiveRecord$Impl {
   public errors: t.Validation$Errors;
 
   constructor(data: t.Params = {}) {
@@ -42,7 +42,7 @@ export class ActiveRecord$Core extends ActiveRecord$Impl {
     Cache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
   }
 
-  static all<T extends ActiveRecord$Core>(): Promise<Array<T>> {
+  static all<T extends ActiveRecord$Base>(): Promise<Array<T>> {
     const klassName = this.name;
 
     if (Cache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
@@ -68,7 +68,7 @@ export class ActiveRecord$Core extends ActiveRecord$Impl {
     }
   }
 
-  static where<T extends ActiveRecord$Core>(params: ft.Filter$WhereParams): Filter$WhereChain {
+  static where<T extends ActiveRecord$Base>(params: ft.Filter$WhereParams): Filter$WhereChain {
     const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
   }

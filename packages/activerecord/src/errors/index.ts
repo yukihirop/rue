@@ -1,8 +1,8 @@
 // classes
-export { ActiveRecord$Error } from './core';
+export { ActiveRecord$Error } from './base';
 
 // functions
-export { createErrObj as errObj } from './core';
+export { createErrObj as errObj } from './base';
 
 // types
 export * from './types';

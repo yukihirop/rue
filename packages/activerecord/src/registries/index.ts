@@ -3,4 +3,4 @@ export {
   registryForScopes,
   cacheForRecords,
   cacheForIntermeditateTables,
-} from './core';
+} from './base';

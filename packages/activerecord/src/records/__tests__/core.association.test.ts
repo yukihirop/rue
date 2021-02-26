@@ -1,4 +1,4 @@
-import { ActiveRecord$Core as Record } from '../core';
+import { ActiveRecord$Base as Record } from '../base';
 
 // types
 import type * as rt from '@/associations';

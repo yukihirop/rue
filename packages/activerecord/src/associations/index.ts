@@ -1,8 +1,8 @@
 // classes
 export {
-  ActiveRecord$Associations$Core as Association,
+  ActiveRecord$Associations$Base as Association,
   Association as AssociationList,
-} from './core';
+} from './base';
 
 // types
 export type {

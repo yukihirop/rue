@@ -1,9 +1,9 @@
 import {
-  ActiveRecord$Core as Record,
+  ActiveRecord$Base as Record,
   RECORD_AUTO_INCREMENNT_ID,
   RECORD_ID,
   RECORD_ALL,
-} from '../core';
+} from '../base';
 import { cacheForRecords as Cache } from '@/registries';
 
 describe('Record', () => {

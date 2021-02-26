@@ -1,5 +1,5 @@
 // classes
-import { ActiveRecord$Associations$Core as Association } from '../core';
+import { ActiveRecord$Associations$Base as Association } from '../base';
 import { registryForScopes as Registry } from '@/registries';
 
 // types
