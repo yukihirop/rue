@@ -1,5 +1,9 @@
+// rue packages
+import { RueModule } from '@rue/activesupport';
+
 // locals
-import { ActiveRecord$Associations$Impl } from './impl';
+import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Associations$CollectionProxy } from './modules';
 import {
   registryForAssociations as Registry,
   cacheForIntermeditateTables as IntermediateTable,
@@ -8,6 +12,8 @@ import { errObj, ErrCodes } from '@/errors';
 
 // types
 import * as t from './types';
+// types
+import * as mt from './modules';
 
 export const enum Association {
   belongsTo = 'belongsTo',
@@ -16,10 +22,10 @@ export const enum Association {
   hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
-export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Impl {
+export class ActiveRecord$Associations extends RueModule {
   public primaryKey: t.PrimaryKey;
 
-  static belongsTo<T extends ActiveRecord$Associations$Base = any>(
+  static belongsTo<T extends ActiveRecord$Base = any>(
     relationName: string,
     klass: Function,
     foreignKey: string
@@ -29,7 +35,7 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     });
   }
 
-  static hasOne<T extends ActiveRecord$Associations$Base = any>(
+  static hasOne<T extends ActiveRecord$Base = any>(
     relationName: string,
     klass: Function,
     foreignKey: t.ForeignKey
@@ -39,7 +45,7 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     });
   }
 
-  static hasMany<T extends ActiveRecord$Associations$Base = any>(
+  static hasMany<T extends ActiveRecord$Base = any>(
     relationName: string,
     klass: Function,
     foreignKey: t.ForeignKey
@@ -50,10 +56,7 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     });
   }
 
-  static hasAndBelongsToMany<T extends ActiveRecord$Associations$Base = any>(
-    relationName,
-    klass: Function
-  ) {
+  static hasAndBelongsToMany<T extends ActiveRecord$Base = any>(relationName, klass: Function) {
     const foreignKeysFn = (self: T) => {
       const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
         this.name,
@@ -75,7 +78,7 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     });
   }
 
-  hasAndBelongsToMany<T extends ActiveRecord$Associations$Base = any>(
+  hasAndBelongsToMany<T extends ActiveRecord$Base = any>(
     record: T
   ): { [key: string]: t.ForeignKey } {
     const klassNameLeft = this.constructor.name;
@@ -103,7 +106,7 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     }
   }
 
-  releaseAndBelongsToMany<T extends ActiveRecord$Associations$Base = any>(
+  releaseAndBelongsToMany<T extends ActiveRecord$Base = any>(
     record: T
   ): { [key: string]: t.ForeignKey } {
     const klassNameLeft = this.constructor.name;
@@ -137,9 +140,8 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
     }
   }
 
-  protected defineAssociations() {
-    const allAssociations = Registry.data[this.constructor.name];
-
+  static defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
+    const allAssociations = Registry.data[self.constructor.name];
     if (allAssociations == undefined) return;
 
     Object.keys(allAssociations).forEach((associationName: string) => {
@@ -148,12 +150,22 @@ export class ActiveRecord$Associations$Base extends ActiveRecord$Associations$Im
       Object.keys(relationData).forEach((relationName: string) => {
         const relationFn = relationData[relationName];
 
-        Object.defineProperty(this, relationName, {
+        Object.defineProperty(self, relationName, {
           enumerable: true,
           configurable: false,
-          value: () => relationFn(this),
+          value: () => relationFn(self),
         });
       });
     });
   }
+
+  // ActiveRecord$Associations$CollectionProxy
+  static scope: <T extends ActiveRecord$Base>(
+    scopeName: string,
+    fn: mt.CollectionProxy$ScopeFn<T>
+  ) => void;
 }
+
+ActiveRecord$Associations$CollectionProxy.rueModuleExtendedFrom(ActiveRecord$Associations, {
+  only: ['scope'],
+});

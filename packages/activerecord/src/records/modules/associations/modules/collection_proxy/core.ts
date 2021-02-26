@@ -2,16 +2,16 @@
 import { RueModule } from '@rue/activesupport';
 
 // locals
-import { Record } from '@/records';
+import { ActiveRecord$Base } from '@/records';
 import { registryForScopes as Registry } from '@/registries';
 import { Filter$WhereChain } from '@/filters';
 
 // types
 import * as t from './types';
 
-// this is bound to an instance(class) of Association
+// this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Associations$CollectionProxy extends RueModule {
-  static scope<T extends Record>(scopeName: string, fn: (...args) => t.ScopeVal<T>) {
+  static scope<T extends ActiveRecord$Base>(scopeName: string, fn: (...args) => t.ScopeVal<T>) {
     Registry.create(this.name, 'scope', {
       [scopeName]: fn,
     });

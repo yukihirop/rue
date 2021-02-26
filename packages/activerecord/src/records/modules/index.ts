@@ -1,2 +1,3 @@
-export { PersistenceModule } from './persistences';
-export { FinderMethodsModule } from './finder_methods';
+export { ActiveRecord$Persistence } from './persistences';
+export { ActiveRecord$FinderMethods } from './finder_methods';
+export { ActiveRecord$Associations } from './associations';

@@ -1,7 +1,7 @@
 import { ActiveRecord$Base as Record } from '../base';
 
 // types
-import type * as rt from '@/associations';
+import type * as rt from '@/records/modules/associations';
 
 describe('Record(Association)', () => {
   describe('[static] belongsTo', () => {
@@ -16,7 +16,7 @@ describe('Record(Association)', () => {
     };
 
     class TestAssociationBelongsToRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
+      public primaryKey: rt.Associations$PrimaryKey;
       public name: TestAssociationBelongsToParams['name'];
       public age: TestAssociationBelongsToParams['age'];
 
@@ -29,11 +29,11 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationBelongsToChildRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
-      public foreignKey: rt.Association$ForeignKey;
+      public primaryKey: rt.Associations$PrimaryKey;
+      public foreignKey: rt.Associations$ForeignKey;
       public childName: TestAssociationBelongsToChildParams['childName'];
       public childAge: TestAssociationBelongsToChildParams['childAge'];
-      public parent: rt.Association$BelongsTo<TestAssociationBelongsToRecord>;
+      public parent: rt.Associations$BelongsTo<TestAssociationBelongsToRecord>;
 
       protected static fetchAll<T = TestAssociationBelongsToChildParams>(): Promise<T[]> {
         // @ts-ignore
@@ -85,10 +85,10 @@ describe('Record(Association)', () => {
     };
 
     class TestAssociationHasOneRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
+      public primaryKey: rt.Associations$PrimaryKey;
       public name: TestAssociationHasOneParams['name'];
       public age: TestAssociationHasOneParams['age'];
-      public child: rt.Association$HasOne<TestAssociationHasOneChildRecord>;
+      public child: rt.Associations$HasOne<TestAssociationHasOneChildRecord>;
 
       protected static fetchAll<T = TestAssociationHasOneParams>(): Promise<T[]> {
         // @ts-ignore
@@ -99,8 +99,8 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasOneChildRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
-      public foreignKey: rt.Association$ForeignKey;
+      public primaryKey: rt.Associations$PrimaryKey;
+      public foreignKey: rt.Associations$ForeignKey;
       public childName: TestAssociationHasOneChildParams['childName'];
       public childAge: TestAssociationHasOneChildParams['childAge'];
 
@@ -146,10 +146,10 @@ describe('Record(Association)', () => {
     };
 
     class TestAssociationHasManyRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
+      public primaryKey: rt.Associations$PrimaryKey;
       public name: TestAssociationHasManyParams['name'];
       public age: TestAssociationHasManyParams['age'];
-      public children: rt.Association$HasMany<TestAssociationHasManyChildRecord>;
+      public children: rt.Associations$HasMany<TestAssociationHasManyChildRecord>;
 
       protected static fetchAll<T = TestAssociationHasManyParams>(): Promise<T[]> {
         // @ts-ignore
@@ -160,8 +160,8 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasManyChildRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
-      public foreignKey: rt.Association$ForeignKey;
+      public primaryKey: rt.Associations$PrimaryKey;
+      public foreignKey: rt.Associations$ForeignKey;
       public childName: TestAssociationHasManyChildParams['childName'];
       public childAge: TestAssociationHasManyChildParams['childAge'];
 
@@ -217,8 +217,8 @@ describe('Record(Association)', () => {
     };
 
     class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
-      public parts: rt.Association$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
+      public primaryKey: rt.Associations$PrimaryKey;
+      public parts: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
       public name: TestAssociationHasAndBelongsToManyAssemblyParams['name'];
 
       protected static fetchAll<T = TestAssociationHasAndBelongsToManyAssemblyRecord>(): Promise<
@@ -234,8 +234,8 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasAndBelongsToManyPartRecord extends Record {
-      public primaryKey: rt.Association$PrimaryKey;
-      public assemblies: rt.Association$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
+      public primaryKey: rt.Associations$PrimaryKey;
+      public assemblies: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
       public name: TestAssociationHasAndBelongsToManyPartParams['name'];
 
       protected static fetchAll<T = TestAssociationHasAndBelongsToManyPartParams>(): Promise<T[]> {
@@ -305,7 +305,7 @@ describe('Record(Association)', () => {
 
   describe('[static] scope', () => {
     type TestScopeParams = {
-      primaryKey: rt.Association$PrimaryKey;
+      primaryKey: rt.Associations$PrimaryKey;
       name: string;
       age: number;
     };
@@ -316,7 +316,7 @@ describe('Record(Association)', () => {
       public age: TestScopeParams['age'];
 
       // scope
-      static fromName: rt.Association$Scope<TestScopeRecord>;
+      static fromName: rt.Associations$CollectionProxy$Scope<TestScopeRecord>;
 
       protected static fetchAll<T = TestScopeParams>(): Promise<T[]> {
         // @ts-ignore

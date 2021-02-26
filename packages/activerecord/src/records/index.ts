@@ -1,5 +1,5 @@
 // classes
-export { ActiveRecord$Base as Record } from './base';
+export { ActiveRecord$Base as Record, ActiveRecord$Base } from './base';
 
 // types
 export type { Params as Record$Params } from './types';

@@ -1,9 +1,9 @@
 // locals
 import { Record } from '@/records';
-import { AssociationList } from '@/associations';
+import { AssociationList } from '@/records/modules/associations';
 
 // types
-import * as at from '@/associations';
+import * as at from '@/records/modules/associations';
 
 export type Associations = {
   [associationName in AssociationList]: {
@@ -18,7 +18,7 @@ export type Scopes = {
 };
 
 export type IntermediateTables = {
-  [klassName: string]: Array<[at.Association$ForeignKey, at.Association$ForeignKey]>;
+  [klassName: string]: Array<[at.Associations$ForeignKey, at.Associations$ForeignKey]>;
 };
 
 export type Records = {

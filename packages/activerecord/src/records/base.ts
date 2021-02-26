@@ -23,7 +23,7 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
       (this as any)[key] = data[key];
     });
 
-    this.defineAssociations();
+    ActiveRecord$Impl.defineAssociations(this);
   }
 
   // override

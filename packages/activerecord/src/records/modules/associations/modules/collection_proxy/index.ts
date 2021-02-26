@@ -1,5 +1,5 @@
 // modules
-export { ActiveRecord$Associations$CollectionProxy as CollectionProxyModule } from './core';
+export { ActiveRecord$Associations$CollectionProxy } from './core';
 
 // types
 export type {
