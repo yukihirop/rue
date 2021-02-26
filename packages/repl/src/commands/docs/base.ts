@@ -13,6 +13,17 @@ export class Repl$Commands$Docs$Base {
       try {
         let [maybeKlassName, maybeProto, methodName] = input.split('.');
 
+        const isBuiltinClass =
+          typeof repl.context[maybeKlassName] === 'function' &&
+          maybeProto == undefined &&
+          methodName == undefined &&
+          docs[maybeKlassName];
+
+        const isUDFClass =
+          typeof this.evalInContext(maybeKlassName, repl.context) === 'function' &&
+          maybeProto == undefined &&
+          methodName == undefined;
+
         const isStatic =
           typeof repl.context[maybeKlassName] === 'function' &&
           maybeProto &&
@@ -28,21 +39,70 @@ export class Repl$Commands$Docs$Base {
 
         let methodData;
 
-        if (isStatic) {
+        if (isBuiltinClass) {
+          const metadata = docs[maybeKlassName]['metadata'];
+          const classData = docs[maybeKlassName]['class'];
+          const klass = repl.context[maybeKlassName];
+          const isRueModule = klass['__rue_module__'];
+          console.log(
+            this._formatClassDefinition({
+              klassName: maybeKlassName,
+              classData,
+              metadata,
+              isRueModule,
+            })
+          );
+        } else if (isUDFClass) {
+          console.error(
+            `Documentation was not found about '${maybeKlassName}' in REPL context. It may be a user-defined class.`
+          );
+        } else if (isStatic) {
           // maybeProto is methodName
           const metadata = docs[maybeKlassName]['metadata'];
           methodData = docs[maybeKlassName]['static'][maybeProto];
-          console.log(this._formatDefinition({ klassName: maybeKlassName, methodData, metadata }));
+          const klass = repl.context[maybeKlassName];
+          const isRueModule = klass['__rue_module__'];
+          console.log(
+            this._formatMethodDefinition({
+              klassName: maybeKlassName,
+              methodData,
+              metadata,
+              isRueModule,
+            })
+          );
         } else if (isInstance) {
           const metadata = docs[maybeKlassName]['metadata'];
-          methodData = docs[maybeKlassName]['instance'][methodName];
-          console.log(this._formatDefinition({ klassName: maybeKlassName, methodData, metadata }));
+          if (methodName == 'constructor') {
+            methodData = docs[maybeKlassName]['$constructor'];
+            const klass = repl.context[maybeKlassName];
+            const isRueModule = klass['__rue_module__'];
+            console.log(
+              this._formatMethodDefinition({
+                klassName: maybeKlassName,
+                methodData,
+                metadata,
+                isRueModule,
+              })
+            );
+          } else {
+            methodData = docs[maybeKlassName]['instance'][methodName];
+            const klass = repl.context[maybeKlassName];
+            const isRueModule = klass['__rue_module__'];
+            console.log(
+              this._formatMethodDefinition({
+                klassName: maybeKlassName,
+                methodData,
+                metadata,
+                isRueModule,
+              })
+            );
+          }
         } else if (isUDFInstance) {
           const instance = this.evalInContext(maybeKlassName, repl.context);
           const klassName = instance.constructor.name;
           // maybeProto is methodName
           console.error(
-            `Documentation was not found about '${klassName}.prototype.${maybeProto}' in REPL context. It may be a user-defined class.`
+            `Documentation was not found about '${klassName}.prototype.${maybeProto}' in REPL context. It may be a user-defined instace.`
           );
         } else {
           console.error(
@@ -67,28 +127,68 @@ export class Repl$Commands$Docs$Base {
     }.call(context);
   }
 
-  private static _formatDefinition({
+  private static _formatClassDefinition({
+    klassName,
+    metadata,
+    classData,
+    isRueModule,
+  }: {
+    klassName: string;
+    metadata: any;
+    classData: any;
+    isRueModule: boolean;
+  }): string {
+    const { filepath, updatedAt } = metadata;
+    const { line, highlightText } = classData;
+    const owner = isRueModule ? `${klassName} (RueModule)` : klassName;
+    const titleFn = chalk.white.bold;
+    const msg = `
+${titleFn('From:')} ${filepath}#L${line[0]}-${line[1]}
+${titleFn('Owner:')} ${owner}
+${titleFn('Number of lines:')} ${line[1] - line[0] + 1}
+${titleFn('Updated At:')} ${updatedAt}
+
+${highlightText}`;
+
+    return msg;
+  }
+
+  private static _formatMethodDefinition({
     klassName,
     metadata,
     methodData,
+    isRueModule,
   }: {
     klassName: string;
     metadata: any;
     methodData: any;
+    isRueModule: boolean;
   }): string {
     const { filepath, updatedAt } = metadata;
     const { visibility, isAsync, line, highlightText } = methodData;
+    const owner = isRueModule ? `${klassName} (RueModule)` : klassName;
     const titleFn = chalk.white.bold;
     const space = '  ';
-    const msg = `
+    let msg;
+    if (visibility || isAsync) {
+      msg = `
 ${titleFn('From:')} ${filepath}#L${line[0]}-${line[1]}
-${titleFn('Owner:')} ${klassName}
+${titleFn('Owner:')} ${owner}
 ${titleFn('Visibility:')} ${visibility}
 ${titleFn('Async:')} ${isAsync}
 ${titleFn('Number of lines:')} ${line[1] - line[0] + 1}
 ${titleFn('Updated At:')} ${updatedAt}
 
 ${space}${highlightText}`;
+    } else {
+      msg = `
+${titleFn('From:')} ${filepath}#L${line[0]}-${line[1]}
+${titleFn('Owner:')} ${owner}
+${titleFn('Number of lines:')} ${line[1] - line[0] + 1}
+${titleFn('Updated At:')} ${updatedAt}
+
+${space}${highlightText}`;
+    }
 
     return msg;
   }

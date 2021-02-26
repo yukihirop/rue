@@ -116,7 +116,7 @@ const commands: t.Commands = {
   },
   show: {
     help:
-      '[Rue] Display method definition (format: <Class>.<staticMethod> or <Class>.prototype.<instanceMethod> or <Instance>.<method>)',
+      '[Rue] Display method definition (format: <Class> or <Class>.<staticMethod> or <Class>.prototype.<instanceMethod>)',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
