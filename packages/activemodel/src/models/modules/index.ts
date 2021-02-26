@@ -1,1 +1,1 @@
-export { Translation as TranslationModule } from './translation';
+export { ActiveSupport$Translation as TranslationModule } from './translation';

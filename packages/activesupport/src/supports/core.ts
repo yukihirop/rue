@@ -1,34 +1,7 @@
 // locals
-
-// functions
-import { rueModuleExtend, rueModuleInclude, defineRueModule } from '@/modules';
-// classes
 import { ActiveSupport$Impl } from './impl';
 
-// types
-import * as mt from '@/modules';
-
 export class ActiveSupport$Core extends ActiveSupport$Impl {
-  static rueModuleInclude<T extends Function>(
-    klass: T,
-    module: mt.IRueModule,
-    opts: mt.RueModuleOptions
-  ) {
-    rueModuleInclude(klass, module, opts);
-  }
-
-  static rueModuleExtend<T extends Function>(
-    klass: T,
-    module: mt.IRueModule,
-    opts: mt.RueModuleOptions
-  ) {
-    rueModuleExtend(klass, module, opts);
-  }
-
-  static defineRueModule(name: string, body: mt.RueModuleBody): mt.IRueModule {
-    return defineRueModule(name, body);
-  }
-
   static inspect(instance: any): string {
     const klassName = instance.constructor.name;
     let sorted = {};

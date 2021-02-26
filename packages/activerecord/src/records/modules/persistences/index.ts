@@ -1,1 +1,1 @@
-export { Persistence as PersistenceModule } from './core';
+export { ActiveRecord$Persistence as PersistenceModule } from './core';

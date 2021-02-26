@@ -1,1 +1,1 @@
-export { FinderMethods as FinderMethodsModule } from './core';
+export { ActiveRecord$FinderMethods as FinderMethodsModule } from './core';

@@ -1,1 +1,1 @@
-export { FileWatchers } from './core';
+export { Repl$FileWatchers } from './core';

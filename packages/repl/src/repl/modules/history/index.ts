@@ -1,1 +1,1 @@
-export { History } from './core';
+export { Repl$History } from './core';
