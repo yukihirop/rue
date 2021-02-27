@@ -1,5 +1,5 @@
 // classes
-export { Support, Support$ImplBase } from './supports';
+export { ActiveSupport$Base, ActiveSupport$ImplBase } from './supports';
 export { Registry } from './registries';
 export { RueModule } from './modules';
 

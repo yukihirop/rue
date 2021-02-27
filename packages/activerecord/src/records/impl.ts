@@ -1,5 +1,5 @@
 // rue packages
-import { Support$ImplBase } from '@rue/activesupport';
+import { ActiveSupport$ImplBase as Support$ImplBase } from '@rue/activesupport';
 import { ActiveModel$Base } from '@rue/activemodel';
 
 // local

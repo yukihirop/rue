@@ -1,5 +1,5 @@
 // locals
-import { Record } from '@/records';
+import { ActiveRecord$Base } from '@/records';
 import { AssociationList } from '@/records/modules/associations';
 
 // types
@@ -7,13 +7,13 @@ import * as at from '@/records/modules/associations';
 
 export type Associations = {
   [associationName in AssociationList]: {
-    [uniqueRelationName: string]: (self: any) => Promise<Record[]>;
+    [uniqueRelationName: string]: (self: any) => Promise<ActiveRecord$Base[]>;
   };
 };
 
 export type Scopes = {
   scope: {
-    [uniqueScopeName: string]: (...args) => Promise<Record[]>;
+    [uniqueScopeName: string]: (...args) => Promise<ActiveRecord$Base[]>;
   };
 };
 
@@ -23,5 +23,5 @@ export type IntermediateTables = {
 
 export type Records = {
   __rue_auto_increment_record_id__: number;
-  all: Array<Record>;
+  all: Array<ActiveRecord$Base>;
 };

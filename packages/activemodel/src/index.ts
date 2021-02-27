@@ -1,11 +1,6 @@
 // classes
 export { ActiveModel$Validations } from './models/modules';
-// prettier-ignore
-export {
-  // TODO: delete this
-  Model,
-  ActiveModel$Base
-} from './models';
+export { ActiveModel$Base } from './models';
 export { ActiveModel$Error } from './errors';
 
 // functions

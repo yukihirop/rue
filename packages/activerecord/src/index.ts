@@ -1,5 +1,5 @@
 // classes
-export { Record } from './records';
+export { ActiveRecord$Base } from './records';
 export { ActiveRecord$Error } from './errors';
 
 // functions

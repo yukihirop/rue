@@ -1,4 +1,4 @@
-import { Support } from '@/supports';
+import { ActiveSupport$Base as Support } from '@/supports';
 
 describe('Support(Info)', () => {
   describe('[static] getMethodsWithNamespace', () => {

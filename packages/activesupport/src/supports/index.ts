@@ -1,2 +1,2 @@
-export { ActiveSupport$Base as Support } from './base';
-export { ActiveSupport$ImplBase as Support$ImplBase } from './impl';
+export { ActiveSupport$Base } from './base';
+export { ActiveSupport$ImplBase } from './impl';
