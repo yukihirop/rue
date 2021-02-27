@@ -11,6 +11,7 @@ import * as t from './types';
 abstract class ActiveModel$Impl {
   // Prepared for checking with hasOwnProperty ()
   static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+  static __rue_ancestors__ = [];
   // ActiveModel$Translation
   // ActiveModel$Validations
   static objType: () => t.Validations$ObjType;

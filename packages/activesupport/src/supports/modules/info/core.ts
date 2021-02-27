@@ -48,9 +48,9 @@ export class ActiveSupport$Info extends RueModule {
       // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
       // cosmetic namespace
       if (klassOrModuleName === '') {
-        klassOrModuleName = 'Function (prototype)';
+        klassOrModuleName = 'Function';
       } else if (klassOrModuleName === undefined) {
-        klassOrModuleName = 'Object (prototype)';
+        klassOrModuleName = 'Object';
       }
 
       // prettier-ignore
@@ -85,28 +85,39 @@ export class ActiveSupport$Info extends RueModule {
     obj?: Function | object,
     transformer?: (obj: Function) => T
   ): T[] {
-    const { RUE_MODULE, RUE_ANCESTOR } = RueModule;
+    const { RUE_MODULE, RUE_ANCESTORS } = RueModule;
 
-    const _getAncestors = <T>(f: Function, ancestors: T[], transformer: (obj: Function) => T) => {
+    const _getAncestors = <T>(
+      f: Function,
+      ancestors: T[],
+      transformer: (obj: Function | object) => T
+    ) => {
+      const proto = Object.getPrototypeOf(f);
+
+      if (proto == null) {
+        const funcAncs = transformer(Function.prototype);
+        const objAncs = transformer(Object.prototype);
+        if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
+        if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
+        return ancestors;
+      }
+
       // not f[RUE_ANCESTOR]
       // Even if you refer to it directly, you will see what is inherited.
-      if (f.hasOwnProperty(RUE_ANCESTOR)) {
-        const maybeRueModule = f[RUE_ANCESTOR];
-
-        if (maybeRueModule == Object) {
-          return ancestors;
-        } else if (maybeRueModule) {
-          ancestors.push(transformer(maybeRueModule));
-          return _getAncestors(maybeRueModule, ancestors, transformer);
-        }
-      } else {
-        const proto = Object.getPrototypeOf(f);
-        if (proto == null) {
-          return ancestors;
+      if (f.hasOwnProperty(RUE_ANCESTORS)) {
+        if (f === RueModule) {
+          // If you don't change the order, it looks like it is included or extended in the base module RueModule.
+          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
+          const rueModule = transformer(f);
+          if(!ancestors.includes(rueModule)) ancestors.push(rueModule);
         } else {
-          ancestors.push(transformer(proto));
-          return _getAncestors(proto, ancestors, transformer);
+          ancestors.push(transformer(f));
+          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
         }
+        return _getAncestors(proto, ancestors, transformer);
+      } else {
+        ancestors.push(transformer(f));
+        return _getAncestors(proto, ancestors, transformer);
       }
     };
 
@@ -122,9 +133,9 @@ export class ActiveSupport$Info extends RueModule {
       // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript
       // cosmetic namespace
       if (ancestorName === '') {
-        ancestorName = 'Function (prototype)';
+        ancestorName = 'Function';
       } else if (ancestorName === undefined) {
-        ancestorName = 'Object (prototype)';
+        ancestorName = 'Object';
       }
 
       return ancestorName;
@@ -140,12 +151,10 @@ export class ActiveSupport$Info extends RueModule {
       if (typeof this === 'object') target = this.constructor;
     }
 
-    let ancestors;
+    let ancestors = [];
     if (transformer) {
-      ancestors = [transformer(target)];
       return _getAncestors(target, ancestors, transformer);
     } else {
-      ancestors = [defaultTransformer(target)];
       return _getAncestors(target, ancestors, defaultTransformer);
     }
   }

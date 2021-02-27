@@ -36,7 +36,6 @@ describe('Support(Info)', () => {
       expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
         ActiveSupport$Base: ['inspect'],
         ActiveSupport$Impl: [],
-        ActiveSupport$ImplBase: [],
         'ActiveSupport$Info (RueModule)': [
           'length',
           'getMethodsWithNamespace',
@@ -44,8 +43,9 @@ describe('Support(Info)', () => {
           'getAncestors',
           'name',
         ],
-        'Function (prototype)': ['apply', 'bind', 'call', 'toString'],
-        'Object (prototype)': [
+        ActiveSupport$ImplBase: [],
+        Function: ['apply', 'bind', 'call', 'toString'],
+        Object: [
           'hasOwnProperty',
           'isPrototypeOf',
           'propertyIsEnumerable',
@@ -129,8 +129,8 @@ describe('Support(Info)', () => {
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
-          'Function (prototype)',
-          'Object (prototype)',
+          'Function',
+          'Object',
         ]);
       });
     });
@@ -142,8 +142,8 @@ describe('Support(Info)', () => {
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
-          'Function (prototype)',
-          'Object (prototype)',
+          'Function',
+          'Object',
         ]);
       });
     });
@@ -155,8 +155,8 @@ describe('Support(Info)', () => {
           'ActiveSupport$Impl',
           'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
-          'Function (prototype)',
-          'Object (prototype)',
+          'Function',
+          'Object',
         ]);
       });
     });

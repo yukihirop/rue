@@ -18,6 +18,7 @@ import * as acpt from '@/records/modules/associations/modules/collection_proxy';
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
   // Prepared for checking with hasOwnProperty ()
   static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+  static __rue_ancestors__ = [];
 
   // ActiveRecord$Persistence
   static RECORD_ID = ActiveRecord$Persistence.RECORD_ID;

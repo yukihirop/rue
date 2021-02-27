@@ -1,24 +1,26 @@
 // types
 import * as t from './types';
 
+const RUE_MODULE = '__rue_module__';
+const RUE_ANCESTORS = '__rue_ancestors__';
+const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
+const RUE_DESCRIPTION = '__rue_description__';
+
 export abstract class RueModule {
-  static readonly RUE_MODULE = '__rue_module__';
-  static readonly RUE_ANCESTOR = '__rue_ancestor__';
-  static readonly RUE_LAST_ANCESTOR_MODULE = '__rue_last_ancestor_module__';
-  static readonly RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
-  static readonly RUE_DESCRIPTION = '__rue_description__';
+  static readonly RUE_MODULE = RUE_MODULE;
+  static readonly RUE_ANCESTORS = RUE_ANCESTORS;
+  static readonly RUE_ABSTRACT_CLASS = RUE_ABSTRACT_CLASS;
+  static readonly RUE_DESCRIPTION = RUE_DESCRIPTION;
 
   static readonly __rue_module__ = true;
-  static __rue_ancestor__ = Object;
-  static __rue_last_ancestor_module__ = undefined;
+  static __rue_ancestors__ = [];
   static readonly __rue_description__ = `
 This is Rue Module(~ abstract class).
 Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
 It has the following as internal static properties.
 
 ・__rue_module__ = true (readonly)
-・__rue_ancestor__ = Object (Function | RueModule)
-・__rue_last_ancestor_module__ = undefied (RueModule)`;
+・__rue_ancestors__ = [] (Function | RueModule)`;
 
   constructor() {
     // RueModule description for display
@@ -28,8 +30,7 @@ Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more deta
 It has the following as internal static properties.
 
 ・__rue_module__ = true (readonly)
-・__rue_ancestor__ = Object (Function | RueModule)
-・__rue_last_ancestor_module__ = undefied (RueModule)`;
+・__rue_ancestors__ = [] (Function | RueModule)`;
 
     throw `Could not create ${this.constructor.name} instance. Cause: ${this.constructor.name} is RueModule (~ abstract class)`;
   }
@@ -71,49 +72,41 @@ It has the following as internal static properties.
 // C=>I=>M1=>M2=>C=>I=>M1=>M2
 // C=>I=>M1=>M2=>M3=>C=>
 function updateRueAncestorChain<T extends Function>(klass: T, rueModule: typeof RueModule) {
+  if (!klass[RUE_ANCESTORS]) klass[RUE_ANCESTORS] = [];
+
+  const dupRueAncestors = Array.from(klass[RUE_ANCESTORS]);
+  let currentKlassLastAncestor = dupRueAncestors.pop();
+
   // not klass[RUE_LAST_ANCESTOR_MODULE]
   // Even if you refer to it directly, you will see what is inherited.
-  const { RUE_MODULE, RUE_ANCESTOR, RUE_LAST_ANCESTOR_MODULE } = rueModule;
   if (
-    klass.hasOwnProperty(RUE_LAST_ANCESTOR_MODULE) &&
-    klass[RUE_LAST_ANCESTOR_MODULE][rueModule.RUE_MODULE]
+    klass.hasOwnProperty(RUE_ANCESTORS) &&
+    currentKlassLastAncestor &&
+    currentKlassLastAncestor[RUE_MODULE]
   ) {
-    if (klass[RUE_LAST_ANCESTOR_MODULE][RUE_MODULE] != rueModule) {
-      klass[RUE_LAST_ANCESTOR_MODULE][RUE_ANCESTOR] = rueModule;
-      klass[RUE_LAST_ANCESTOR_MODULE] = rueModule;
-    }
-    const superclass = Object.getPrototypeOf(klass);
-    if (superclass) {
-      if (rueModule[RUE_LAST_ANCESTOR_MODULE]) {
-        updateRueGrandsonChain(superclass, rueModule[RUE_LAST_ANCESTOR_MODULE]);
-      } else {
-        rueModule[RUE_ANCESTOR] = superclass;
-      }
+    if (!klass[RUE_ANCESTORS].includes(rueModule)) {
+      klass[RUE_ANCESTORS].push(rueModule);
     }
   } else {
-    const superclass = Object.getPrototypeOf(klass);
+    const rueAncestorLength = klass[RUE_ANCESTORS].length;
 
-    // C=>[I]=>{M1=>M11=>M12}=>C=>I
-    klass[RUE_LAST_ANCESTOR_MODULE] = rueModule;
-    klass[RUE_ANCESTOR] = rueModule;
-
-    // C=>[I]=>M1=>M11=>{M12}=>C=>I
-    if (rueModule[RUE_LAST_ANCESTOR_MODULE]) {
-      rueModule[RUE_LAST_ANCESTOR_MODULE][RUE_ANCESTOR] = superclass;
+    if (rueAncestorLength == 0) {
+      klass[RUE_ANCESTORS].push(rueModule);
     } else {
-      rueModule[RUE_ANCESTOR] = superclass;
+      for (let i = 0; i < rueAncestorLength; i++) {
+        let currentKlassAncestor = klass[RUE_ANCESTORS][i];
+        if (!currentKlassAncestor[RUE_MODULE]) {
+          if (!klass[RUE_ANCESTORS].includes(rueModule)) {
+            klass[RUE_ANCESTORS].splice(i + 1, 0, rueModule);
+          }
+          break;
+        }
+        if (i == rueAncestorLength - 1) {
+          if (!klass[RUE_ANCESTORS].includes(rueModule)) {
+            klass[RUE_ANCESTORS].push(rueModule);
+          }
+        }
+      }
     }
-  }
-}
-
-function updateRueGrandsonChain<T extends Function>(klass: T, rueModule: typeof RueModule) {
-  const { RUE_ANCESTOR } = rueModule;
-  const oldRueModleAncestor = rueModule[RUE_ANCESTOR];
-
-  if (oldRueModleAncestor && oldRueModleAncestor == Object) {
-    // @ts-ignore
-    rueModule[RUE_ANCESTOR] = klass;
-  } else if (oldRueModleAncestor && oldRueModleAncestor !== Object) {
-    updateRueGrandsonChain(klass, oldRueModleAncestor as any);
   }
 }
