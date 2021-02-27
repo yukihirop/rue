@@ -1,7 +1,5 @@
 // prettier-ignore
 export {
-  // TODO: remove
-  ActiveModel$Base as Model,
   ActiveModel$Base
 } from './base';
 
