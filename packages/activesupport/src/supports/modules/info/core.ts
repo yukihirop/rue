@@ -109,7 +109,7 @@ export class ActiveSupport$Info extends RueModule {
           // If you don't change the order, it looks like it is included or extended in the base module RueModule.
           ancestors.push(...f[RUE_ANCESTORS].map(transformer));
           const rueModule = transformer(f);
-          if(!ancestors.includes(rueModule)) ancestors.push(rueModule);
+          if (!ancestors.includes(rueModule)) ancestors.push(rueModule);
         } else {
           ancestors.push(transformer(f));
           ancestors.push(...f[RUE_ANCESTORS].map(transformer));

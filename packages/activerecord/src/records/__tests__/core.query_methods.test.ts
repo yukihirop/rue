@@ -49,7 +49,7 @@ describe('Record(Filter)', () => {
               .where<TestWhereRecord>({ age: 1 })
               .inspect()
           ).toEqual(
-            `ActiveRecord$Filters$WhereChain {
+            `ActiveRecord$QueryMethods$WhereChain {
   \"params\": {
     \"name\": \"name_1\",
     \"age\": 1
@@ -67,7 +67,7 @@ describe('Record(Filter)', () => {
               .rewhere<TestWhereRecord>({ name: 'name_2' })
               .inspect()
           ).toEqual(
-            `ActiveRecord$Filters$WhereChain {
+            `ActiveRecord$QueryMethods$WhereChain {
   \"params\": {
     \"name\": \"name_2\"
   }

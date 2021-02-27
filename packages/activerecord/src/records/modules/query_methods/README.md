@@ -1,4 +1,4 @@
-# ActiveRecord$Filters
+# ActiveRecord$QueryMethods
 
 ## Methods
 
@@ -12,6 +12,10 @@
 - [ ] limit
 - [ ] group
 - [ ] reverseOrder
+
+## Classes
+
+- ActiveRecord$QueryMethods$WhereChain
 
 ## Reference
 

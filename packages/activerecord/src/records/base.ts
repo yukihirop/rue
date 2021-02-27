@@ -1,11 +1,11 @@
 // local
 import { cacheForRecords as Cache } from '@/registries';
-import { Filter$WhereChain } from '@/filters';
+import { ActiveRecord$QueryMethods$WhereChain } from './modules';
 import { ActiveRecord$Impl } from './impl';
 
 // types
 import type * as t from './types';
-import type * as ft from '@/filters';
+import type * as ft from './modules/query_methods';
 
 export const RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] as string;
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
@@ -68,8 +68,10 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
     }
   }
 
-  static where<T extends ActiveRecord$Base>(params: ft.Filter$WhereParams): Filter$WhereChain {
-    const whereChain = new Filter$WhereChain<T>(() => this.all<T>());
+  static where<T extends ActiveRecord$Base>(
+    params: ft.QueryMethods$WhereParams
+  ): ActiveRecord$QueryMethods$WhereChain {
+    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
   }
 }

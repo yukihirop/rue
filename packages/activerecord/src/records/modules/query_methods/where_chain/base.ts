@@ -1,6 +1,6 @@
 import * as t from './types';
 
-export class ActiveRecord$Filters$WhereChain<T = any> {
+export class ActiveRecord$QueryMethods$WhereChain<T = any> {
   private params: t.WhereParams;
   private allPromiseFn: () => Promise<T[]>;
 
@@ -10,13 +10,13 @@ export class ActiveRecord$Filters$WhereChain<T = any> {
   }
 
   // Give dummy generics(_U) to align method signatures
-  where<_U = any>(params: t.WhereParams): ActiveRecord$Filters$WhereChain<T> {
+  where<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
     Object.assign(this.params, params);
     return this;
   }
 
   // Give dummy generics(_U) to align method signatures
-  rewhere<_U = any>(params: t.WhereParams): ActiveRecord$Filters$WhereChain<T> {
+  rewhere<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
     this.params = params;
     return this;
   }

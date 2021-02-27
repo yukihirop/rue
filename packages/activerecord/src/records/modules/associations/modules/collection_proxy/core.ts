@@ -4,7 +4,7 @@ import { RueModule } from '@rue/activesupport';
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { registryForScopes as Registry } from '@/registries';
-import { Filter$WhereChain } from '@/filters';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
 
 // types
 import * as t from './types';
@@ -32,7 +32,7 @@ function _resolveScopes(klass: Function) {
       configurable: false,
       value: (...args) => {
         const scopeVal = scopeFn(...args);
-        if (scopeVal instanceof Filter$WhereChain) {
+        if (scopeVal instanceof ActiveRecord$QueryMethods$WhereChain) {
           return scopeVal.toPromiseArray();
         } else {
           return scopeVal;
