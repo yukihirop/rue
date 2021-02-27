@@ -4,15 +4,15 @@ import { RueModule } from '@rue/activesupport';
 // locals
 import { errObj, ErrCodes } from '@/errors';
 import { cacheForRecords as Cache } from '@/registries';
-import { Record } from '@/records';
+import { ActiveRecord$Base } from '@/records';
 
-// this is bound to an instance(class) of Record
+// this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Persistence extends RueModule {
   static RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
   static RECORD_ID = '__rue_record_id__';
   static RECORD_ALL = 'all';
 
-  static destroyAll<T extends Record>(filter?: (self: T) => boolean): Array<T> {
+  static destroyAll<T extends ActiveRecord$Base>(filter?: (self: T) => boolean): Array<T> {
     const klassName = this.name;
     const allData = Cache.read<T[]>(klassName, ActiveRecord$Persistence.RECORD_ALL, 'array');
 
@@ -72,12 +72,16 @@ export class ActiveRecord$Persistence extends RueModule {
     }
   }
 
-  destroy(): Record {
+  destroy(): ActiveRecord$Base {
     const destroyThis = this as any;
 
     // auto decrement start
     const klassName = this.constructor.name;
-    const allData = Cache.read<Record[]>(klassName, ActiveRecord$Persistence.RECORD_ALL, 'array');
+    const allData = Cache.read<ActiveRecord$Base[]>(
+      klassName,
+      ActiveRecord$Persistence.RECORD_ALL,
+      'array'
+    );
     const filteredData = allData.filter(
       (record) =>
         record[ActiveRecord$Persistence.RECORD_ID] !=
@@ -87,7 +91,7 @@ export class ActiveRecord$Persistence extends RueModule {
     _ensureCache(klassName);
     Cache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, filteredData);
 
-    return destroyThis as Record;
+    return destroyThis as ActiveRecord$Base;
   }
 }
 

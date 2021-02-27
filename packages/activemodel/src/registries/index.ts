@@ -1,5 +1,5 @@
 // singleton
-export { registryForValidations, registryForTranslator } from './core';
+export { registryForValidations, registryForTranslator } from './base';
 
 // types
 

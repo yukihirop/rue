@@ -1,5 +1,5 @@
 // classes
-export { Record } from './records';
+export { ActiveRecord$Base } from './records';
 export { ActiveRecord$Error } from './errors';
 
 // functions
@@ -12,13 +12,13 @@ export { ErrCodes } from './errors';
 
 // prettier-ignore
 export type {
-  Association$PrimaryKey as Record$PrimaryKey,
-  Association$ForeignKey as Record$ForeignKey,
-  Association$BelongsTo as Record$BelongsTo,
-  Association$HasOne as Record$HasOne,
-  Association$HasMany as Record$HasMany,
-  Association$Scope as Record$Scope,
-} from './associations';
+  Associations$PrimaryKey as Record$PrimaryKey,
+  Associations$ForeignKey as Record$ForeignKey,
+  Associations$BelongsTo as Record$BelongsTo,
+  Associations$HasOne as Record$HasOne,
+  Associations$HasMany as Record$HasMany,
+  Associations$CollectionProxy$Scope as Record$Scope,
+} from './records/modules/associations';
 
 // prettier-ignore
 export type {

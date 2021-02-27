@@ -1,5 +1,5 @@
 // rue packages
-import { Repl } from '@rue/repl';
+import { Repl$Base as Repl } from '@rue/repl';
 
 // third party
 import { Command, flags } from '@oclif/command';

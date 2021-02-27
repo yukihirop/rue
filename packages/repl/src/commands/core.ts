@@ -1,9 +1,9 @@
 import { REPLServer } from 'repl';
 // rue packages
-import { Support } from '@rue/activesupport';
+import { ActiveSupport$Base as Support } from '@rue/activesupport';
 
 // locals
-import { Repl } from '@/repl';
+import { Repl$Base as Repl } from '@/repl';
 import { Repl$Commands$Docs } from './docs';
 
 // types

@@ -12,6 +12,7 @@ export abstract class ActiveSupport$ImplBase {
 abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
   // Prepared for checking with hasOwnProperty ()
   static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
+  static __rue_ancestors__ = [];
 
   static getMethodsWithNamespace: (obj?: Function | object) => mit.Info$MethodWithNamespace;
   static getProperties: (obj?: Function) => string[];
