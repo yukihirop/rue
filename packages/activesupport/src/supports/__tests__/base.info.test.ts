@@ -37,11 +37,9 @@ describe('Support(Info)', () => {
         ActiveSupport$Base: ['inspect'],
         ActiveSupport$Impl: [],
         'ActiveSupport$Info (RueModule)': [
-          'length',
           'getMethodsWithNamespace',
           'getProperties',
           'getAncestors',
-          'name',
         ],
         ActiveSupport$ImplBase: [],
         Function: ['apply', 'bind', 'call', 'toString'],

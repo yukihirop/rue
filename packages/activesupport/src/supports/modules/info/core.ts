@@ -4,6 +4,8 @@ import { RueModule } from '@/modules';
 // types
 import * as t from './types';
 
+const BUILTIN_METHODS = ['constructor', 'length', 'name'];
+
 // this is bound to an instance(class) of Support
 export class ActiveSupport$Info extends RueModule {
   // Support Rue Module
@@ -16,10 +18,11 @@ export class ActiveSupport$Info extends RueModule {
       obj.name != '' ? name != 'prototype' : true;
     const skipImplClassFilter = (obj: Function) => (name: string) =>
       obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;
+    const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_METHODS.includes(name);
 
     const getOwnMethods = (obj: Function | RueModule) => {
       return Object.entries(Object.getOwnPropertyDescriptors(obj))
-        .filter(([name, { value }]) => typeof value === 'function' && name !== 'constructor')
+        .filter(([name, { value }]) => typeof value === 'function')
         .map(([name]) => name);
     };
 
@@ -55,11 +58,12 @@ export class ActiveSupport$Info extends RueModule {
 
       // prettier-ignore
       return {
-          [klassOrModuleName]: methods
-            .filter(publicOnlyFilter)
-            .filter(removePrototypeFilter(obj as Function))
-            .filter(skipImplClassFilter(obj as Function)),
-        };
+        [klassOrModuleName]: methods
+          .filter(publicOnlyFilter)
+          .filter(removePrototypeFilter(obj as Function))
+          .filter(skipImplClassFilter(obj as Function))
+          .filter(removeBuiltinMethodsFilter),
+      };
     };
 
     // main
