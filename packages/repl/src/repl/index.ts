@@ -1,1 +1,1 @@
-export { Core as Repl } from './core';
+export { Repl$Base } from './base';

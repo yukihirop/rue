@@ -12,13 +12,13 @@ import pkgDir from 'pkg-dir';
 import ProgressBar from 'progress';
 
 // locals
-import { Impl } from './impl';
+import { Repl$Impl } from './impl';
 import { defineCommands } from '@/commands';
 
 // types
 import type * as t from './types';
 
-export class Core extends Impl {
+export class Repl$Base extends Repl$Impl {
   static projectRoot: string = pkgDir.sync() || process.cwd();
   // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
   private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
@@ -46,12 +46,12 @@ export class Core extends Impl {
         `!node_modules/@rue/activemodel/{src,lib}/**/validators/*.{js,ts}`,
       ],
       {
-        cwd: Core.projectRoot,
+        cwd: Repl$Base.projectRoot,
         gitignore: true,
       }
     );
 
-    return [...paths.map((p) => path.join(Core.projectRoot, p))];
+    return [...paths.map((p) => path.join(Repl$Base.projectRoot, p))];
   }
 
   static async loadRueModulesForREPL(repl: REPLServer, modules?: t.Modules) {
@@ -64,7 +64,7 @@ export class Core extends Impl {
   }
 
   private static async initializeREPL(opts: replt.ReplOptions): Promise<replt.REPLServer> {
-    Core.resolveModuleAliases();
+    Repl$Base.resolveModuleAliases();
 
     console.log(`[Node] Welcome to Node.js v${process.env.NODENV_VERSION}.`);
     console.log(`[Node] Type ".help" for more information.`);
@@ -82,14 +82,14 @@ export class Core extends Impl {
   // ref: https://github.com/kenotron/simple-esm-module-alias/blob/master/index.js
   private static resolveModuleAliases() {
     // TODO: Use @rue/config
-    Core.esmRequire('module-alias').addAliases({
-      '@': Core.projectRoot + '/src',
+    Repl$Base.esmRequire('module-alias').addAliases({
+      '@': Repl$Base.projectRoot + '/src',
     });
   }
 
   static async loadRueModules(): Promise<t.Modules> {
     const paths = await this.getRueModulePaths();
-    const percentage = new ProgressBar(Core.PROGRESS_BAR_MESSAGE, {
+    const percentage = new ProgressBar(Repl$Base.PROGRESS_BAR_MESSAGE, {
       total: paths.length,
     });
 
@@ -134,6 +134,6 @@ export class Core extends Impl {
 
   private static forceRequire(modulePath: string): any {
     delete require.cache[require.resolve(modulePath)];
-    return Core.esmRequire(modulePath);
+    return Repl$Base.esmRequire(modulePath);
   }
 }
