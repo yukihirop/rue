@@ -21,7 +21,8 @@
     "url": "git+https://github.com/yukihirop/rue.git"
   },
   "scripts": {
-    "console": "rue console",
+    "rue:console": "rue console",
+    "rue:init": "rue init",
     "fmt": "prettier --write **/src/**/*.ts"
   },
   "bugs": {

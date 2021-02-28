@@ -1,3 +1,6 @@
+// rue/packages
+import { Config$Base as Config } from '@rue/config';
+
 // builtin
 import * as REPL from 'repl';
 import { REPLServer } from 'repl';
@@ -18,8 +21,15 @@ import { defineCommands } from '@/commands';
 // types
 import type * as t from './types';
 
+const projectRoot = pkgDir.sync() || process.cwd();
+const rueREPLConfig = Config.rueREPL();
+const moduleAliases = Object.keys(rueREPLConfig.moduleAliases).reduce((acc, alias) => {
+  acc[alias] = path.resolve(projectRoot, rueREPLConfig.moduleAliases[alias]);
+  return acc;
+}, {});
+
 export class Repl$Base extends Repl$Impl {
-  static projectRoot: string = pkgDir.sync() || process.cwd();
+  static projectRoot: string = projectRoot;
   // https://github.com/standard-things/esm/issues/154#issuecomment-499106152
   private static esmRequire = require('esm')(module, { cjs: { topLevelReturn: true } });
   private static PROGRESS_BAR_MESSAGE = '[Rue] Loading Rue Modules :current/:total.';
@@ -36,14 +46,14 @@ export class Repl$Base extends Repl$Impl {
         `node_modules/@rue/activesupport/lib/**/*.js`,
         `node_modules/@rue/activemodel/lib/**/*.js`,
         `node_modules/@rue/activerecord/lib/**/*.js`,
-        'src/**/{forms,models,records}/**/*.{js,ts}',
         `!node_modules/@rue/activesupport/{src,lib}/**/__tests__/*.test.{js,ts}`,
         `!node_modules/@rue/activemodel/{src,lib}/**/__tests__/*.test.{js,ts}`,
         `!node_modules/@rue/activerecord/{src,lib}/**/__tests__/*.test.{js,ts}`,
-        // Avoid matching the test code in the rue package
-        '!src/**/__tests__/*.test.{js,ts}',
         // Duplicate name does not load correctly
         `!node_modules/@rue/activemodel/{src,lib}/**/validators/*.{js,ts}`,
+        // Avoid matching the test code in the rue package
+        '!node_modules/@rue/**/src/**/__tests__/*.test.{js,ts}',
+        ...rueREPLConfig['loadModules'],
       ],
       {
         cwd: Repl$Base.projectRoot,
@@ -82,9 +92,7 @@ export class Repl$Base extends Repl$Impl {
   // ref: https://github.com/kenotron/simple-esm-module-alias/blob/master/index.js
   private static resolveModuleAliases() {
     // TODO: Use @rue/config
-    Repl$Base.esmRequire('module-alias').addAliases({
-      '@': Repl$Base.projectRoot + '/src',
-    });
+    Repl$Base.esmRequire('module-alias').addAliases(moduleAliases);
   }
 
   static async loadRueModules(): Promise<t.Modules> {
