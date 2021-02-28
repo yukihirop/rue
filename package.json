@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "fmt": "prettier --write **/src/**/*.ts",
-    "build": "yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:repl && yarn build:cli && yarn build:docs",
+    "build": "yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:config && yarn build:repl && yarn build:cli && yarn build:docs",
     "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "build:activerecord": "cd packages/activerecord && yarn build && cd -",
     "build:activesupport": "cd packages/activesupport && yarn build && cd -",
@@ -16,10 +16,12 @@
     "build:cli": "cd packages/cli && yarn build && cd -",
     "build:generator": "cd packages/generator && yarn build && cd -",
     "build:docs": "cd packages/docs && yarn build && cd -",
-    "test": "yarn test:activemodel && yarn test:activerecord && yarn test:activesupport",
+    "build:config": "cd packages/config && yarn build && cd -",
+    "test": "yarn test:activemodel && yarn test:activerecord && yarn test:activesupport && yarn test:config",
     "test:activemodel": "cd packages/activemodel && yarn test && cd -",
     "test:activerecord": "cd packages/activerecord && yarn test && cd -",
-    "test:activesupport": "cd packages/activesupport && yarn test && cd -"
+    "test:activesupport": "cd packages/activesupport && yarn test && cd -",
+    "test:config": "cd packages/config && yarn test && cd -"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
