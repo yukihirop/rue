@@ -1,5 +1,5 @@
 // classes
-export { Generator$Docs$Base as Generator$Docs } from './base';
+export { Generator$Docs$Base } from './base';
 
 // types
 export type {
