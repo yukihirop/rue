@@ -12,7 +12,7 @@ export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
 export const RECORD_ID = ActiveRecord$Impl['RECORD_ID'] as string;
 
 export class ActiveRecord$Base extends ActiveRecord$Impl {
-  public errors: t.Validation$Errors;
+  public errors: t.Validations$Errors;
 
   constructor(data: t.Params = {}) {
     super();

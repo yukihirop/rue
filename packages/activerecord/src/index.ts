@@ -22,8 +22,9 @@ export type {
 
 // prettier-ignore
 export type {
-  Record$Params, Record$ObjType,
-  Record$Validation$Errors
+  Params as Record$Params,
+  ObjType as Record$ObjType,
+  Validations$Errors as Record$Validations$Errors,
 } from './records';
 
 // prettier-ignore

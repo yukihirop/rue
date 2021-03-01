@@ -7,7 +7,11 @@ export { ActiveModel$Error } from './errors';
 export { errObj } from './errors';
 
 // types
-export type { Validations$Options, Validations$Errors } from './models/modules/validations';
+// prettier-ignore
+export type {
+  Validations$Options as Model$Validations$Options,
+  Validations$Errors as Model$Validations$Errors,
+} from './models/modules/validations';
 export type { Model$Params, Model$ObjType } from './models';
 export type { ErrObj as Model$ErrObj, ErrMessage as Model$ErrMessage } from './errors';
 
