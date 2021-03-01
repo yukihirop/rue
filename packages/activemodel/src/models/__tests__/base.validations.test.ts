@@ -17,21 +17,19 @@ describe('Model', () => {
   describe('[static] objType', () => {
     describe('when default', () => {
       it('return correctly', () => {
-        expect(() => {
-          Model.objType();
-        }).toThrow();
+        expect(Model.objType()).toEqual('model');
       });
     });
 
     describe('when override inherited class', () => {
       class TestConstructorModel extends Model {
         static objType(): t.ObjType {
-          return 'model';
+          return 'form';
         }
       }
 
       it('can override', () => {
-        expect(TestConstructorModel.objType()).toEqual('model');
+        expect(TestConstructorModel.objType()).toEqual('form');
       });
     });
   });

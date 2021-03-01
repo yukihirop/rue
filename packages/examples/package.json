@@ -23,6 +23,7 @@
   "scripts": {
     "rue:console": "rue console",
     "rue:init": "rue init",
+    "rue:setup": "rue setup",
     "fmt": "prettier --write **/src/**/*.ts"
   },
   "bugs": {
