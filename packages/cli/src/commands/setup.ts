@@ -11,7 +11,7 @@ const projectRoot = require('pkg-dir').sync() || process.cwd();
 const isTypeScript = require('fs').existsSync(path.join(projectRoot, 'tsconfig.json'));
 const defaultExtname = isTypeScript ? 'ts' : 'js';
 export default class Setup extends Command {
-  static description = "Setup '<activerecord/activemodel/activeform>' in your project";
+  static description = "Setup '<activerecord|activemodel|activeform>' in your project";
 
   static flags = {
     extname: flags.string({
