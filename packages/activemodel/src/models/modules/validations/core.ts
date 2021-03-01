@@ -80,9 +80,8 @@ export class ActiveModel$Validations extends RueModule {
     return opts.flat ? flatten(obj) : obj;
   }
 
-  // override
   static objType(): t.ObjType {
-    throw "Please implement '[static] objType' in Inherited Class.";
+    return 'model';
   }
 
   static translate(key: string, opts?: any): string {
