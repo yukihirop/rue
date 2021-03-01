@@ -1,5 +1,5 @@
 // third party
-import { ActiveRecord } from '../libs';
+import { ActiveRecord } from '../lib';
 import type * as t from '@rue/activerecord';
 
 import { Account } from '@/records';

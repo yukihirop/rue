@@ -24,6 +24,7 @@
     "rue:console": "rue console",
     "rue:init": "rue init",
     "rue:setup": "rue setup",
+    "rue:gen": "rue g",
     "fmt": "prettier --write **/src/**/*.ts"
   },
   "bugs": {

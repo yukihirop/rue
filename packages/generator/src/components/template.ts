@@ -15,9 +15,10 @@ export default template;
  *
  * - className
  * - params
+ * - libPath
  */
 template.record.defaultTS = helper`// locals
-import { ActiveRecord } from '../lib/activerecord';
+import { ActiveRecord } from '<%- libPath %>';
 
 // types
 import * as t from '@rue/activerecord';
@@ -51,9 +52,10 @@ export class <%- className %> extends ActiveRecord {
  *
  * - className
  * - params
+ * - libPath
  */
 template.record.defaultJS = helper`// locals
-const { ActiveRecord } = require('../lib/activerecord');
+const { ActiveRecord } = require('<%- libPath %>');
 
 /**
  * @property {number|string} primaryKey - Please do not change the name 'primaryKey' arbitrarily.
@@ -78,9 +80,10 @@ export class <%- className %> extends ActiveRecord {
  *
  * - className
  * - params
+ * - libPath
  */
 template.model.defaultTS = helper`// locals
-import { ActiveModel } from '../lib/activemodel';
+import { ActiveModel } from '<%- libPath %>';
 
 // types
 import * as t from '@rue/activemodel';
@@ -107,9 +110,10 @@ export class <%- className %> extends ActiveModel {
  *
  * - className
  * - params
+ * - libPath
  */
 template.model.defaultJS = helper`// locals
-const { ActiveModel } = require('../lib/activemodel');
+const { ActiveModel } = require('<%- libPath %>');
 
 /**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
@@ -126,9 +130,10 @@ export class <%- className %> extends ActiveModel {
  *
  * - className
  * - params
+ * - libPath
  */
 template.form.defaultTS = helper`// locals
-import { ActiveForm } from '../lib/activeform';
+import { ActiveForm } from '<%- libPath %>';
 
 // types
 import * as t from '@rue/activemodel';
@@ -170,9 +175,10 @@ export class <%- className %> extends ActiveForm {
  *
  * - className
  * - params
+ * - libPath
  */
 template.form.defaultJS = helper`// locals
-const { ActiveForm } = require('../lib/activeform')
+const { ActiveForm } = require('<%- libPath %>')
 
 /**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
