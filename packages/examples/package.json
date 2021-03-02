@@ -36,7 +36,8 @@
     "@rue/activesupport": "^0.0.0",
     "@rue/cli": "^0.0.0",
     "@rue/repl": "^0.0.0",
-    "i18next": "^19.8.9"
+    "i18next": "^19.8.9",
+    "js-yaml": "^4.0.0"
   },
   "devDependencies": {
     "@types/i18next": "^13.0.0",
