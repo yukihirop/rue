@@ -29,10 +29,10 @@ export class Generator$Packages$Base {
     const savePath = path.join(outputDirPath, `${pkgName}.${extname}`);
 
     if (!force && fs.existsSync(savePath)) {
-      console.log(`[Rue] The file exists in '${savePath}'`);
+      console.log(`❗️ [Rue] The file exists in '${savePath}'`);
     } else {
       const template = this.getTemplate(pkgName, extname);
-      console.log(`[Rue] Create '${pkgName}' in '${savePath}'`);
+      console.log(`✨ [Rue] Create '${pkgName}' in '${savePath}'`);
       fs.writeFileSync(savePath, template);
     }
   }
@@ -43,7 +43,7 @@ export class Generator$Packages$Base {
     } else if (extname == 'ts') {
       return this.getPkg(pkgName).defaultTSTemplate;
     } else {
-      console.error(`[Rue] '${extname}' is an unsupported extension.`);
+      console.error(`💥 [Rue] '${extname}' is an unsupported extension.`);
     }
   }
 

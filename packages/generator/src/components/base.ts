@@ -31,13 +31,13 @@ export class Generator$Components$Base {
     const savePath = path.join(outputDirPath, `${className}.${extname}`);
 
     if (!force && fs.existsSync(savePath)) {
-      console.log(`[Rue] The file exists in '${savePath}'`);
+      console.log(`❗️ [Rue] The file exists in '${savePath}'`);
     } else {
       const libPath = `./src/lib/active${compName}`;
       const libRelPath = path.relative(outputDirPath, libPath);
       const template = this.getTemplate(compName, extname);
       fs.writeFileSync(savePath, template.build({ className, params, libPath: libRelPath }));
-      console.log(`[Rue] Create '${className}' in '${savePath}'`);
+      console.log(`✨ [Rue] Create '${className}' in '${savePath}'`);
     }
   }
 
@@ -47,7 +47,7 @@ export class Generator$Components$Base {
     } else if (extname == 'ts') {
       return this.getComponent(compName).defaultTS;
     } else {
-      console.error(`[Rue] '${extname}' is an unsupported extension.`);
+      console.error(`💥 [Rue] '${extname}' is an unsupported extension.`);
     }
   }
 

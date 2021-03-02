@@ -20,9 +20,9 @@ export default class Init extends Command {
     this.parse(Init);
 
     if (fs.existsSync(savePath)) {
-      console.log(`[Rue] The configuration file exists in '${relativeSavePath}'`);
+      console.log(`❗️ [Rue] The configuration file exists in '${relativeSavePath}'`);
     } else {
-      console.log(`[Rue] Create '${configFileName}' in '${relativeSavePath}'`);
+      console.log(`✨ [Rue] Create '${configFileName}' in '${relativeSavePath}'`);
       fs.writeFileSync(savePath, Config.defaultJS);
     }
   }
