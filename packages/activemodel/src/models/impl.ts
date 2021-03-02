@@ -41,7 +41,7 @@ ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, {
 });
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['TRANSLATE_KEY', 'translate', '__t'],
+  only: ['translate', '__t'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['objType', 'validates'],

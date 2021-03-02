@@ -11,8 +11,6 @@ import { ActiveModel$Impl } from './impl';
 import type * as t from './types';
 import type { Validations$Errors } from '@/models/modules/validations';
 
-const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
-
 export class ActiveModel$Base extends ActiveModel$Impl {
   public errors: Validations$Errors;
 

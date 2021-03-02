@@ -2,7 +2,7 @@
   "RueModule": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
+      "updatedAt": "2021/03/02 15:07:01 +09:00"
     },
     "class": {
       "text": "export abstract class RueModule {\n  static readonly RUE_MODULE = RUE_MODULE;\n  static readonly RUE_ANCESTORS = RUE_ANCESTORS;\n  static readonly RUE_ABSTRACT_CLASS = RUE_ABSTRACT_CLASS;\n  static readonly RUE_DESCRIPTION = RUE_DESCRIPTION;\n\n  static readonly __rue_module__ = true;\n  static __rue_ancestors__ = [];\n  static readonly __rue_description__ = `\nThis is Rue Module(~ abstract class).\nRun 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.\nIt has the following as internal static properties.\n\n・__rue_module__ = true (readonly)\n・__rue_ancestors__ = [] (Function | RueModule)`;\n\n  constructor() {\n    // RueModule description for display\n    `\nThis is Rue Module(~ abstract class).\nRun 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.\nIt has the following as internal static properties.\n\n・__rue_module__ = true (readonly)\n・__rue_ancestors__ = [] (Function | RueModule)`;\n\n    throw `Could not create ${this.constructor.name} instance. Cause: ${this.constructor.name} is RueModule (~ abstract class)`;\n  }\n\n  static rueModuleIncludedFrom<T extends Function>(klass: T, opts: t.RueModuleOptions) {\n    if (this.__rue_module__) {\n      // Update Rue Ancestor Chain\n      updateRueAncestorChain(klass, this);\n\n      Object.keys(Object.getOwnPropertyDescriptors(this.prototype)).forEach((methodName) => {\n        if (opts && opts.only && opts.only.includes(methodName)) {\n          if (methodName != 'constructor') klass.prototype[methodName] = this.prototype[methodName];\n        }\n      });\n    } else {\n      throw 'rueModuleIncludedFrom';\n    }\n  }\n\n  static rueModuleExtendedFrom<T extends Function>(klass: T, opts: t.RueModuleOptions) {\n    if (this.__rue_module__) {\n      // Update Rue Ancestor Chain\n      updateRueAncestorChain(klass, this);\n\n      Object.keys(Object.getOwnPropertyDescriptors(this)).forEach((methodName) => {\n        if (opts && opts.only && opts.only.includes(methodName)) {\n          if (methodName != 'name') klass[methodName] = this[methodName];\n        }\n      });\n    } else {\n      throw 'rueModuleExtendedFrom';\n    }\n  }\n}",
@@ -43,10 +43,64 @@
       ]
     }
   },
+  "ActiveSupport$Base": {
+    "metadata": {
+      "filepath": "@rue/packages/activesupport/src/supports/base.ts",
+      "updatedAt": "2021/03/02 15:07:02 +09:00"
+    },
+    "class": {
+      "text": "export class ActiveSupport$Base extends ActiveSupport$Impl {\n  static inspect(instance: any): string {\n    const klassName = instance.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(instance).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, instance);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }\n}",
+      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Base\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+      "line": [
+        4,
+        16
+      ]
+    },
+    "static": {
+      "inspect": {
+        "text": "static inspect(instance: any): string {\n    const klassName = instance.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(instance).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, instance);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          5,
+          15
+        ]
+      }
+    }
+  },
+  "ActiveSupport$ImplBase": {
+    "metadata": {
+      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
+      "updatedAt": "2021/03/02 15:07:02 +09:00"
+    },
+    "class": {
+      "text": "export abstract class ActiveSupport$ImplBase {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_abstract_class__ = true;\n}",
+      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$ImplBase\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_abstract_class__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+      "line": [
+        7,
+        10
+      ]
+    }
+  },
+  "ActiveSupport$Impl": {
+    "metadata": {
+      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
+      "updatedAt": "2021/03/02 15:07:02 +09:00"
+    },
+    "class": {
+      "text": "interface ActiveSupport$Impl {}",
+      "highlightText": "\u001b[38;2;102;217;239minterface\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m",
+      "line": [
+        25,
+        25
+      ]
+    }
+  },
   "ActiveSupport$Registry$Base": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/registries/base.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
+      "updatedAt": "2021/03/02 15:07:02 +09:00"
     },
     "class": {
       "text": "export class ActiveSupport$Registry$Base<T> {\n  public registryName: string;\n  public data: t.RegistryData<T>;\n\n  constructor(registryName: string) {\n    this.registryName = registryName;\n    this.data = {} as t.RegistryData<T>;\n  }\n\n  create(klassName: string, key: string, val: t.RegistryValue) {\n    if (Array.isArray(val)) {\n      this.ensure(klassName, key, 'array');\n      this.data[klassName][key].push(...val);\n    } else if (typeof val === 'object' && val != null) {\n      this.ensure(klassName, key, 'object');\n      Object.keys(val).forEach((dataKey) => {\n        const dataValue = val[dataKey];\n        this.data[klassName][key][dataKey] = dataValue;\n      });\n    } else {\n      this.ensure(klassName, key, 'value');\n      this.data[klassName][key] = val;\n    }\n  }\n\n  update(klassName: string, key: string, val: t.RegistryValue) {\n    if (Array.isArray(val)) {\n      this.ensure(klassName, key, 'array');\n      const beforeRegistryData = this.data[klassName][key];\n      this.data[klassName][key].splice(0, beforeRegistryData.length, ...val);\n    } else if (typeof val === 'object' && val != null) {\n      this.ensure(klassName, key, 'object');\n      Object.keys(val).forEach((dataKey) => {\n        const dataValue = val[dataKey];\n        this.data[klassName][key][dataKey] = dataValue;\n      });\n    } else {\n      this.ensure(klassName, key, 'value');\n      this.data[klassName][key] = val;\n    }\n  }\n\n  read<U>(klassName: string, key: string, ensureType?: t.RegistryType): U {\n    if (ensureType) this.ensure(klassName, key, ensureType);\n    if (this.data[klassName] == undefined) return undefined;\n    return this.data[klassName][key];\n  }\n\n  destroy(klassName: string) {\n    this.data[klassName] = {} as T;\n  }\n\n  private ensure(klassName, key: string, type: t.RegistryType) {\n    if (this.data[klassName] == undefined) {\n      this.data[klassName] = {} as T;\n    }\n\n    if (this.data[klassName][key] == undefined) {\n      if (type == 'array') {\n        this.data[klassName][key] = [];\n      } else if (type == 'object') {\n        this.data[klassName][key] = {};\n      } else if (type == 'value') {\n        this.data[klassName][key] = undefined;\n      }\n    }\n  }\n}",
@@ -117,64 +171,10 @@
       ]
     }
   },
-  "ActiveSupport$Base": {
-    "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/base.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
-    },
-    "class": {
-      "text": "export class ActiveSupport$Base extends ActiveSupport$Impl {\n  static inspect(instance: any): string {\n    const klassName = instance.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(instance).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, instance);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }\n}",
-      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Base\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-      "line": [
-        4,
-        16
-      ]
-    },
-    "static": {
-      "inspect": {
-        "text": "static inspect(instance: any): string {\n    const klassName = instance.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(instance).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, instance);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39minstance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          5,
-          15
-        ]
-      }
-    }
-  },
-  "ActiveSupport$ImplBase": {
-    "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
-    },
-    "class": {
-      "text": "export abstract class ActiveSupport$ImplBase {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_abstract_class__ = true;\n}",
-      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$ImplBase\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_abstract_class__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-      "line": [
-        7,
-        10
-      ]
-    }
-  },
-  "ActiveSupport$Impl": {
-    "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
-    },
-    "class": {
-      "text": "interface ActiveSupport$Impl {}",
-      "highlightText": "\u001b[38;2;102;217;239minterface\u001b[39m \u001b[38;2;230;219;116mActiveSupport$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m",
-      "line": [
-        25,
-        25
-      ]
-    }
-  },
   "ActiveSupport$Info": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/modules/info/core.ts",
-      "updatedAt": "2021/03/02 14:37:32 +09:00"
+      "updatedAt": "2021/03/02 15:07:02 +09:00"
     },
     "class": {
       "text": "export class ActiveSupport$Info extends RueModule {\n  // Support Rue Module\n  // https://qiita.com/suin/items/b807769388c54c57a8be\n  static getMethodsWithNamespace(obj?: Function | object | RueModule): t.MethodWithNamespace[] {\n    const { RUE_MODULE, RUE_ABSTRACT_CLASS } = RueModule;\n\n    const publicOnlyFilter = (name: string) => !name.startsWith('_');\n    const removePrototypeFilter = (obj: Function) => (name: string) =>\n      obj.name != '' ? name != 'prototype' : true;\n    const skipImplClassFilter = (obj: Function) => (name: string) =>\n      obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;\n    const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_METHODS.includes(name);\n\n    const getOwnMethods = (obj: Function | RueModule) => {\n      return Object.entries(Object.getOwnPropertyDescriptors(obj))\n        .filter(([name, { value }]) => typeof value === 'function')\n        .map(([name]) => name);\n    };\n\n    const transformerFn = (isInstance: boolean) => (obj: Function | RueModule) => {\n      let klassOrModuleName;\n      let methods;\n\n      if (obj[RUE_MODULE]) {\n        klassOrModuleName = `${obj['name']} (RueModule)`;\n\n        if (isInstance) {\n          methods = Object.keys(Object.getOwnPropertyDescriptors(obj['prototype']) || []);\n        } else {\n          methods = Object.keys(Object.getOwnPropertyDescriptors(obj) || []);\n        }\n      } else {\n        klassOrModuleName = obj['name'];\n\n        if (isInstance) {\n          methods = getOwnMethods(obj.constructor);\n        } else {\n          methods = getOwnMethods(obj);\n        }\n      }\n\n      // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript\n      // cosmetic namespace\n      if (klassOrModuleName === '') {\n        klassOrModuleName = 'Function';\n      } else if (klassOrModuleName === undefined) {\n        klassOrModuleName = 'Object';\n      }\n\n      // prettier-ignore\n      return {\n        [klassOrModuleName]: methods\n          .filter(publicOnlyFilter)\n          .filter(removePrototypeFilter(obj as Function))\n          .filter(skipImplClassFilter(obj as Function))\n          .filter(removeBuiltinMethodsFilter),\n      };\n    };\n\n    // main\n\n    const target = obj ? obj : this;\n    const isInstance = typeof target === 'object' ? true : false;\n\n    return this.getAncestors(target, transformerFn(isInstance)).reduce((acc, item) => {\n      Object.assign(acc, item);\n      return acc;\n    }, {} as any);\n  }\n\n  static getProperties(obj: Function): string[] {\n    let target = new (this as any)();\n    if (obj) target = obj;\n\n    const descriptors = Object.getOwnPropertyDescriptors(target);\n    return Object.keys(descriptors);\n  }\n\n  static getAncestors<T = string>(\n    obj?: Function | object,\n    transformer?: (obj: Function) => T\n  ): T[] {\n    const { RUE_MODULE, RUE_ANCESTORS } = RueModule;\n\n    const _getAncestors = <T>(\n      f: Function,\n      ancestors: T[],\n      transformer: (obj: Function | object) => T\n    ) => {\n      const proto = Object.getPrototypeOf(f);\n\n      if (proto == null) {\n        const funcAncs = transformer(Function.prototype);\n        const objAncs = transformer(Object.prototype);\n        if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);\n        if (!ancestors.includes(objAncs)) ancestors.push(objAncs);\n        return ancestors;\n      }\n\n      // not f[RUE_ANCESTOR]\n      // Even if you refer to it directly, you will see what is inherited.\n      if (f.hasOwnProperty(RUE_ANCESTORS)) {\n        if (f === RueModule) {\n          // If you don't change the order, it looks like it is included or extended in the base module RueModule.\n          ancestors.push(...f[RUE_ANCESTORS].map(transformer));\n          const rueModule = transformer(f);\n          if (!ancestors.includes(rueModule)) ancestors.push(rueModule);\n        } else {\n          ancestors.push(transformer(f));\n          ancestors.push(...f[RUE_ANCESTORS].map(transformer));\n        }\n        return _getAncestors(proto, ancestors, transformer);\n      } else {\n        ancestors.push(transformer(f));\n        return _getAncestors(proto, ancestors, transformer);\n      }\n    };\n\n    const defaultTransformer = (obj: Function): string => {\n      let ancestorName;\n\n      if (obj[RUE_MODULE]) {\n        ancestorName = `${obj['name']} (RueModule)`;\n      } else {\n        ancestorName = obj['name'];\n      }\n\n      // https://stackoverflow.com/questions/56659303/what-is-base-object-in-javascript\n      // cosmetic namespace\n      if (ancestorName === '') {\n        ancestorName = 'Function';\n      } else if (ancestorName === undefined) {\n        ancestorName = 'Object';\n      }\n\n      return ancestorName;\n    };\n\n    let target;\n    if (obj) {\n      target = obj;\n      if (typeof obj === 'object') target = obj.constructor;\n    } else {\n      target = this;\n      // @ts-ignore\n      if (typeof this === 'object') target = this.constructor;\n    }\n\n    let ancestors = [];\n    if (transformer) {\n      return _getAncestors(target, ancestors, transformer);\n    } else {\n      return _getAncestors(target, ancestors, defaultTransformer);\n    }\n  }\n}",

@@ -6,8 +6,6 @@ import { ActiveModel$Base } from '@/models';
 
 // this is bound to an instance(class) of ActiveModel$Base
 export class ActiveModel$Translation extends RueModule {
-  static TRANSLATE_KEY = 'translate';
-
   static translate(key: string, opts?: any): string {
     throw "Please implement '[static] translate' in Inherited Class.";
   }
