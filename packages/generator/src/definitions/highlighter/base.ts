@@ -10,7 +10,7 @@ import { prismOkaidia as color } from './themes';
 // types
 import type * as t from './types';
 
-export class Generators$Docs$Highlighter$Base {
+export class Generator$Definitions$Highlighter$Base {
   static SUPPORT_TOKENS = Object.keys(color);
 
   static highlight(sourceCode: string): string {

@@ -8,13 +8,13 @@ import globby from 'globby';
 import dayjs from 'dayjs';
 
 // locals
-import { Highlighter } from './highlighter';
+import { Generator$Definitions$Highlighter as Highlighter } from './highlighter';
 
 // types
 import type * as t from './types';
 import type * as tpt from 'typescript-parser';
 
-export class Generator$Docs$Base {
+export class Generator$Definitions$Base {
   private static parser = new TypescriptParser();
   private static basePath = '@rue/packages';
   private static dateFormat = 'YYYY/MM/DD HH:mm:ss Z';

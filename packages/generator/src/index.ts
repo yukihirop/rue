@@ -1,10 +1,13 @@
 // classes
-export { Generator$Docs$Base as Generator$Docs } from './docs';
+export { Generator$Definitions$Base as Generator$Definitions } from './definitions';
 export { Generator$Packages$Base as Generator$Packages } from './packages';
 export { Generator$Components$Base as Generator$Components } from './components';
 
 // types
-export type { Generator$Docs$ClassDoc, Generator$Docs$MethodData } from './docs';
+export type {
+  Generator$Definitions$ClassDoc,
+  Generator$Definitions$MethodData,
+} from './definitions';
 export type {
   PkgName as Generator$Packages$PkgName,
   ExtName as Generator$Packages$Extname,
