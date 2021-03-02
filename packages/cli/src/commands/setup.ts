@@ -40,11 +40,15 @@ export default class Setup extends Command {
   async run() {
     const { flags, args } = this.parse(Setup);
 
-    Generator$Packages.generate({
-      outputDirPath: args.saveDir,
-      pkgName: args.pkgName,
-      extname: (flags.extname || defaultExtname) as 'js' | 'ts',
-      force: flags.force,
-    });
+    try {
+      Generator$Packages.generate({
+        outputDirPath: args.saveDir,
+        pkgName: args.pkgName,
+        extname: (flags.extname || defaultExtname) as 'js' | 'ts',
+        force: flags.force,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
