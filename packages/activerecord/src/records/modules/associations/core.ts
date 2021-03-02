@@ -3,7 +3,7 @@ import { RueModule } from '@rue/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';
-import { ActiveRecord$Associations$CollectionProxy } from './modules';
+import { ActiveRecord$Associations$Impl } from './impl';
 import {
   registryForAssociations as Registry,
   cacheForIntermeditateTables as IntermediateTable,
@@ -22,7 +22,7 @@ export const enum Association {
   hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
-export class ActiveRecord$Associations extends RueModule {
+export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
   public primaryKey: t.PrimaryKey;
 
   static belongsTo<T extends ActiveRecord$Base = any>(
@@ -158,14 +158,4 @@ export class ActiveRecord$Associations extends RueModule {
       });
     });
   }
-
-  // ActiveRecord$Associations$CollectionProxy
-  static scope: <T extends ActiveRecord$Base>(
-    scopeName: string,
-    fn: mt.CollectionProxy$ScopeFn<T>
-  ) => void;
 }
-
-ActiveRecord$Associations$CollectionProxy.rueModuleExtendedFrom(ActiveRecord$Associations, {
-  only: ['scope'],
-});
