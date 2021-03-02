@@ -1,5 +1,5 @@
 // rue packages
-import docs from '@rue/docs';
+import docs from '@rue/definition';
 
 // third party
 import chalk from 'chalk';

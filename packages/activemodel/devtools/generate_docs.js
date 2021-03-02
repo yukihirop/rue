@@ -9,6 +9,6 @@ Generator$Docs.generate(
   ],
   {
     pkgName: 'activemodel',
-    outputPath: '../../packages/docs/src/activemodel.json',
+    outputPath: '../../packages/definition/src/activemodel.json',
     cwd: path.resolve('.')
   })

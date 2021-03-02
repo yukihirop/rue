@@ -41,7 +41,7 @@
   "dependencies": {
     "@rue/activesupport": "^0.0.0",
     "@rue/config": "^0.0.0",
-    "@rue/docs": "^0.0.0",
+    "@rue/definition": "^0.0.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.5.1",
     "esm": "^3.2.25",
