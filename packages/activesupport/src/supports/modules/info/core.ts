@@ -169,26 +169,4 @@ export class ActiveSupport$Info extends RueModule {
 
     return ancestors.map(useTransformer);
   }
-
-  static getOwnerFrom(obj: Function | object, propName: string): Function | RueModule {
-    const { RUE_IMPL_CLASS } = RueModule;
-    const isStatic = typeof obj === 'function' ? true : false;
-
-    let foundOwner;
-    const ancestors = this.getAncestors(obj, (obj) => obj);
-    for (let i = 0; i < ancestors.length; i++) {
-      const ancestor = ancestors[i];
-      if (!ancestor.hasOwnProperty(RUE_IMPL_CLASS)) {
-        if (isStatic && ancestor.hasOwnProperty(propName)) {
-          foundOwner = ancestor;
-          break;
-        } else if (!isStatic && ancestor.prototype.hasOwnProperty(propName)) {
-          foundOwner = ancestor;
-          break;
-        }
-      }
-    }
-
-    return foundOwner;
-  }
 }
