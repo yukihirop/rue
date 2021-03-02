@@ -8,13 +8,13 @@ import globby from 'globby';
 import dayjs from 'dayjs';
 
 // locals
-import { Highlighter } from './highlighter';
+import { Generator$Definitions$Highlighter as Highlighter } from './highlighter';
 
 // types
 import type * as t from './types';
 import type * as tpt from 'typescript-parser';
 
-export class Generator$Docs$Base {
+export class Generator$Definitions$Base {
   private static parser = new TypescriptParser();
   private static basePath = '@rue/packages';
   private static dateFormat = 'YYYY/MM/DD HH:mm:ss Z';
@@ -39,7 +39,7 @@ export class Generator$Docs$Base {
       return Promise.resolve([parsed, filepath]);
     };
 
-    console.log(`[Rue] Generate Docs | { package: '${pkgName}', output: '${outputPath}' }`);
+    console.log(`[Rue] Generate Definition | { package: '${pkgName}', output: '${outputPath}' }`);
 
     Promise.all(paths.map(parsedPromiseFn))
       .then((parsedArr) => {
@@ -61,9 +61,11 @@ export class Generator$Docs$Base {
             } = classDec;
 
             if (constructorDec || methodDecs) {
-              // Class Docs
+              // Class Definitions
               const classText = tsText.substr(start, end - start);
-              console.log(`[Rue] Generate Docs | generate docs: '${klassName}' from '${filepath}'`);
+              console.log(
+                `[Rue] Generate Definition | generate definition: '${klassName}' from '${filepath}'`
+              );
               this._mergeDeep(result, {
                 [klassName]: {
                   metadata,
@@ -75,7 +77,7 @@ export class Generator$Docs$Base {
                 },
               });
 
-              // Methods Docs
+              // Methods Definitions
               methodDecs.forEach((methodDec: tpt.MethodDeclaration) => {
                 const { start, end, name: methodName, isStatic, isAsync, visibility } = methodDec;
                 const methodText = tsText.substr(start, end - start);
@@ -91,11 +93,11 @@ export class Generator$Docs$Base {
                 const methodType = isStatic ? 'static' : 'instance';
                 if (isStatic) {
                   console.log(
-                    `[Rue] Generate Docs | generate docs: '${klassName}.${methodName}' from '${filepath}'`
+                    `[Rue] Generate Definition | generate definition: '${klassName}.${methodName}' from '${filepath}'`
                   );
                 } else {
                   console.log(
-                    `[Rue] Generate Docs | generate docs: '${klassName}.prototype.${methodName}' from '${filepath}'`
+                    `[Rue] Generate Definition | generate definition: '${klassName}.prototype.${methodName}' from '${filepath}'`
                   );
                 }
                 this._mergeDeep(result, {
@@ -107,12 +109,12 @@ export class Generator$Docs$Base {
               });
             }
 
-            // Constructor Docs
+            // Constructor Definitions
             if (constructorDec) {
               const { start: startCon, end: endCon } = constructorDec;
               const constructorText = tsText.substr(startCon, endCon - startCon);
               console.log(
-                `[Rue] Generate Docs | generate docs: '${klassName}.prototype.constructor' from '${filepath}'`
+                `[Rue] Generate Definition | generate definition: '${klassName}.prototype.constructor' from '${filepath}'`
               );
               this._mergeDeep(result, {
                 [klassName]: {
@@ -130,7 +132,7 @@ export class Generator$Docs$Base {
       })
       .then(() => {
         const fullOutputPath = path.join(cwd, outputPath);
-        console.log(`[Rue] Generate Docs | save docs at '${outputPath}'`);
+        console.log(`[Rue] Generate Definition | save at '${outputPath}'`);
         fs.writeFileSync(fullOutputPath, JSON.stringify(result, null, 2));
       });
   }

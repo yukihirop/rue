@@ -22,11 +22,11 @@
     "url": "git+https://github.com/yukihirop/rue.git"
   },
   "scripts": {
-    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib && yarn gen:docs",
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib && yarn gen:definition",
     "fmt": "prettier --write **/src/**/*.ts",
     "test": "jest --config ./jest.config.js",
     "test:debug": "node --inspect -r ts-node/register ./node_modules/jest/bin/jest.js --silent=false --verbose --runInBand",
-    "gen:docs": "node ./devtools/generate_docs.js"
+    "gen:definition": "node ./devscripts/generate_definition.js"
   },
   "bugs": {
     "url": "https://github.com/yukihirop/rue/issues"
