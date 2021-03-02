@@ -23,7 +23,7 @@
   "scripts": {
     "build": "yarn bundle && rimraf ./lib/* && cp -r ./src/* ./lib",
     "fmt": "prettier --write **/src/**/*.js",
-    "bundle": "node ./devtools/bundle_docs.js"
+    "bundle": "node ./devscripts/bundle_definition.js"
   },
   "bugs": {
     "url": "https://github.com/yukihirop/rue/issues"
