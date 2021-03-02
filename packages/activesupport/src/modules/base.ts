@@ -6,12 +6,12 @@ import * as t from './types';
 
 const RUE_MODULE = '__rue_module__';
 const RUE_ANCESTORS = '__rue_ancestors__';
-const RUE_ABSTRACT_CLASS = '__rue_impl_class__';
+const RUE_IMPL_CLASS = '__rue_impl_class__';
 const RUE_DESCRIPTION = '__rue_description__';
 
 export abstract class RueModule {
   static readonly RUE_MODULE = RUE_MODULE;
-  static readonly RUE_ABSTRACT_CLASS = RUE_ABSTRACT_CLASS;
+  static readonly RUE_IMPL_CLASS = RUE_IMPL_CLASS;
   static readonly RUE_DESCRIPTION = RUE_DESCRIPTION;
 
   static readonly __rue_module__ = true;

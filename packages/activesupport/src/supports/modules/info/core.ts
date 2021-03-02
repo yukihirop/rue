@@ -11,13 +11,13 @@ export class ActiveSupport$Info extends RueModule {
   // Support Rue Module
   // https://qiita.com/suin/items/b807769388c54c57a8be
   static getMethodsWithNamespace(obj?: Function | object | RueModule): t.MethodWithNamespace[] {
-    const { RUE_MODULE, RUE_ABSTRACT_CLASS } = RueModule;
+    const { RUE_MODULE, RUE_IMPL_CLASS } = RueModule;
 
     const publicOnlyFilter = (name: string) => !name.startsWith('_');
     const removePrototypeFilter = (obj: Function) => (name: string) =>
       obj.name != '' ? name != 'prototype' : true;
     const skipImplClassFilter = (obj: Function) => (name: string) =>
-      obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;
+      obj.hasOwnProperty(RUE_IMPL_CLASS) ? false : true;
     const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_METHODS.includes(name);
 
     const getOwnMethods = (obj: Function | RueModule) => {
