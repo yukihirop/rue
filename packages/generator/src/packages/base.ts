@@ -3,9 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 // locals
-import * as activemodel from './activemodel';
-import * as activerecord from './acitverecord';
-import * as activeform from './activeform';
+import template from './template';
 
 // types
 import * as t from './types';
@@ -39,9 +37,9 @@ export class Generator$Packages$Base {
 
   private static getTemplate(pkgName: t.PkgName, extname: t.ExtName): string {
     if (extname == 'js') {
-      return this.getPkg(pkgName).defaultJSTemplate;
+      return this.getPkg(pkgName).defaultJS;
     } else if (extname == 'ts') {
-      return this.getPkg(pkgName).defaultTSTemplate;
+      return this.getPkg(pkgName).defaultTS;
     } else {
       console.error(`💥 [Rue] '${extname}' is an unsupported extension.`);
     }
@@ -49,11 +47,11 @@ export class Generator$Packages$Base {
 
   private static getPkg(pkgName: t.PkgName) {
     if (pkgName === 'activerecord') {
-      return activerecord;
+      return template.activerecord;
     } else if (pkgName === 'activemodel') {
-      return activemodel;
+      return template.activemodel;
     } else if (pkgName === 'activeform') {
-      return activeform;
+      return template.activeform;
     }
   }
 }
