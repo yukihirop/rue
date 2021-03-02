@@ -917,8 +917,8 @@
       "updatedAt": "2021/03/02 20:51:03 +09:00"
     },
     "class": {
-      "text": "export abstract class ActiveSupport$ImplBase {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_abstract_class__ = true;\n}",
-      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$ImplBase\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_abstract_class__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+      "text": "export abstract class ActiveSupport$ImplBase {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_impl_class__ = true;\n}",
+      "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveSupport$ImplBase\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_impl_class__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
       "line": [
         7,
         10

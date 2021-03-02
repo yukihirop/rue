@@ -6,7 +6,7 @@ describe('RueModule', () => {
     describe('when default', () => {
       it('should correctly', () => {
         expect(RueModule.RUE_MODULE).toEqual('__rue_module__');
-        expect(RueModule.RUE_ABSTRACT_CLASS).toEqual('__rue_abstract_class__');
+        expect(RueModule.RUE_ABSTRACT_CLASS).toEqual('__rue_impl_class__');
         expect(RueModule.RUE_DESCRIPTION).toEqual('__rue_description__');
         expect(RueModule.__rue_module__).toEqual(true);
         expect(RueModule.__rue_description__).toEqual(`

@@ -6,7 +6,7 @@ import * as t from './types';
 
 const RUE_MODULE = '__rue_module__';
 const RUE_ANCESTORS = '__rue_ancestors__';
-const RUE_ABSTRACT_CLASS = '__rue_abstract_class__';
+const RUE_ABSTRACT_CLASS = '__rue_impl_class__';
 const RUE_DESCRIPTION = '__rue_description__';
 
 export abstract class RueModule {
@@ -47,7 +47,7 @@ It has the following as internal static properties.
 
       // If the prototype of the Impl class is used, the methods implemented in the Impl class are also inherited.
       const maybeImpl = Object.getPrototypeOf(this);
-      if (maybeImpl && maybeImpl.__rue_abstract_class__) {
+      if (maybeImpl && maybeImpl.__rue_impl_class__) {
         Object.keys(Object.getOwnPropertyDescriptors(maybeImpl.prototype)).forEach((methodName) => {
           if (opts && opts.only && opts.only.includes(methodName)) {
             if (methodName != 'constructor')
@@ -73,7 +73,7 @@ It has the following as internal static properties.
 
       // If the prototype of the Impl class is used, the methods implemented in the Impl class are also inherited.
       const maybeImpl = Object.getPrototypeOf(this);
-      if (maybeImpl && maybeImpl.__rue_abstract_class__) {
+      if (maybeImpl && maybeImpl.__rue_impl_class__) {
         Object.keys(Object.getOwnPropertyDescriptors(maybeImpl)).forEach((methodName) => {
           if (opts && opts.only && opts.only.includes(methodName)) {
             if (methodName != 'name') klass[methodName] = maybeImpl[methodName];

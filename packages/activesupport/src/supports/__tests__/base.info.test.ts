@@ -178,7 +178,7 @@ describe('Support(Info)', () => {
       class ActiveModel$Validations extends RueModule {}
       class ActiveModel$Translation extends RueModule {}
       class ActiveModel$Impl {
-        static __rue_abstract_class__ = true;
+        static __rue_impl_class__ = true;
       }
       ActiveModel$Translation.rueModuleIncludedFrom(ActiveModel$Impl, { only: [] });
       ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, { only: [] });
@@ -188,7 +188,7 @@ describe('Support(Info)', () => {
       class ActiveRecord$FinderMethods extends RueModule {}
       class ActiveRecord$Associations$CollectionProxy extends RueModule {}
       class ActiveRecord$Associations$Impl extends RueModule {
-        static __rue_abstract_class__ = true;
+        static __rue_impl_class__ = true;
       }
       ActiveRecord$Associations$CollectionProxy.rueModuleExtendedFrom(
         ActiveRecord$Associations$Impl,
@@ -200,7 +200,7 @@ describe('Support(Info)', () => {
       class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {}
       class ActiveRecord$Persistence extends RueModule {}
       class ActiveRecord$Impl extends ActiveModel$Base {
-        static __rue_abstract_class__ = true;
+        static __rue_impl_class__ = true;
       }
       ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, { only: [] });
       ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, { only: [] });

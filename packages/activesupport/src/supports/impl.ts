@@ -6,12 +6,12 @@ import * as mit from './modules/info';
 
 export abstract class ActiveSupport$ImplBase {
   // Prepared for checking with hasOwnProperty ()
-  static __rue_abstract_class__ = true;
+  static __rue_impl_class__ = true;
 }
 
 abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
   // Prepared for checking with hasOwnProperty ()
-  static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
+  static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
   static __rue_ancestors__ = [];
 
   static getMethodsWithNamespace: (obj?: Function | object) => mit.Info$MethodWithNamespace;

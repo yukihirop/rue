@@ -10,7 +10,7 @@ import * as t from './types';
 // define static methods interface
 abstract class ActiveModel$Impl {
   // Prepared for checking with hasOwnProperty ()
-  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+  static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
   static __rue_ancestors__ = [];
   // ActiveModel$Translation
   static translate: (key: string, opts?: any) => string;

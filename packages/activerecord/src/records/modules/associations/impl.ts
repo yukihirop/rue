@@ -10,7 +10,7 @@ import * as mcpt from './modules/collection_proxy';
 
 abstract class ActiveRecord$Associations$Impl extends RueModule {
   // Prepared for checking with hasOwnProperty ()
-  static __rue_abstract_class__ = ActiveSupport$ImplBase.__rue_abstract_class__;
+  static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
   // ActiveRecord$Associations$CollectionProxy
   static scope: <T extends ActiveRecord$Base>(
     scopeName: string,

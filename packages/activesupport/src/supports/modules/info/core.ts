@@ -104,7 +104,7 @@ export class ActiveSupport$Info extends RueModule {
       if (fRueModuleAncestors.data.length > 0) {
         fRueModuleAncestors.ancestors().forEach((ancestor: T) => {
           const proto = Object.getPrototypeOf(ancestor);
-          if (proto.__rue_abstract_class__) {
+          if (proto.__rue_impl_class__) {
             const controller = new RueModuleAncestorController(proto);
             const willAddAncestors = [ancestor, ...controller.ancestors()];
             willAddAncestors.forEach((childAncestor: T) => {
