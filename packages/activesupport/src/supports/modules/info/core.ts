@@ -1,5 +1,5 @@
 // locals
-import { RueModule } from '@/modules';
+import { RueModule, RueModuleAncestorController } from '@/modules';
 
 // types
 import * as t from './types';
@@ -89,7 +89,11 @@ export class ActiveSupport$Info extends RueModule {
     obj?: Function | object,
     transformer?: (obj: Function) => T
   ): T[] {
-    const { RUE_MODULE, RUE_ANCESTORS } = RueModule;
+    const { RUE_MODULE } = RueModule;
+
+    // @important
+    // RueModule's ancestor chain and JavaScript prototype chain are not related.
+    // Therefore you have to reassemble the chain yourself
 
     const _getAncestors = <T>(
       f: Function,
@@ -98,29 +102,14 @@ export class ActiveSupport$Info extends RueModule {
     ) => {
       const proto = Object.getPrototypeOf(f);
 
-      if (proto == null) {
-        const funcAncs = transformer(Function.prototype);
-        const objAncs = transformer(Object.prototype);
-        if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
-        if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
-        return ancestors;
-      }
+      if (proto == null) return ancestors;
 
-      // not f[RUE_ANCESTOR]
-      // Even if you refer to it directly, you will see what is inherited.
-      if (f.hasOwnProperty(RUE_ANCESTORS)) {
-        if (f === RueModule) {
-          // If you don't change the order, it looks like it is included or extended in the base module RueModule.
-          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
-          const rueModule = transformer(f);
-          if (!ancestors.includes(rueModule)) ancestors.push(rueModule);
-        } else {
-          ancestors.push(transformer(f));
-          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
-        }
+      const fRueModuleAncestors = new RueModuleAncestorController(f);
+      if (fRueModuleAncestors.data.length > 0) {
+        ancestors.push(...fRueModuleAncestors.ancestors().map(transformer));
         return _getAncestors(proto, ancestors, transformer);
       } else {
-        ancestors.push(transformer(f));
+        if (f && f['name']) ancestors.push(transformer(f));
         return _getAncestors(proto, ancestors, transformer);
       }
     };
@@ -156,10 +145,21 @@ export class ActiveSupport$Info extends RueModule {
     }
 
     let ancestors = [];
+    let useTransformer;
     if (transformer) {
-      return _getAncestors(target, ancestors, transformer);
+      useTransformer = transformer;
+      ancestors = _getAncestors(target, ancestors, transformer);
     } else {
-      return _getAncestors(target, ancestors, defaultTransformer);
+      useTransformer = defaultTransformer;
+      ancestors = _getAncestors(target, ancestors, defaultTransformer);
     }
+
+    // Add base class to ancestors
+    const funcAncs = useTransformer(Function.prototype);
+    const objAncs = useTransformer(Object.prototype);
+    if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
+    if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
+
+    return ancestors;
   }
 }
