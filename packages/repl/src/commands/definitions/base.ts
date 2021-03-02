@@ -1,5 +1,5 @@
 // rue packages
-import docs from '@rue/definition';
+import definitions from '@rue/definition';
 
 // third party
 import chalk from 'chalk';
@@ -7,7 +7,7 @@ import chalk from 'chalk';
 // types
 import * as replt from 'repl';
 
-export class Repl$Commands$Docs$Base {
+export class Repl$Commands$Definitions$Base {
   static displayDefinition(input: string, repl: replt.REPLServer) {
     if (input) {
       try {
@@ -17,7 +17,7 @@ export class Repl$Commands$Docs$Base {
           typeof repl.context[maybeKlassName] === 'function' &&
           maybeProto == undefined &&
           methodName == undefined &&
-          docs[maybeKlassName];
+          definitions[maybeKlassName];
 
         const isUDFClass =
           typeof this.evalInContext(maybeKlassName, repl.context) === 'function' &&
@@ -40,8 +40,8 @@ export class Repl$Commands$Docs$Base {
         let methodData;
 
         if (isBuiltinClass) {
-          const metadata = docs[maybeKlassName]['metadata'];
-          const classData = docs[maybeKlassName]['class'];
+          const metadata = definitions[maybeKlassName]['metadata'];
+          const classData = definitions[maybeKlassName]['class'];
           const klass = repl.context[maybeKlassName];
           const isRueModule = klass['__rue_module__'];
           console.log(
@@ -58,8 +58,8 @@ export class Repl$Commands$Docs$Base {
           );
         } else if (isStatic) {
           // maybeProto is methodName
-          const metadata = docs[maybeKlassName]['metadata'];
-          methodData = docs[maybeKlassName]['static'][maybeProto];
+          const metadata = definitions[maybeKlassName]['metadata'];
+          methodData = definitions[maybeKlassName]['static'][maybeProto];
           const klass = repl.context[maybeKlassName];
           const isRueModule = klass['__rue_module__'];
           console.log(
@@ -71,9 +71,9 @@ export class Repl$Commands$Docs$Base {
             })
           );
         } else if (isInstance) {
-          const metadata = docs[maybeKlassName]['metadata'];
+          const metadata = definitions[maybeKlassName]['metadata'];
           if (methodName == 'constructor') {
-            methodData = docs[maybeKlassName]['$constructor'];
+            methodData = definitions[maybeKlassName]['$constructor'];
             const klass = repl.context[maybeKlassName];
             const isRueModule = klass['__rue_module__'];
             console.log(
@@ -85,7 +85,7 @@ export class Repl$Commands$Docs$Base {
               })
             );
           } else {
-            methodData = docs[maybeKlassName]['instance'][methodName];
+            methodData = definitions[maybeKlassName]['instance'][methodName];
             const klass = repl.context[maybeKlassName];
             const isRueModule = klass['__rue_module__'];
             console.log(

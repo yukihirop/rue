@@ -4,7 +4,7 @@ import { ActiveSupport$Base as Support } from '@rue/activesupport';
 
 // locals
 import { Repl$Base as Repl } from '@/repl';
-import { Repl$Commands$Docs } from './docs';
+import { Repl$Commands$Definitions } from './definitions';
 
 // types
 import * as t from './types';
@@ -121,7 +121,7 @@ const commands: t.Commands = {
       const _this = this as replt.REPLServer;
       _this.clearBufferedCommand();
 
-      Repl$Commands$Docs.displayDefinition(objName, _this);
+      Repl$Commands$Definitions.displayDefinition(objName, _this);
 
       _this.displayPrompt();
     },
