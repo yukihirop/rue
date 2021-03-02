@@ -44,6 +44,17 @@ It has the following as internal static properties.
           if (methodName != 'constructor') klass.prototype[methodName] = this.prototype[methodName];
         }
       });
+
+      // If the prototype of the Impl class is used, the methods implemented in the Impl class are also inherited.
+      const maybeImpl = Object.getPrototypeOf(this);
+      if (maybeImpl && maybeImpl.__rue_abstract_class__) {
+        Object.keys(Object.getOwnPropertyDescriptors(maybeImpl.prototype)).forEach((methodName) => {
+          if (opts && opts.only && opts.only.includes(methodName)) {
+            if (methodName != 'constructor')
+              klass.prototype[methodName] = maybeImpl.prototype[methodName];
+          }
+        });
+      }
     } else {
       throw 'rueModuleIncludedFrom';
     }
@@ -59,6 +70,16 @@ It has the following as internal static properties.
           if (methodName != 'name') klass[methodName] = this[methodName];
         }
       });
+
+      // If the prototype of the Impl class is used, the methods implemented in the Impl class are also inherited.
+      const maybeImpl = Object.getPrototypeOf(this);
+      if (maybeImpl && maybeImpl.__rue_abstract_class__) {
+        Object.keys(Object.getOwnPropertyDescriptors(maybeImpl)).forEach((methodName) => {
+          if (opts && opts.only && opts.only.includes(methodName)) {
+            if (methodName != 'name') klass[methodName] = maybeImpl[methodName];
+          }
+        });
+      }
     } else {
       throw 'rueModuleExtendedFrom';
     }
@@ -121,8 +142,6 @@ function updateRueAncestorChain<T extends Function>(klass: T, rueModule: typeof 
   const dupRueAncestors = Array.from(klassRueAncestors.data);
   let currentKlassLastAncestor = dupRueAncestors.pop();
 
-  // not klass[RUE_LAST_ANCESTOR_MODULE]
-  // Even if you refer to it directly, you will see what is inherited.
   if (
     klassRueAncestors.data.length > 0 &&
     currentKlassLastAncestor &&
