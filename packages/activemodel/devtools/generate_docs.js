@@ -1,14 +1,11 @@
 const path = require('path');
-const { Generator$Docs } = require('@rue/generator');
+const { Generator$Definitions } = require('@rue/generator');
 
-Generator$Docs.generate(
-  [
-    'src/**/*.ts',
-    '!src/**/__tests__/*.test.ts',
-    '!src/**/validators/**/*.ts'
-  ],
+Generator$Definitions.generate(
+  ['src/**/*.ts', '!src/**/__tests__/*.test.ts', '!src/**/validators/**/*.ts'],
   {
     pkgName: 'activemodel',
     outputPath: '../../packages/definition/src/activemodel.json',
-    cwd: path.resolve('.')
-  })
+    cwd: path.resolve('.'),
+  }
+);
