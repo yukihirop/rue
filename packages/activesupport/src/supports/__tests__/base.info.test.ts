@@ -1,3 +1,4 @@
+import { RueModule } from '@/modules';
 import { ActiveSupport$Base as Support } from '@/supports';
 
 describe('Support(Info)', () => {
@@ -168,6 +169,61 @@ describe('Support(Info)', () => {
           'test.ActiveSupport$ImplBase',
           'test.',
           'test.undefined',
+        ]);
+      });
+    });
+
+    describe('when complex', () => {
+      // ActiveModel
+      class ActiveModel$Validations extends RueModule {}
+      class ActiveModel$Translation extends RueModule {}
+      class ActiveModel$Impl {
+        static __rue_abstract_class__ = true;
+      }
+      ActiveModel$Translation.rueModuleIncludedFrom(ActiveModel$Impl, { only: [] });
+      ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, { only: [] });
+      class ActiveModel$Base extends ActiveModel$Impl {}
+
+      // ActiveRecord
+      class ActiveRecord$FinderMethods extends RueModule {}
+      class ActiveRecord$Associations$CollectionProxy extends RueModule {}
+      class ActiveRecord$Associations$Impl extends RueModule {
+        static __rue_abstract_class__ = true;
+      }
+      ActiveRecord$Associations$CollectionProxy.rueModuleExtendedFrom(
+        ActiveRecord$Associations$Impl,
+        {
+          only: [],
+        }
+      );
+      // RueModule include RueModule pattern
+      class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {}
+      class ActiveRecord$Persistence extends RueModule {}
+      class ActiveRecord$Impl extends ActiveModel$Base {
+        static __rue_abstract_class__ = true;
+      }
+      ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, { only: [] });
+      ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, { only: [] });
+      ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, { only: [] });
+      ActiveRecord$FinderMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: [] });
+      ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, { only: [] });
+      class ActiveRecord$Base extends ActiveRecord$Impl {}
+      class ActiveRecord extends ActiveRecord$Base {}
+
+      it('should correctly', () => {
+        expect(Support.getAncestors(ActiveRecord, (obj) => obj['name'])).toEqual([
+          'ActiveRecord',
+          'ActiveRecord$Base',
+          'ActiveRecord$Impl',
+          'ActiveRecord$Persistence',
+          'ActiveRecord$Associations',
+          'ActiveRecord$FinderMethods',
+          'ActiveModel$Base',
+          'ActiveModel$Impl',
+          'ActiveModel$Translation',
+          'ActiveModel$Validations',
+          '',
+          undefined,
         ]);
       });
     });
