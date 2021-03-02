@@ -60,10 +60,11 @@ export class Repl$Commands$Definitions$Base {
         } else if (isStatic) {
           // maybeProto is methodName
           const klass = repl.context[maybeKlassName];
-          const ownerKlassName = Support.getOwnerFrom(klass, maybeProto)['name'];
+          const ownerKlass = Support.getOwnerFrom(klass, maybeProto);
+          const ownerKlassName = ownerKlass['name'];
           const metadata = definitions[ownerKlassName]['metadata'];
           methodData = definitions[ownerKlassName]['static'][maybeProto];
-          const isRueModule = klass['__rue_module__'];
+          const isRueModule = ownerKlass['__rue_module__'];
           console.log(
             this._formatMethodDefinition({
               klassName: ownerKlassName,
@@ -73,8 +74,6 @@ export class Repl$Commands$Definitions$Base {
             })
           );
         } else if (isUDFInstance) {
-          const instance = this.evalInContext(maybeKlassName, repl.context);
-          const klassName = instance.constructor.name;
           // maybeProto is methodName
           console.error(
             `Documentation was not found about '${input}' in REPL context. It may be a user-defined instace.`
@@ -95,10 +94,11 @@ export class Repl$Commands$Definitions$Base {
             );
           } else {
             const klass = repl.context[maybeKlassName];
-            const ownerKlassName = Support.getOwnerFrom(new klass(), methodName)['name'];
+            const ownerKlass = Support.getOwnerFrom(new klass(), methodName);
+            const ownerKlassName = ownerKlass['name'];
             methodData = definitions[ownerKlassName]['instance'][methodName];
             const metadata = definitions[ownerKlassName]['metadata'];
-            const isRueModule = klass['__rue_module__'];
+            const isRueModule = ownerKlass['__rue_module__'];
             console.log(
               this._formatMethodDefinition({
                 klassName: ownerKlassName,
