@@ -41,6 +41,7 @@ describe('Support(Info)', () => {
           'getMethodsWithNamespace',
           'getProperties',
           'getAncestors',
+          'getOwnerFrom',
         ],
         ActiveSupport$ImplBase: [],
         Function: ['apply', 'bind', 'call', 'toString'],
@@ -227,6 +228,58 @@ describe('Support(Info)', () => {
           '',
           undefined,
         ]);
+      });
+    });
+  });
+
+  describe('getOwnerFrom', () => {
+    describe('when static', () => {
+      class GetOwnerFromRueModuleWhenStatic extends RueModule {
+        static a() {
+          return 'a';
+        }
+      }
+
+      class GetOwnerFromWhenStatic$Impl {
+        static __rue_impl_class__ = true;
+        static a: () => string;
+      }
+
+      GetOwnerFromRueModuleWhenStatic.rueModuleExtendedFrom(GetOwnerFromWhenStatic$Impl, {
+        only: ['a'],
+      });
+
+      class GetOwnerFrom extends GetOwnerFromWhenStatic$Impl {}
+
+      it('should correctly', () => {
+        expect(Support.getOwnerFrom(GetOwnerFrom, 'a')['name']).toEqual(
+          'GetOwnerFromRueModuleWhenStatic'
+        );
+      });
+    });
+
+    describe('when instance', () => {
+      class GetOwnerFromRueModuleWhenInstance extends RueModule {
+        a() {
+          return 'a';
+        }
+      }
+
+      class GetOwnerFromWhenInstance$Impl {
+        static __rue_impl_class__ = true;
+        static a: () => string;
+      }
+
+      GetOwnerFromRueModuleWhenInstance.rueModuleIncludedFrom(GetOwnerFromWhenInstance$Impl, {
+        only: ['a'],
+      });
+
+      class GetOwnerFrom extends GetOwnerFromWhenInstance$Impl {}
+
+      it('should correctly', () => {
+        expect(Support.getOwnerFrom(new GetOwnerFrom(), 'a')['name']).toEqual(
+          'GetOwnerFromRueModuleWhenInstance'
+        );
       });
     });
   });
