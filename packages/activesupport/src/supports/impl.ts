@@ -1,3 +1,6 @@
+// locals
+import { RueModule } from '@/modules';
+
 // modules
 import { InfoModule } from './modules';
 
@@ -20,13 +23,14 @@ abstract class ActiveSupport$Impl extends ActiveSupport$ImplBase {
     obj?: Function | object,
     transformer?: (obj: Function) => T
   ) => T[];
+  static getOwnerFrom: (obj: Function | object, propName: string) => Function | RueModule;
 }
 
 interface ActiveSupport$Impl {}
 
 // module extend
 InfoModule.rueModuleExtendedFrom(ActiveSupport$Impl, {
-  only: ['getMethodsWithNamespace', 'getProperties', 'getAncestors'],
+  only: ['getMethodsWithNamespace', 'getProperties', 'getAncestors', 'getOwnerFrom'],
 });
 
 export { ActiveSupport$Impl };

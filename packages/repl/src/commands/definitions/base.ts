@@ -1,5 +1,6 @@
 // rue packages
 import definitions from '@rue/definition';
+import { ActiveSupport$Base as Support } from '@rue/activesupport';
 
 // third party
 import chalk from 'chalk';
@@ -58,22 +59,30 @@ export class Repl$Commands$Definitions$Base {
           );
         } else if (isStatic) {
           // maybeProto is methodName
-          const metadata = definitions[maybeKlassName]['metadata'];
-          methodData = definitions[maybeKlassName]['static'][maybeProto];
           const klass = repl.context[maybeKlassName];
+          const ownerKlassName = Support.getOwnerFrom(klass, maybeProto)['name'];
+          const metadata = definitions[ownerKlassName]['metadata'];
+          methodData = definitions[ownerKlassName]['static'][maybeProto];
           const isRueModule = klass['__rue_module__'];
           console.log(
             this._formatMethodDefinition({
-              klassName: maybeKlassName,
+              klassName: ownerKlassName,
               methodData,
               metadata,
               isRueModule,
             })
           );
+        } else if (isUDFInstance) {
+          const instance = this.evalInContext(maybeKlassName, repl.context);
+          const klassName = instance.constructor.name;
+          // maybeProto is methodName
+          console.error(
+            `Documentation was not found about '${input}' in REPL context. It may be a user-defined instace.`
+          );
         } else if (isInstance) {
-          const metadata = definitions[maybeKlassName]['metadata'];
           if (methodName == 'constructor') {
             methodData = definitions[maybeKlassName]['$constructor'];
+            const metadata = definitions[maybeKlassName]['metadata'];
             const klass = repl.context[maybeKlassName];
             const isRueModule = klass['__rue_module__'];
             console.log(
@@ -85,32 +94,27 @@ export class Repl$Commands$Definitions$Base {
               })
             );
           } else {
-            methodData = definitions[maybeKlassName]['instance'][methodName];
             const klass = repl.context[maybeKlassName];
+            const ownerKlassName = Support.getOwnerFrom(new klass(), methodName)['name'];
+            methodData = definitions[ownerKlassName]['instance'][methodName];
+            const metadata = definitions[ownerKlassName]['metadata'];
             const isRueModule = klass['__rue_module__'];
             console.log(
               this._formatMethodDefinition({
-                klassName: maybeKlassName,
+                klassName: ownerKlassName,
                 methodData,
                 metadata,
                 isRueModule,
               })
             );
           }
-        } else if (isUDFInstance) {
-          const instance = this.evalInContext(maybeKlassName, repl.context);
-          const klassName = instance.constructor.name;
-          // maybeProto is methodName
-          console.error(
-            `Documentation was not found about '${klassName}.prototype.${maybeProto}' in REPL context. It may be a user-defined instace.`
-          );
         } else {
           console.error(
             `'${input}' is an unsupported format or does not exist on the REPL context.`
           );
         }
       } catch (e) {
-        console.error(e);
+        console.error(`'${input}' does not exist on the REPL context.`);
       }
     } else {
       console.error(`'undefined' does not exist on the REPL context.`);
