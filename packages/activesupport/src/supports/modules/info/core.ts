@@ -95,22 +95,29 @@ export class ActiveSupport$Info extends RueModule {
     // RueModule's ancestor chain and JavaScript prototype chain are not related.
     // Therefore you have to reassemble the chain yourself
 
-    const _getAncestors = <T>(
-      f: Function,
-      ancestors: T[],
-      transformer: (obj: Function | object) => T
-    ) => {
+    const _getAncestors = <T>(f: Function, ancestors: T[]) => {
       const proto = Object.getPrototypeOf(f);
 
       if (proto == null) return ancestors;
-
       const fRueModuleAncestors = new RueModuleAncestorController(f);
+
       if (fRueModuleAncestors.data.length > 0) {
-        ancestors.push(...fRueModuleAncestors.ancestors().map(transformer));
-        return _getAncestors(proto, ancestors, transformer);
+        fRueModuleAncestors.ancestors().forEach((ancestor: T) => {
+          const proto = Object.getPrototypeOf(ancestor);
+          if (proto.__rue_abstract_class__) {
+            const controller = new RueModuleAncestorController(proto);
+            const willAddAncestors = [ancestor, ...controller.ancestors()];
+            willAddAncestors.forEach((childAncestor: T) => {
+              if (!ancestors.includes(childAncestor)) ancestors.push(childAncestor);
+            });
+          } else {
+            if (!ancestors.includes(ancestor)) ancestors.push(ancestor);
+          }
+        });
+        return _getAncestors(proto, ancestors);
       } else {
-        if (f && f['name']) ancestors.push(transformer(f));
-        return _getAncestors(proto, ancestors, transformer);
+        if (f && f['name'] && !ancestors.includes(f as any)) ancestors.push(f as any);
+        return _getAncestors(proto, ancestors);
       }
     };
 
@@ -148,18 +155,18 @@ export class ActiveSupport$Info extends RueModule {
     let useTransformer;
     if (transformer) {
       useTransformer = transformer;
-      ancestors = _getAncestors(target, ancestors, transformer);
+      ancestors = _getAncestors(target, ancestors);
     } else {
       useTransformer = defaultTransformer;
-      ancestors = _getAncestors(target, ancestors, defaultTransformer);
+      ancestors = _getAncestors(target, ancestors);
     }
 
     // Add base class to ancestors
-    const funcAncs = useTransformer(Function.prototype);
-    const objAncs = useTransformer(Object.prototype);
+    const funcAncs = Function.prototype;
+    const objAncs = Object.prototype;
     if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
     if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
 
-    return ancestors;
+    return ancestors.map(useTransformer);
   }
 }

@@ -126,8 +126,8 @@ describe('Support(Info)', () => {
           'TestGetAncestors',
           'ActiveSupport$Base',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
+          'ActiveSupport$Info (RueModule)',
           'Function',
           'Object',
         ]);
@@ -139,8 +139,8 @@ describe('Support(Info)', () => {
         expect(Support.getAncestors(Support)).toEqual([
           'ActiveSupport$Base',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
+          'ActiveSupport$Info (RueModule)',
           'Function',
           'Object',
         ]);
@@ -152,8 +152,8 @@ describe('Support(Info)', () => {
         expect(Support.getAncestors(new Support())).toEqual([
           'ActiveSupport$Base',
           'ActiveSupport$Impl',
-          'ActiveSupport$Info (RueModule)',
           'ActiveSupport$ImplBase',
+          'ActiveSupport$Info (RueModule)',
           'Function',
           'Object',
         ]);
@@ -165,8 +165,8 @@ describe('Support(Info)', () => {
         expect(Support.getAncestors(undefined, (obj) => `test.${obj['name']}`)).toEqual([
           'test.ActiveSupport$Base',
           'test.ActiveSupport$Impl',
-          'test.ActiveSupport$Info',
           'test.ActiveSupport$ImplBase',
+          'test.ActiveSupport$Info',
           'test.',
           'test.undefined',
         ]);
@@ -215,10 +215,12 @@ describe('Support(Info)', () => {
           'ActiveRecord',
           'ActiveRecord$Base',
           'ActiveRecord$Impl',
+          'ActiveModel$Base',
           'ActiveRecord$Persistence',
           'ActiveRecord$Associations',
+          'ActiveRecord$Associations$Impl',
+          'ActiveRecord$Associations$CollectionProxy',
           'ActiveRecord$FinderMethods',
-          'ActiveModel$Base',
           'ActiveModel$Impl',
           'ActiveModel$Translation',
           'ActiveModel$Validations',
