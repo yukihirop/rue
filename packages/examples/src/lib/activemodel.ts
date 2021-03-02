@@ -1,4 +1,7 @@
 import { ActiveModel$Base } from '@rue/activemodel';
+import i18n from '@/locales';
+
+// types
 import type * as amt from '@rue/activemodel';
 
 export class ActiveModel extends ActiveModel$Base {
@@ -7,6 +10,6 @@ export class ActiveModel extends ActiveModel$Base {
   }
 
   static translate(key: string, opts?: any): string {
-    return `test.${key}`;
+    return i18n.t(key, opts);
   }
 }

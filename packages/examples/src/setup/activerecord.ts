@@ -12,5 +12,3 @@ export class ActiveRecord extends ActiveRecord$Base {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 }
-
-ActiveRecord.loadTranslator();

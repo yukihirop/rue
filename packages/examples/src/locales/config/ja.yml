@@ -1,0 +1,16 @@
+rue:
+  models:
+    TmpUser:
+      name: 名前
+      age: 年齢
+  records:
+    User:
+      name: 名前
+      age: 年齢
+    Account:
+      name: 名前
+      email: Eメール
+  forms:
+    ContactFrom:
+      name: 名前
+      email: Eメール

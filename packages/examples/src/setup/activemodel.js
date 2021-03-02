@@ -14,6 +14,4 @@ class ActiveModel extends ActiveModel$Base {
   }
 }
 
-ActiveModel.loadTranslator();
-
 exports.ActiveModel = ActiveModel;

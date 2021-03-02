@@ -6,6 +6,7 @@ import flatten from 'obj-flatten';
 import unflatten from 'obj-unflatten';
 
 // local
+import { ActiveModel$Base } from '@/models';
 import * as Validator from './validators';
 import { registryForValidations as Registry } from '@/registries';
 
@@ -84,10 +85,6 @@ export class ActiveModel$Validations extends RueModule {
     return 'model';
   }
 
-  static translate(key: string, opts?: any): string {
-    throw "Please implement '[static] translate' in Inherited Class.";
-  }
-
   static validates<T = any, U extends ActiveModel$Validations = any>(
     propKey: string,
     opts: t.Options<T, U>
@@ -100,7 +97,8 @@ export class ActiveModel$Validations extends RueModule {
       Registry.update(this.name, propKey, []);
     }
 
-    const translate = this.__t.bind(this);
+    // @ts-ignore
+    const translate = (this as typeof ActiveModel$Base).__t.bind(this);
 
     const ifEval = <K, V>(propVal: K, self: V): boolean => {
       if (opts.if) {
@@ -141,7 +139,8 @@ export class ActiveModel$Validations extends RueModule {
           propVal: K,
           self: V
         ) => string;
-        return fnMessage(this.__t(propKey), propVal, self) as string;
+        // @ts-ignore
+        return fnMessage((this as typeof ActiveModel$Base).__t(propKey), propVal, self) as string;
       }
     };
 
@@ -267,9 +266,5 @@ export class ActiveModel$Validations extends RueModule {
             : [],
       ]);
     }
-  }
-
-  private static __t(propKey: string): string {
-    return this.translate(`${this.objType()}s.${this.name}.${propKey}`).toString();
   }
 }

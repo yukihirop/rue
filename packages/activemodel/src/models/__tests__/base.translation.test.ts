@@ -17,12 +17,15 @@ describe('Model(Translation)', () => {
       }
     }
 
-    TestHumanPropertyNameModel.loadTranslator();
     const model = new TestHumanPropertyNameModel({ profile: { name: 'name_4', age: 4 } });
 
     it('should correctly', () => {
-      expect(model.humanPropertyName('profile.name')).toEqual('test.profile.name');
-      expect(model.humanPropName('profile.age')).toEqual('test.profile.age');
+      expect(model.humanPropertyName('profile.name')).toEqual(
+        'test.rue.models.TestHumanPropertyNameModel.profile.name'
+      );
+      expect(model.humanPropName('profile.age')).toEqual(
+        'test.rue.models.TestHumanPropertyNameModel.profile.age'
+      );
     });
   });
 });

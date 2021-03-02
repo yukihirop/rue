@@ -1,6 +1,5 @@
 // locals
 import { ActiveModel$Base as Model } from '../base';
-import { registryForTranslator as Registry } from '@/registries';
 
 describe('Model', () => {
   describe('constructor', () => {
@@ -23,23 +22,6 @@ describe('Model', () => {
         expect(model.name).toEqual('name');
         expect(model.age).toEqual(20);
       });
-    });
-  });
-
-  describe('[static] loadTranslator', () => {
-    class TestLoadTranslatorModel extends Model {
-      public name: string;
-      public age: number;
-
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-    }
-
-    it('should correctly', () => {
-      expect(Registry.data['ActiveModel']).toEqual(undefined);
-      TestLoadTranslatorModel.loadTranslator();
-      expect(Registry.data['ActiveModel']['translate'].toString()).not.toEqual('');
     });
   });
 

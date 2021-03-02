@@ -1,0 +1,16 @@
+rue:
+  models:
+    TmpUser:
+      name: Name
+      age: Age
+  records:
+    User:
+      name: Name
+      age: Age
+    Account:
+      name: name
+      email: Email
+  forms:
+    ContactFrom:
+      name: Name
+      email: Email

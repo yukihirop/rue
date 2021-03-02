@@ -22,6 +22,4 @@ class ActiveRecord extends ActiveRecord$Base {
   }
 }
 
-ActiveRecord.loadTranslator();
-
 exports.ActiveRecord = ActiveRecord;

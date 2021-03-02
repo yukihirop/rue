@@ -11,7 +11,7 @@ const projectRoot = require('pkg-dir').sync() || process.cwd();
 const isTypeScript = require('fs').existsSync(path.join(projectRoot, 'tsconfig.json'));
 const defaultExtname = isTypeScript ? 'ts' : 'js';
 export default class Setup extends Command {
-  static description = "Setup '<activerecord/activemodel/activeform>' in your project";
+  static description = "Setup '<activerecord|activemodel|activeform>' in your project";
 
   static flags = {
     extname: flags.string({
@@ -40,11 +40,15 @@ export default class Setup extends Command {
   async run() {
     const { flags, args } = this.parse(Setup);
 
-    Generator$Packages.generate({
-      outputDirPath: args.saveDir,
-      pkgName: args.pkgName,
-      extname: (flags.extname || defaultExtname) as 'js' | 'ts',
-      force: flags.force,
-    });
+    try {
+      Generator$Packages.generate({
+        outputDirPath: args.saveDir,
+        pkgName: args.pkgName,
+        extname: (flags.extname || defaultExtname) as 'js' | 'ts',
+        force: flags.force,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

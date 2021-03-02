@@ -1,4 +1,7 @@
 import { ActiveModel$Base } from '@rue/activemodel';
+import i18n from '@/locales';
+
+// types
 import * as t from '@rue/activemodel';
 
 export class ActiveForm extends ActiveModel$Base {
@@ -7,9 +10,6 @@ export class ActiveForm extends ActiveModel$Base {
   }
 
   static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw 'Please override';
+    return i18n.t(key, opts);
   }
 }

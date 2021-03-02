@@ -8,5 +8,3 @@ export class ActiveModel extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveModel.loadTranslator();
