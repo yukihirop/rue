@@ -6,7 +6,6 @@ import flatten from 'obj-flatten';
 
 // local
 import { ActiveModel$Impl } from './impl';
-import { registryForTranslator as Registry } from '@/registries';
 
 // types
 import type * as t from './types';
@@ -16,11 +15,6 @@ const TRANSLATE_KEY = ActiveModel$Impl['TRANSLATE_KEY'];
 
 export class ActiveModel$Base extends ActiveModel$Impl {
   public errors: Validations$Errors;
-
-  static loadTranslator() {
-    // register translate
-    Registry.create('ActiveModel', TRANSLATE_KEY, this.translate);
-  }
 
   static getProperties(): string[] {
     return Support.getProperties();

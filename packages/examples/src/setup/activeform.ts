@@ -13,5 +13,3 @@ export class ActiveForm extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveForm.loadTranslator();

@@ -15,8 +15,6 @@ export class ActiveRecord extends ActiveRecord$Base {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 }
-
-ActiveRecord.loadTranslator();
 `;
 
 template.activerecord.defaultJS = `const { ActiveRecord$Base } = require('@rue/activerecord');
@@ -43,8 +41,6 @@ class ActiveRecord extends ActiveRecord$Base {
   }
 }
 
-ActiveRecord.loadTranslator();
-
 exports.ActiveRecord = ActiveRecord;
 `;
 
@@ -58,8 +54,6 @@ export class ActiveModel extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveModel.loadTranslator();
 `;
 
 template.activemodel.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
@@ -77,8 +71,6 @@ class ActiveModel extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveModel.loadTranslator();
 
 exports.ActiveModel = ActiveModel;
 `;
@@ -98,8 +90,6 @@ export class ActiveForm extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveForm.loadTranslator();
 `;
 
 template.activeform.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
@@ -124,8 +114,6 @@ class ActiveForm extends ActiveModel$Base {
     throw 'Please override';
   }
 }
-
-ActiveForm.loadTranslator();
 
 exports.ActiveForm = ActiveForm;
 `;

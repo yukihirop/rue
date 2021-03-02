@@ -2,7 +2,6 @@
 
 ## Methods
 
-- [x] [static]loadTranslator
 - [x] [static]getProperties
 - [x] toObj
 

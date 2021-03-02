@@ -21,6 +21,4 @@ class ActiveForm extends ActiveModel$Base {
   }
 }
 
-ActiveForm.loadTranslator();
-
 exports.ActiveForm = ActiveForm;
