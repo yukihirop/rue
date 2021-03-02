@@ -17,7 +17,7 @@ import * as acpt from '@/records/modules/associations/modules/collection_proxy';
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
   // Prepared for checking with hasOwnProperty ()
-  static __rue_abstract_class__ = Support$ImplBase.__rue_abstract_class__;
+  static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
   static __rue_ancestors__ = [];
 
   // ActiveRecord$Persistence

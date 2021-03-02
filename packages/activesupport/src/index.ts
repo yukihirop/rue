@@ -1,6 +1,6 @@
 // classes
 export { ActiveSupport$Base, ActiveSupport$ImplBase } from './supports';
-export { Registry } from './registries';
+export { ActiveSupport$Registry$Base as Registry } from './registries';
 export { RueModule } from './modules';
 
 // types

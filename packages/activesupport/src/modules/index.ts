@@ -1,5 +1,5 @@
 // methods
-export { RueModule } from './base';
+export { RueModule, RueModuleAncestorController } from './base';
 
 // types
-export { RueModuleOptions } from './types';
+export { RueModuleOptions, RueModuleAncestors } from './types';

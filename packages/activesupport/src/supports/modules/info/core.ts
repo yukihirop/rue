@@ -1,5 +1,5 @@
 // locals
-import { RueModule } from '@/modules';
+import { RueModule, RueModuleAncestorController } from '@/modules';
 
 // types
 import * as t from './types';
@@ -11,13 +11,13 @@ export class ActiveSupport$Info extends RueModule {
   // Support Rue Module
   // https://qiita.com/suin/items/b807769388c54c57a8be
   static getMethodsWithNamespace(obj?: Function | object | RueModule): t.MethodWithNamespace[] {
-    const { RUE_MODULE, RUE_ABSTRACT_CLASS } = RueModule;
+    const { RUE_MODULE, RUE_IMPL_CLASS } = RueModule;
 
     const publicOnlyFilter = (name: string) => !name.startsWith('_');
     const removePrototypeFilter = (obj: Function) => (name: string) =>
       obj.name != '' ? name != 'prototype' : true;
     const skipImplClassFilter = (obj: Function) => (name: string) =>
-      obj.hasOwnProperty(RUE_ABSTRACT_CLASS) ? false : true;
+      obj.hasOwnProperty(RUE_IMPL_CLASS) ? false : true;
     const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_METHODS.includes(name);
 
     const getOwnMethods = (obj: Function | RueModule) => {
@@ -89,39 +89,35 @@ export class ActiveSupport$Info extends RueModule {
     obj?: Function | object,
     transformer?: (obj: Function) => T
   ): T[] {
-    const { RUE_MODULE, RUE_ANCESTORS } = RueModule;
+    const { RUE_MODULE } = RueModule;
 
-    const _getAncestors = <T>(
-      f: Function,
-      ancestors: T[],
-      transformer: (obj: Function | object) => T
-    ) => {
+    // @important
+    // RueModule's ancestor chain and JavaScript prototype chain are not related.
+    // Therefore you have to reassemble the chain yourself
+
+    const _getAncestors = <T>(f: Function, ancestors: T[]) => {
       const proto = Object.getPrototypeOf(f);
 
-      if (proto == null) {
-        const funcAncs = transformer(Function.prototype);
-        const objAncs = transformer(Object.prototype);
-        if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
-        if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
-        return ancestors;
-      }
+      if (proto == null) return ancestors;
+      const fRueModuleAncestors = new RueModuleAncestorController(f);
 
-      // not f[RUE_ANCESTOR]
-      // Even if you refer to it directly, you will see what is inherited.
-      if (f.hasOwnProperty(RUE_ANCESTORS)) {
-        if (f === RueModule) {
-          // If you don't change the order, it looks like it is included or extended in the base module RueModule.
-          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
-          const rueModule = transformer(f);
-          if (!ancestors.includes(rueModule)) ancestors.push(rueModule);
-        } else {
-          ancestors.push(transformer(f));
-          ancestors.push(...f[RUE_ANCESTORS].map(transformer));
-        }
-        return _getAncestors(proto, ancestors, transformer);
+      if (fRueModuleAncestors.data.length > 0) {
+        fRueModuleAncestors.ancestors().forEach((ancestor: T) => {
+          const proto = Object.getPrototypeOf(ancestor);
+          if (proto.__rue_impl_class__) {
+            const controller = new RueModuleAncestorController(proto);
+            const willAddAncestors = [ancestor, ...controller.ancestors()];
+            willAddAncestors.forEach((childAncestor: T) => {
+              if (!ancestors.includes(childAncestor)) ancestors.push(childAncestor);
+            });
+          } else {
+            if (!ancestors.includes(ancestor)) ancestors.push(ancestor);
+          }
+        });
+        return _getAncestors(proto, ancestors);
       } else {
-        ancestors.push(transformer(f));
-        return _getAncestors(proto, ancestors, transformer);
+        if (f && f['name'] && !ancestors.includes(f as any)) ancestors.push(f as any);
+        return _getAncestors(proto, ancestors);
       }
     };
 
@@ -156,10 +152,21 @@ export class ActiveSupport$Info extends RueModule {
     }
 
     let ancestors = [];
+    let useTransformer;
     if (transformer) {
-      return _getAncestors(target, ancestors, transformer);
+      useTransformer = transformer;
+      ancestors = _getAncestors(target, ancestors);
     } else {
-      return _getAncestors(target, ancestors, defaultTransformer);
+      useTransformer = defaultTransformer;
+      ancestors = _getAncestors(target, ancestors);
     }
+
+    // Add base class to ancestors
+    const funcAncs = Function.prototype;
+    const objAncs = Object.prototype;
+    if (!ancestors.includes(funcAncs)) ancestors.push(funcAncs);
+    if (!ancestors.includes(objAncs)) ancestors.push(objAncs);
+
+    return ancestors.map(useTransformer);
   }
 }
