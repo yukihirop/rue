@@ -57,7 +57,7 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
     fn: acpt.CollectionProxy$ScopeFn<T>
   ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
-    ActiveRecord$Associations.defineAssociations(self);
+    ActiveRecord$Associations._defineAssociations(self);
   }
   // ActiveRecord$Scoping
   static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;

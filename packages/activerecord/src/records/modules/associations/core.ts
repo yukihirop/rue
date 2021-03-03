@@ -138,7 +138,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     }
   }
 
-  static defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
+  static _defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
     const allAssociations = Registry.data[self.constructor.name];
     if (allAssociations == undefined) return;
 
