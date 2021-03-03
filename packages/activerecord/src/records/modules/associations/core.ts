@@ -12,8 +12,6 @@ import { errObj, ErrCodes } from '@/errors';
 
 // types
 import * as t from './types';
-// types
-import * as mt from './modules';
 
 export const enum Association {
   belongsTo = 'belongsTo',

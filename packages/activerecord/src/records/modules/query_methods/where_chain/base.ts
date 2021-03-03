@@ -1,10 +1,15 @@
+// locals
+import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
+
+// types
 import * as t from './types';
 
-export class ActiveRecord$QueryMethods$WhereChain<T = any> {
+export class ActiveRecord$QueryMethods$WhereChain<T extends ActiveRecord$Base> {
   private params: t.WhereParams;
-  private allPromiseFn: () => Promise<T[]>;
+  private allPromiseFn: () => Promise<ActiveRecord$Relation<T>>;
 
-  constructor(allPromiseFn: () => Promise<T[]>) {
+  constructor(allPromiseFn: () => Promise<ActiveRecord$Relation<T>>) {
     this.params = {};
     this.allPromiseFn = allPromiseFn;
   }
@@ -33,8 +38,10 @@ export class ActiveRecord$QueryMethods$WhereChain<T = any> {
     return `${klassName} ${JSON.stringify(sorted, null, 2)}`;
   }
 
+  // First evaluated here
   toPromiseArray(): Promise<T[]> {
-    return this.allPromiseFn().then((records: T[]) => {
+    return this.allPromiseFn().then((relation: ActiveRecord$Relation<T>) => {
+      const records = relation.toA();
       const result = records.reduce((acc: Array<T>, record: T) => {
         const isMatch = Object.keys(this.params)
           .map((key: string) => {

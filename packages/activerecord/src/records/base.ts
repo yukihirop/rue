@@ -1,5 +1,6 @@
 // local
 import { cacheForRecords as Cache } from '@/registries';
+import { ActiveRecord$Relation } from '@/records/relations';
 import { ActiveRecord$QueryMethods$WhereChain } from './modules';
 import { ActiveRecord$Impl } from './impl';
 
@@ -42,35 +43,10 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
     Cache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
   }
 
-  static all<T extends ActiveRecord$Base>(): Promise<Array<T>> {
-    const klassName = this.name;
-
-    if (Cache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
-      return Promise.resolve(Cache.read<T[]>(klassName, RECORD_ALL, 'array'));
-    } else {
-      return new Promise((resolve, reject) => {
-        this.fetchAll<T>()
-          .then((data) => {
-            const records = data.map((d) => {
-              const record = new this(d);
-
-              record.save();
-
-              return record;
-            }) as Array<T>;
-
-            return resolve(records);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    }
-  }
-
   static where<T extends ActiveRecord$Base>(
     params: ft.QueryMethods$WhereParams
-  ): ActiveRecord$QueryMethods$WhereChain {
+  ): ActiveRecord$QueryMethods$WhereChain<T> {
+    // Records cannot be created correctly without lazy evaluation
     const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => this.all<T>());
     return whereChain.where<T>(params);
   }

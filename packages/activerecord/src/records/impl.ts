@@ -4,10 +4,12 @@ import { ActiveModel$Base } from '@rue/activemodel';
 
 // local
 import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$FinderMethods,
   ActiveRecord$Associations,
+  ActiveRecord$Scoping,
 } from '@/records/modules';
 
 // types
@@ -51,10 +53,11 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
     scopeName: string,
     fn: acpt.CollectionProxy$ScopeFn<T>
   ) => void;
-
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations.defineAssociations(self);
   }
+  // ActiveRecord$Scoping
+  static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;
 }
 
 interface ActiveRecord$Impl {
@@ -88,5 +91,6 @@ ActiveRecord$FinderMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['fi
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
+ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
 
 export { ActiveRecord$Impl };

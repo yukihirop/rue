@@ -221,7 +221,8 @@ describe('Record(Persistence)', () => {
     describe('when default', () => {
       class TestDestroyAllDefaultRecord extends TestDestroyAllRecord {}
       it('should return delete data all', (done) => {
-        TestDestroyAllDefaultRecord.all<TestDestroyAllDefaultRecord>().then((records) => {
+        TestDestroyAllDefaultRecord.all<TestDestroyAllDefaultRecord>().then((relation) => {
+          const records = relation.toA();
           expect(records[0].profile.name).toEqual('name_1');
           expect(records[0].profile.age).toEqual(1);
           expect(records[1].profile.name).toEqual('name_2');
@@ -236,7 +237,8 @@ describe('Record(Persistence)', () => {
     describe("when specify 'filter'", () => {
       class TestDestroyAllFilterRecord extends TestDestroyAllRecord {}
       it('should return filtered data all', (done) => {
-        TestDestroyAllFilterRecord.all<TestDestroyAllFilterRecord>().then((records) => {
+        TestDestroyAllFilterRecord.all<TestDestroyAllFilterRecord>().then((relation) => {
+          const records = relation.toA();
           expect(records[0].profile.name).toEqual('name_1');
           expect(records[0].profile.age).toEqual(1);
           expect(records[1].profile.name).toEqual('name_2');

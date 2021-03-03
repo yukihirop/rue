@@ -34,13 +34,12 @@ describe('Record(Filter)', () => {
               expect(records.length).toEqual(1);
               expect(records[0].name).toEqual('name_1');
               expect(records[0].age).toEqual(1);
-              expect(Cache.read<TestWhereRecord[]>('TestWhereRecord', RECORD_ALL).length).toEqual(
-                2
-              );
-              expect(Cache.read('TestWhereRecord', RECORD_ALL)[0].name).toEqual('name_1');
-              expect(Cache.read('TestWhereRecord', RECORD_ALL)[0].age).toEqual(1);
-              expect(Cache.read('TestWhereRecord', RECORD_ALL)[0].errors).toEqual({});
-              expect(Cache.read('TestWhereRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+              const cacheAll = Cache.read<TestWhereRecord[]>('TestWhereRecord', RECORD_ALL);
+              expect(cacheAll.length).toEqual(2);
+              expect(cacheAll[0].name).toEqual('name_1');
+              expect(cacheAll[0].age).toEqual(1);
+              expect(cacheAll[0].errors).toEqual({});
+              expect(cacheAll[0][RECORD_ID]).toEqual(1);
               expect(Cache.read('TestWhereRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
               done();
             });
