@@ -7,7 +7,7 @@ import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
 import { ActiveRecord$Relation } from '@/records/relations';
 
 // types
-import * as cf from '@/types';
+import * as ct from '@/types';
 
 export class ActiveRecord$Scoping$Named extends RueModule {
   static all<T extends ActiveRecord$Base>(): Promise<ActiveRecord$Relation<T>> {
@@ -22,8 +22,9 @@ export class ActiveRecord$Scoping$Named extends RueModule {
     } else {
       return new Promise((resolve, reject) => {
         _this
+          // fetchAll is defined in ActiveRecord $ Base but is protected so I get a typescript error.
           // @ts-ignore
-          .fetchAll<T>()
+          .fetchAll()
           .then((data) => {
             const records = data.map((d) => {
               const record = new _this(d);
