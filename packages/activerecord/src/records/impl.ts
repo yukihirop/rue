@@ -5,16 +5,19 @@ import { ActiveModel$Base } from '@rue/activemodel';
 // local
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$FinderMethods,
   ActiveRecord$Associations,
   ActiveRecord$Scoping,
+  ActiveRecord$QueryMethods,
 } from '@/records/modules';
 
 // types
 import * as at from '@/records/modules/associations';
 import * as acpt from '@/records/modules/associations/modules/collection_proxy';
+import * as qmt from '@/records/modules/query_methods';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
@@ -58,6 +61,10 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   }
   // ActiveRecord$Scoping
   static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;
+  // ActiveRecord$QueryMethods
+  static where: <T extends ActiveRecord$Base>(
+    params: qmt.QueryMethods$WhereParams
+  ) => ActiveRecord$QueryMethods$WhereChain<T>;
 }
 
 interface ActiveRecord$Impl {
@@ -92,5 +99,6 @@ ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
 ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
+ActiveRecord$QueryMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['where'] });
 
 export { ActiveRecord$Impl };

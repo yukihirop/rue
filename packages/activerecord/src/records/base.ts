@@ -42,12 +42,4 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
     Cache.create(klassName, RECORD_ALL, []);
     Cache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
   }
-
-  static where<T extends ActiveRecord$Base>(
-    params: ft.QueryMethods$WhereParams
-  ): ActiveRecord$QueryMethods$WhereChain<T> {
-    // Records cannot be created correctly without lazy evaluation
-    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => this.all<T>());
-    return whereChain.where<T>(params);
-  }
 }
