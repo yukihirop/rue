@@ -31,7 +31,7 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   static RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID;
   static destroyAll: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => T[];
   // ActiveRecord$FinderMethods
-  static findBy: <T extends ActiveRecord$Base>(params: { [key: string]: any }) => Promise<T>;
+  static findBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
   // ActiveRecord$Associations
   static belongsTo: <T extends ActiveRecord$Base = any>(
     relationName: string,
@@ -69,9 +69,10 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
 
 interface ActiveRecord$Impl {
   // ActiveRecord$Persistence
-  save(): boolean;
+  save(opts?: { validate: boolean }): boolean;
   saveOrThrow(): void | boolean;
-  destroy(): ActiveRecord$Base;
+  destroy(): this;
+  update<T>(params?: Partial<T>): boolean;
   // ActiveRecord$Associations
   primaryKey: at.Associations$PrimaryKey;
   hasAndBelongsToMany<T extends ActiveRecord$Associations = any>(
@@ -84,7 +85,7 @@ interface ActiveRecord$Impl {
 
 // includes module
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['save', 'saveOrThrow', 'destroy'],
+  only: ['save', 'saveOrThrow', 'destroy', 'update'],
 });
 ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['hasAndBelongsToMany', 'releaseAndBelongsToMany'],

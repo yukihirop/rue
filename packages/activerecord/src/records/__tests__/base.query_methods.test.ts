@@ -97,17 +97,21 @@ describe('Record(Filter)', () => {
 
     describe('when records exists', () => {
       it('should correctly', (done) => {
-        TestFindByRecord.findBy<TestFindByRecord>({ name: 'name_1' }).then((record) => {
-          expect(record.name).toEqual('name_1');
-          expect(record.age).toEqual(1);
-          expect(Cache.read<TestFindByRecord[]>('TestFindByRecord', RECORD_ALL).length).toEqual(2);
-          expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].name).toEqual('name_1');
-          expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].age).toEqual(1);
-          expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].errors).toEqual({});
-          expect(Cache.read('TestFindByRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
-          expect(Cache.read('TestFindByRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
-          done();
-        });
+        TestFindByRecord.findBy<TestFindByRecord, TestFindByParams>({ name: 'name_1' }).then(
+          (record) => {
+            expect(record.name).toEqual('name_1');
+            expect(record.age).toEqual(1);
+            expect(Cache.read<TestFindByRecord[]>('TestFindByRecord', RECORD_ALL).length).toEqual(
+              2
+            );
+            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].name).toEqual('name_1');
+            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].age).toEqual(1);
+            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].errors).toEqual({});
+            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+            expect(Cache.read('TestFindByRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
+            done();
+          }
+        );
       });
     });
   });

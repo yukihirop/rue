@@ -30,6 +30,8 @@ export class ActiveRecord$Persistence extends RueModule {
       }
     });
     Cache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, leavedData);
+
+    deleteData.forEach((record) => Object.freeze(record));
     return deleteData;
   }
 
@@ -91,8 +93,34 @@ export class ActiveRecord$Persistence extends RueModule {
     _ensureCache(klassName);
     Cache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, filteredData);
 
+    Object.freeze(destroyThis);
     return destroyThis as ActiveRecord$Base;
   }
+
+  update<T>(params?: Partial<T>): boolean {
+    const updateProps = (record: ActiveRecord$Base) => {
+      Object.keys(params).forEach((key) => {
+        record[key] = params[key];
+      });
+    };
+
+    // @ts-ignore
+    const _this = this as ActiveRecord$Base;
+    const oldRecord = _clone(_this);
+    updateProps(oldRecord);
+
+    if (oldRecord.isValid()) {
+      updateProps(_this);
+      _this.save({ validate: false });
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+function _clone(original: ActiveRecord$Base): ActiveRecord$Base {
+  return Object.assign(Object.create(Object.getPrototypeOf(original)), original);
 }
 
 function _ensureCache(klassName: string) {

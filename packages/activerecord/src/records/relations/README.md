@@ -2,22 +2,25 @@
 
 ## Methods
 
-- [ ] build
+- [x] isAny
+- [x] isMany
+- [x] isNone
+- [x] isOne
+- [x] isBlank
+- [x] build
 - [x] create
-- [ ] createOrThrow
-- [ ] createOrFindBy
-- [ ] createOrFindByOrThrow
-- [ ] destroyBy
-- [ ] findOrCreateBy
-- [ ] findOrCreateByOrThrow
-- [ ] findOrInitializeBy
-- [ ] isNone
-- [ ] isOne
+- [x] createOrThrow
+- [x] createOrFindBy
+- [x] createOrFindByOrThrow
+- [x] destroyBy
+- [x] findOrCreateBy
+- [x] findOrCreateByOrThrow
+- [x] findOrInitializeBy
 - [x] toArray
 - [x] toA (alias to toArray)
-- [x] [static]destoryAll
-- [ ] [static]touchAll
-- [ ] [static]updateAll
+- [x] destoryAll
+- [ ] touchAll
+- [x] updateAll
 
 ## Reference
 

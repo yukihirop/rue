@@ -6,7 +6,9 @@ import { ActiveRecord$Base } from '@/records';
 
 // this is bound to an instance(class) of Record
 export class ActiveRecord$FinderMethods extends RueModule {
-  static findBy<T extends ActiveRecord$Base>(params: { [key: string]: any }): Promise<T> {
+  static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(
+    params: Partial<U>
+  ): Promise<T> {
     // @ts-ignore
     return (this as typeof ActiveRecord$Base)
       .where<T>(params)
@@ -15,7 +17,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
         if (records.length > 0) {
           return Promise.resolve(records[0]);
         } else {
-          return Promise.reject(undefined);
+          return Promise.resolve(undefined);
         }
       });
   }

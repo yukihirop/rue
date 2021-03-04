@@ -193,6 +193,59 @@ describe('Record(Persistence)', () => {
     });
   });
 
+  describe('#update', () => {
+    type UpdateRecordParams = {
+      name: string;
+      age: number;
+    };
+
+    class UpdateRecord extends Record {
+      public name: UpdateRecordParams['name'];
+      public age: UpdateRecordParams['age'];
+
+      static translate(key: string, opts?: any): string {
+        return key;
+      }
+
+      static fetchAll<T = UpdateRecordParams>(): Promise<T[]> {
+        // @ts-ignore
+        return Promise.resolve([
+          { name: 'name_1', age: 1 },
+          { name: 'name_2', age: 2 },
+        ]);
+      }
+    }
+
+    UpdateRecord.validates('name', { length: { is: 6 } });
+    UpdateRecord.validates('age', { numericality: { lessThan: 10 } });
+
+    describe('when return true', () => {
+      it('should correctly', (done) => {
+        UpdateRecord.all<UpdateRecord>().then((relation) => {
+          const records = relation.toA();
+          const record = records[0];
+          const updateResult = record.update<UpdateRecordParams>({ name: 'rename' });
+          expect(updateResult).toEqual(true);
+          expect(record.name).toEqual('rename');
+          done();
+        });
+      });
+    });
+
+    describe('whenn return false', () => {
+      it('should correctly', (done) => {
+        UpdateRecord.all<UpdateRecord>().then((relation) => {
+          const records = relation.toA();
+          const record = records[1];
+          const updateResult = record.update<UpdateRecordParams>({ age: 100 });
+          expect(updateResult).toEqual(false);
+          expect(record.age).toEqual(2);
+          done();
+        });
+      });
+    });
+  });
+
   describe('[static] destroyAll', () => {
     type TestDestroyAllParams = {
       profile: {

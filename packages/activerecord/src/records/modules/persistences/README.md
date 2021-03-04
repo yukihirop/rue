@@ -4,7 +4,6 @@
 
 - [x] destroy
 - [ ] destroyOrThrow
-- [x] [static]destroyAll
 - [x] save
 - [x] saveOrThrow
 - [ ] delete
@@ -21,6 +20,21 @@
 - [ ] updateProp
 - [ ] updateProps
 - [ ] updatePropsOrThrow
+
+## Static Methods
+
+- [x] destroyAll
+- [] create
+- [] createOrThrow
+- [] delete
+- [] destroy
+- [] insert
+- [] insertOrThrow
+- [] insertAll
+- [] insertAllOrThrow
+- [] update
+- [] upsert
+- [] upsertAll
 
 ## Reference
 
