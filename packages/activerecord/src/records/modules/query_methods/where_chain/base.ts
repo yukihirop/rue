@@ -14,15 +14,13 @@ export class ActiveRecord$QueryMethods$WhereChain<T extends ActiveRecord$Base> {
     this.allPromiseFn = allPromiseFn;
   }
 
-  // Give dummy generics(_U) to align method signatures
-  where<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
+  where<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {
     Object.assign(this.params, params);
     return this;
   }
 
-  // Give dummy generics(_U) to align method signatures
-  rewhere<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
-    this.params = params;
+  rewhere<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {
+    this.params = params || {};
     return this;
   }
 

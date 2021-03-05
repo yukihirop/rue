@@ -64,8 +64,11 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   // ActiveRecord$Scoping
   static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;
   // ActiveRecord$QueryMethods
-  static where: <T extends ActiveRecord$Base>(
-    params: qmt.QueryMethods$WhereParams
+  static where: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
+    params: Partial<U>
+  ) => ActiveRecord$QueryMethods$WhereChain<T>;
+  static rewhere: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
+    params: Partial<U>
   ) => ActiveRecord$QueryMethods$WhereChain<T>;
 }
 
@@ -102,6 +105,6 @@ ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
 ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
-ActiveRecord$QueryMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['where'] });
+ActiveRecord$QueryMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['where', 'rewhere'] });
 
 export { ActiveRecord$Impl };

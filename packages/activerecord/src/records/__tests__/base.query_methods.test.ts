@@ -28,7 +28,7 @@ describe('Record(Filter)', () => {
 
       describe("when use 'where' only", () => {
         it('should correctly', (done) => {
-          TestWhereRecord.where<TestWhereRecord>({ name: 'name_1' })
+          TestWhereRecord.where<TestWhereRecord, TestWhereParams>({ name: 'name_1' })
             .toPromiseArray()
             .then((records) => {
               expect(records.length).toEqual(1);
@@ -44,7 +44,7 @@ describe('Record(Filter)', () => {
               done();
             });
           expect(
-            TestWhereRecord.where<TestWhereRecord>({ name: 'name_1' })
+            TestWhereRecord.where<TestWhereRecord, TestWhereParams>({ name: 'name_1' })
               .where<TestWhereRecord>({ age: 1 })
               .inspect()
           ).toEqual(
@@ -61,7 +61,7 @@ describe('Record(Filter)', () => {
       describe("when use 'rewhere' only", () => {
         it('should correctly', () => {
           expect(
-            TestWhereRecord.where<TestWhereRecord>({ name: 'name_1' })
+            TestWhereRecord.where<TestWhereRecord, TestWhereParams>({ name: 'name_1' })
               .where<TestWhereRecord>({ age: 1 })
               .rewhere<TestWhereRecord>({ name: 'name_2' })
               .inspect()

@@ -1,7 +1,10 @@
 // locals
 import { errObj, ErrCodes } from '@/errors';
-import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
+import { ActiveRecord$Base, RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
+
+// third party
+import dayjs from 'dayjs';
 
 // types
 import type * as ct from '@/types';
@@ -178,7 +181,6 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
   }
 
   updateAll<U>(params: Partial<U>): Promise<number> {
-    // @ts-ignore
     const updateFn = (record: T): boolean => {
       return record.update(params);
     };
@@ -186,6 +188,35 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
     return Promise.all(this.records.map(updateFn)).then((result) => {
       return Promise.resolve(result.filter(Boolean).length);
     });
+  }
+
+  touchAll<U>(
+    params?: Partial<U>,
+    opts?: { withCreatedAt?: boolean; time?: string }
+  ): Promise<number> {
+    const updateProps =
+      opts && opts.withCreatedAt ? [RUE_CREATED_AT, RUE_UPDATED_AT] : [RUE_UPDATED_AT];
+    const datetime = opts && opts.time ? dayjs(opts.time).format() : dayjs().format();
+
+    const touchFn = (record: T): boolean => {
+      updateProps.forEach((timestamp) => {
+        record.update({ [timestamp]: datetime });
+      });
+      return true;
+    };
+
+    return (
+      this.recordKlass
+        // @ts-ignore
+        .where<T, U>(params)
+        .toPA()
+        .then((records) => {
+          return Promise.all(records.map(touchFn)).then((result) => {
+            this.records = RecordCache.read(this.recordKlass.name, RECORD_ALL, 'array');
+            return Promise.resolve(result.filter(Boolean).length);
+          });
+        })
+    );
   }
 
   toArray(): T[] {

@@ -41,30 +41,44 @@ export class ActiveRecord$Persistence extends RueModule {
   }
 
   save(opts?: { validate: boolean }): boolean {
+    const {
+      RECORD_ID,
+      RECORD_AUTO_INCREMENNT_ID,
+      RUE_CREATED_AT,
+      RUE_UPDATED_AT,
+      RECORD_ALL,
+    } = ActiveRecord$Persistence;
+
     opts = opts == undefined ? { validate: true } : opts;
-    const _this = this as any;
+    // @ts-ignore
+    const _this = this as ActiveRecord$Base;
 
     if (!opts.validate || _this.isValid()) {
       const klassName = this.constructor.name;
       _ensureCache(klassName);
 
-      // auto increment start
-      let __record_aid__ = Cache.read<number>(
-        klassName,
-        ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID,
-        'value'
-      );
-
       const now = dayjs().format();
-      _this[ActiveRecord$Persistence.RECORD_ID] = __record_aid__;
-      _this[ActiveRecord$Persistence.RUE_CREATED_AT] =
-        _this[ActiveRecord$Persistence.RUE_CREATED_AT] || now;
-      _this[ActiveRecord$Persistence.RUE_UPDATED_AT] = now;
+      _this[RUE_CREATED_AT] = _this[RUE_CREATED_AT] || now;
+      _this[RUE_UPDATED_AT] = now;
 
-      __record_aid__ = __record_aid__ + 1;
-      Cache.update(klassName, ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID, __record_aid__);
-      // auto increment end
-      Cache.create(klassName, ActiveRecord$Persistence.RECORD_ALL, [this]);
+      // do not exists record
+      if (!_this[RECORD_ID]) {
+        let __record_aid__ = Cache.read<number>(klassName, RECORD_AUTO_INCREMENNT_ID, 'value');
+        _this[RECORD_ID] = __record_aid__;
+        __record_aid__ = __record_aid__ + 1;
+        Cache.update(klassName, RECORD_AUTO_INCREMENNT_ID, __record_aid__);
+        Cache.create(klassName, RECORD_ALL, [this]);
+      } else {
+        const allRecords = Cache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
+        allRecords.forEach((record) => {
+          if (record[RECORD_ID] === _this[RECORD_ID]) {
+            // @ts-ignore
+            record = this;
+          }
+        });
+        Cache.update(klassName, RECORD_ALL, allRecords);
+      }
+
       return true;
     } else {
       return false;

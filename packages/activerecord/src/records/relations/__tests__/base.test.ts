@@ -4,6 +4,7 @@ import { cacheForRecords as Cache } from '@/registries';
 
 // third party
 import MockDate from 'mockdate';
+import dayjs from 'dayjs';
 
 describe('ActiveRecord$Relation$Base', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
@@ -1112,6 +1113,119 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation.updateAll({ age: 9 }).then((result) => {
           expect(result).toEqual(2);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#touchAll', () => {
+    type TouchAllRecordParams = {
+      name: string;
+      age: number;
+    };
+
+    class TouchAllRecord extends ActiveRecord$Base {
+      public name: TouchAllRecordParams['name'];
+      public age: TouchAllRecordParams['age'];
+    }
+
+    const createRecord = (params: TouchAllRecordParams): TouchAllRecord => {
+      const record = new TouchAllRecord(params);
+      record.save();
+      return record;
+    };
+
+    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
+    MockDate.set('2021-03-05T23:03:21+09:00');
+
+    const records = [
+      createRecord({ name: 'name_1', age: 1 }),
+      createRecord({ name: 'name_2', age: 2 }),
+    ];
+
+    const relation = new Relation<TouchAllRecord>(TouchAllRecord, records);
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        MockDate.set('2021-03-06T23:03:21+09:00');
+        relation.touchAll<TouchAllRecordParams>().then((result) => {
+          expect(result).toEqual(2);
+          expect(records[0]).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+            age: 1,
+            errors: {},
+            name: 'name_1',
+          });
+          expect(records[1]).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+            age: 2,
+            errors: {},
+            name: 'name_2',
+          });
+          done();
+        });
+      });
+    });
+
+    describe("when specify 'params'", () => {
+      it('should correctly', (done) => {
+        MockDate.set('2021-03-06T23:03:21+09:00');
+        relation
+          .touchAll<TouchAllRecordParams>({ name: 'name_1' })
+          .then((result) => {
+            expect(result).toEqual(1);
+            expect(records[0]).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+              age: 1,
+              errors: {},
+              name: 'name_1',
+            });
+            done();
+          });
+      });
+    });
+
+    describe("when specify 'opts.withCreatedAt'", () => {
+      it('should correctly', (done) => {
+        MockDate.set('2021-03-06T23:03:21+09:00');
+        relation
+          .touchAll<TouchAllRecordParams>({ name: 'name_1' }, { withCreatedAt: true })
+          .then((result) => {
+            expect(result).toEqual(1);
+            expect(records[0]).toEqual({
+              __rue_created_at__: '2021-03-06T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+              age: 1,
+              errors: {},
+              name: 'name_1',
+            });
+            done();
+          });
+      });
+    });
+
+    describe("when specify 'opts.time'", () => {
+      it('should correctly', (done) => {
+        MockDate.reset();
+        const time = dayjs().format();
+        relation.touchAll<TouchAllRecordParams>({ name: 'name_2' }, { time }).then((result) => {
+          expect(result).toEqual(1);
+          expect(records[1]).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: time,
+            age: 2,
+            errors: {},
+            name: 'name_2',
+          });
           done();
         });
       });

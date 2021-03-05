@@ -52,6 +52,9 @@ describe('Record(Persistence)', () => {
         const record = new TestSaveSuccessRecord({ profile: { name: 'name_1', age: 20 } });
         it('should return true', () => {
           expect(record.save()).toEqual(true);
+          // Even after saving once, the state does not change no matter how many times you save
+          expect(record.save()).toEqual(true);
+          expect(record.save()).toEqual(true);
           expect(Cache.read('TestSaveSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(2);
           expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.name).toEqual('name_1');
           expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(20);

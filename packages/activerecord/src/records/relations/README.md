@@ -19,7 +19,7 @@
 - [x] toArray
 - [x] toA (alias to toArray)
 - [x] destoryAll
-- [ ] touchAll
+- [x] touchAll
 - [x] updateAll
 
 ## Reference
