@@ -2,7 +2,19 @@ import { ActiveRecord$Relation$Base as Relation } from '../base';
 import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
 import { cacheForRecords as Cache } from '@/registries';
 
+// third party
+import MockDate from 'mockdate';
+
 describe('ActiveRecord$Relation$Base', () => {
+  // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
+  beforeAll(() => {
+    MockDate.set('2021-03-05T23:03:21+09:00');
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   describe('costructor', () => {
     class ConstructorRecord extends ActiveRecord$Base {}
 
@@ -356,7 +368,9 @@ describe('ActiveRecord$Relation$Base', () => {
           expect(record.age).toEqual(4);
           expect(cacheAll.length).toEqual(1);
           expect(cacheAll[0]).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             age: 4,
             errors: { name: [], age: [] },
             name: 'name_4',
@@ -523,7 +537,9 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation.createOrFindBy({ name: 'name_4' }).then((record) => {
           expect(record).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             age: undefined,
             errors: {},
             name: 'name_4',
@@ -589,7 +605,13 @@ describe('ActiveRecord$Relation$Base', () => {
     describe('when return create result', () => {
       it('should correctly', (done) => {
         relation.createOrFindByOrThrow({ name: 'name_4' }).then((record) => {
-          expect(record).toEqual({ __rue_record_id__: 4, errors: { name: [] }, name: 'name_4' });
+          expect(record).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            errors: { name: [] },
+            name: 'name_4',
+          });
           // @ts-ignore
           expect(relation.records.length).toEqual(4);
           done();
@@ -699,6 +721,9 @@ describe('ActiveRecord$Relation$Base', () => {
       return record;
     };
 
+    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
+    MockDate.set('2021-03-05T23:03:21+09:00');
+
     const records = [
       createRecord({ name: 'name_1', age: 1 }),
       createRecord({ name: 'name_2', age: 2 }),
@@ -713,29 +738,37 @@ describe('ActiveRecord$Relation$Base', () => {
     });
 
     describe('when default', () => {
-      expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(3);
-      const destroyedRecords = relation.destroyAll();
-      expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(0);
-      expect(destroyedRecords[0]).toEqual({
-        __rue_record_id__: 1,
-        age: 1,
-        errors: {},
-        name: 'name_1',
+      it('should correctly', () => {
+        expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(3);
+        const destroyedRecords = relation.destroyAll();
+        expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(0);
+        expect(destroyedRecords[0]).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          age: 1,
+          errors: {},
+          name: 'name_1',
+        });
+        expect(destroyedRecords[1]).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 2,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          age: 2,
+          errors: {},
+          name: 'name_2',
+        });
+        expect(destroyedRecords[2]).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 3,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          age: 3,
+          errors: {},
+          name: 'name_3',
+        });
+        // @ts-ignore
+        expect(relation.records.length).toEqual(0);
       });
-      expect(destroyedRecords[1]).toEqual({
-        __rue_record_id__: 2,
-        age: 2,
-        errors: {},
-        name: 'name_2',
-      });
-      expect(destroyedRecords[2]).toEqual({
-        __rue_record_id__: 3,
-        age: 3,
-        errors: {},
-        name: 'name_3',
-      });
-      // @ts-ignore
-      expect(relation.records.length).toEqual(0);
     });
   });
 
@@ -755,6 +788,9 @@ describe('ActiveRecord$Relation$Base', () => {
       record.save();
       return record;
     };
+
+    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
+    MockDate.set('2021-03-05T23:03:21+09:00');
 
     const records = [
       createRecord({ name: 'name_1', age: 1 }),
@@ -800,7 +836,13 @@ describe('ActiveRecord$Relation$Base', () => {
         relation
           .findOrCreateBy<FindOrCreateByRecordParams>({ name: 'name_4' })
           .then((record) => {
-            expect(record).toEqual({ __rue_record_id__: 4, errors: {}, name: 'name_4' });
+            expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              errors: {},
+              name: 'name_4',
+            });
             // @ts-ignore
             expect(relation.records.length).toEqual(4);
             done();
@@ -815,7 +857,9 @@ describe('ActiveRecord$Relation$Base', () => {
             })
             .then((record) => {
               expect(record).toEqual({
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
                 __rue_record_id__: 5,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
                 age: 100,
                 errors: {},
                 name: 'name_5',
@@ -877,7 +921,9 @@ describe('ActiveRecord$Relation$Base', () => {
           .findOrCreateByOrThrow<FindOrCreateByOrThrowRecordParams>({ name: 'name_1' })
           .then((record) => {
             expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
               age: 1,
               errors: { age: [], name: [] },
               name: 'name_1',
@@ -895,7 +941,9 @@ describe('ActiveRecord$Relation$Base', () => {
           .findOrCreateByOrThrow<FindOrCreateByOrThrowRecordParams>({ name: 'name_4', age: 4 })
           .then((record) => {
             expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
               age: 4,
               errors: { age: [], name: [] },
               name: 'name_4',
@@ -918,7 +966,9 @@ describe('ActiveRecord$Relation$Base', () => {
           )
           .then((record) => {
             expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 5,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
               age: undefined,
               errors: { age: [], name: [] },
               name: 'name_5',

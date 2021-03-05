@@ -5,8 +5,18 @@ import {
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
+import MockDate from 'mockdate';
 
 describe('Record', () => {
+  // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
+  beforeAll(() => {
+    MockDate.set('2021-03-05T23:03:21+09:00');
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   describe('constructor', () => {
     class TestConstructorRecord extends Record {
       public name: string;

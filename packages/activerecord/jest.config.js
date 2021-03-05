@@ -14,5 +14,5 @@ module.exports = {
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
   },
-  moduleFileExtensions: ['ts', 'js', 'json'],
+  moduleFileExtensions: ['ts', 'js', 'json']
 };

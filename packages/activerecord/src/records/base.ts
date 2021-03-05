@@ -4,9 +4,10 @@ import { ActiveRecord$Impl } from './impl';
 
 // types
 import type * as t from './types';
-import type * as ft from './modules/query_methods';
 
 export const RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Impl['RECORD_AUTO_INCREMENNT_ID'] as string;
+export const RUE_CREATED_AT = ActiveRecord$Impl['RUE_CREATED_AT'] as string;
+export const RUE_UPDATED_AT = ActiveRecord$Impl['RUE_UPDATED_AT'] as string;
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
 export const RECORD_ID = ActiveRecord$Impl['RECORD_ID'] as string;
 

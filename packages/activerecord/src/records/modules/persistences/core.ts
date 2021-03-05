@@ -6,11 +6,16 @@ import { errObj, ErrCodes } from '@/errors';
 import { cacheForRecords as Cache } from '@/registries';
 import { ActiveRecord$Base } from '@/records';
 
+// third party
+import dayjs from 'dayjs';
+
 // this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Persistence extends RueModule {
-  static RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
-  static RECORD_ID = '__rue_record_id__';
-  static RECORD_ALL = 'all';
+  static readonly RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
+  static readonly RECORD_ID = '__rue_record_id__';
+  static readonly RUE_CREATED_AT = '__rue_created_at__';
+  static readonly RUE_UPDATED_AT = '__rue_updated_at__';
+  static readonly RECORD_ALL = 'all';
 
   static destroyAll<T extends ActiveRecord$Base>(filter?: (self: T) => boolean): Array<T> {
     const klassName = this.name;
@@ -49,7 +54,13 @@ export class ActiveRecord$Persistence extends RueModule {
         ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID,
         'value'
       );
+
+      const now = dayjs().format();
       _this[ActiveRecord$Persistence.RECORD_ID] = __record_aid__;
+      _this[ActiveRecord$Persistence.RUE_CREATED_AT] =
+        _this[ActiveRecord$Persistence.RUE_CREATED_AT] || now;
+      _this[ActiveRecord$Persistence.RUE_UPDATED_AT] = now;
+
       __record_aid__ = __record_aid__ + 1;
       Cache.update(klassName, ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID, __record_aid__);
       // auto increment end

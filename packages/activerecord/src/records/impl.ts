@@ -27,6 +27,8 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
 
   // ActiveRecord$Persistence
   static RECORD_ID = ActiveRecord$Persistence.RECORD_ID;
+  static RUE_CREATED_AT = ActiveRecord$Persistence.RUE_CREATED_AT;
+  static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
   static RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID;
   static destroyAll: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => T[];

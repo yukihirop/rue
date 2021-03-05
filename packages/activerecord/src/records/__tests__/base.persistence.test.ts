@@ -5,8 +5,18 @@ import {
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
+import MockDate from 'mockdate';
 
 describe('Record(Persistence)', () => {
+  // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
+  beforeAll(() => {
+    MockDate.set('2021-03-05T23:03:21+09:00');
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   describe('#save', () => {
     type TestSaveParams = {
       profile: {
@@ -178,8 +188,20 @@ describe('Record(Persistence)', () => {
         record_3.save();
         record_4.save();
         expect(Cache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
-          { __rue_record_id__: 1, errors: {}, profile: { age: 3, name: 'name_3' } },
-          { __rue_record_id__: 2, errors: {}, profile: { age: 4, name: 'name_4' } },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            errors: {},
+            profile: { age: 3, name: 'name_3' },
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            errors: {},
+            profile: { age: 4, name: 'name_4' },
+          },
         ]);
         record_4.destroy();
         expect(record_4[RECORD_ID]).toEqual(2);
@@ -187,7 +209,13 @@ describe('Record(Persistence)', () => {
         expect(record_4.profile.age).toEqual(4);
         expect(record_4.errors).toEqual({});
         expect(Cache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
-          { __rue_record_id__: 1, errors: {}, profile: { age: 3, name: 'name_3' } },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            errors: {},
+            profile: { age: 3, name: 'name_3' },
+          },
         ]);
       });
     });
