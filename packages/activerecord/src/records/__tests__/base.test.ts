@@ -1,6 +1,6 @@
 import {
   ActiveRecord$Base as Record,
-  RECORD_AUTO_INCREMENNT_ID,
+  RUE_AUTO_INCREMENT_RECORD_ID,
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
@@ -47,7 +47,7 @@ describe('Record', () => {
     describe('should correctly', () => {
       TestResetRecordCacheRecord.resetRecordCache();
       expect(RecordCache.data['TestResetRecordCacheRecord']).toEqual({
-        [RECORD_AUTO_INCREMENNT_ID]: 1,
+        [RUE_AUTO_INCREMENT_RECORD_ID]: 1,
         [RECORD_ALL]: [],
       });
     });

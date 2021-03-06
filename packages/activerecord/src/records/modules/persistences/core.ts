@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 
 // this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Persistence extends RueModule {
-  static readonly RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
+  static readonly RUE_AUTO_INCREMENT_RECORD_ID = '__rue_auto_increment_record_id__';
   static readonly RUE_RECORD_ID = '__rue_record_id__';
   static readonly RUE_CREATED_AT = '__rue_created_at__';
   static readonly RUE_UPDATED_AT = '__rue_updated_at__';
@@ -43,7 +43,7 @@ export class ActiveRecord$Persistence extends RueModule {
   save(opts?: { validate: boolean }): boolean {
     const {
       RUE_RECORD_ID,
-      RECORD_AUTO_INCREMENNT_ID,
+      RUE_AUTO_INCREMENT_RECORD_ID,
       RUE_CREATED_AT,
       RUE_UPDATED_AT,
       RECORD_ALL,
@@ -65,12 +65,12 @@ export class ActiveRecord$Persistence extends RueModule {
       if (!_this[RUE_RECORD_ID]) {
         let __record_aid__ = RecordCache.read<number>(
           klassName,
-          RECORD_AUTO_INCREMENNT_ID,
+          RUE_AUTO_INCREMENT_RECORD_ID,
           'value'
         );
         _this[RUE_RECORD_ID] = __record_aid__;
         __record_aid__ = __record_aid__ + 1;
-        RecordCache.update(klassName, RECORD_AUTO_INCREMENNT_ID, __record_aid__);
+        RecordCache.update(klassName, RUE_AUTO_INCREMENT_RECORD_ID, __record_aid__);
         RecordCache.create(klassName, RECORD_ALL, [this]);
       } else {
         const allRecords = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
@@ -149,12 +149,14 @@ function _clone(original: ActiveRecord$Base): ActiveRecord$Base {
 
 function _ensureRecordCache(klassName: string) {
   if (RecordCache.data[klassName] == undefined) _resetRecordCache(klassName);
-  if (RecordCache.data[klassName][ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID] == undefined)
+  if (
+    RecordCache.data[klassName][ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID] == undefined
+  )
     _resetRecordCache(klassName);
 }
 
 function _resetRecordCache(klassName: string) {
   RecordCache.destroy(klassName);
   RecordCache.create(klassName, ActiveRecord$Persistence.RECORD_ALL, []);
-  RecordCache.create(klassName, ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID, 1);
+  RecordCache.create(klassName, ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID, 1);
 }

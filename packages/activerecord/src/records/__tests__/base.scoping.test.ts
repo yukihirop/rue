@@ -1,6 +1,6 @@
 import {
   ActiveRecord$Base as Record,
-  RECORD_AUTO_INCREMENNT_ID,
+  RUE_AUTO_INCREMENT_RECORD_ID,
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
@@ -43,7 +43,9 @@ describe('Record (Scoping)', () => {
           expect(RecordCache.read('TestAllRecord', RECORD_ALL)[1].age).toEqual(2);
           expect(RecordCache.read('TestAllRecord', RECORD_ALL)[1].errors).toEqual({});
           expect(RecordCache.read('TestAllRecord', RECORD_ALL)[1][RUE_RECORD_ID]).toEqual(2);
-          expect(RecordCache.read<number>('TestAllRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
+          expect(RecordCache.read<number>('TestAllRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(
+            3
+          );
           done();
         });
       });

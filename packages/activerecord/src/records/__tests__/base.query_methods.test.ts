@@ -1,6 +1,6 @@
 import {
   ActiveRecord$Base as Record,
-  RECORD_AUTO_INCREMENNT_ID,
+  RUE_AUTO_INCREMENT_RECORD_ID,
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
@@ -40,7 +40,7 @@ describe('Record(Filter)', () => {
               expect(cacheAll[0].age).toEqual(1);
               expect(cacheAll[0].errors).toEqual({});
               expect(cacheAll[0][RUE_RECORD_ID]).toEqual(1);
-              expect(RecordCache.read('TestWhereRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
+              expect(RecordCache.read('TestWhereRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(3);
               done();
             });
           expect(
@@ -108,7 +108,7 @@ describe('Record(Filter)', () => {
             expect(RecordCache.read('TestFindByRecord', RECORD_ALL)[0].age).toEqual(1);
             expect(RecordCache.read('TestFindByRecord', RECORD_ALL)[0].errors).toEqual({});
             expect(RecordCache.read('TestFindByRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
-            expect(RecordCache.read('TestFindByRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
+            expect(RecordCache.read('TestFindByRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(3);
             done();
           }
         );

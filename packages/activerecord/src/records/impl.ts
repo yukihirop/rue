@@ -30,7 +30,7 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   static RUE_CREATED_AT = ActiveRecord$Persistence.RUE_CREATED_AT;
   static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
-  static RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID;
+  static RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID;
   static destroyAll: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => T[];
   // ActiveRecord$FinderMethods
   static findBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
@@ -98,7 +98,7 @@ ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
 
 // extend module
 ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
-  only: ['destroyAll', 'RECORD_AUTO_INCREMENNT_ID', 'RUE_RECORD_ID', 'RECORD_ALL'],
+  only: ['destroyAll', 'RUE_AUTO_INCREMENT_RECORD_ID', 'RUE_RECORD_ID', 'RECORD_ALL'],
 });
 ActiveRecord$FinderMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['findBy'] });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {

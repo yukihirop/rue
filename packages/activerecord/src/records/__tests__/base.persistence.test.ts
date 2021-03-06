@@ -1,6 +1,6 @@
 import {
   ActiveRecord$Base as Record,
-  RECORD_AUTO_INCREMENNT_ID,
+  RUE_AUTO_INCREMENT_RECORD_ID,
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
@@ -55,7 +55,9 @@ describe('Record(Persistence)', () => {
           // Even after saving once, the state does not change no matter how many times you save
           expect(record.save()).toEqual(true);
           expect(record.save()).toEqual(true);
-          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(2);
+          expect(RecordCache.read('TestSaveSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(
+            2
+          );
           expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.name).toEqual(
             'name_1'
           );
@@ -119,9 +121,9 @@ describe('Record(Persistence)', () => {
       const record = new TestSaveOrThrowSuccessRecord({ profile: { name: 'name_1', age: 20 } });
       it('should return true', () => {
         expect(record.save()).toEqual(true);
-        expect(RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(
-          2
-        );
+        expect(
+          RecordCache.read('TestSaveOrThrowSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)
+        ).toEqual(2);
         expect(
           RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].profile.name
         ).toEqual('name_1');
