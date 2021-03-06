@@ -33,28 +33,101 @@ describe('Support(Info)', () => {
       }
     }
 
-    it('should correctly', () => {
-      expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
-        ActiveSupport$Base: ['inspect'],
-        ActiveSupport$Impl: [],
-        'ActiveSupport$Info (RueModule)': [
-          'getMethodsWithNamespace',
-          'getProperties',
-          'getAncestors',
-          'getOwnerFrom',
-        ],
-        ActiveSupport$ImplBase: [],
-        Function: ['apply', 'bind', 'call', 'toString'],
-        Object: [
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'toString',
-          'valueOf',
-          'toLocaleString',
-        ],
-        TestGetMethodsWithNamespace: [],
-        TestGetMethodsWithNamespaceChild: [],
+    describe('when default', () => {
+      it('should correctly', () => {
+        expect(TestGetMethodsWithNamespace.getMethodsWithNamespace()).toEqual({
+          ActiveSupport$Base: ['inspect'],
+          ActiveSupport$Impl: [],
+          'ActiveSupport$Info (RueModule)': [
+            'getMethodsWithNamespace',
+            'getProperties',
+            'getAncestors',
+            'getOwnerFrom',
+          ],
+          ActiveSupport$ImplBase: [],
+          Function: ['apply', 'bind', 'call', 'toString'],
+          Object: [
+            'hasOwnProperty',
+            'isPrototypeOf',
+            'propertyIsEnumerable',
+            'toString',
+            'valueOf',
+            'toLocaleString',
+          ],
+          TestGetMethodsWithNamespace: [],
+          TestGetMethodsWithNamespaceChild: [],
+        });
+      });
+    });
+
+    describe("when specify 'obj'", () => {
+      describe('when static methods', () => {
+        it('should correctly', () => {
+          expect(Support.getMethodsWithNamespace(TestGetMethodsWithNamespace)).toEqual({
+            ActiveSupport$Base: ['inspect'],
+            ActiveSupport$Impl: [],
+            ActiveSupport$ImplBase: [],
+            'ActiveSupport$Info (RueModule)': [
+              'getMethodsWithNamespace',
+              'getProperties',
+              'getAncestors',
+              'getOwnerFrom',
+            ],
+            Function: ['apply', 'bind', 'call', 'toString'],
+            Object: [
+              'hasOwnProperty',
+              'isPrototypeOf',
+              'propertyIsEnumerable',
+              'toString',
+              'valueOf',
+              'toLocaleString',
+            ],
+            TestGetMethodsWithNamespace: [],
+            TestGetMethodsWithNamespaceChild: [],
+          });
+        });
+      });
+
+      describe('when prototype methods', () => {
+        it('should correctly', () => {
+          expect(Support.getMethodsWithNamespace(TestGetMethodsWithNamespace.prototype)).toEqual({
+            ActiveSupport$Base: [],
+            ActiveSupport$Impl: [],
+            ActiveSupport$ImplBase: [],
+            'ActiveSupport$Info (RueModule)': [],
+            Function: ['prototype'],
+            Object: [
+              'assign',
+              'getOwnPropertyDescriptor',
+              'getOwnPropertyDescriptors',
+              'getOwnPropertyNames',
+              'getOwnPropertySymbols',
+              'is',
+              'preventExtensions',
+              'seal',
+              'create',
+              'defineProperties',
+              'defineProperty',
+              'freeze',
+              'getPrototypeOf',
+              'setPrototypeOf',
+              'isExtensible',
+              'isFrozen',
+              'isSealed',
+              'keys',
+              'entries',
+              'values',
+              'fromEntries',
+            ],
+            TestGetMethodsWithNamespace: ['create', 'update', 'read', 'destroy'],
+            TestGetMethodsWithNamespaceChild: [
+              'createChild',
+              'updateChild',
+              'readChild',
+              'destroyChild',
+            ],
+          });
+        });
       });
     });
   });
@@ -119,9 +192,9 @@ describe('Support(Info)', () => {
   });
 
   describe('[static] getAncestors', () => {
-    describe('when default', () => {
-      class TestGetAncestors extends Support {}
+    class TestGetAncestors extends Support {}
 
+    describe('when default', () => {
       it('should correctly', () => {
         expect(TestGetAncestors.getAncestors()).toEqual([
           'TestGetAncestors',
@@ -174,6 +247,20 @@ describe('Support(Info)', () => {
       });
     });
 
+    describe('when give prototype', () => {
+      it('should correctly', () => {
+        expect(Support.getAncestors(TestGetAncestors.prototype.constructor)).toEqual([
+          'TestGetAncestors',
+          'ActiveSupport$Base',
+          'ActiveSupport$Impl',
+          'ActiveSupport$ImplBase',
+          'ActiveSupport$Info (RueModule)',
+          'Function',
+          'Object',
+        ]);
+      });
+    });
+
     describe('when complex', () => {
       // ActiveModel
       class ActiveModel$Validations extends RueModule {}
@@ -210,7 +297,6 @@ describe('Support(Info)', () => {
       ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, { only: [] });
       class ActiveRecord$Base extends ActiveRecord$Impl {}
       class ActiveRecord extends ActiveRecord$Base {}
-
       it('should correctly', () => {
         expect(Support.getAncestors(ActiveRecord, (obj) => obj['name'])).toEqual([
           'ActiveRecord',
