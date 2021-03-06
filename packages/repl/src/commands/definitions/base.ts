@@ -45,14 +45,17 @@ export class Repl$Commands$Definitions$Base {
           const classData = definitions[maybeKlassName]['class'];
           const klass = repl.context[maybeKlassName];
           const isRueModule = klass['__rue_module__'];
-          console.log(
-            this._formatClassDefinition({
-              klassName: maybeKlassName,
-              classData,
-              metadata,
-              isRueModule,
-            })
-          );
+
+          classData.forEach((clsData) => {
+            console.log(
+              this._formatClassDefinition({
+                klassName: maybeKlassName,
+                classData: clsData,
+                metadata,
+                isRueModule,
+              })
+            );
+          });
         } else if (isUDFClass) {
           console.error(
             `Documentation was not found about '${maybeKlassName}' in REPL context. It may be a user-defined class.`
