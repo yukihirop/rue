@@ -2,7 +2,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
+      "updatedAt": "2021/03/07 01:05:05 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
+      "updatedAt": "2021/03/07 01:05:05 +09:00"
     },
     "class": [
       {
@@ -74,7 +74,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
+      "updatedAt": "2021/03/07 01:05:05 +09:00"
     },
     "class": [
       {
@@ -172,7 +172,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
+      "updatedAt": "2021/03/07 01:05:05 +09:00"
     },
     "class": [
       {
@@ -405,38 +405,10 @@
       ]
     }
   },
-  "ActiveRecord$FinderMethods": {
-    "metadata": {
-      "filepath": "@rue/packages/activerecord/src/records/modules/finder_methods/core.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveRecord$FinderMethods extends RueModule {\n  static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(\n    params: Partial<U>\n  ): Promise<T> {\n    // @ts-ignore\n    return (this as typeof ActiveRecord$Base)\n      .where<T>(params)\n      .toPromiseArray()\n      .then((records) => {\n        if (records.length > 0) {\n          return Promise.resolve(records[0]);\n        } else {\n          return Promise.resolve(undefined);\n        }\n      });\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$FinderMethods\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfindBy\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116mkey\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    params\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoPromiseArray\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mthen\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          8,
-          24
-        ]
-      }
-    ],
-    "static": {
-      "findBy": {
-        "text": "static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(\n    params: Partial<U>\n  ): Promise<T> {\n    // @ts-ignore\n    return (this as typeof ActiveRecord$Base)\n      .where<T>(params)\n      .toPromiseArray()\n      .then((records) => {\n        if (records.length > 0) {\n          return Promise.resolve(records[0]);\n        } else {\n          return Promise.resolve(undefined);\n        }\n      });\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfindBy\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116mkey\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    params\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoPromiseArray\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mthen\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          9,
-          23
-        ]
-      }
-    }
-  },
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/03/06 14:00:40 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -526,7 +498,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -547,10 +519,38 @@
       }
     ]
   },
+  "ActiveRecord$FinderMethods": {
+    "metadata": {
+      "filepath": "@rue/packages/activerecord/src/records/modules/finder_methods/core.ts",
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
+    },
+    "class": [
+      {
+        "text": "export class ActiveRecord$FinderMethods extends RueModule {\n  static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(\n    params: Partial<U>\n  ): Promise<T> {\n    // @ts-ignore\n    return (this as typeof ActiveRecord$Base)\n      .where<T>(params)\n      .toPromiseArray()\n      .then((records) => {\n        if (records.length > 0) {\n          return Promise.resolve(records[0]);\n        } else {\n          return Promise.resolve(undefined);\n        }\n      });\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$FinderMethods\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfindBy\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116mkey\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    params\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoPromiseArray\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mthen\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          8,
+          24
+        ]
+      }
+    ],
+    "static": {
+      "findBy": {
+        "text": "static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(\n    params: Partial<U>\n  ): Promise<T> {\n    // @ts-ignore\n    return (this as typeof ActiveRecord$Base)\n      .where<T>(params)\n      .toPromiseArray()\n      .then((records) => {\n        if (records.length > 0) {\n          return Promise.resolve(records[0]);\n        } else {\n          return Promise.resolve(undefined);\n        }\n      });\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfindBy\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116mkey\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m:\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    params\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoPromiseArray\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\n      \u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mthen\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecords\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          9,
+          23
+        ]
+      }
+    }
+  },
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -620,7 +620,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/query_methods/core.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -658,7 +658,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -674,7 +674,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -690,7 +690,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -718,7 +718,7 @@
   "ActiveRecord$QueryMethods$WhereChain": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/query_methods/where_chain/base.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {
@@ -794,7 +794,7 @@
   "ActiveRecord$Associations$CollectionProxy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/modules/collection_proxy/core.ts",
-      "updatedAt": "2021/03/06 14:00:41 +09:00"
+      "updatedAt": "2021/03/07 01:05:06 +09:00"
     },
     "class": [
       {

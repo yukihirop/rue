@@ -4,7 +4,8 @@ import { RueModule, RueModuleAncestorController } from '@/modules';
 // types
 import * as t from './types';
 
-const BUILTIN_METHODS = ['constructor', 'length', 'name'];
+const BUILTIN_STATIC_METHODS = ['constructor', 'length', 'name'];
+const BUILTIN_PROTOTYPE_METHODS = ['prototype', 'length', 'name'];
 
 // this is bound to an instance(class) of Support
 export class ActiveSupport$Info extends RueModule {
@@ -18,7 +19,7 @@ export class ActiveSupport$Info extends RueModule {
       obj.name != '' ? name != 'prototype' : true;
     const skipImplClassFilter = (obj: Function) => (name: string) =>
       obj.hasOwnProperty(RUE_IMPL_CLASS) ? false : true;
-    const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_METHODS.includes(name);
+    const removeBuiltinMethodsFilter = (name: string) => !BUILTIN_STATIC_METHODS.includes(name);
 
     const getOwnMethods = (obj: Function | RueModule) => {
       return Object.entries(Object.getOwnPropertyDescriptors(obj))
@@ -26,14 +27,20 @@ export class ActiveSupport$Info extends RueModule {
         .map(([name]) => name);
     };
 
-    const transformerFn = (isInstance: boolean) => (obj: Function | RueModule) => {
+    const transformerFn = ({
+      isInstance,
+      isPrototype,
+    }: {
+      isInstance: boolean;
+      isPrototype: boolean;
+    }) => (obj: Function | RueModule) => {
       let klassOrModuleName;
       let methods;
 
       if (obj[RUE_MODULE]) {
         klassOrModuleName = `${obj['name']} (RueModule)`;
 
-        if (isInstance) {
+        if (isInstance || isPrototype) {
           methods = Object.keys(Object.getOwnPropertyDescriptors(obj['prototype']) || []);
         } else {
           methods = Object.keys(Object.getOwnPropertyDescriptors(obj) || []);
@@ -43,6 +50,12 @@ export class ActiveSupport$Info extends RueModule {
 
         if (isInstance) {
           methods = getOwnMethods(obj.constructor);
+        } else if (isPrototype) {
+          if (obj && (obj['name'] === '' || !obj['name'])) {
+            methods = getOwnMethods(obj.constructor);
+          } else {
+            methods = getOwnMethods(obj['prototype']);
+          }
         } else {
           methods = getOwnMethods(obj);
         }
@@ -69,12 +82,25 @@ export class ActiveSupport$Info extends RueModule {
     // main
 
     const target = obj ? obj : this;
-    const isInstance = typeof target === 'object' ? true : false;
+    let isInstance, isPrototype;
+    if (typeof target === 'object') {
+      isPrototype = isSuperset(
+        BUILTIN_PROTOTYPE_METHODS,
+        Object.keys(Object.getOwnPropertyDescriptors(obj.constructor))
+      );
+      isInstance = isPrototype ? false : true;
+    } else {
+      isInstance = false;
+      isPrototype = false;
+    }
 
-    return this.getAncestors(target, transformerFn(isInstance)).reduce((acc, item) => {
-      Object.assign(acc, item);
-      return acc;
-    }, {} as any);
+    return this.getAncestors(target, transformerFn({ isInstance, isPrototype })).reduce(
+      (acc, item) => {
+        Object.assign(acc, item);
+        return acc;
+      },
+      {} as any
+    );
   }
 
   static getProperties(obj: Function): string[] {
@@ -191,4 +217,16 @@ export class ActiveSupport$Info extends RueModule {
 
     return foundOwner;
   }
+}
+
+// https://qiita.com/toshihikoyanase/items/7b07ca6a94eb72164257
+function isSuperset(target: string[], other: string[]): boolean {
+  const self = new Set(target);
+  const subset = new Set(other);
+  for (let elem of subset) {
+    if (!self.has(elem)) {
+      return false;
+    }
+  }
+  return true;
 }
