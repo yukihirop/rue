@@ -32,7 +32,7 @@ export class Generator$Definitions$Base {
       gitignore: true,
     });
 
-    let result = {};
+    let result = {} as t.ClassDoc;
 
     const parsedPromiseFn = async (filepath: string): Promise<[tpt.File, string]> => {
       const parsed = await this.parser.parseFile(filepath, cwd);
@@ -66,16 +66,24 @@ export class Generator$Definitions$Base {
               console.log(
                 `[Rue] Generate Definition | generate definition: '${klassName}' from '${filepath}'`
               );
-              this._mergeDeep(result, {
-                [klassName]: {
-                  metadata,
-                  class: {
-                    text: classText,
-                    highlightText: this._highlight(classText),
-                    line: this._makeLineData(tsText, classText),
+
+              const classData = {
+                text: classText,
+                highlightText: this._highlight(classText),
+                line: this._makeLineData(tsText, classText),
+              };
+
+              // Basically it is prohibited, but like the Impl class, there may be multiple definitions in one file.
+              if (!result[klassName] || !result[klassName].class) {
+                this._mergeDeep(result, {
+                  [klassName]: {
+                    metadata,
+                    class: [classData],
                   },
-                },
-              });
+                });
+              } else {
+                result[klassName].class.push(classData);
+              }
 
               // Methods Definitions
               methodDecs.forEach((methodDec: tpt.MethodDeclaration) => {
