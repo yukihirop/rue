@@ -4,15 +4,20 @@ import { ActiveModel$Base } from '@rue/activemodel';
 
 // local
 import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$FinderMethods,
   ActiveRecord$Associations,
+  ActiveRecord$Scoping,
+  ActiveRecord$QueryMethods,
 } from '@/records/modules';
 
 // types
 import * as at from '@/records/modules/associations';
 import * as acpt from '@/records/modules/associations/modules/collection_proxy';
+import * as qmt from '@/records/modules/query_methods';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
@@ -21,12 +26,14 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   static __rue_ancestors__ = [];
 
   // ActiveRecord$Persistence
-  static RECORD_ID = ActiveRecord$Persistence.RECORD_ID;
+  static RUE_RECORD_ID = ActiveRecord$Persistence.RUE_RECORD_ID;
+  static RUE_CREATED_AT = ActiveRecord$Persistence.RUE_CREATED_AT;
+  static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
-  static RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID;
+  static RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID;
   static destroyAll: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => T[];
   // ActiveRecord$FinderMethods
-  static findBy: <T extends ActiveRecord$Base>(params: { [key: string]: any }) => Promise<T>;
+  static findBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
   // ActiveRecord$Associations
   static belongsTo: <T extends ActiveRecord$Base = any>(
     relationName: string,
@@ -51,17 +58,26 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
     scopeName: string,
     fn: acpt.CollectionProxy$ScopeFn<T>
   ) => void;
-
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
-    ActiveRecord$Associations.defineAssociations(self);
+    ActiveRecord$Associations._defineAssociations(self);
   }
+  // ActiveRecord$Scoping
+  static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;
+  // ActiveRecord$QueryMethods
+  static where: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
+    params: Partial<U>
+  ) => ActiveRecord$QueryMethods$WhereChain<T>;
+  static rewhere: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
+    params: Partial<U>
+  ) => ActiveRecord$QueryMethods$WhereChain<T>;
 }
 
 interface ActiveRecord$Impl {
   // ActiveRecord$Persistence
-  save(): boolean;
+  save(opts?: { validate: boolean }): boolean;
   saveOrThrow(): void | boolean;
-  destroy(): ActiveRecord$Base;
+  destroy<T extends ActiveRecord$Base>(): T;
+  update<T>(params?: Partial<T>): boolean;
   // ActiveRecord$Associations
   primaryKey: at.Associations$PrimaryKey;
   hasAndBelongsToMany<T extends ActiveRecord$Associations = any>(
@@ -74,7 +90,7 @@ interface ActiveRecord$Impl {
 
 // includes module
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['save', 'saveOrThrow', 'destroy'],
+  only: ['save', 'saveOrThrow', 'destroy', 'update'],
 });
 ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['hasAndBelongsToMany', 'releaseAndBelongsToMany'],
@@ -82,11 +98,13 @@ ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
 
 // extend module
 ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
-  only: ['destroyAll', 'RECORD_AUTO_INCREMENNT_ID', 'RECORD_ID', 'RECORD_ALL'],
+  only: ['destroyAll', 'RUE_AUTO_INCREMENT_RECORD_ID', 'RUE_RECORD_ID', 'RECORD_ALL'],
 });
 ActiveRecord$FinderMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['findBy'] });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
+ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
+ActiveRecord$QueryMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['where', 'rewhere'] });
 
 export { ActiveRecord$Impl };

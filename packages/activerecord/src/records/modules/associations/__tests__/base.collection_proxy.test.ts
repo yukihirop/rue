@@ -8,7 +8,7 @@ import type * as aacpt from '../modules/collection_proxy';
 
 describe('Association(CollectionProxy)', () => {
   describe('[static] scope', () => {
-    class TestScopeAssociation {
+    class TestScopeAssociation extends ActiveRecord$Base {
       static scope: <T extends ActiveRecord$Base>(
         scopeName: string,
         fn: (...args) => aacpt.CollectionProxy$ScopeVal<T>

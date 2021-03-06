@@ -55,7 +55,8 @@ describe('Record(Association)', () => {
 
     it('should correctly', (done) => {
       TestAssociationBelongsToChildRecord.all<TestAssociationBelongsToChildRecord>().then(
-        (records) => {
+        (relation) => {
+          const records = relation.toA();
           const record = records[0];
           expect(record.primaryKey).toEqual(1);
           expect(record.foreignKey).toEqual(1);
@@ -117,7 +118,8 @@ describe('Record(Association)', () => {
     TestAssociationHasOneRecord.hasOne('child', TestAssociationHasOneChildRecord, 'foreignKey');
 
     it('should correctly', (done) => {
-      TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((records) => {
+      TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((relation) => {
+        const records = relation.toA();
         const record = records[0];
         expect(record.primaryKey).toEqual(1);
         expect(record.name).toEqual('name_1');
@@ -184,7 +186,8 @@ describe('Record(Association)', () => {
     );
 
     it('should correctly', (done) => {
-      TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((records) => {
+      TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((relation) => {
+        const records = relation.toA();
         const record = records[0];
         expect(record.primaryKey).toEqual(1);
         expect(record.name).toEqual('name_1');
@@ -261,8 +264,12 @@ describe('Record(Association)', () => {
 
     describe("when 'Assembly'", () => {
       it('should correctly', async (done) => {
-        const assemblies = await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>();
-        const parts = await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>();
+        const assemblies = await (
+          await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>()
+        ).toA();
+        const parts = await (
+          await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>()
+        ).toA();
         const assembly = assemblies[0];
 
         assembly.hasAndBelongsToMany(parts[0]);
@@ -284,8 +291,12 @@ describe('Record(Association)', () => {
 
     describe("when 'Part'", () => {
       it('should correctly', async (done) => {
-        const assemblies = await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>();
-        const parts = await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>();
+        const assemblies = await (
+          await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>()
+        ).toA();
+        const parts = await (
+          await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>()
+        ).toA();
         const part = parts[0];
 
         part.hasAndBelongsToMany(assemblies[0]);

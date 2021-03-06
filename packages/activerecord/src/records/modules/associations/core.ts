@@ -12,8 +12,6 @@ import { errObj, ErrCodes } from '@/errors';
 
 // types
 import * as t from './types';
-// types
-import * as mt from './modules';
 
 export const enum Association {
   belongsTo = 'belongsTo',
@@ -140,7 +138,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     }
   }
 
-  static defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
+  static _defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
     const allAssociations = Registry.data[self.constructor.name];
     if (allAssociations == undefined) return;
 

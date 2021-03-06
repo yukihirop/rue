@@ -1,23 +1,26 @@
+// locals
+import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
+
+// types
 import * as t from './types';
 
-export class ActiveRecord$QueryMethods$WhereChain<T = any> {
+export class ActiveRecord$QueryMethods$WhereChain<T extends ActiveRecord$Base> {
   private params: t.WhereParams;
-  private allPromiseFn: () => Promise<T[]>;
+  private allPromiseFn: () => Promise<ActiveRecord$Relation<T>>;
 
-  constructor(allPromiseFn: () => Promise<T[]>) {
+  constructor(allPromiseFn: () => Promise<ActiveRecord$Relation<T>>) {
     this.params = {};
     this.allPromiseFn = allPromiseFn;
   }
 
-  // Give dummy generics(_U) to align method signatures
-  where<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
+  where<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {
     Object.assign(this.params, params);
     return this;
   }
 
-  // Give dummy generics(_U) to align method signatures
-  rewhere<_U = any>(params: t.WhereParams): ActiveRecord$QueryMethods$WhereChain<T> {
-    this.params = params;
+  rewhere<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {
+    this.params = params || {};
     return this;
   }
 
@@ -33,8 +36,10 @@ export class ActiveRecord$QueryMethods$WhereChain<T = any> {
     return `${klassName} ${JSON.stringify(sorted, null, 2)}`;
   }
 
+  // First evaluated here
   toPromiseArray(): Promise<T[]> {
-    return this.allPromiseFn().then((records: T[]) => {
+    return this.allPromiseFn().then((relation: ActiveRecord$Relation<T>) => {
+      const records = relation.toA();
       const result = records.reduce((acc: Array<T>, record: T) => {
         const isMatch = Object.keys(this.params)
           .map((key: string) => {
