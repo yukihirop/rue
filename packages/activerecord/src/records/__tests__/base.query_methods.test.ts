@@ -1,7 +1,7 @@
 import {
   ActiveRecord$Base as Record,
   RECORD_AUTO_INCREMENNT_ID,
-  RECORD_ID,
+  RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
@@ -39,7 +39,7 @@ describe('Record(Filter)', () => {
               expect(cacheAll[0].name).toEqual('name_1');
               expect(cacheAll[0].age).toEqual(1);
               expect(cacheAll[0].errors).toEqual({});
-              expect(cacheAll[0][RECORD_ID]).toEqual(1);
+              expect(cacheAll[0][RUE_RECORD_ID]).toEqual(1);
               expect(Cache.read('TestWhereRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
               done();
             });
@@ -107,7 +107,7 @@ describe('Record(Filter)', () => {
             expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].name).toEqual('name_1');
             expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].age).toEqual(1);
             expect(Cache.read('TestFindByRecord', RECORD_ALL)[0].errors).toEqual({});
-            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+            expect(Cache.read('TestFindByRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
             expect(Cache.read('TestFindByRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
             done();
           }

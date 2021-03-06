@@ -9,7 +9,7 @@ export const RECORD_AUTO_INCREMENNT_ID = ActiveRecord$Impl['RECORD_AUTO_INCREMEN
 export const RUE_CREATED_AT = ActiveRecord$Impl['RUE_CREATED_AT'] as string;
 export const RUE_UPDATED_AT = ActiveRecord$Impl['RUE_UPDATED_AT'] as string;
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
-export const RECORD_ID = ActiveRecord$Impl['RECORD_ID'] as string;
+export const RUE_RECORD_ID = ActiveRecord$Impl['RUE_RECORD_ID'] as string;
 
 export class ActiveRecord$Base extends ActiveRecord$Impl {
   public errors: t.Validations$Errors;
@@ -17,7 +17,7 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
   constructor(data: t.Params = {}) {
     super();
 
-    (this as any)[RECORD_ID] = undefined;
+    (this as any)[RUE_RECORD_ID] = undefined;
 
     Object.keys(data).forEach((key) => {
       (this as any)[key] = data[key];

@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 // this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Persistence extends RueModule {
   static readonly RECORD_AUTO_INCREMENNT_ID = '__rue_auto_increment_record_id__';
-  static readonly RECORD_ID = '__rue_record_id__';
+  static readonly RUE_RECORD_ID = '__rue_record_id__';
   static readonly RUE_CREATED_AT = '__rue_created_at__';
   static readonly RUE_UPDATED_AT = '__rue_updated_at__';
   static readonly RECORD_ALL = 'all';
@@ -42,7 +42,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
   save(opts?: { validate: boolean }): boolean {
     const {
-      RECORD_ID,
+      RUE_RECORD_ID,
       RECORD_AUTO_INCREMENNT_ID,
       RUE_CREATED_AT,
       RUE_UPDATED_AT,
@@ -62,16 +62,16 @@ export class ActiveRecord$Persistence extends RueModule {
       _this[RUE_UPDATED_AT] = now;
 
       // do not exists record
-      if (!_this[RECORD_ID]) {
+      if (!_this[RUE_RECORD_ID]) {
         let __record_aid__ = Cache.read<number>(klassName, RECORD_AUTO_INCREMENNT_ID, 'value');
-        _this[RECORD_ID] = __record_aid__;
+        _this[RUE_RECORD_ID] = __record_aid__;
         __record_aid__ = __record_aid__ + 1;
         Cache.update(klassName, RECORD_AUTO_INCREMENNT_ID, __record_aid__);
         Cache.create(klassName, RECORD_ALL, [this]);
       } else {
         const allRecords = Cache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
         allRecords.forEach((record) => {
-          if (record[RECORD_ID] === _this[RECORD_ID]) {
+          if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) {
             // @ts-ignore
             record = this;
           }
@@ -111,8 +111,8 @@ export class ActiveRecord$Persistence extends RueModule {
     );
     const filteredData = allData.filter(
       (record) =>
-        record[ActiveRecord$Persistence.RECORD_ID] !=
-        destroyThis[ActiveRecord$Persistence.RECORD_ID]
+        record[ActiveRecord$Persistence.RUE_RECORD_ID] !=
+        destroyThis[ActiveRecord$Persistence.RUE_RECORD_ID]
     );
 
     _ensureCache(klassName);

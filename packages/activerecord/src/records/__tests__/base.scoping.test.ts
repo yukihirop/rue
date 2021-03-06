@@ -1,7 +1,7 @@
 import {
   ActiveRecord$Base as Record,
   RECORD_AUTO_INCREMENNT_ID,
-  RECORD_ID,
+  RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
@@ -38,11 +38,11 @@ describe('Record (Scoping)', () => {
           expect(Cache.read('TestAllRecord', RECORD_ALL)[0].name).toEqual('name_1');
           expect(Cache.read('TestAllRecord', RECORD_ALL)[0].age).toEqual(1);
           expect(Cache.read('TestAllRecord', RECORD_ALL)[0].errors).toEqual({});
-          expect(Cache.read('TestAllRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+          expect(Cache.read('TestAllRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
           expect(Cache.read('TestAllRecord', RECORD_ALL)[1].name).toEqual('name_2');
           expect(Cache.read('TestAllRecord', RECORD_ALL)[1].age).toEqual(2);
           expect(Cache.read('TestAllRecord', RECORD_ALL)[1].errors).toEqual({});
-          expect(Cache.read('TestAllRecord', RECORD_ALL)[1][RECORD_ID]).toEqual(2);
+          expect(Cache.read('TestAllRecord', RECORD_ALL)[1][RUE_RECORD_ID]).toEqual(2);
           expect(Cache.read<number>('TestAllRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(3);
           done();
         });

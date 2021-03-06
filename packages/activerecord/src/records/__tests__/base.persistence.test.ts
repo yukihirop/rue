@@ -1,7 +1,7 @@
 import {
   ActiveRecord$Base as Record,
   RECORD_AUTO_INCREMENNT_ID,
-  RECORD_ID,
+  RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
@@ -61,7 +61,7 @@ describe('Record(Persistence)', () => {
           expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].errors).toEqual({
             profile: { name: [], age: [] },
           });
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
         });
       });
 
@@ -123,7 +123,7 @@ describe('Record(Persistence)', () => {
         expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].errors).toEqual({
           profile: { name: [], age: [] },
         });
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0][RECORD_ID]).toEqual(1);
+        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
       });
     });
 
@@ -207,7 +207,7 @@ describe('Record(Persistence)', () => {
           },
         ]);
         record_4.destroy();
-        expect(record_4[RECORD_ID]).toEqual(2);
+        expect(record_4[RUE_RECORD_ID]).toEqual(2);
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);
         expect(record_4.errors).toEqual({});

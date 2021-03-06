@@ -1,7 +1,7 @@
 import {
   ActiveRecord$Base as Record,
   RECORD_AUTO_INCREMENNT_ID,
-  RECORD_ID,
+  RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
 import { cacheForRecords as Cache } from '@/registries';
@@ -27,7 +27,7 @@ describe('Record', () => {
       const record = new TestConstructorRecord();
       it('should correctly', () => {
         expect(record.errors).toEqual({});
-        expect(record[RECORD_ID]).toEqual(undefined);
+        expect(record[RUE_RECORD_ID]).toEqual(undefined);
       });
     });
 
@@ -37,7 +37,7 @@ describe('Record', () => {
         expect(record.errors).toEqual({});
         expect(record.name).toEqual('name');
         expect(record.age).toEqual(20);
-        expect(record[RECORD_ID]).toEqual(undefined);
+        expect(record[RUE_RECORD_ID]).toEqual(undefined);
       });
     });
   });
