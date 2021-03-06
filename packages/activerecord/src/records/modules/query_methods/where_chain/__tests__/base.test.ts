@@ -76,9 +76,8 @@ describe('WhereChain', () => {
 
     it('should correctly', (done) => {
       const allPromiseFn = () => Promise.resolve(relation);
-      const whereChain = new WhereChain<WhereChainToPA>(allPromiseFn);
 
-      whereChain
+      new WhereChain<WhereChainToPA>(allPromiseFn)
         .where({ name: 'name_1', age: 1 })
         .toPromiseArray()
         .then((records: WhereChainToPA[]) => {
@@ -88,7 +87,19 @@ describe('WhereChain', () => {
           done();
         });
 
-      whereChain
+      new WhereChain<WhereChainToPA>(allPromiseFn)
+        .where({ name: ['name_1', 'name_2'] })
+        .toPA()
+        .then((records: WhereChainToPA[]) => {
+          expect(records.length).toEqual(2);
+          expect(records[0].name).toEqual('name_1');
+          expect(records[0].age).toEqual(1);
+          expect(records[1].name).toEqual('name_2');
+          expect(records[1].age).toEqual(2);
+          done();
+        });
+
+      new WhereChain<WhereChainToPA>(allPromiseFn)
         .where({ name: 'name_4' })
         .rewhere({ name: 'name_1' })
         .toPA()

@@ -12,6 +12,7 @@
 - [x] createOrThrow
 - [x] createOrFindBy
 - [x] createOrFindByOrThrow
+- [x] deleteBy
 - [x] destroyBy
 - [x] findOrCreateBy
 - [x] findOrCreateByOrThrow
@@ -21,6 +22,7 @@
 - [x] destoryAll
 - [x] touchAll
 - [x] updateAll
+- [x] deleteAll
 
 ## Reference
 

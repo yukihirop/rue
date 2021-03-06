@@ -103,16 +103,11 @@ export class ActiveRecord$Persistence extends RueModule {
     }
   }
 
-  destroy(): ActiveRecord$Base {
+  destroy<T extends ActiveRecord$Base>(): T {
     const destroyThis = this as any;
 
-    // auto decrement start
     const klassName = this.constructor.name;
-    const allData = RecordCache.read<ActiveRecord$Base[]>(
-      klassName,
-      ActiveRecord$Persistence.RECORD_ALL,
-      'array'
-    );
+    const allData = RecordCache.read<T[]>(klassName, ActiveRecord$Persistence.RECORD_ALL, 'array');
     const filteredData = allData.filter(
       (record) =>
         record[ActiveRecord$Persistence.RUE_RECORD_ID] !=
@@ -123,7 +118,7 @@ export class ActiveRecord$Persistence extends RueModule {
     RecordCache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, filteredData);
 
     Object.freeze(destroyThis);
-    return destroyThis as ActiveRecord$Base;
+    return destroyThis as T;
   }
 
   update<T>(params?: Partial<T>): boolean {

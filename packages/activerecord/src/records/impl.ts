@@ -76,7 +76,7 @@ interface ActiveRecord$Impl {
   // ActiveRecord$Persistence
   save(opts?: { validate: boolean }): boolean;
   saveOrThrow(): void | boolean;
-  destroy(): this;
+  destroy<T extends ActiveRecord$Base>(): T;
   update<T>(params?: Partial<T>): boolean;
   // ActiveRecord$Associations
   primaryKey: at.Associations$PrimaryKey;

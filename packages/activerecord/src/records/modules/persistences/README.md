@@ -15,7 +15,7 @@
 - [ ] toggle
 - [ ] toggleOrThrow
 - [ ] touch
-- [ ] update
+- [x] update
 - [ ] updateOrThrow
 - [ ] updateProp
 - [ ] updateProps

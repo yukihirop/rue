@@ -642,6 +642,68 @@ describe('ActiveRecord$Relation$Base', () => {
     });
   });
 
+  describe('#deleteBy', () => {
+    type DeleteByRecordParams = {
+      name: string;
+      age: number;
+    };
+
+    class DeleteByRecord extends ActiveRecord$Base {
+      public name: DeleteByRecordParams['name'];
+      public age: DeleteByRecordParams['age'];
+
+      static translate(key: string, opts?: any): string {
+        return key;
+      }
+
+      protected static fetchAll<T = DeleteByRecordParams>(): Promise<T[]> {
+        return Promise.resolve([]);
+      }
+    }
+
+    const createRecord = (params: DeleteByRecordParams): DeleteByRecord => {
+      const record = new DeleteByRecord(params);
+      record.save();
+      return record;
+    };
+
+    const records = [
+      createRecord({ name: 'name_1', age: 1 }),
+      createRecord({ name: 'name_2', age: 2 }),
+      createRecord({ name: 'name_3', age: 3 }),
+    ];
+
+    const relation = new Relation<DeleteByRecord>(DeleteByRecord, records);
+
+    beforeEach(() => {
+      // @ts-ignore
+      relation.records = Array.from(records);
+      RecordCache.update(DeleteByRecord.name, RECORD_ALL, records);
+    });
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        relation.deleteBy().then((result) => {
+          expect(result).toEqual(3);
+          // @ts-ignore
+          expect(relation.records.length).toEqual(0);
+          done();
+        });
+      });
+    });
+
+    describe("when specify 'params'", () => {
+      it('should correctly', (done) => {
+        relation.deleteBy({ age: [1, 2] }).then((result) => {
+          expect(result).toEqual(2);
+          // @ts-ignore
+          expect(relation.records.length).toEqual(1);
+          done();
+        });
+      });
+    });
+  });
+
   describe('#destroyBy', () => {
     type DestoryByRecordParams = {
       name: string;
@@ -693,6 +755,58 @@ describe('ActiveRecord$Relation$Base', () => {
         expect(relation.destroyBy((self) => self.name === 'name_1')).toEqual([records[0]]);
         // @ts-ignore
         expect(relation.records.length).toEqual(2);
+      });
+    });
+  });
+
+  describe('#deleteAll', () => {
+    type DeleteAllRecordParams = {
+      name: string;
+      age: number;
+    };
+
+    class DeleteAllRecord extends ActiveRecord$Base {
+      public name: DeleteAllRecordParams['name'];
+      public age: DeleteAllRecordParams['age'];
+
+      static translate(key: string, opts?: any): string {
+        return key;
+      }
+
+      protected static fetchAll<T = DeleteAllRecordParams>(): Promise<T[]> {
+        return Promise.resolve([]);
+      }
+    }
+
+    const createRecord = (params: DeleteAllRecordParams): DeleteAllRecord => {
+      const record = new DeleteAllRecord(params);
+      record.save();
+      return record;
+    };
+
+    const records = [
+      createRecord({ name: 'name_1', age: 1 }),
+      createRecord({ name: 'name_2', age: 2 }),
+      createRecord({ name: 'name_3', age: 3 }),
+    ];
+
+    const relation = new Relation<DeleteAllRecord>(DeleteAllRecord, records);
+
+    beforeEach(() => {
+      // @ts-ignore
+      relation.records = Array.from(records);
+    });
+
+    describe('when default', () => {
+      it('should correctly', () => {
+        expect(RecordCache.data['DeleteAllRecord'][RECORD_ALL].length).toEqual(3);
+        // @ts-ignore
+        expect(relation.records.length).toEqual(3);
+        const result = relation.deleteAll();
+        expect(result).toEqual(3);
+        expect(RecordCache.data['DeleteAllRecord'][RECORD_ALL].length).toEqual(0);
+        // @ts-ignore
+        expect(relation.records.length).toEqual(0);
       });
     });
   });

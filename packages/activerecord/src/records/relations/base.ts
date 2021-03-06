@@ -98,6 +98,26 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
     });
   }
 
+  deleteBy<P>(params?: Partial<P>): Promise<number> {
+    const deleteRecordFn = (record: T) => {
+      record.destroy();
+      return true;
+    };
+
+    return (
+      this.recordKlass
+        // @ts-ignore
+        .where<P>(params)
+        .toPA()
+        .then((records: T[]) => {
+          return Promise.all(records.map(deleteRecordFn)).then((result) => {
+            this.records = RecordCache.read(this.recordKlass.name, RECORD_ALL, 'array');
+            return Promise.resolve(result.filter(Boolean).length);
+          });
+        })
+    );
+  }
+
   // TODO: Use ActiveRecord$QueryMethods#where
   // https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/relation.rb#L613-L615
   destroyBy(filter?: (self: T) => boolean): T[] {
@@ -123,10 +143,17 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
     return deleteData;
   }
 
+  deleteAll(): number {
+    const deleteCount = this.records.length;
+    RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
+    this.records = [];
+    return deleteCount;
+  }
+
   destroyAll(): T[] {
     // @ts-ignore
     const destroyed = this.records.map((record: T) => {
-      const destroyed = record.destroy();
+      const destroyed = record.destroy<T>();
       Object.freeze(destroyed);
       return destroyed;
     });
