@@ -2,7 +2,7 @@
 import { RueModule } from '@rue/activesupport';
 
 // local
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
 import { ActiveRecord$Relation } from '@/records/relations';
 
@@ -15,8 +15,8 @@ export class ActiveRecord$Scoping$Named extends RueModule {
     const _this = this as ct.Constructor<T>;
     const klassName = _this.name;
 
-    if (Cache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
-      const records = Cache.read<T[]>(klassName, RECORD_ALL, 'array');
+    if (RecordCache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
+      const records = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
       const relation = new ActiveRecord$Relation<T>(_this, records);
       return Promise.resolve(relation);
     } else {

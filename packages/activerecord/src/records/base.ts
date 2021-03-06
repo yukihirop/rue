@@ -1,5 +1,5 @@
 // local
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Impl } from './impl';
 
 // types
@@ -35,10 +35,10 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 
-  static resetCache() {
+  static resetRecordCache() {
     const klassName = this.name;
-    Cache.destroy(klassName);
-    Cache.create(klassName, RECORD_ALL, []);
-    Cache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
+    RecordCache.destroy(klassName);
+    RecordCache.create(klassName, RECORD_ALL, []);
+    RecordCache.create(klassName, RECORD_AUTO_INCREMENNT_ID, 1);
   }
 }

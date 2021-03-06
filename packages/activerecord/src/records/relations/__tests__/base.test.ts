@@ -1,6 +1,6 @@
 import { ActiveRecord$Relation$Base as Relation } from '../base';
 import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 
 // third party
 import MockDate from 'mockdate';
@@ -343,13 +343,13 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       // @ts-ignore
       relation.records = Array.from(records);
-      CreateRecord.resetCache();
+      CreateRecord.resetRecordCache();
     });
 
     describe('when default', () => {
       it('should correctly', () => {
         const record = relation.create<CreateRecordParams>();
-        const cacheAll = Cache.data['CreateRecord'][RECORD_ALL];
+        const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
         expect(record.name).toEqual(undefined);
         expect(record.age).toEqual(undefined);
         expect(cacheAll.length).toEqual(1);
@@ -364,7 +364,7 @@ describe('ActiveRecord$Relation$Base', () => {
       describe('when valid', () => {
         it('should correctly', () => {
           const record = relation.create<CreateRecordParams>({ name: 'name_4', age: 4 });
-          const cacheAll = Cache.data['CreateRecord'][RECORD_ALL];
+          const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
           expect(record.name).toEqual('name_4');
           expect(record.age).toEqual(4);
           expect(cacheAll.length).toEqual(1);
@@ -384,7 +384,7 @@ describe('ActiveRecord$Relation$Base', () => {
       describe('when invalid', () => {
         it('should correctly', () => {
           const record = relation.create<CreateRecordParams>({ name: 'name_10', age: 10 });
-          const cacheAll = Cache.data['CreateRecord'][RECORD_ALL];
+          const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
           expect(record.name).toEqual('name_10');
           expect(record.age).toEqual(10);
           expect(cacheAll.length).toEqual(0);
@@ -427,13 +427,13 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       // @ts-ignore
       relation.records = Array.from(records);
-      CreateOrThrowRecord.resetCache();
+      CreateOrThrowRecord.resetRecordCache();
     });
 
     describe('when default', () => {
       it('should correctly', () => {
         const record = relation.create<CreateOrThrowRecordParams>();
-        const cacheAll = Cache.data['CreateOrThrowRecord'][RECORD_ALL];
+        const cacheAll = RecordCache.data['CreateOrThrowRecord'][RECORD_ALL];
         expect(record.name).toEqual(undefined);
         expect(record.age).toEqual(undefined);
         expect(cacheAll.length).toEqual(1);
@@ -451,7 +451,7 @@ describe('ActiveRecord$Relation$Base', () => {
             name: 'name_4',
             age: 4,
           });
-          const cacheAll = Cache.data['CreateOrThrowRecord'][RECORD_ALL];
+          const cacheAll = RecordCache.data['CreateOrThrowRecord'][RECORD_ALL];
           expect(record.name).toEqual('name_4');
           expect(record.age).toEqual(4);
           expect(cacheAll.length).toEqual(1);
@@ -464,7 +464,7 @@ describe('ActiveRecord$Relation$Base', () => {
 
       describe('when invalid', () => {
         it('should correctly', () => {
-          const cacheAll = Cache.data['CreateOrThrowRecord'][RECORD_ALL];
+          const cacheAll = RecordCache.data['CreateOrThrowRecord'][RECORD_ALL];
           expect(() => {
             relation.createOrThrow<CreateOrThrowRecordParams>({ name: 'name_10', age: 10 });
           }).toThrowError(`CreateOrThrowRecord {
@@ -740,9 +740,9 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when default', () => {
       it('should correctly', () => {
-        expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(3);
+        expect(RecordCache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(3);
         const destroyedRecords = relation.destroyAll();
-        expect(Cache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(0);
+        expect(RecordCache.data['DestroyAllRecord'][RECORD_ALL].length).toEqual(0);
         expect(destroyedRecords[0]).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,

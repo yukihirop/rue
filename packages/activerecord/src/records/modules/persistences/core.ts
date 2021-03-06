@@ -3,7 +3,7 @@ import { RueModule } from '@rue/activesupport';
 
 // locals
 import { errObj, ErrCodes } from '@/errors';
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base } from '@/records';
 
 // third party
@@ -19,7 +19,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
   static destroyAll<T extends ActiveRecord$Base>(filter?: (self: T) => boolean): Array<T> {
     const klassName = this.name;
-    const allData = Cache.read<T[]>(klassName, ActiveRecord$Persistence.RECORD_ALL, 'array');
+    const allData = RecordCache.read<T[]>(klassName, ActiveRecord$Persistence.RECORD_ALL, 'array');
 
     let leavedData = [];
     let deleteData = [];
@@ -34,7 +34,7 @@ export class ActiveRecord$Persistence extends RueModule {
         deleteData.push(record);
       }
     });
-    Cache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, leavedData);
+    RecordCache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, leavedData);
 
     deleteData.forEach((record) => Object.freeze(record));
     return deleteData;
@@ -55,7 +55,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     if (!opts.validate || _this.isValid()) {
       const klassName = this.constructor.name;
-      _ensureCache(klassName);
+      _ensureRecordCache(klassName);
 
       const now = dayjs().format();
       _this[RUE_CREATED_AT] = _this[RUE_CREATED_AT] || now;
@@ -63,20 +63,24 @@ export class ActiveRecord$Persistence extends RueModule {
 
       // do not exists record
       if (!_this[RUE_RECORD_ID]) {
-        let __record_aid__ = Cache.read<number>(klassName, RECORD_AUTO_INCREMENNT_ID, 'value');
+        let __record_aid__ = RecordCache.read<number>(
+          klassName,
+          RECORD_AUTO_INCREMENNT_ID,
+          'value'
+        );
         _this[RUE_RECORD_ID] = __record_aid__;
         __record_aid__ = __record_aid__ + 1;
-        Cache.update(klassName, RECORD_AUTO_INCREMENNT_ID, __record_aid__);
-        Cache.create(klassName, RECORD_ALL, [this]);
+        RecordCache.update(klassName, RECORD_AUTO_INCREMENNT_ID, __record_aid__);
+        RecordCache.create(klassName, RECORD_ALL, [this]);
       } else {
-        const allRecords = Cache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
+        const allRecords = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
         allRecords.forEach((record) => {
           if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) {
             // @ts-ignore
             record = this;
           }
         });
-        Cache.update(klassName, RECORD_ALL, allRecords);
+        RecordCache.update(klassName, RECORD_ALL, allRecords);
       }
 
       return true;
@@ -104,7 +108,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     // auto decrement start
     const klassName = this.constructor.name;
-    const allData = Cache.read<ActiveRecord$Base[]>(
+    const allData = RecordCache.read<ActiveRecord$Base[]>(
       klassName,
       ActiveRecord$Persistence.RECORD_ALL,
       'array'
@@ -115,8 +119,8 @@ export class ActiveRecord$Persistence extends RueModule {
         destroyThis[ActiveRecord$Persistence.RUE_RECORD_ID]
     );
 
-    _ensureCache(klassName);
-    Cache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, filteredData);
+    _ensureRecordCache(klassName);
+    RecordCache.update(klassName, ActiveRecord$Persistence.RECORD_ALL, filteredData);
 
     Object.freeze(destroyThis);
     return destroyThis as ActiveRecord$Base;
@@ -148,14 +152,14 @@ function _clone(original: ActiveRecord$Base): ActiveRecord$Base {
   return Object.assign(Object.create(Object.getPrototypeOf(original)), original);
 }
 
-function _ensureCache(klassName: string) {
-  if (Cache.data[klassName] == undefined) _resetCache(klassName);
-  if (Cache.data[klassName][ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID] == undefined)
-    _resetCache(klassName);
+function _ensureRecordCache(klassName: string) {
+  if (RecordCache.data[klassName] == undefined) _resetRecordCache(klassName);
+  if (RecordCache.data[klassName][ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID] == undefined)
+    _resetRecordCache(klassName);
 }
 
-function _resetCache(klassName: string) {
-  Cache.destroy(klassName);
-  Cache.create(klassName, ActiveRecord$Persistence.RECORD_ALL, []);
-  Cache.create(klassName, ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID, 1);
+function _resetRecordCache(klassName: string) {
+  RecordCache.destroy(klassName);
+  RecordCache.create(klassName, ActiveRecord$Persistence.RECORD_ALL, []);
+  RecordCache.create(klassName, ActiveRecord$Persistence.RECORD_AUTO_INCREMENNT_ID, 1);
 }

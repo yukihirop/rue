@@ -4,7 +4,7 @@ import {
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 
 describe('Record(Persistence)', () => {
@@ -55,13 +55,17 @@ describe('Record(Persistence)', () => {
           // Even after saving once, the state does not change no matter how many times you save
           expect(record.save()).toEqual(true);
           expect(record.save()).toEqual(true);
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(2);
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.name).toEqual('name_1');
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(20);
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0].errors).toEqual({
+          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(2);
+          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.name).toEqual(
+            'name_1'
+          );
+          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(20);
+          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].errors).toEqual({
             profile: { name: [], age: [] },
           });
-          expect(Cache.read('TestSaveSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
+          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(
+            1
+          );
         });
       });
 
@@ -73,7 +77,7 @@ describe('Record(Persistence)', () => {
         const record = new TestSaveFailureRecord({ profile: { name: 'name_2', age: 30 } });
         it('should retrun false', () => {
           expect(record.save()).toEqual(false);
-          expect(Cache.data['TestSaveFailureRecord']).toEqual(undefined);
+          expect(RecordCache.data['TestSaveFailureRecord']).toEqual(undefined);
         });
       });
     });
@@ -115,15 +119,21 @@ describe('Record(Persistence)', () => {
       const record = new TestSaveOrThrowSuccessRecord({ profile: { name: 'name_1', age: 20 } });
       it('should return true', () => {
         expect(record.save()).toEqual(true);
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(2);
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].profile.name).toEqual(
-          'name_1'
+        expect(RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_AUTO_INCREMENNT_ID)).toEqual(
+          2
         );
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(20);
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].errors).toEqual({
+        expect(
+          RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].profile.name
+        ).toEqual('name_1');
+        expect(RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(
+          20
+        );
+        expect(RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0].errors).toEqual({
           profile: { name: [], age: [] },
         });
-        expect(Cache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(1);
+        expect(
+          RecordCache.read('TestSaveOrThrowSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]
+        ).toEqual(1);
       });
     });
 
@@ -190,7 +200,7 @@ describe('Record(Persistence)', () => {
       it('should return destory this', () => {
         record_3.save();
         record_4.save();
-        expect(Cache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
+        expect(RecordCache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -211,7 +221,7 @@ describe('Record(Persistence)', () => {
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);
         expect(record_4.errors).toEqual({});
-        expect(Cache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
+        expect(RecordCache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -312,7 +322,7 @@ describe('Record(Persistence)', () => {
           expect(records[1].profile.name).toEqual('name_2');
           expect(records[1].profile.age).toEqual(2);
           expect(TestDestroyAllDefaultRecord.destroyAll()).toEqual(records);
-          expect(Cache.read('TestDestroyAllDefaultRecord', RECORD_ALL)).toEqual([]);
+          expect(RecordCache.read('TestDestroyAllDefaultRecord', RECORD_ALL)).toEqual([]);
           done();
         });
       });
@@ -332,7 +342,7 @@ describe('Record(Persistence)', () => {
               (self) => self.profile.name == 'name_1'
             )
           ).toEqual([records[0]]);
-          expect(Cache.read('TestDestroyAllFilterRecord', RECORD_ALL)).toEqual([records[1]]);
+          expect(RecordCache.read('TestDestroyAllFilterRecord', RECORD_ALL)).toEqual([records[1]]);
           done();
         });
       });

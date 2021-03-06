@@ -4,7 +4,7 @@ import {
   RUE_RECORD_ID,
   RECORD_ALL,
 } from '../base';
-import { cacheForRecords as Cache } from '@/registries';
+import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 
 describe('Record', () => {
@@ -42,11 +42,11 @@ describe('Record', () => {
     });
   });
 
-  describe('[static] resetCache', () => {
-    class TestResetCacheRecord extends Record {}
+  describe('[static] resetRecordCache', () => {
+    class TestResetRecordCacheRecord extends Record {}
     describe('should correctly', () => {
-      TestResetCacheRecord.resetCache();
-      expect(Cache.data['TestResetCacheRecord']).toEqual({
+      TestResetRecordCacheRecord.resetRecordCache();
+      expect(RecordCache.data['TestResetRecordCacheRecord']).toEqual({
         [RECORD_AUTO_INCREMENNT_ID]: 1,
         [RECORD_ALL]: [],
       });
