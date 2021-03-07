@@ -282,7 +282,12 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when default', () => {
       it('should correctly', () => {
-        expect(relation.build()).toEqual({ __rue_record_id__: undefined, errors: {} });
+        expect(relation.build()).toEqual({
+          __rue_record_id__: undefined,
+          _destroyed: false,
+          _newRecord: true,
+          errors: {},
+        });
         // @ts-ignore
         expect(relation.records.length).toEqual(3);
       });
@@ -292,6 +297,8 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', () => {
         expect(relation.build({ name: 'name_4', age: 4 })).toEqual({
           __rue_record_id__: undefined,
+          _destroyed: false,
+          _newRecord: true,
           age: 4,
           errors: {},
           name: 'name_4',
@@ -307,7 +314,14 @@ describe('ActiveRecord$Relation$Base', () => {
           relation.build({ name: 'name_5' }, (self) => {
             self.age = 5;
           })
-        ).toEqual({ __rue_record_id__: undefined, age: 5, errors: {}, name: 'name_5' });
+        ).toEqual({
+          __rue_record_id__: undefined,
+          _destroyed: false,
+          _newRecord: true,
+          age: 5,
+          errors: {},
+          name: 'name_5',
+        });
         // @ts-ignore
         expect(relation.records.length).toEqual(3);
       });
@@ -372,6 +386,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _newRecord: false,
+            _destroyed: false,
             age: 4,
             errors: { name: [], age: [] },
             name: 'name_4',
@@ -468,6 +484,8 @@ describe('ActiveRecord$Relation$Base', () => {
           expect(() => {
             relation.createOrThrow<CreateOrThrowRecordParams>({ name: 'name_10', age: 10 });
           }).toThrowError(`CreateOrThrowRecord {
+  "_destroyed": false,
+  "_newRecord": true,
   "age": 10,
   "errors": {
     "name": [
@@ -541,6 +559,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 4,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _newRecord: false,
+            _destroyed: false,
             age: undefined,
             errors: {},
             name: 'name_4',
@@ -610,6 +630,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 4,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _newRecord: false,
+            _destroyed: false,
             errors: { name: [] },
             name: 'name_4',
           });
@@ -624,6 +646,8 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation.createOrFindByOrThrow({ name: 'name_10' }).catch((err) => {
           expect(err.toString()).toEqual(`Error: CreateOrFindByOrThrowRecord {
+  "_destroyed": false,
+  "_newRecord": true,
   "errors": {
     "name": [
       {
@@ -667,17 +691,19 @@ describe('ActiveRecord$Relation$Base', () => {
       return record;
     };
 
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const relation = new Relation<DeleteByRecord>(DeleteByRecord, []);
 
-    const relation = new Relation<DeleteByRecord>(DeleteByRecord, records);
+    // @important
+    // records are object.freeze when destroyed
 
     beforeEach(() => {
+      const records = [
+        createRecord({ name: 'name_1', age: 1 }),
+        createRecord({ name: 'name_2', age: 2 }),
+        createRecord({ name: 'name_3', age: 3 }),
+      ];
       // @ts-ignore
-      relation.records = Array.from(records);
+      relation.records = records;
       RecordCache.update(DeleteByRecord.name, RECORD_ALL, records);
     });
 
@@ -725,24 +751,56 @@ describe('ActiveRecord$Relation$Base', () => {
       return record;
     };
 
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const relation = new Relation<DestroyByRecord>(DestroyByRecord, []);
 
-    const relation = new Relation<DestroyByRecord>(DestroyByRecord, records);
+    // @important
+    // records are object.freeze when destroyed
 
     beforeEach(() => {
+      const records = [
+        createRecord({ name: 'name_1', age: 1 }),
+        createRecord({ name: 'name_2', age: 2 }),
+        createRecord({ name: 'name_3', age: 3 }),
+      ];
       // @ts-ignore
-      relation.records = Array.from(records);
+      relation.records = records;
+      RecordCache.update(DestroyByRecord.name, RECORD_ALL, records);
     });
 
     describe('when default', () => {
       it('should correctly', () => {
-        // @ts-ignore
-        expect(relation.records.length).toEqual(3);
-        expect(relation.destroyBy()).toEqual(records);
+        expect(relation.destroyBy()).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            age: 1,
+            _newRecord: false,
+            errors: {},
+            name: 'name_1',
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            age: 2,
+            errors: {},
+            _newRecord: false,
+            name: 'name_2',
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            age: 3,
+            errors: {},
+            name: 'name_3',
+          },
+        ]);
         // @ts-ignore
         expect(relation.records.length).toEqual(0);
       });
@@ -750,9 +808,18 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe("when specify 'filter'", () => {
       it('should correctly', () => {
-        // @ts-ignore
-        expect(relation.records.length).toEqual(3);
-        expect(relation.destroyBy((self) => self.name === 'name_1')).toEqual([records[0]]);
+        expect(relation.destroyBy((self) => self.name === 'name_1')).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            age: 1,
+            errors: {},
+            name: 'name_1',
+          },
+        ]);
         // @ts-ignore
         expect(relation.records.length).toEqual(2);
       });
@@ -861,6 +928,8 @@ describe('ActiveRecord$Relation$Base', () => {
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
           __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _destroyed: true,
+          _newRecord: false,
           age: 1,
           errors: {},
           name: 'name_1',
@@ -869,6 +938,8 @@ describe('ActiveRecord$Relation$Base', () => {
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 2,
           __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _destroyed: true,
+          _newRecord: false,
           age: 2,
           errors: {},
           name: 'name_2',
@@ -877,6 +948,8 @@ describe('ActiveRecord$Relation$Base', () => {
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 3,
           __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _destroyed: true,
+          _newRecord: false,
           age: 3,
           errors: {},
           name: 'name_3',
@@ -955,6 +1028,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 4,
               __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               errors: {},
               name: 'name_4',
             });
@@ -975,6 +1050,8 @@ describe('ActiveRecord$Relation$Base', () => {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
                 __rue_record_id__: 5,
                 __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _newRecord: false,
+                _destroyed: false,
                 age: 100,
                 errors: {},
                 name: 'name_5',
@@ -1039,6 +1116,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 1,
               __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               age: 1,
               errors: { age: [], name: [] },
               name: 'name_1',
@@ -1059,6 +1138,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 4,
               __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               age: 4,
               errors: { age: [], name: [] },
               name: 'name_4',
@@ -1084,6 +1165,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 5,
               __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               age: undefined,
               errors: { age: [], name: [] },
               name: 'name_5',
@@ -1101,6 +1184,8 @@ describe('ActiveRecord$Relation$Base', () => {
           .findOrCreateByOrThrow<FindOrCreateByOrThrowRecordParams>({ name: 'name_6' })
           .catch((err) => {
             expect(err.toString()).toEqual(`Error: FindOrCreateByOrThrowRecord {
+  "_destroyed": false,
+  "_newRecord": true,
   "errors": {
     "name": [],
     "age": [
@@ -1166,7 +1251,13 @@ describe('ActiveRecord$Relation$Base', () => {
         relation
           .findOrInitializeBy<FindOrInitializeByRecordParams>({ name: 'name_4' })
           .then((record) => {
-            expect(record).toEqual({ __rue_record_id__: undefined, errors: {}, name: 'name_4' });
+            expect(record).toEqual({
+              __rue_record_id__: undefined,
+              _newRecord: true,
+              _destroyed: false,
+              errors: {},
+              name: 'name_4',
+            });
             // @ts-ignore
             expect(relation.records.length).toEqual(3);
             done();
@@ -1269,6 +1360,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
             __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+            _newRecord: false,
+            _destroyed: false,
             age: 1,
             errors: {},
             name: 'name_1',
@@ -1277,6 +1370,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 2,
             __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+            _newRecord: false,
+            _destroyed: false,
             age: 2,
             errors: {},
             name: 'name_2',
@@ -1297,6 +1392,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 1,
               __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               age: 1,
               errors: {},
               name: 'name_1',
@@ -1317,6 +1414,8 @@ describe('ActiveRecord$Relation$Base', () => {
               __rue_created_at__: '2021-03-06T23:03:21+09:00',
               __rue_record_id__: 1,
               __rue_updated_at__: '2021-03-06T23:03:21+09:00',
+              _newRecord: false,
+              _destroyed: false,
               age: 1,
               errors: {},
               name: 'name_1',
@@ -1336,6 +1435,8 @@ describe('ActiveRecord$Relation$Base', () => {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 2,
             __rue_updated_at__: time,
+            _newRecord: false,
+            _destroyed: false,
             age: 2,
             errors: {},
             name: 'name_2',

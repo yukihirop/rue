@@ -118,6 +118,13 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
     );
   }
 
+  deleteAll(): number {
+    const deleteCount = this.records.length;
+    RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
+    this.records = [];
+    return deleteCount;
+  }
+
   // TODO: Use ActiveRecord$QueryMethods#where
   // https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/relation.rb#L613-L615
   destroyBy(filter?: (self: T) => boolean): T[] {
@@ -139,15 +146,11 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
     RecordCache.update(this.recordKlass.name, RECORD_ALL, leavedData);
     this.records = leavedData;
 
-    deleteData.forEach((record) => Object.freeze(record));
+    deleteData.forEach((record) => {
+      record._destroyed = true;
+      Object.freeze(record);
+    });
     return deleteData;
-  }
-
-  deleteAll(): number {
-    const deleteCount = this.records.length;
-    RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
-    this.records = [];
-    return deleteCount;
   }
 
   destroyAll(): T[] {
@@ -201,6 +204,8 @@ export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
         return Promise.resolve(record);
       } else {
         const newRecord = new this.recordKlass(params);
+        // @ts-expect-error
+        newRecord._newRecord = true;
         if (yielder) yielder(newRecord);
         return Promise.resolve(newRecord);
       }

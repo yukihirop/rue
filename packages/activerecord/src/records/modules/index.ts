@@ -4,3 +4,4 @@ export { ActiveRecord$Associations } from './associations';
 export { ActiveRecord$QueryMethods } from './query_methods';
 export { ActiveRecord$QueryMethods$WhereChain } from './query_methods';
 export { ActiveRecord$Scoping } from './scoping';
+export { ActiveRecord$Core } from './core';
