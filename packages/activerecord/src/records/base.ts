@@ -25,6 +25,9 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
       (this as any)[key] = data[key];
     });
 
+    this._newRecord = true;
+    this._destroyed = false;
+
     ActiveRecord$Impl.defineAssociations(this);
   }
 

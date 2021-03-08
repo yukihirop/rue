@@ -3,6 +3,7 @@ import * as t from './types';
 export const enum ErrCodes {
   RECORD_IS_INVALID = 'RECORD_IS_INVALID',
   RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY = 'RECORD D NOT HAVE HAS_AND_BELONGS_TO_MANY',
+  RECORD_NOT_FOUND = 'RECORD_NOT_FOUND',
 }
 
 export const ErrMessages: { [code: string]: t.ErrMessage } = {
@@ -12,5 +13,9 @@ export const ErrMessages: { [code: string]: t.ErrMessage } = {
   [ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY]: {
     message: (params = {} as any) =>
       `'${params['klassNameLeft']}' don't have 'hasAndBelongsToMany' associations with ${params['klassNameRight']}.`,
+  },
+  [ErrCodes.RECORD_NOT_FOUND]: {
+    message: (params = {} as any) =>
+      `Couldn't find '${params['resource']}' with 'primaryKey' = '${params['primaryKey']}'`,
   },
 };

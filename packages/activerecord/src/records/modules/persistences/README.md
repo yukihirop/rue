@@ -1,40 +1,42 @@
 # ActiveRecord$Persistence
 
+`-`: There are no plans to implement it.
+
 ## Methods
 
+- [x] delete
 - [x] destroy
-- [ ] destroyOrThrow
+- [-] destroyOrThrow
+- [x] isDestroyed
+- [-] increment
+- [-] incrementOrThrow
+- [x] isNewRecord
+- [x] isPersisted
+- [-] isPreviouslyNewRecord
 - [x] save
 - [x] saveOrThrow
-- [ ] delete
-- [ ] isDestroyed
-- [ ] increment
-- [ ] incrementOrThrow
-- [ ] isNewRecord
-- [ ] isPersisted
-- [ ] toggle
-- [ ] toggleOrThrow
-- [ ] touch
+- [-] toggle
+- [-] toggleOrThrow
+- [x] touch
 - [x] update
-- [ ] updateOrThrow
-- [ ] updateProp
-- [ ] updateProps
-- [ ] updatePropsOrThrow
+- [x] updateOrThrow
+- [x] updateAttribute
+- [x] updateProperty (alias to updateAttribute)
+- [x] updateProp (alias to updateAttribute)
 
 ## Static Methods
 
-- [x] destroyAll
-- [] create
-- [] createOrThrow
-- [] delete
-- [] destroy
-- [] insert
-- [] insertOrThrow
-- [] insertAll
-- [] insertAllOrThrow
-- [] update
-- [] upsert
-- [] upsertAll
+- [x] create
+- [x] createOrThrow
+- [x] delete
+- [x] destroy
+- [-] insert
+- [-] insertOrThrow
+- [-] insertAll
+- [-] insertAllOrThrow
+- [x] update
+- [-] upsert
+- [-] upsertAll
 
 ## Reference
 
