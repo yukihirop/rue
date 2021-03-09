@@ -66,6 +66,6 @@ function toPromiseArrayFn<T extends ActiveRecord$Base, U>(
         if (isMatch) acc.push(record);
         return acc;
       }, [] as Array<T>);
-      return Promise.resolve(result);
+      return result;
     });
 }
