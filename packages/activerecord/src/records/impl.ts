@@ -10,13 +10,14 @@ import {
   ActiveRecord$Persistence,
   ActiveRecord$Associations,
   ActiveRecord$Scoping,
+  ActiveRecord$Querying,
   ActiveRecord$Core,
 } from '@/records/modules';
 
 // types
 import * as at from '@/records/modules/associations';
 import * as acpt from '@/records/modules/associations/modules/collection_proxy';
-import * as qmt from '@/records/relations/modules/query_methods';
+import * as rmt from '@/records/relations/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
@@ -33,7 +34,6 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
   static RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID;
-  static destroyAll: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => T[];
   static create: <T extends ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
@@ -83,23 +83,48 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   static find: <T extends ActiveRecord$Base>(
     ...primaryKeys: at.Associations$PrimaryKey[]
   ) => T | T[];
-
-  // TODO: delete
-  static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(
-    params: Partial<U>
-  ): Promise<T> {
-    // @ts-ignore
-    return (this as typeof ActiveRecord$Base)
-      .where<T, U>(params)
-      .toPromiseArray()
-      .then((records) => {
-        if (records.length > 0) {
-          return Promise.resolve(records[0]);
-        } else {
-          return Promise.resolve(undefined);
-        }
-      });
-  }
+  // ActiveRecord$Querying
+  // static find: <T extends ActiveRecord$Base, U = { [key: string]: any }>(
+  //   ...primaryKeys: at.Associations$PrimaryKey[]
+  // ) => Promise<T | T[]>;
+  static findBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
+  static findByOrThrow: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
+  static take: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static takeOrThrow: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static first: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static firstOrThrow: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static last: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static lastOrThrow: <T extends ActiveRecord$Base>(limit?: number) => Promise<T | T[]>;
+  static isExists: <T extends ActiveRecord$Base, U>(
+    condition?: rmt.FinderMethods$ExistsCondition<U>
+  ) => Promise<boolean>;
+  static isAny: <T extends ActiveRecord$Base>(filter?: (record: T) => boolean) => Promise<boolean>;
+  static isMany: <T extends ActiveRecord$Base>(filter?: (record: T) => boolean) => Promise<boolean>;
+  static isNone: <T extends ActiveRecord$Base>(filter?: (record: T) => boolean) => Promise<boolean>;
+  static isOne: <T extends ActiveRecord$Base>(filter?: (record: T) => boolean) => Promise<boolean>;
+  static findOrCreateBy: <T extends ActiveRecord$Base, U>(
+    params: Partial<U>,
+    yielder?: (self: T) => void
+  ) => Promise<T>;
+  static findOrCreateByOrThrow: <T extends ActiveRecord$Base, U>(
+    params: Partial<U>,
+    yielder?: (self: T) => void
+  ) => Promise<T>;
+  static findOrInitializeBy: <T extends ActiveRecord$Base, U>(
+    params: Partial<U>,
+    yielder?: (self: T) => void
+  ) => Promise<T>;
+  static createOrFindBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
+  static createOrFindByOrThrow: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
+  static destroyAll: <T extends ActiveRecord$Base>() => Promise<T[]>;
+  static deleteAll: <T extends ActiveRecord$Base>() => Promise<number>;
+  static updateAll: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<number>;
+  static touchAll: <T extends ActiveRecord$Base, U>(
+    params?: Partial<U>,
+    opts?: { withCreatedAt?: boolean; time?: string }
+  ) => Promise<number>;
+  static destroyBy: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => Promise<T[]>;
+  static deleteBy: <T extends ActiveRecord$Base, U>(params?: Partial<U>) => Promise<number>;
 
   static where<T extends ActiveRecord$Base, U>(
     params: Partial<U>
@@ -174,10 +199,8 @@ ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
 });
 
 // extend module
-ActiveRecord$Core.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['find'] });
 ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: [
-    'destroyAll',
     'create',
     'createOrThrow',
     'delete',
@@ -191,6 +214,39 @@ ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
+
+ActiveRecord$Core.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['find'] });
 ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
+ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
+  only: [
+    // 'find',  Give priority to find in ActiveRecord$Core
+    'findBy',
+    'findByOrThrow',
+    'take',
+    'takeOrThrow',
+    'first',
+    'firstOrThrow',
+    'last',
+    'lastOrThrow',
+    'isExists',
+    'isAny',
+    'isMany',
+    'isNone',
+    'isOne',
+    'findOrCreateBy',
+    'findOrCreateByOrThrow',
+    'findOrCreate',
+    'findOrCreateOrThrow',
+    'findOrInitializeBy',
+    'createOrFindBy',
+    'createOrFindByOrThrow',
+    'destroyAll',
+    'deleteAll',
+    'updateAll',
+    'touchAll',
+    'destroyBy',
+    'deleteBy',
+  ],
+});
 
 export { ActiveRecord$Impl };
