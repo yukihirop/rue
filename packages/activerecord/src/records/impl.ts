@@ -5,26 +5,23 @@ import { ActiveModel$Base } from '@rue/activemodel';
 // local
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
-import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/relations/modules/query_methods';
 import {
   ActiveRecord$Persistence,
-  ActiveRecord$FinderMethods,
   ActiveRecord$Associations,
   ActiveRecord$Scoping,
-  ActiveRecord$QueryMethods,
   ActiveRecord$Core,
 } from '@/records/modules';
 
 // types
 import * as at from '@/records/modules/associations';
 import * as acpt from '@/records/modules/associations/modules/collection_proxy';
-import * as qmt from '@/records/modules/query_methods';
+import * as qmt from '@/records/relations/modules/query_methods';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl extends ActiveModel$Base {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
-  static __rue_ancestors__ = [];
 
   // Instance vairalbes
   protected _destroyed: boolean;
@@ -53,8 +50,6 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
     primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ) => T | T[];
-  // ActiveRecord$FinderMethods
-  static findBy: <T extends ActiveRecord$Base, U>(params: Partial<U>) => Promise<T>;
   // ActiveRecord$Associations
   static belongsTo: <T extends ActiveRecord$Base = any>(
     relationName: string,
@@ -84,17 +79,47 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   }
   // ActiveRecord$Scoping
   static all: <T extends ActiveRecord$Base>() => Promise<ActiveRecord$Relation<T>>;
-  // ActiveRecord$QueryMethods
-  static where: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
-    params: Partial<U>
-  ) => ActiveRecord$QueryMethods$WhereChain<T>;
-  static rewhere: <T extends ActiveRecord$Base, U = qmt.QueryMethods$WhereParams>(
-    params: Partial<U>
-  ) => ActiveRecord$QueryMethods$WhereChain<T>;
   // ActiveRecord$Core
   static find: <T extends ActiveRecord$Base>(
     ...primaryKeys: at.Associations$PrimaryKey[]
   ) => T | T[];
+
+  // TODO: delete
+  static findBy<T extends ActiveRecord$Base, U = { [key: string]: any }>(
+    params: Partial<U>
+  ): Promise<T> {
+    // @ts-ignore
+    return (this as typeof ActiveRecord$Base)
+      .where<T, U>(params)
+      .toPromiseArray()
+      .then((records) => {
+        if (records.length > 0) {
+          return Promise.resolve(records[0]);
+        } else {
+          return Promise.resolve(undefined);
+        }
+      });
+  }
+
+  static where<T extends ActiveRecord$Base, U>(
+    params: Partial<U>
+  ): ActiveRecord$QueryMethods$WhereChain<T> {
+    // @ts-ignore
+    const _this = this as typeof ActiveRecord$Base;
+    // Records cannot be created correctly without lazy evaluation
+    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => _this.all<T>());
+    return whereChain.where<U>(params);
+  }
+
+  static rewhere<T extends ActiveRecord$Base, U>(
+    params: Partial<U>
+  ): ActiveRecord$QueryMethods$WhereChain<T> {
+    // @ts-ignore
+    const _this = this as typeof ActiveRecord$Base;
+    // Records cannot be created correctly without lazy evaluation
+    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => _this.all<T>());
+    return whereChain.rewhere<U>(params);
+  }
 }
 
 interface ActiveRecord$Impl {
@@ -163,11 +188,9 @@ ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
     'RECORD_ALL',
   ],
 });
-ActiveRecord$FinderMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['findBy'] });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
 });
 ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
-ActiveRecord$QueryMethods.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['where', 'rewhere'] });
 
 export { ActiveRecord$Impl };

@@ -1,5 +1,5 @@
 import { ActiveRecord$Base } from '@/records';
-import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/relations/modules/query_methods';
 
 export type ScopeVal<T extends ActiveRecord$Base> =
   | Promise<T[]>

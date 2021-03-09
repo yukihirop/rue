@@ -2,6 +2,7 @@
 import { errObj, ErrCodes } from '@/errors';
 import { ActiveRecord$Base, RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
+import { ActiveRecord$Relation$Impl } from './impl';
 
 // third party
 import dayjs from 'dayjs';
@@ -9,13 +10,20 @@ import dayjs from 'dayjs';
 // types
 import type * as ct from '@/types';
 
-export class ActiveRecord$Relation$Base<T extends ActiveRecord$Base> {
+export class ActiveRecord$Relation$Base<
+  T extends ActiveRecord$Base
+> extends ActiveRecord$Relation$Impl {
   private recordKlass: ct.Constructor<T>;
   private records: T[];
+  private _whereParams: { [key: string]: any };
+  private _currentScopeFn?: () => Promise<T[]>;
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {
+    super();
     this.recordKlass = recordKlass;
     this.records = records || [];
+    this._whereParams = {};
+    this._currentScopeFn = undefined;
   }
 
   isMany(filter?: (record: T) => boolean): boolean {
