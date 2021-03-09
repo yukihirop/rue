@@ -6,24 +6,28 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
 import { ActiveRecord$Relation } from '@/records/relations';
 
+// modules
+import { ActiveRecord$FinderMethods } from '@/records/relations/modules/finder_methods';
+
 // types
-import * as ct from '@/types';
+import type * as ct from '@/types';
 
 export class ActiveRecord$Scoping$Named extends RueModule {
   static all<T extends ActiveRecord$Base>(): Promise<ActiveRecord$Relation<T>> {
-    // @ts-ignore
+    // @ts-expect-error
     const _this = this as ct.Constructor<T>;
     const klassName = _this.name;
 
     if (RecordCache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
       const records = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
-      const relation = new ActiveRecord$Relation<T>(_this, records);
+      // records passed by value
+      const relation = new ActiveRecord$Relation<T>(_this, Array.from(records));
       return Promise.resolve(relation);
     } else {
       return new Promise((resolve, reject) => {
         _this
-          // fetchAll is defined in ActiveRecord $ Base but is protected so I get a typescript error.
-          // @ts-ignore
+          // fetchAll is defined in ActiveRecord$Base but is protected so I get a typescript error.
+          // @ts-expect-error
           .fetchAll()
           .then((data) => {
             const records = data.map((d) => {
@@ -34,7 +38,8 @@ export class ActiveRecord$Scoping$Named extends RueModule {
               return record;
             }) as Array<T>;
 
-            const relation = new ActiveRecord$Relation<T>(_this, records);
+            // records passed by value
+            const relation = createRuntimeRelation<T>(_this, Array.from(records));
             return resolve(relation);
           })
           .catch((error) => {
@@ -43,4 +48,16 @@ export class ActiveRecord$Scoping$Named extends RueModule {
       });
     }
   }
+}
+
+function createRuntimeRelation<T extends ActiveRecord$Base>(
+  recordKlass: ct.Constructor<T>,
+  records: T[]
+): ActiveRecord$Relation<T> {
+  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Relation`;
+  const runtimeKlass = {
+    [runtimeKlassName]: class extends ActiveRecord$Relation<T> {},
+  }[runtimeKlassName];
+
+  return new runtimeKlass(recordKlass, records);
 }
