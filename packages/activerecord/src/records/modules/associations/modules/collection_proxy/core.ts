@@ -4,7 +4,7 @@ import { RueModule } from '@rue/activesupport';
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { registryForScopes as Registry } from '@/registries';
-import { ActiveRecord$QueryMethods$WhereChain } from '@/records/modules/query_methods';
+import { ActiveRecord$QueryMethods$WhereChain } from '@/records/relations/modules/query_methods';
 
 // types
 import * as t from './types';

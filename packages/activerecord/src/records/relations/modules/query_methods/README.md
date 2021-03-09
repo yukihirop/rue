@@ -2,8 +2,12 @@
 
 ## Methods
 
-- [x] [static]where
-- [x] [static]rewhere
+- [x] where
+ - [x]toPromiseArray
+ - [x]toPA (alias to `toPromiseArray`)
+- [x] rewhere
+ - [x]toPromiseArray
+ - [x]toPA (alias to `toPromiseArray`)
 - [ ] select
 - [ ] reselect
 - [ ] order
