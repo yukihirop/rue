@@ -12,7 +12,7 @@ import type * as ct from '@/types';
 
 export class ActiveRecord$Relation$Base<
   T extends ActiveRecord$Base
-> extends ActiveRecord$Relation$Impl {
+> extends ActiveRecord$Relation$Impl<T> {
   private recordKlass: ct.Constructor<T>;
   private records: T[];
   private _whereParams: { [key: string]: any };
@@ -218,7 +218,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-find_or_create_by
    */
   findOrCreateBy<U>(params: Partial<U>, yielder?: (self: T) => void): Promise<T> {
-    return this.findBy<T, U>(params).then((record) => {
+    return this.findBy<U>(params).then((record) => {
       if (record) {
         if (yielder) yielder(record);
         return record;

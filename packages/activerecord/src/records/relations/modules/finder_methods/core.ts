@@ -27,12 +27,12 @@ export class ActiveRecord$FinderMethods extends RueModule {
       throw 'Do not suppport because where does not correspond to an array argument';
     } else if (typeof condition === 'object' && condition != null) {
       return _this
-        .where<T, U>(condition as Partial<U>)
+        .where<U>(condition as Partial<U>)
         .toPA()
         .then((records) => records.length > 0);
     } else {
       const primaryKey = Number(condition) as at.Associations$PrimaryKey;
-      return _this.find<T, U>(primaryKey).then((record) => !!record);
+      return _this.find<U>(primaryKey).then((record) => !!record);
     }
   }
 

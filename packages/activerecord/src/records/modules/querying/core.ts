@@ -22,19 +22,19 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.find<T, U>(...primaryKeys));
+    return _this.all<T>().then((relation) => relation.find<U>(...primaryKeys));
   }
 
   static findBy<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findBy<T, U>(params));
+    return _this.all<T>().then((relation) => relation.findBy<U>(params));
   }
 
   static findByOrThrow<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findByOrThrow<T, U>(params));
+    return _this.all<T>().then((relation) => relation.findByOrThrow<U>(params));
   }
 
   static take<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
@@ -78,7 +78,7 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isExists<T, U>(condition));
+    return _this.all<T>().then((relation) => relation.isExists<U>(condition));
   }
 
   /**

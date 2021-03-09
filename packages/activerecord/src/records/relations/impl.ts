@@ -12,35 +12,34 @@ import { ActiveRecord$FinderMethods, ActiveRecord$QueryMethods } from './modules
 import type * as at from '@/records/modules/associations';
 import type * as mt from './modules';
 
-abstract class ActiveRecord$Relation$Impl {
+abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
 }
 
-interface ActiveRecord$Relation$Impl {
+interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
   // ActiveRecord$FinderMethods
-  find<T extends ActiveRecord$Base, U = { [key: string]: any }>(
-    ...primaryKeys: at.Associations$PrimaryKey[]
-  ): Promise<T | T[]>;
-  isExists<T extends ActiveRecord$Base, U>(
-    condition?: mt.FinderMethods$ExistsCondition<U>
-  ): Promise<boolean>;
-  findBy<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T>;
-  findByOrThrow<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T>;
-  first<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
-  firstOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
-  isInclude<T extends ActiveRecord$Base>(record: T): boolean;
-  isMember<T extends ActiveRecord$Base>(record: T): boolean;
-  last<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
-  lastOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
-  take<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
-  takeOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]>;
+  find<U = { [key: string]: any }>(...primaryKeys: at.Associations$PrimaryKey[]): Promise<T | T[]>;
+  isExists<U>(condition?: mt.FinderMethods$ExistsCondition<U>): Promise<boolean>;
+  findBy<U>(params: Partial<U>): Promise<T>;
+  findByOrThrow<U>(params: Partial<U>): Promise<T>;
+  first(limit?: number): Promise<T | T[]>;
+  firstOrThrow(limit?: number): Promise<T | T[]>;
+  isInclude(record: T): boolean;
+  isMember(record: T): boolean;
+  last(limit?: number): Promise<T | T[]>;
+  lastOrThrow(limit?: number): Promise<T | T[]>;
+  take(limit?: number): Promise<T | T[]>;
+  takeOrThrow(limit?: number): Promise<T | T[]>;
   // ActiveRecord$QueryMethods
-  where<T extends ActiveRecord$Base, U>(params: Partial<U>): ActiveRecord$Relation<T>;
-  rewhere<T extends ActiveRecord$Base, U>(params: Partial<U>): ActiveRecord$Relation<T>;
+  where<U>(params: Partial<U>): ActiveRecord$Relation<T>;
+  rewhere<U>(params: Partial<U>): ActiveRecord$Relation<T>;
+  order<U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
+    params: Partial<U>
+  ): ActiveRecord$Relation<T>;
   // inner methods
-  toPromiseArray<T extends ActiveRecord$Base>(): Promise<T[]>;
-  toPA<T extends ActiveRecord$Base>(): Promise<T[]>;
+  toPromiseArray(): Promise<T[]>;
+  toPA(): Promise<T[]>;
 }
 
 ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
