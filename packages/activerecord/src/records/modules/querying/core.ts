@@ -3,10 +3,11 @@ import { RueModule } from '@rue/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
 
 // types
 import type * as at from '@/records/modules/associations';
-import type * as mt from '@/records/relations/modules';
+import type * as rmt from '@/records/relations/modules';
 
 /**
  * this is bound to an instance(class) of ActiveRecord$Base
@@ -74,7 +75,7 @@ export class ActiveRecord$Querying extends RueModule {
   }
 
   static isExists<T extends ActiveRecord$Base, U>(
-    condition?: mt.FinderMethods$ExistsCondition<U>
+    condition?: rmt.FinderMethods$ExistsCondition<U>
   ): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
@@ -185,5 +186,69 @@ export class ActiveRecord$Querying extends RueModule {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
     return _this.all<T>().then((relation) => relation.deleteBy<U>(params));
+  }
+
+  /**
+   * delegate to ActiveRecord$QueryMethods
+   */
+
+  static where<T extends ActiveRecord$Base, U>(
+    params: Partial<U>
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.where<U>(params));
+  }
+
+  static rewhere<T extends ActiveRecord$Base, U>(
+    params: Partial<U>
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.rewhere<U>(params));
+  }
+
+  static order<T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
+    params: Partial<U>
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.order<U>(params));
+  }
+
+  static reorder<T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
+    params: Partial<U>
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.reorder<U>(params));
+  }
+
+  static offset<T extends ActiveRecord$Base>(value: number): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.offset(value));
+  }
+
+  static limit<T extends ActiveRecord$Base>(value: number): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.limit(value));
+  }
+
+  static group<T extends ActiveRecord$Base, U = { [key: string]: any }>(
+    ...props: Array<keyof U>
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.group<U>(...props));
+  }
+
+  static unscope<T extends ActiveRecord$Base>(
+    ...scopeMethods: rmt.QueryMethods$ScopeMethods[]
+  ): Promise<ActiveRecord$Relation<T>> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    return _this.all<T>().then((relation) => relation.unscope(...scopeMethods));
   }
 }

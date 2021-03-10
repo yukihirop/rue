@@ -5,7 +5,6 @@ import { ActiveModel$Base } from '@rue/activemodel';
 // local
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
-import { ActiveRecord$QueryMethods$WhereChain } from '@/records/relations/modules/query_methods';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$Associations,
@@ -125,26 +124,26 @@ abstract class ActiveRecord$Impl extends ActiveModel$Base {
   ) => Promise<number>;
   static destroyBy: <T extends ActiveRecord$Base>(filter?: (self: T) => boolean) => Promise<T[]>;
   static deleteBy: <T extends ActiveRecord$Base, U>(params?: Partial<U>) => Promise<number>;
-
-  static where<T extends ActiveRecord$Base, U>(
+  static where: <T extends ActiveRecord$Base, U>(
     params: Partial<U>
-  ): ActiveRecord$QueryMethods$WhereChain<T> {
-    // @ts-ignore
-    const _this = this as typeof ActiveRecord$Base;
-    // Records cannot be created correctly without lazy evaluation
-    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => _this.all<T>());
-    return whereChain.where<U>(params);
-  }
-
-  static rewhere<T extends ActiveRecord$Base, U>(
+  ) => Promise<ActiveRecord$Relation<T>>;
+  static rewhere: <T extends ActiveRecord$Base, U>(
     params: Partial<U>
-  ): ActiveRecord$QueryMethods$WhereChain<T> {
-    // @ts-ignore
-    const _this = this as typeof ActiveRecord$Base;
-    // Records cannot be created correctly without lazy evaluation
-    const whereChain = new ActiveRecord$QueryMethods$WhereChain<T>(() => _this.all<T>());
-    return whereChain.rewhere<U>(params);
-  }
+  ) => Promise<ActiveRecord$Relation<T>>;
+  static order: <T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
+    params: Partial<U>
+  ) => Promise<ActiveRecord$Relation<T>>;
+  static reorder: <T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
+    params: Partial<U>
+  ) => Promise<ActiveRecord$Relation<T>>;
+  static offset: <T extends ActiveRecord$Base>(value: number) => Promise<ActiveRecord$Relation<T>>;
+  static limit: <T extends ActiveRecord$Base>(value: number) => Promise<ActiveRecord$Relation<T>>;
+  static group: <T extends ActiveRecord$Base, U = { [key: string]: any }>(
+    ...props: Array<keyof U>
+  ) => Promise<ActiveRecord$Relation<T>>;
+  static unscope: <T extends ActiveRecord$Base>(
+    ...scopeMethods: rmt.QueryMethods$ScopeMethods[]
+  ) => Promise<ActiveRecord$Relation<T>>;
 }
 
 interface ActiveRecord$Impl {
@@ -219,6 +218,9 @@ ActiveRecord$Core.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['find'] });
 ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
 ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: [
+    /**
+     * delegate to ActiveRecord$FinderMethods
+     */
     // 'find',  Give priority to find in ActiveRecord$Core
     'findBy',
     'findByOrThrow',
@@ -229,6 +231,9 @@ ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
     'last',
     'lastOrThrow',
     'isExists',
+    /**
+     * delegate to ActiveRecord$Relation
+     */
     'isAny',
     'isMany',
     'isNone',
@@ -246,6 +251,17 @@ ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
     'touchAll',
     'destroyBy',
     'deleteBy',
+    /**
+     * delegate to ActiveRecord$QueryMethods
+     */
+    'where',
+    'rewhere',
+    'order',
+    'reorder',
+    'offset',
+    'limit',
+    'group',
+    'unscope',
   ],
 });
 

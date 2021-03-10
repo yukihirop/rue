@@ -712,7 +712,6 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
         QueryMethodsRecord.create([{ primaryKey: 4, name: 'name_2', age: 2 }]);
-        // console.log(RecordCache.data[QueryMethodsRecord.name][RECORD_ALL]);
         relation
           .group<QueryMethodsRecordParams>('name', 'age')
           .toPA()
