@@ -193,7 +193,8 @@ describe('Record(Association)', () => {
         expect(record.name).toEqual('name_1');
         expect(record.age).toEqual(1);
 
-        record.children().then((records) => {
+        record.children().then((relation) => {
+          const records = relation.toA();
           expect(records.length).toEqual(2);
           expect(records[0].primaryKey).toEqual(1);
           expect(records[0].foreignKey).toEqual(1);
@@ -277,7 +278,8 @@ describe('Record(Association)', () => {
 
         assembly
           .parts()
-          .then((records) => {
+          .then((relation) => {
+            const records = relation.toA();
             expect(records.length).toEqual(2);
             expect(records[0].primaryKey).toEqual(1);
             expect(records[0].name).toEqual('part_name_1');
@@ -302,7 +304,8 @@ describe('Record(Association)', () => {
         part.hasAndBelongsToMany(assemblies[0]);
         part.hasAndBelongsToMany(assemblies[1]);
 
-        part.assemblies().then((records) => {
+        part.assemblies().then((relation) => {
+          const records = relation.toA();
           expect(records.length).toEqual(2);
           expect(records[0].primaryKey).toEqual(1);
           expect(records[0].name).toEqual('assembly_name_1');
@@ -341,14 +344,16 @@ describe('Record(Association)', () => {
     TestScopeRecord.scope('fromName', (name) => TestScopeRecord.where({ name: name }));
 
     it('should correctly', (done) => {
-      TestScopeRecord.fromName('name_1').then((records) => {
+      TestScopeRecord.fromName('name_1').then((relation) => {
+        const records = relation.toA();
         expect(records.length).toEqual(1);
         expect(records[0].primaryKey).toEqual(1);
         expect(records[0].name).toEqual('name_1');
         expect(records[0].age).toEqual(1);
         done();
       });
-      TestScopeRecord.fromName('name_2').then((records) => {
+      TestScopeRecord.fromName('name_2').then((relation) => {
+        const records = relation.toA();
         expect(records.length).toEqual(1);
         expect(records[0].primaryKey).toEqual(2);
         expect(records[0].name).toEqual('name_2');

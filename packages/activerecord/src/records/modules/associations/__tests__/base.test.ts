@@ -100,7 +100,7 @@ describe('Association', () => {
 
     it('should correctly', () => {
       expect(Registry.data['TestHasManyRecord']['hasMany']['children'].toString()).toEqual(
-        '(self) => klass.where({ [foreignKey]: self.primaryKey }).toPromiseArray()'
+        '(self) => klass.where({ [foreignKey]: self.primaryKey })'
       );
     });
   });
@@ -148,12 +148,12 @@ describe('Association', () => {
         Registry.data['TestHasAndBelongsToManyAssemblyRecord']['hasAndBelongsToMany'][
           'parts'
         ].toString()
-      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) }).toPromiseArray()');
+      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) })');
       expect(
         Registry.data['TestHasAndBelongsToManyPartRecord']['hasAndBelongsToMany'][
           'assemblies'
         ].toString()
-      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) }).toPromiseArray()');
+      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) })');
     });
   });
 
