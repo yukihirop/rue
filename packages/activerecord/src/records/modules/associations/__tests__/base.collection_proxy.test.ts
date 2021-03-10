@@ -18,7 +18,7 @@ describe('Association(CollectionProxy)', () => {
 
     AssociationsModule.rueModuleExtendedFrom(TestScopeAssociation, { only: ['scope'] });
 
-    TestScopeAssociation.scope<any>('scopeName', () => Promise.resolve([1, 2, 3]));
+    TestScopeAssociation.scope<any>('scopeName', () => Promise.resolve([1, 2, 3] as any));
 
     it('should correctly', () => {
       expect(Registry.data['TestScopeAssociation']['scope']['scopeName'].toString()).toEqual(

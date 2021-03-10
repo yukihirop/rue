@@ -20,7 +20,7 @@ export function createErrObj({
   params?: any;
   message?: string;
 }): t.ErrObj {
-  let { message: msg } = ErrMessages[code];
+  let msg = ErrMessages[code].message;
   let calcMessage: string = msg instanceof Function ? msg(params) : msg!;
   const maybeOverrideMessage = message != undefined ? message : calcMessage;
 

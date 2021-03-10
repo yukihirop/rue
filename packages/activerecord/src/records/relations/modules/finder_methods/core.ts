@@ -27,12 +27,12 @@ export class ActiveRecord$FinderMethods extends RueModule {
       throw 'Do not suppport because where does not correspond to an array argument';
     } else if (typeof condition === 'object' && condition != null) {
       return _this
-        .where<T, U>(condition as Partial<U>)
+        .where<U>(condition as Partial<U>)
         .toPA()
         .then((records) => records.length > 0);
     } else {
       const primaryKey = Number(condition) as at.Associations$PrimaryKey;
-      return _this.find<T, U>(primaryKey).then((record) => !!record);
+      return _this.find<U>(primaryKey).then((record) => !!record);
     }
   }
 
@@ -74,9 +74,9 @@ export class ActiveRecord$FinderMethods extends RueModule {
               });
             }
           } else if (records.length === 1) {
-            return Promise.resolve(records[0]);
+            return records[0];
           } else {
-            return Promise.resolve(records);
+            return records;
           }
         });
     }
@@ -151,7 +151,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
           .sort((a, b) => b[RUE_RECORD_ID] - a[RUE_RECORD_ID])
           .slice(0, limit)
           .reverse();
-        return Promise.resolve(slicedRecords);
+        return slicedRecords;
       }
     });
   }
@@ -168,7 +168,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
           message: `Couldn't find '${this.recordKlass.name}'`,
         });
       } else {
-        return Promise.resolve(record);
+        return record;
       }
     });
   }
@@ -185,11 +185,11 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     return _this._currentScopeFn().then((records) => {
       if (records.length === 0) {
-        return Promise.resolve(null);
+        return null;
       } else if (limit === 1) {
-        return Promise.resolve(records[0]);
+        return records[0];
       } else {
-        return Promise.resolve(records.slice(0, limit));
+        return records.slice(0, limit);
       }
     });
   }
@@ -206,7 +206,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
           message: `Couldn't find '${this.recordKlass.name}'`,
         });
       } else {
-        return Promise.resolve(record);
+        return record;
       }
     });
   }

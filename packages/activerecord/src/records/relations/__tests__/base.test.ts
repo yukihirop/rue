@@ -62,17 +62,23 @@ describe('ActiveRecord$Relation$Base', () => {
     });
 
     describe('when return true', () => {
-      expect(relation.isMany()).toEqual(true);
+      it('should correctly', () => {
+        expect(relation.isMany()).toEqual(true);
+      });
     });
 
     describe('when return false', () => {
-      // @ts-ignore
-      relation.records = [records[0]];
-      expect(relation.isMany()).toEqual(false);
+      it('should correctly', () => {
+        // @ts-ignore
+        relation.records = [records[0]];
+        expect(relation.isMany()).toEqual(false);
+      });
     });
 
     describe("when specify 'filter'", () => {
-      expect(relation.isMany((record) => record.age === 1)).toEqual(false);
+      it('should correctly', () => {
+        expect(relation.isMany((record) => record.age === 1)).toEqual(false);
+      });
     });
   });
 
@@ -195,17 +201,23 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsAnyRecord>(IsAnyRecord, records);
 
     describe('when return true', () => {
-      expect(relation.isAny()).toEqual(true);
+      it('should correctly', () => {
+        expect(relation.isAny()).toEqual(true);
+      });
     });
 
     describe('when return false', () => {
-      // @ts-ignore
-      relation.records = [];
-      expect(relation.isAny()).toEqual(false);
+      it('should correctly', () => {
+        // @ts-ignore
+        relation.records = [];
+        expect(relation.isAny()).toEqual(false);
+      });
     });
 
     describe("when specify 'filter'", () => {
-      expect(relation.isAny((record) => record.age != 1)).toEqual(false);
+      it('should correctly', () => {
+        expect(relation.isAny((record) => record.age != 1)).toEqual(false);
+      });
     });
   });
 

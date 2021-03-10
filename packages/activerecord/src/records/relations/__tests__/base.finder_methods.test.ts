@@ -338,7 +338,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when default', () => {
       it('should return first record', (done) => {
-        relation.first<FirstRecord>().then((record) => {
+        relation.first().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -548,7 +548,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when default', () => {
       it('should return first record', (done) => {
-        relation.last<LastRecord>().then((record) => {
+        relation.last().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -724,7 +724,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when default', () => {
       it('should return first record', (done) => {
-        relation.take<TakeRecord>().then((record) => {
+        relation.take().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,

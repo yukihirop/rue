@@ -1,6 +1,3 @@
-// rue packages
-import { RueModule } from '@rue/activesupport';
-
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Associations$Impl } from './impl';
@@ -49,8 +46,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     foreignKey: t.ForeignKey
   ) {
     Registry.create(this.name, Association.hasMany, {
-      [relationName]: (self: T) =>
-        (klass as any).where({ [foreignKey]: self.primaryKey }).toPromiseArray(),
+      [relationName]: (self: T) => (klass as any).where({ [foreignKey]: self.primaryKey }),
     });
   }
 
@@ -71,8 +67,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     IntermediateTable.create(this.name, klass.name, []);
     Registry.create(this.name, Association.hasAndBelongsToMany, {
-      [relationName]: (self: T) =>
-        (klass as any).where({ primaryKey: foreignKeysFn(self) }).toPromiseArray(),
+      [relationName]: (self: T) => (klass as any).where({ primaryKey: foreignKeysFn(self) }),
     });
   }
 

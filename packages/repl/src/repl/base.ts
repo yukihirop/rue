@@ -46,13 +46,13 @@ export class Repl$Base extends Repl$Impl {
         `node_modules/@rue/activesupport/lib/**/*.js`,
         `node_modules/@rue/activemodel/lib/**/*.js`,
         `node_modules/@rue/activerecord/lib/**/*.js`,
-        `!node_modules/@rue/activesupport/{src,lib}/**/__tests__/*.test.{js,ts}`,
-        `!node_modules/@rue/activemodel/{src,lib}/**/__tests__/*.test.{js,ts}`,
-        `!node_modules/@rue/activerecord/{src,lib}/**/__tests__/*.test.{js,ts}`,
+        `!node_modules/@rue/activesupport/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
+        `!node_modules/@rue/activemodel/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
+        `!node_modules/@rue/activerecord/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
         // Duplicate name does not load correctly
         `!node_modules/@rue/activemodel/{src,lib}/**/validators/*.{js,ts}`,
         // Avoid matching the test code in the rue package
-        '!node_modules/@rue/**/src/**/__tests__/*.test.{js,ts}',
+        '!node_modules/@rue/**/src/**/__tests__/**/*.test.{js,ts}',
         ...rueREPLConfig['loadModules'],
       ],
       {

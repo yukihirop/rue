@@ -2,27 +2,52 @@
 
 ## Methods
 
+- [-] ==
 - [x] isAny
-- [x] isMany
-- [x] isNone
-- [x] isOne
 - [x] isBlank
 - [x] build
+- [-] cacheKey
+- [-] cacheKeyWithVersion
+- [-] cacheVersion
 - [x] create
 - [x] createOrThrow
 - [x] createOrFindBy
 - [x] createOrFindByOrThrow
+- [x] destoryAll
 - [x] deleteBy
+- [x] deleteAll
 - [x] destroyBy
+- [-] isEagerLoading
+- [] isEmpty
+- [-] encodeWith
+- [-] explain
 - [x] findOrCreateBy
 - [x] findOrCreateByOrThrow
 - [x] findOrInitializeBy
+- [] initializeCopy
+- [] inspect
+- [-] joinedIncludesValues
+- [-] load
+- [-] loadRecords
+- [x] isMany
+- [] new
+- [x] isNone
+- [x] isOne
+- [-] prittyPrint
+- [-] reload
+- [-] reset
+- [-] scopeForCreate
+- [-] scoping
+- [] size
+- [] length (alias to `size`)
 - [x] toArray
 - [x] toA (alias to toArray)
-- [x] destoryAll
+- [-] toSQL
 - [x] touchAll
 - [x] updateAll
-- [x] deleteAll
+- [] updateConters
+- [-] values
+- [-] whereValuesHash
 
 ## Reference
 
