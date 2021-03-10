@@ -44,8 +44,8 @@
 - []<ActiveRecord$Batches>findEach
 - []<ActiveRecord$Batches>findInBatches
 - []<ActiveRecord$Batches>inBatches
-- []<ActiveRecord$QueryMethods>select
-- []<ActiveRecord$QueryMethods>reselect
+- [-]<ActiveRecord$QueryMethods>select
+- [-]<ActiveRecord$QueryMethods>reselect
 - []<ActiveRecord$QueryMethods>order
 - []<ActiveRecord$QueryMethods>reorder
 - []<ActiveRecord$QueryMethods>group

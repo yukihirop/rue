@@ -1,21 +1,55 @@
 # ActiveRecord$QueryMethods
 
+`-`: There are no plans to implement it.
+
 ## Methods
 
-- [x] where
- - [x]toPromiseArray
- - [x]toPA (alias to `toPromiseArray`)
+- [] and
+- [] annotate
+- [] createWith
+- [] distinct
+- [-] eagerLoad
+- [-] extending
+- [-] extractAssociated
+- [-] from
+- [x] group
+- [] having
+- [-] includes
+- [-] joins
+- [-] leftJoins
+- [-] leftOuterJoins
+- [x] limit
+- [-] lock
+- [] none
+- [x] offset
+- [-] optimizerHints
+- [] or
+- [x] order
+- [-] preload
+- [-] readonly
+- [] references
+- [x] reorder
+- [-] reselect
+- [x] reverseOrder
 - [x] rewhere
- - [x]toPromiseArray
- - [x]toPA (alias to `toPromiseArray`)
-- [ ] select
-- [ ] reselect
-- [ ] order
-- [ ] reorder
-- [ ] offset
-- [ ] limit
-- [ ] group
-- [ ] reverseOrder
+- [-] select
+- [-] strictLoading
+- [-] forceUninq (Behavior unknown)
+- [x] unscope
+- [x] where
+
+## Original Methods
+
+It can be called at the end of all methods.
+
+e.g.)
+
+```ts
+Record.where({ primaryKey: [1,2] }).toPA().then((records) => {...})
+```
+
+- [x]toPromiseArray
+- [x]toPA (alias to `toPromiseArray`)
 
 ## Classes
 

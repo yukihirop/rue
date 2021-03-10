@@ -3,26 +3,47 @@ import { errObj, ErrCodes } from '@/errors';
 import { ActiveRecord$Base, RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Relation$Impl } from './impl';
+import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from './modules/query_methods';
 
 // third party
 import dayjs from 'dayjs';
 
 // types
 import type * as ct from '@/types';
+import type * as mt from './modules';
 
 export class ActiveRecord$Relation$Base<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Relation$Impl<T> {
   private recordKlass: ct.Constructor<T>;
   private records: T[];
-  private _whereParams: { [key: string]: any };
+  private _scopeParams: {
+    where: { [key: string]: any };
+    order: { [key: string]: mt.QueryMethods$Directions };
+    offset: number;
+    limit: number;
+    group: string[];
+  };
+  private _defaultScopeParams: any;
+  private _groupedRecords: { [key: string]: T[] };
   private _currentScopeFn?: () => Promise<T[]>;
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {
     super();
     this.recordKlass = recordKlass;
     this.records = records || [];
-    this._whereParams = {};
+    this._defaultScopeParams = {
+      where: {},
+      order: {},
+      offset: 0,
+      limit: 0,
+      group: [],
+    };
+    Object.freeze(this._defaultScopeParams);
+    // Must be passed by value
+    this._scopeParams = Object.assign({}, JSON.parse(JSON.stringify(this._defaultScopeParams)));
+    this._groupedRecords = {};
+    // Once the QueryMethods method is called, it is no longer undefined.
     this._currentScopeFn = undefined;
   }
 
@@ -148,12 +169,12 @@ export class ActiveRecord$Relation$Base<
     return (
       this.recordKlass
         // @ts-ignore
-        .where<P>(params)
-        .toPA()
-        .then((records: T[]) => {
+        .where<T, U>(params)
+        .then((relation) => {
+          const records = relation.toA();
           return Promise.all(records.map(deleteRecordFn)).then((result) => {
             this.records = RecordCache.read(this.recordKlass.name, RECORD_ALL, 'array');
-            return Promise.resolve(result.filter(Boolean).length);
+            return result.filter(Boolean).length;
           });
         })
     );
@@ -299,13 +320,13 @@ export class ActiveRecord$Relation$Base<
 
     return (
       this.recordKlass
-        // @ts-ignore
+        // @ts-expect-error
         .where<T, U>(params)
-        .toPA()
-        .then((records) => {
+        .then((relation) => {
+          const records = relation.toA();
           return Promise.all(records.map(touchFn)).then((result) => {
             this.records = RecordCache.read(this.recordKlass.name, RECORD_ALL, 'array');
-            return Promise.resolve(result.filter(Boolean).length);
+            return result.filter(Boolean).length;
           });
         })
     );
@@ -315,6 +336,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-to_ary
    */
   toArray(): T[] {
+    Evaluator.all<T>(this);
     return this.records;
   }
 
@@ -323,6 +345,7 @@ export class ActiveRecord$Relation$Base<
    * @alias toArray
    */
   toA(): T[] {
+    Evaluator.all<T>(this);
     return this.records;
   }
 }

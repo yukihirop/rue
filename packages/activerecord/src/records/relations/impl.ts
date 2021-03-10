@@ -37,9 +37,17 @@ interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
   order<U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
     params: Partial<U>
   ): ActiveRecord$Relation<T>;
+  reorder<U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
+    params: Partial<U>
+  ): ActiveRecord$Relation<T>;
+  reverseOrder(): ActiveRecord$Relation<T>;
+  offset(value: number): ActiveRecord$Relation<T>;
+  limit(value: number): ActiveRecord$Relation<T>;
+  group<U = { [key: string]: any }>(...props: Array<keyof U>): ActiveRecord$Relation<T>;
+  unscope(...scopeMethods: mt.QueryMethods$ScopeMethods[]): ActiveRecord$Relation<T>;
   // inner methods
-  toPromiseArray(): Promise<T[]>;
-  toPA(): Promise<T[]>;
+  toPromiseArray(): Promise<T[] | { [key: string]: T[] }>;
+  toPA(): Promise<T[] | { [key: string]: T[] }>;
 }
 
 ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
@@ -59,7 +67,19 @@ ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
   ],
 });
 ActiveRecord$QueryMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
-  only: ['where', 'rewhere'],
+  only: [
+    'where',
+    'rewhere',
+    'order',
+    'reorder',
+    'reverseOrder',
+    'offset',
+    'limit',
+    'group',
+    'unscope',
+    'toPromiseArray',
+    'toPA',
+  ],
 });
 
 export { ActiveRecord$Relation$Impl };
