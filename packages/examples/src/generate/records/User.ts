@@ -13,14 +13,14 @@ export type UserParams = {
   age: number;
 };
 
-export class User extends ActiveRecord {
+export class User extends ActiveRecord<UserParams> {
   // Please do not change the name 'id' arbitrarily.
   public id: UserParams['id'];
   public errors: UserParams['errors'];
   public name: UserParams['name'];
   public age: UserParams['age'];
 
-  protected static fetchAll<T = UserParams>(): Promise<T[]> {
+  protected fetchAll(): Promise<UserParams[]> {
     throw 'Please override';
   }
 }

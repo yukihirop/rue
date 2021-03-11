@@ -12,7 +12,7 @@ export class User extends ActiveRecord {
    * @protected
    * @return {Promise<Array<property>>}
    */
-  static fetchAll() {
+  fetchAll() {
     throw 'Please override';
   }
 }

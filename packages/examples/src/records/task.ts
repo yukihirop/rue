@@ -18,8 +18,7 @@ export class Task extends ActiveRecord<TaskParams> {
   public account: t.Record$BelongsTo<Account>;
   public fromStatus: t.Record$Scope<Task>;
 
-  protected static fetchAll<Params>(): Promise<Array<Params>> {
-    // @ts-ignore
+  protected static fetchAll(): Promise<TaskParams[]> {
     return Promise.resolve([
       { id: 1, content: 'Create @rue of web micro framework', status: 'wip', accountId: 1 },
       { id: 2, content: 'Update r2-oas gem', status: 'success', accountId: 1 },

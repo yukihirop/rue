@@ -33,7 +33,7 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
-export class <%- className %> extends ActiveRecord {
+export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   // Please do not change the name 'id' arbitrarily.
   public id: <%- className %>Params['id'];
   public errors: <%- className %>Params['errors'];
@@ -41,7 +41,7 @@ export class <%- className %> extends ActiveRecord {
   public <%- key %>: <%- className %>Params['<%- key %>'];
 <% }) -%>
 
-  protected static fetchAll<T = <%- className %>Params>(): Promise<T[]> {
+  protected fetchAll(): Promise<<%- className %>Params[]> {
     throw 'Please override';
   }
 }
@@ -69,7 +69,7 @@ export class <%- className %> extends ActiveRecord {
    * @protected
    * @return {Promise<Array<property>>}
    */
-  static fetchAll() {
+  fetchAll() {
     throw 'Please override';
   }
 }

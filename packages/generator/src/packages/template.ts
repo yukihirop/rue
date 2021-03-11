@@ -12,8 +12,8 @@ export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T
     throw 'Please override';
   }
 
-  protected static fetchAll<T = any>(): Promise<Array<T>> {
-    throw "Please implement '[static] fetchAll' in Inherited Class";
+  protected fetchAll(): Promise<T[]> {
+    throw "Please implement 'fetchAll' in Inherited Class";
   }
 }
 `;
@@ -37,7 +37,7 @@ class ActiveRecord extends ActiveRecord$Base {
    * @protected
    * @return {Promise<Array<object>>}
    */
-  static fetchAll() {
+  fetchAll() {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 }

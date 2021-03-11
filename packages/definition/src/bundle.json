@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -34,7 +34,7 @@
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -92,7 +92,7 @@
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -168,7 +168,7 @@
   "ActiveModel$Translation": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -228,7 +228,7 @@
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/03/11 21:50:00 +09:00"
+      "updatedAt": "2021/03/11 22:52:07 +09:00"
     },
     "class": [
       {
@@ -298,7 +298,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/03/11 21:50:07 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -314,15 +314,15 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
-        "text": "export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveRecord$Impl<P> {\n  public errors: t.Validations$Errors;\n\n  constructor(data?: P) {\n    super();\n\n    (this as any)[RUE_RECORD_ID] = undefined;\n\n    if (data) {\n      Object.keys(data).forEach((key) => {\n        (this as any)[key] = data[key];\n      });\n    }\n\n    this._newRecord = true;\n    this._destroyed = false;\n\n    ActiveRecord$Impl.defineAssociations(this);\n  }\n\n  // override\n  static objType(): t.ObjType {\n    return 'record';\n  }\n\n  protected static fetchAll(): Promise<Array<t.Params>> {\n    throw \"Please implement '[static] fetchAll' in Inherited Class\";\n  }\n\n  static resetRecordCache() {\n    const klassName = this.name;\n    RecordCache.destroy(klassName);\n    RecordCache.create(klassName, RECORD_ALL, []);\n    RecordCache.create(klassName, RUE_AUTO_INCREMENT_RECORD_ID, 1);\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Base\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m t\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mParams \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m t\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Impl\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mValidations$Errors\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239msuper\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;249;38;114mRUE_RECORD_ID\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m data\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m_newRecord \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m_destroyed \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mfalse\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    ActiveRecord$Impl\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mdefineAssociations\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// override\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mObjType \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m'record'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mt\u001b[38;2;248;248;242m.\u001b[39mParams\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] fetchAll' in Inherited Class\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mresetRecordCache\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mdestroy\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRUE_AUTO_INCREMENT_RECORD_ID\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveRecord$Impl<P> {\n  public errors: t.Validations$Errors;\n\n  constructor(data?: P) {\n    super();\n\n    (this as any)[RUE_RECORD_ID] = undefined;\n\n    if (data) {\n      Object.keys(data).forEach((key) => {\n        (this as any)[key] = data[key];\n      });\n    }\n\n    this._newRecord = true;\n    this._destroyed = false;\n\n    ActiveRecord$Impl.defineAssociations(this);\n  }\n\n  // override\n  static objType(): t.ObjType {\n    return 'record';\n  }\n\n  protected fetchAll(): Promise<Array<P>> {\n    throw \"Please implement 'fetchAll' in Inherited Class\";\n  }\n\n  // All starting points\n  protected static fetchAll(): Promise<Array<t.Params>> {\n    const instance = new this();\n    return instance.fetchAll();\n  }\n\n  static resetRecordCache() {\n    const klassName = this.name;\n    RecordCache.destroy(klassName);\n    RecordCache.create(klassName, RECORD_ALL, []);\n    RecordCache.create(klassName, RUE_AUTO_INCREMENT_RECORD_ID, 1);\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Base\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m t\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mParams \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m t\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Impl\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mValidations$Errors\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239msuper\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;249;38;114mRUE_RECORD_ID\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mundefined\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m data\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m_newRecord \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m_destroyed \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;174;129;255mfalse\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    ActiveRecord$Impl\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mdefineAssociations\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// override\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mObjType \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m'record'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement 'fetchAll' in Inherited Class\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// All starting points\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mt\u001b[38;2;248;248;242m.\u001b[39mParams\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mnew\u001b[39m \u001b[38;2;230;219;116m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mresetRecordCache\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mdestroy\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRUE_AUTO_INCREMENT_RECORD_ID\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           16,
-          51
+          57
         ]
       }
     ],
@@ -338,13 +338,13 @@
         ]
       },
       "fetchAll": {
-        "text": "protected static fetchAll(): Promise<Array<t.Params>> {\n    throw \"Please implement '[static] fetchAll' in Inherited Class\";\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mt\u001b[38;2;248;248;242m.\u001b[39mParams\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] fetchAll' in Inherited Class\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "protected static fetchAll(): Promise<Array<t.Params>> {\n    const instance = new this();\n    return instance.fetchAll();\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mt\u001b[38;2;248;248;242m.\u001b[39mParams\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mnew\u001b[39m \u001b[38;2;230;219;116m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
         "isAsync": false,
         "visibility": "protected",
         "line": [
-          41,
-          43
+          46,
+          49
         ]
       },
       "resetRecordCache": {
@@ -353,8 +353,20 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          45,
-          50
+          51,
+          56
+        ]
+      }
+    },
+    "instance": {
+      "fetchAll": {
+        "text": "protected fetchAll(): Promise<Array<P>> {\n    throw \"Please implement 'fetchAll' in Inherited Class\";\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;166;226;46mArray\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mP\u001b[39m\u001b[38;2;248;248;242m>>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement 'fetchAll' in Inherited Class\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "protected",
+        "line": [
+          41,
+          43
         ]
       }
     },
@@ -370,7 +382,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -398,7 +410,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -634,7 +646,7 @@
   "ActiveRecord$Relation$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/impl.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -890,45 +902,47 @@
   "QueryingRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
-        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m QueryingRecordParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected fetchAll(): Promise<QueryingRecordParams[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mQueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           16,
           28
         ]
       },
       {
-        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m QueryingRecordParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected fetchAll(): Promise<QueryingRecordParams[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mQueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           18,
           30
         ]
       },
       {
-        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m QueryingRecordParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "class QueryingRecord extends Record {\n  public id: QueryingRecordParams['id'];\n  public name: QueryingRecordParams['name'];\n  public age: QueryingRecordParams['age'];\n\n  protected fetchAll(): Promise<QueryingRecordParams[]> {\n    return Promise.resolve([]);\n  }\n\n  static translate(key: string, opts?: any): string {\n    return key;\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mQueryingRecord\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRecord\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m id\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'id'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m name\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'name'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m age\u001b[38;2;248;248;242m:\u001b[39m QueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;166;226;46m'age'\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mQueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           17,
           29
         ]
       }
     ],
-    "static": {
+    "instance": {
       "fetchAll": {
-        "text": "protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {\n    return Promise.resolve([]);\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m QueryingRecordParams\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "protected fetchAll(): Promise<QueryingRecordParams[]> {\n    return Promise.resolve([]);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;230;219;116mfetchAll\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mQueryingRecordParams\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mresolve\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
         "isAsync": false,
         "visibility": "protected",
         "line": [
           22,
           24
         ]
-      },
+      }
+    },
+    "static": {
       "translate": {
         "text": "static translate(key: string, opts?: any): string {\n    return key;\n  }",
         "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m key\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
@@ -944,7 +958,7 @@
   "StaticFindOrCreateByRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -960,7 +974,7 @@
   "StaticFindOrCreateByOrThrowRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -976,7 +990,7 @@
   "StaticCreateOrFindByOrThrowRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -992,7 +1006,7 @@
   "StaticUpdateAllRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1008,7 +1022,7 @@
   "StaticTouchAllRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1024,7 +1038,7 @@
   "StaticDeleteByRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1040,7 +1054,7 @@
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1130,7 +1144,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1154,7 +1168,7 @@
   "ActiveRecord$Core": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1182,7 +1196,7 @@
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/03/11 21:50:08 +09:00"
+      "updatedAt": "2021/03/11 22:52:15 +09:00"
     },
     "class": [
       {
@@ -1382,7 +1396,7 @@
   "ActiveRecord$Querying": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/querying/core.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -1730,7 +1744,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -1746,7 +1760,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -1762,7 +1776,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -1790,7 +1804,7 @@
   "ActiveRecord$FinderMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/finder_methods/core.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -1928,7 +1942,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/core.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -2056,7 +2070,7 @@
   "ActiveRecord$QueryMethods$Evaluator": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/evaluator.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -2174,7 +2188,7 @@
   "ActiveRecord$Associations$CollectionProxy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/modules/collection_proxy/core.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -2202,7 +2216,7 @@
   "ActiveRecord$QueryMethods$WhereChain": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/where_chain/base.ts",
-      "updatedAt": "2021/03/11 21:50:09 +09:00"
+      "updatedAt": "2021/03/11 22:52:16 +09:00"
     },
     "class": [
       {
@@ -2278,7 +2292,7 @@
   "RueModule": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2324,7 +2338,7 @@
   "RueModuleAncestorController": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2380,7 +2394,7 @@
   "ActiveSupport$Registry$Base": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/registries/base.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2456,7 +2470,7 @@
   "ActiveSupport$Base": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/base.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2484,7 +2498,7 @@
   "ActiveSupport$ImplBase": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2500,7 +2514,7 @@
   "ActiveSupport$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {
@@ -2524,7 +2538,7 @@
   "ActiveSupport$Info": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/modules/info/core.ts",
-      "updatedAt": "2021/03/11 21:49:54 +09:00"
+      "updatedAt": "2021/03/11 22:52:01 +09:00"
     },
     "class": [
       {

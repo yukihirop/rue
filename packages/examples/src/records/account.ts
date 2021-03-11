@@ -16,8 +16,7 @@ export class Account extends ActiveRecord<AccountParams> {
   public tasks: t.Record$HasMany<Task>;
   public fromName: t.Record$Scope<Account>;
 
-  protected static fetchAll<T = AccountParams>(): Promise<Array<AccountParams>> {
-    // @ts-ignore
+  protected fetchAll(): Promise<AccountParams[]> {
     return Promise.resolve([
       { id: 1, name: 'name_1', email: 'name_1@example.com' },
       { id: 2, name: 'name_2', email: 'name_2@example.com' },
