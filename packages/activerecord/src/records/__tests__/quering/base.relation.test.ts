@@ -32,7 +32,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    QueryingRecord.create([
+    QueryingRecord.create<QueryingRecord, QueryingRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
@@ -173,7 +173,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
 
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
-      StaticFindOrCreateByRecord.create([
+      StaticFindOrCreateByRecord.create<StaticFindOrCreateByRecord, QueryingRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
@@ -291,7 +291,10 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
 
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
-      StaticFindOrCreateByOrThrowRecord.create([
+      StaticFindOrCreateByOrThrowRecord.create<
+        StaticFindOrCreateByOrThrowRecord,
+        QueryingRecordParams
+      >([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
@@ -507,7 +510,10 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
 
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
-      StaticCreateOrFindByOrThrowRecord.create([
+      StaticCreateOrFindByOrThrowRecord.create<
+        StaticCreateOrFindByOrThrowRecord,
+        QueryingRecordParams
+      >([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
@@ -663,7 +669,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
 
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
-      StaticUpdateAllRecord.create([
+      StaticUpdateAllRecord.create<StaticUpdateAllRecord, QueryingRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]);
@@ -698,9 +704,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     StaticTouchAllRecord.validates('name', { length: { is: 6 } });
     StaticTouchAllRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    let records = [];
+    let records;
     beforeEach(() => {
-      records = StaticTouchAllRecord.create([
+      records = StaticTouchAllRecord.create<StaticTouchAllRecord, QueryingRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]);
@@ -903,7 +909,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
 
     let records;
     beforeEach(() => {
-      records = StaticDeleteByRecord.create([
+      records = StaticDeleteByRecord.create<StaticDeleteByRecord, QueryingRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },

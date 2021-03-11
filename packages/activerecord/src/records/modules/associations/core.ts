@@ -84,9 +84,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     );
 
     if (Array.isArray(tables)) {
-      IntermediateTable.create(klassNameLeft, klassNameRight, [
-        [this.id, record.id],
-      ]);
+      IntermediateTable.create(klassNameLeft, klassNameRight, [[this.id, record.id]]);
       return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
     } else {
       throw errObj({

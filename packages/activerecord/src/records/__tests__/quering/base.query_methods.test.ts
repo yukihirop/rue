@@ -33,7 +33,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    QueryingRecord.create([
+    QueryingRecord.create<QueryingRecord, QueryingRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
@@ -629,7 +629,8 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
 
     describe("when specify 'where' after specify 'limit'", () => {
       it('should correctly', (done) => {
-        QueryingRecord.where({ id: [1, 2] }).then((relation) => {
+        // TODO: remove any
+        QueryingRecord.where({ id: [1, 2] as any }).then((relation) => {
           relation
             .limit(1)
             .toPA()

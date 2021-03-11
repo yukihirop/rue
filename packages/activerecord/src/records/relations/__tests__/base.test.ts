@@ -6,6 +6,9 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 import dayjs from 'dayjs';
 
+// types
+import type * as t from '@/index';
+
 describe('ActiveRecord$Relation$Base', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeAll(() => {
@@ -33,26 +36,22 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#isMany', () => {
     type IsManyRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsManyRecord extends ActiveRecord$Base {
+    class IsManyRecord extends ActiveRecord$Base<IsManyRecordParams> {
+      public id: IsManyRecordParams['id'];
       public name: IsManyRecordParams['name'];
       public age: IsManyRecordParams['age'];
     }
 
-    const createRecord = (params: IsManyRecordParams): IsManyRecord => {
-      const record = new IsManyRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as IsManyRecord[];
 
     const relation = new Relation<IsManyRecord>(IsManyRecord, records);
 
@@ -84,22 +83,24 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#isNone', () => {
     type IsNoneRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsNoneRecord extends ActiveRecord$Base {
+    class IsNoneRecord extends ActiveRecord$Base<IsNoneRecordParams> {
+      public id: IsNoneRecordParams['id'];
       public name: IsNoneRecordParams['name'];
       public age: IsNoneRecordParams['age'];
     }
 
-    const createRecord = (params: IsNoneRecordParams): IsNoneRecord => {
-      const record = new IsNoneRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [createRecord({ name: 'name_1', age: 1 })];
+    const records = [
+      IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
+        id: 1,
+        name: 'name_1',
+        age: 1,
+      }) as IsNoneRecord,
+    ];
 
     const relation = new Relation<IsNoneRecord>(IsNoneRecord, records);
 
@@ -131,25 +132,21 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#isOne', () => {
     type IsOneRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsOneRecord extends ActiveRecord$Base {
+    class IsOneRecord extends ActiveRecord$Base<IsOneRecordParams> {
+      public id: IsOneRecordParams['id'];
       public name: IsOneRecordParams['name'];
       public age: IsOneRecordParams['age'];
     }
 
-    const createRecord = (params: IsOneRecordParams): IsOneRecord => {
-      const record = new IsOneRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-    ];
+    const records = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 1, name: 'name_2', age: 2 },
+    ]) as IsOneRecord[];
 
     const relation = new Relation<IsOneRecord>(IsOneRecord, records);
 
@@ -181,22 +178,18 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#isAny', () => {
     type IsAnyRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsAnyRecord extends ActiveRecord$Base {
+    class IsAnyRecord extends ActiveRecord$Base<IsAnyRecordParams> {
+      public id: IsAnyRecordParams['id'];
       public name: IsAnyRecordParams['name'];
       public age: IsAnyRecordParams['age'];
     }
 
-    const createRecord = (params: IsAnyRecordParams): IsAnyRecord => {
-      const record = new IsAnyRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [createRecord({ name: 'name_1', age: 1 })];
+    const records = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
 
     const relation = new Relation<IsAnyRecord>(IsAnyRecord, records);
 
@@ -223,22 +216,24 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#isBlank', () => {
     type IsBlankRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsBlankRecord extends ActiveRecord$Base {
+    class IsBlankRecord extends ActiveRecord$Base<IsBlankRecordParams> {
+      public id: IsBlankRecordParams['id'];
       public name: IsBlankRecordParams['name'];
       public age: IsBlankRecordParams['age'];
     }
 
-    const createRecord = (params: IsBlankRecordParams): IsBlankRecord => {
-      const record = new IsBlankRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [createRecord({ name: 'name_1', age: 1 })];
+    const records = [
+      IsBlankRecord.create<IsBlankRecord, IsBlankRecordParams>({
+        id: 1,
+        name: 'name_1',
+        age: 1,
+      }) as IsBlankRecord,
+    ];
 
     const relation = new Relation<IsBlankRecord>(IsBlankRecord, records);
 
@@ -264,26 +259,22 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#build', () => {
     type BuildRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class BuildRecord extends ActiveRecord$Base {
+    class BuildRecord extends ActiveRecord$Base<BuildRecordParams> {
+      public id: BuildRecordParams['id'];
       public name: BuildRecordParams['name'];
       public age: BuildRecordParams['age'];
     }
 
-    const createRecord = (params: BuildRecordParams): BuildRecord => {
-      const record = new BuildRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = BuildRecord.create<BuildRecord, BuildRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as BuildRecord[];
 
     const relation = new Relation<BuildRecord>(BuildRecord, records);
 
@@ -342,11 +333,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#create', () => {
     type CreateRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateRecord extends ActiveRecord$Base {
+    class CreateRecord extends ActiveRecord$Base<CreateRecordParams> {
+      public id: CreateRecordParams['id'];
       public name: CreateRecordParams['name'];
       public age: CreateRecordParams['age'];
 
@@ -359,9 +352,9 @@ describe('ActiveRecord$Relation$Base', () => {
     CreateRecord.validates('age', { numericality: { lessThan: 10 }, allow_undefined: true });
 
     const records = [
-      new CreateRecord({ name: 'name_1', age: 1 }),
-      new CreateRecord({ name: 'name_2', age: 2 }),
-      new CreateRecord({ name: 'name_3', age: 3 }),
+      new CreateRecord({ id: 1, name: 'name_1', age: 1 }),
+      new CreateRecord({ id: 2, name: 'name_2', age: 2 }),
+      new CreateRecord({ id: 3, name: 'name_3', age: 3 }),
     ];
 
     const relation = new Relation<CreateRecord>(CreateRecord, records);
@@ -425,11 +418,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#createOrThrow', () => {
     type CreateOrThrowRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateOrThrowRecord extends ActiveRecord$Base {
+    class CreateOrThrowRecord extends ActiveRecord$Base<CreateOrThrowRecordParams> {
+      public id: CreateOrThrowRecordParams['id'];
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
 
@@ -445,9 +440,9 @@ describe('ActiveRecord$Relation$Base', () => {
     });
 
     const records = [
-      new CreateOrThrowRecord({ name: 'name_1', age: 1 }),
-      new CreateOrThrowRecord({ name: 'name_2', age: 2 }),
-      new CreateOrThrowRecord({ name: 'name_3', age: 3 }),
+      new CreateOrThrowRecord({ id: 1, name: 'name_1', age: 1 }),
+      new CreateOrThrowRecord({ id: 2, name: 'name_2', age: 2 }),
+      new CreateOrThrowRecord({ id: 3, name: 'name_3', age: 3 }),
     ];
 
     const relation = new Relation<CreateOrThrowRecord>(CreateOrThrowRecord, records);
@@ -525,26 +520,22 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#createOrFindBy', () => {
     type CreateOrFindByRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateOrFindByRecord extends ActiveRecord$Base {
+    class CreateOrFindByRecord extends ActiveRecord$Base<CreateOrFindByRecordParams> {
+      public id: CreateOrFindByRecordParams['id'];
       public name: CreateOrFindByRecordParams['name'];
       public age: CreateOrFindByRecordParams['age'];
     }
 
-    const createRecord = (params: CreateOrFindByRecordParams) => {
-      const record = new CreateOrFindByRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 1, name: 'name_2', age: 2 },
+      { id: 1, name: 'name_3', age: 3 },
+    ]) as CreateOrFindByRecord[];
 
     const relation = new Relation<CreateOrFindByRecord>(CreateOrFindByRecord, records);
 
@@ -587,11 +578,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#createOrFindByOrThrow', () => {
     type CreateOrFindByOrThrowRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateOrFindByOrThrowRecord extends ActiveRecord$Base {
+    class CreateOrFindByOrThrowRecord extends ActiveRecord$Base<CreateOrFindByOrThrowRecordParams> {
+      public id: CreateOrFindByOrThrowRecordParams['id'];
       public name: CreateOrFindByOrThrowRecordParams['name'];
       public age: CreateOrFindByOrThrowRecordParams['age'];
 
@@ -602,17 +595,14 @@ describe('ActiveRecord$Relation$Base', () => {
 
     CreateOrFindByOrThrowRecord.validates('name', { length: { is: 6 } });
 
-    const createRecord = (params: CreateOrFindByOrThrowRecordParams) => {
-      const record = new CreateOrFindByOrThrowRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = CreateOrFindByOrThrowRecord.create<
+      CreateOrFindByOrThrowRecord,
+      CreateOrFindByOrThrowRecordParams
+    >([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 1, name: 'name_2', age: 2 },
+      { id: 1, name: 'name_3', age: 3 },
+    ]) as CreateOrFindByOrThrowRecord[];
 
     const relation = new Relation<CreateOrFindByOrThrowRecord>(
       CreateOrFindByOrThrowRecord,
@@ -680,11 +670,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#deleteBy', () => {
     type DeleteByRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DeleteByRecord extends ActiveRecord$Base {
+    class DeleteByRecord extends ActiveRecord$Base<DeleteByRecordParams> {
+      public id: DeleteByRecordParams['id'];
       public name: DeleteByRecordParams['name'];
       public age: DeleteByRecordParams['age'];
 
@@ -697,23 +689,17 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    const createRecord = (params: DeleteByRecordParams): DeleteByRecord => {
-      const record = new DeleteByRecord(params);
-      record.save();
-      return record;
-    };
-
     const relation = new Relation<DeleteByRecord>(DeleteByRecord, []);
 
     // @important
     // records are object.freeze when destroyed
 
     beforeEach(() => {
-      const records = [
-        createRecord({ name: 'name_1', age: 1 }),
-        createRecord({ name: 'name_2', age: 2 }),
-        createRecord({ name: 'name_3', age: 3 }),
-      ];
+      const records = DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]);
       // @ts-ignore
       relation.records = records;
       RecordCache.update(DeleteByRecord.name, RECORD_ALL, records);
@@ -744,11 +730,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#destroyBy', () => {
     type DestoryByRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DestroyByRecord extends ActiveRecord$Base {
+    class DestroyByRecord extends ActiveRecord$Base<DestoryByRecordParams> {
+      public id: DestoryByRecordParams['id'];
       public name: DestoryByRecordParams['name'];
       public age: DestoryByRecordParams['age'];
 
@@ -757,23 +745,17 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    const createRecord = (params: DestoryByRecordParams): DestroyByRecord => {
-      const record = new DestroyByRecord(params);
-      record.save();
-      return record;
-    };
-
     const relation = new Relation<DestroyByRecord>(DestroyByRecord, []);
 
     // @important
     // records are object.freeze when destroyed
 
     beforeEach(() => {
-      const records = [
-        createRecord({ name: 'name_1', age: 1 }),
-        createRecord({ name: 'name_2', age: 2 }),
-        createRecord({ name: 'name_3', age: 3 }),
-      ];
+      const records = DestroyByRecord.create<DestroyByRecord, DestoryByRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]);
       // @ts-ignore
       relation.records = records;
       RecordCache.update(DestroyByRecord.name, RECORD_ALL, records);
@@ -790,6 +772,7 @@ describe('ActiveRecord$Relation$Base', () => {
             age: 1,
             _newRecord: false,
             errors: {},
+            id: 1,
             name: 'name_1',
           },
           {
@@ -800,6 +783,7 @@ describe('ActiveRecord$Relation$Base', () => {
             age: 2,
             errors: {},
             _newRecord: false,
+            id: 2,
             name: 'name_2',
           },
           {
@@ -810,6 +794,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _newRecord: false,
             age: 3,
             errors: {},
+            id: 3,
             name: 'name_3',
           },
         ]);
@@ -829,6 +814,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _newRecord: false,
             age: 1,
             errors: {},
+            id: 1,
             name: 'name_1',
           },
         ]);
@@ -840,11 +826,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#deleteAll', () => {
     type DeleteAllRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DeleteAllRecord extends ActiveRecord$Base {
+    class DeleteAllRecord extends ActiveRecord$Base<DeleteAllRecordParams> {
+      public id: DeleteAllRecordParams['id'];
       public name: DeleteAllRecordParams['name'];
       public age: DeleteAllRecordParams['age'];
 
@@ -857,17 +845,11 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    const createRecord = (params: DeleteAllRecordParams): DeleteAllRecord => {
-      const record = new DeleteAllRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as DeleteAllRecord[];
 
     const relation = new Relation<DeleteAllRecord>(DeleteAllRecord, records);
 
@@ -892,11 +874,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#destroyAll', () => {
     type DestroyAllRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DestroyAllRecord extends ActiveRecord$Base {
+    class DestroyAllRecord extends ActiveRecord$Base<DestroyAllRecordParams> {
+      public id: DestroyAllRecordParams['id'];
       public name: DestroyAllRecordParams['name'];
       public age: DestroyAllRecordParams['age'];
 
@@ -909,20 +893,14 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    const createRecord = (params): DestroyAllRecord => {
-      const record = new DestroyAllRecord(params);
-      record.save();
-      return record;
-    };
-
     // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as DestroyAllRecord[];
 
     const relation = new Relation<DestroyAllRecord>(DestroyAllRecord, records);
 
@@ -944,6 +922,7 @@ describe('ActiveRecord$Relation$Base', () => {
           _newRecord: false,
           age: 1,
           errors: {},
+          id: 1,
           name: 'name_1',
         });
         expect(destroyedRecords[1]).toEqual({
@@ -954,6 +933,7 @@ describe('ActiveRecord$Relation$Base', () => {
           _newRecord: false,
           age: 2,
           errors: {},
+          id: 2,
           name: 'name_2',
         });
         expect(destroyedRecords[2]).toEqual({
@@ -964,6 +944,7 @@ describe('ActiveRecord$Relation$Base', () => {
           _newRecord: false,
           age: 3,
           errors: {},
+          id: 3,
           name: 'name_3',
         });
         // @ts-ignore
@@ -974,29 +955,25 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#findOrCreateBy', () => {
     type FindOrCreateByRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindOrCreateByRecord extends ActiveRecord$Base {
+    class FindOrCreateByRecord extends ActiveRecord$Base<FindOrCreateByRecordParams> {
+      public id: FindOrCreateByRecordParams['id'];
       public name: FindOrCreateByRecordParams['name'];
       public age: FindOrCreateByRecordParams['age'];
     }
 
-    const createRecord = (params): FindOrCreateByRecord => {
-      const record = new FindOrCreateByRecord(params);
-      record.save();
-      return record;
-    };
-
     // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = FindOrCreateByRecord.create<FindOrCreateByRecord, FindOrCreateByRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as FindOrCreateByRecord[];
 
     const relation = new Relation<FindOrCreateByRecord>(FindOrCreateByRecord, records);
 
@@ -1079,11 +1056,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#findOrCreateByOrThrow', () => {
     type FindOrCreateByOrThrowRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindOrCreateByOrThrowRecord extends ActiveRecord$Base {
+    class FindOrCreateByOrThrowRecord extends ActiveRecord$Base<FindOrCreateByOrThrowRecordParams> {
+      public id: FindOrCreateByOrThrowRecordParams['id'];
       public name: FindOrCreateByOrThrowRecordParams['name'];
       public age: FindOrCreateByOrThrowRecordParams['age'];
 
@@ -1095,19 +1074,14 @@ describe('ActiveRecord$Relation$Base', () => {
     FindOrCreateByOrThrowRecord.validates('name', { length: { is: 6 } });
     FindOrCreateByOrThrowRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    const createRecord = (
-      params: FindOrCreateByOrThrowRecordParams
-    ): FindOrCreateByOrThrowRecord => {
-      const record = new FindOrCreateByOrThrowRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = FindOrCreateByOrThrowRecord.create<
+      FindOrCreateByOrThrowRecord,
+      FindOrCreateByOrThrowRecordParams
+    >([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as FindOrCreateByOrThrowRecord[];
 
     const relation = new Relation<FindOrCreateByOrThrowRecord>(
       FindOrCreateByOrThrowRecord,
@@ -1132,6 +1106,7 @@ describe('ActiveRecord$Relation$Base', () => {
               _destroyed: false,
               age: 1,
               errors: { age: [], name: [] },
+              id: 1,
               name: 'name_1',
             });
             // @ts-ignore
@@ -1217,26 +1192,25 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#findOrInitializeBy', () => {
     type FindOrInitializeByRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindOrInitializeByRecord extends ActiveRecord$Base {
+    class FindOrInitializeByRecord extends ActiveRecord$Base<FindOrInitializeByRecordParams> {
+      public id: FindOrInitializeByRecordParams['id'];
       public name: FindOrInitializeByRecordParams['name'];
       public age: FindOrInitializeByRecordParams['age'];
     }
 
-    const createRecord = (params: FindOrInitializeByRecordParams): FindOrInitializeByRecord => {
-      const record = new FindOrInitializeByRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-      createRecord({ name: 'name_3', age: 3 }),
-    ];
+    const records = FindOrInitializeByRecord.create<
+      FindOrInitializeByRecord,
+      FindOrInitializeByRecordParams
+    >([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
+    ]) as FindOrInitializeByRecord[];
 
     const relation = new Relation<FindOrInitializeByRecord>(FindOrInitializeByRecord, records);
 
@@ -1280,11 +1254,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#updateAll', () => {
     type UpdateAllRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class UpdateAllRecord extends ActiveRecord$Base {
+    class UpdateAllRecord extends ActiveRecord$Base<UpdateAllRecordParams> {
+      public id: UpdateAllRecordParams['id'];
       public name: UpdateAllRecordParams['name'];
       public age: UpdateAllRecordParams['age'];
 
@@ -1304,16 +1280,10 @@ describe('ActiveRecord$Relation$Base', () => {
     UpdateAllRecord.validates('name', { length: { is: 6 } });
     UpdateAllRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    const createRecord = (params: UpdateAllRecordParams): UpdateAllRecord => {
-      const record = new UpdateAllRecord(params);
-      record.save();
-      return record;
-    };
-
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-    ];
+    const records = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+    ]) as UpdateAllRecord[];
 
     const relation = new Relation<UpdateAllRecord>(UpdateAllRecord, records);
 
@@ -1338,28 +1308,24 @@ describe('ActiveRecord$Relation$Base', () => {
 
   describe('#touchAll', () => {
     type TouchAllRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
     class TouchAllRecord extends ActiveRecord$Base {
+      public id: TouchAllRecordParams['id'];
       public name: TouchAllRecordParams['name'];
       public age: TouchAllRecordParams['age'];
     }
 
-    const createRecord = (params: TouchAllRecordParams): TouchAllRecord => {
-      const record = new TouchAllRecord(params);
-      record.save();
-      return record;
-    };
-
     // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = [
-      createRecord({ name: 'name_1', age: 1 }),
-      createRecord({ name: 'name_2', age: 2 }),
-    ];
+    const records = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+    ]) as TouchAllRecord[];
 
     const relation = new Relation<TouchAllRecord>(TouchAllRecord, records);
 
@@ -1376,6 +1342,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _destroyed: false,
             age: 1,
             errors: {},
+            id: 1,
             name: 'name_1',
           });
           expect(records[1]).toEqual({
@@ -1386,6 +1353,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _destroyed: false,
             age: 2,
             errors: {},
+            id: 2,
             name: 'name_2',
           });
           done();
@@ -1408,6 +1376,7 @@ describe('ActiveRecord$Relation$Base', () => {
               _destroyed: false,
               age: 1,
               errors: {},
+              id: 1,
               name: 'name_1',
             });
             done();
@@ -1430,6 +1399,7 @@ describe('ActiveRecord$Relation$Base', () => {
               _destroyed: false,
               age: 1,
               errors: {},
+              id: 1,
               name: 'name_1',
             });
             done();
@@ -1451,6 +1421,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _destroyed: false,
             age: 2,
             errors: {},
+            id: 2,
             name: 'name_2',
           });
           done();

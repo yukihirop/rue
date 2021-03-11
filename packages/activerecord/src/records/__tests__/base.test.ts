@@ -32,7 +32,7 @@ describe('Record', () => {
     });
 
     describe('when data is not empty', () => {
-      const record = new TestConstructorRecord({ name: 'name', age: 20 });
+      const record = new TestConstructorRecord({ id: 1, name: 'name', age: 20 });
       it('should correctly', () => {
         expect(record.errors).toEqual({});
         expect(record.name).toEqual('name');

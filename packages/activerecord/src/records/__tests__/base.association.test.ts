@@ -1,6 +1,7 @@
 import { ActiveRecord$Base as Record } from '../base';
 
 // types
+import type * as t from '@/index';
 import type * as rt from '@/records/modules/associations';
 
 describe('Record(Association)', () => {
@@ -213,15 +214,17 @@ describe('Record(Association)', () => {
   // https://railsguides.jp/association_basics.html#has-many-through%E3%81%A8has-and-belongs-to-many%E3%81%AE%E3%81%A9%E3%81%A1%E3%82%89%E3%82%92%E9%81%B8%E3%81%B6%E3%81%8B
   describe('[static] hasAndBelongsToMany', () => {
     type TestAssociationHasAndBelongsToManyAssemblyParams = {
+      id: t.Record$PrimaryKey;
       name: string;
     };
 
     type TestAssociationHasAndBelongsToManyPartParams = {
+      id: t.Record$PrimaryKey;
       name: string;
     };
 
     class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record<TestAssociationHasAndBelongsToManyAssemblyParams> {
-      public id: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasAndBelongsToManyAssemblyParams['id'];
       public parts: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
       public name: TestAssociationHasAndBelongsToManyAssemblyParams['name'];
 
@@ -238,7 +241,7 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasAndBelongsToManyPartRecord extends Record<TestAssociationHasAndBelongsToManyPartParams> {
-      public id: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasAndBelongsToManyPartParams['id'];
       public assemblies: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
       public name: TestAssociationHasAndBelongsToManyPartParams['name'];
 

@@ -35,7 +35,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    const records = IsExistsRecord.create([
+    const records = IsExistsRecord.create<IsExistsRecord, IsExistsRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
@@ -109,7 +109,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = FindRecord.create([
+    const records = FindRecord.create<FindRecord, FindRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
@@ -173,9 +173,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       describe("when do not specify 'id'", () => {
         it('should correctly', (done) => {
           relation.find().catch((err) => {
-            expect(err.toString()).toEqual(
-              "Error: Could'nt find 'FindRecord' without an 'id'"
-            );
+            expect(err.toString()).toEqual("Error: Could'nt find 'FindRecord' without an 'id'");
             done();
           });
         });
@@ -184,9 +182,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       describe("when specify don't exists 'id'", () => {
         it('should correctly', (done) => {
           relation.find(100).catch((err) => {
-            expect(err.toString()).toEqual(
-              "Error: Couldn't find 'FindRecord' with 'id' = '100'"
-            );
+            expect(err.toString()).toEqual("Error: Couldn't find 'FindRecord' with 'id' = '100'");
             done();
           });
         });
@@ -218,7 +214,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public age: FindByRecordParams['age'];
     }
 
-    const records = FindByRecord.create([
+    const records = FindByRecord.create<FindByRecord, FindByRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
@@ -274,7 +270,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = FindByOrThrowRecord.create([
+    const records = FindByOrThrowRecord.create<FindByOrThrowRecord, FindByOrThrowRecordParams>([
       { id: 1, name: 'name_1', age: 1 },
       { id: 2, name: 'name_2', age: 2 },
       { id: 3, name: 'name_3', age: 3 },
