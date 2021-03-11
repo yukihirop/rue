@@ -30,7 +30,7 @@ describe('Record(Persistence)', () => {
         age: number;
       };
     };
-    class TestDeleteRecord extends Record {
+    class TestDeleteRecord extends Record<TestDeleteRecordParams> {
       public profile: TestDeleteRecordParams['profile'];
 
       // The cache is not updated once [static]all is not called
@@ -101,7 +101,7 @@ describe('Record(Persistence)', () => {
       age: number;
     };
 
-    class IsDestroyedRecord extends Record {
+    class IsDestroyedRecord extends Record<IsDestroyedRecordParams> {
       public name: IsDestroyedRecordParams['name'];
       public age: IsDestroyedRecordParams['age'];
     }
@@ -124,7 +124,7 @@ describe('Record(Persistence)', () => {
       age: number;
     };
 
-    class IsNewRecordRecord extends Record {
+    class IsNewRecordRecord extends Record<IsNewRecordRecordParams> {
       public name: IsNewRecordRecordParams['name'];
       public age: IsNewRecordRecordParams['age'];
     }
@@ -147,7 +147,7 @@ describe('Record(Persistence)', () => {
       age: number;
     };
 
-    class IsPersistedRecord extends Record {
+    class IsPersistedRecord extends Record<IsPersistedRecordParams> {
       public name: IsPersistedRecordParams['name'];
       public age: IsPersistedRecordParams['age'];
     }
@@ -171,7 +171,7 @@ describe('Record(Persistence)', () => {
         age: number;
       };
     };
-    class TestSaveRecord extends Record {
+    class TestSaveRecord extends Record<TestSaveParams> {
       public profile: TestSaveParams['profile'];
 
       // The cache is not updated once [static]all is not called
@@ -239,7 +239,7 @@ describe('Record(Persistence)', () => {
         age: number;
       };
     };
-    class TestSaveOrThrowRecord extends Record {
+    class TestSaveOrThrowRecord extends Record<TestSaveOrThrowParams> {
       public profile: TestSaveOrThrowParams['profile'];
 
       // The cache is not updated once [static]all is not called
@@ -326,7 +326,7 @@ describe('Record(Persistence)', () => {
         age: number;
       };
     };
-    class TestDestroyRecord extends Record {
+    class TestDestroyRecord extends Record<TestDestroyParams> {
       public profile: TestDestroyParams['profile'];
 
       // The cache is not updated once [static]all is not called
@@ -495,7 +495,7 @@ describe('Record(Persistence)', () => {
       age: number;
     };
 
-    class UpdateRecord extends Record {
+    class UpdateRecord extends Record<UpdateRecordParams> {
       public name: UpdateRecordParams['name'];
       public age: UpdateRecordParams['age'];
 
@@ -520,7 +520,7 @@ describe('Record(Persistence)', () => {
         UpdateRecord.all<UpdateRecord>().then((relation) => {
           const records = relation.toA();
           const record = records[0];
-          const updateResult = record.update<UpdateRecordParams>({ name: 'rename' });
+          const updateResult = record.update({ name: 'rename' });
           expect(updateResult).toEqual(true);
           expect(record.name).toEqual('rename');
           done();
@@ -533,7 +533,7 @@ describe('Record(Persistence)', () => {
         UpdateRecord.all<UpdateRecord>().then((relation) => {
           const records = relation.toA();
           const record = records[1];
-          const updateResult = record.update<UpdateRecordParams>({ age: 100 });
+          const updateResult = record.update({ age: 100 });
           expect(updateResult).toEqual(false);
           expect(record.age).toEqual(2);
           done();
@@ -548,7 +548,7 @@ describe('Record(Persistence)', () => {
       age: number;
     };
 
-    class UpdateOrThrowRecord extends Record {
+    class UpdateOrThrowRecord extends Record<UpdateOrThrowRecordParams> {
       public name: UpdateOrThrowRecordParams['name'];
       public age: UpdateOrThrowRecordParams['age'];
 

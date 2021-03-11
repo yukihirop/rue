@@ -323,7 +323,6 @@ export class ActiveRecord$Persistence extends RueModule {
     if (Array.isArray(primaryKey)) {
       return (_this.find<T>(...primaryKey) as T[]).map((r) => r.destroy());
     } else {
-      // @ts-expect-error
       return (_this.find<T>(primaryKey) as T).destroy();
     }
   }
@@ -344,17 +343,17 @@ export class ActiveRecord$Persistence extends RueModule {
       const { RECORD_ALL } = ActiveRecord$Persistence;
       const allRecords = RecordCache.read<T[]>(this.name, RECORD_ALL, 'array');
       updatedRecords = allRecords.map((record) => {
-        record.update<U>(params as Partial<U>);
+        record.update(params);
         return record;
       });
     } else if (ids.length === 1) {
       const record = _this.find<T>(ids[0]) as T;
-      record.update<U>(params as Partial<U>);
+      record.update(params);
       updatedRecords = [record];
     } else {
       updatedRecords = ids.map((id, index) => {
         const record = _this.find<T>(id) as T;
-        record.update<U>((params as Array<Partial<U>>)[index]);
+        record.update(params[index]);
         return record;
       });
     }

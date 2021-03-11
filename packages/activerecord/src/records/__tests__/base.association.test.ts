@@ -220,7 +220,7 @@ describe('Record(Association)', () => {
       name: string;
     };
 
-    class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record {
+    class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record<TestAssociationHasAndBelongsToManyAssemblyParams> {
       public primaryKey: rt.Associations$PrimaryKey;
       public parts: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
       public name: TestAssociationHasAndBelongsToManyAssemblyParams['name'];
@@ -237,7 +237,7 @@ describe('Record(Association)', () => {
         ]);
       }
     }
-    class TestAssociationHasAndBelongsToManyPartRecord extends Record {
+    class TestAssociationHasAndBelongsToManyPartRecord extends Record<TestAssociationHasAndBelongsToManyPartParams> {
       public primaryKey: rt.Associations$PrimaryKey;
       public assemblies: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
       public name: TestAssociationHasAndBelongsToManyPartParams['name'];
