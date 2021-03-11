@@ -4,17 +4,17 @@ import type * as t from '@rue/activerecord';
 
 import { Account } from '@/records';
 
-type Params = {
+type TaskParams = {
   id: t.Record$ForeignKey;
   content: string;
   status: 'success' | 'failure' | 'wip';
   accountId: t.Record$ForeignKey;
 };
 
-export class Task extends ActiveRecord {
-  public content: Params['content'];
-  public status: Params['status'];
-  public accountId: Params['accountId'];
+export class Task extends ActiveRecord<TaskParams> {
+  public content: TaskParams['content'];
+  public status: TaskParams['status'];
+  public accountId: TaskParams['accountId'];
   public account: t.Record$BelongsTo<Account>;
   public fromStatus: t.Record$Scope<Task>;
 
