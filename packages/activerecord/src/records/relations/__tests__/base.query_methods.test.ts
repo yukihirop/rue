@@ -11,13 +11,13 @@ import type * as at from '@/records/modules/associations';
 const { RECORD_ALL, RUE_AUTO_INCREMENT_RECORD_ID } = Record;
 
 type QueryMethodsRecordParams = {
-  primaryKey: at.Associations$PrimaryKey;
+  id: at.Associations$PrimaryKey;
   name: string;
   age: number;
 };
 
 class QueryMethodsRecord extends Record {
-  public primaryKey: QueryMethodsRecordParams['primaryKey'];
+  public id: QueryMethodsRecordParams['id'];
   public name: QueryMethodsRecordParams['name'];
   public age: QueryMethodsRecordParams['age'];
 
@@ -38,9 +38,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    relation.create({ primaryKey: 1, name: 'name_1', age: 1 });
-    relation.create({ primaryKey: 2, name: 'name_2', age: 2 });
-    relation.create({ primaryKey: 3, name: 'name_3', age: 3 });
+    relation.create({ id: 1, name: 'name_1', age: 1 });
+    relation.create({ id: 2, name: 'name_2', age: 2 });
+    relation.create({ id: 3, name: 'name_3', age: 3 });
   });
 
   afterEach(() => {
@@ -78,7 +78,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             const cacheAll = RecordCache.data[QueryMethodsRecord.name][RECORD_ALL];
@@ -109,7 +109,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
             ]);
             done();
@@ -135,7 +135,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -146,7 +146,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -157,7 +157,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -181,7 +181,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -192,7 +192,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -203,7 +203,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -227,7 +227,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -238,7 +238,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -249,7 +249,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -273,7 +273,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -284,7 +284,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -295,7 +295,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -336,7 +336,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -347,7 +347,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -358,7 +358,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -383,7 +383,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -394,7 +394,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -405,7 +405,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -430,7 +430,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -441,7 +441,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -452,7 +452,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -477,7 +477,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -488,7 +488,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -499,7 +499,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -540,7 +540,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -551,7 +551,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -576,7 +576,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
             ]);
             done();
@@ -601,7 +601,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -612,7 +612,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -638,7 +638,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -649,7 +649,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
     describe("when specify 'where' after specify 'limit'", () => {
       it('should correctly', (done) => {
         relation
-          .where({ primaryKey: [1, 2] })
+          .where({ id: [1, 2] })
           .limit(1)
           .toPA()
           .then((records) => {
@@ -663,7 +663,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -688,7 +688,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -699,7 +699,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
             ]);
             done();
@@ -711,7 +711,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   describe('#group', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        QueryMethodsRecord.create([{ primaryKey: 4, name: 'name_2', age: 2 }]);
+        QueryMethodsRecord.create([{ id: 4, name: 'name_2', age: 2 }]);
         relation
           .group<QueryMethodsRecordParams>('name', 'age')
           .toPA()
@@ -727,7 +727,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
               ],
               '[name_2,2]': [
@@ -740,7 +740,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -751,7 +751,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 4,
+                  id: 4,
                 },
               ],
               '[name_3,3]': [
@@ -764,7 +764,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   age: 3,
                   errors: {},
                   name: 'name_3',
-                  primaryKey: 3,
+                  id: 3,
                 },
               ],
             });
@@ -792,7 +792,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -803,7 +803,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -814,7 +814,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -838,7 +838,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -849,7 +849,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -860,7 +860,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();
@@ -887,7 +887,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -898,7 +898,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -909,7 +909,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
             ]);
             done();

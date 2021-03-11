@@ -10,13 +10,13 @@ import type * as at from '@/records/modules/associations';
 const { RUE_AUTO_INCREMENT_RECORD_ID, RECORD_ALL } = Record;
 
 type QueryingRecordParams = {
-  primaryKey: at.Associations$PrimaryKey;
+  id: at.Associations$PrimaryKey;
   name: string;
   age: number;
 };
 
 class QueryingRecord extends Record {
-  public primaryKey: QueryingRecordParams['primaryKey'];
+  public id: QueryingRecordParams['id'];
   public name: QueryingRecordParams['name'];
   public age: QueryingRecordParams['age'];
 
@@ -34,9 +34,9 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
     QueryingRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]);
   });
 
@@ -62,7 +62,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             const cacheAll = RecordCache.data[QueryingRecord.name][RECORD_ALL];
@@ -93,7 +93,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                     age: 2,
                     errors: {},
                     name: 'name_2',
-                    primaryKey: 2,
+                    id: 2,
                   },
                 ]);
                 done();
@@ -119,7 +119,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -130,7 +130,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -141,7 +141,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
           ]);
           done();
@@ -163,7 +163,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -174,7 +174,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -185,7 +185,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
           ]);
           done();
@@ -207,7 +207,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -218,7 +218,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -229,7 +229,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -251,7 +251,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -262,7 +262,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -273,7 +273,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -313,7 +313,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -324,7 +324,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -335,7 +335,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 3,
                   errors: {},
                   name: 'name_3',
-                  primaryKey: 3,
+                  id: 3,
                 },
               ]);
               done();
@@ -361,7 +361,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -372,7 +372,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -383,7 +383,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 3,
                   errors: {},
                   name: 'name_3',
-                  primaryKey: 3,
+                  id: 3,
                 },
               ]);
               done();
@@ -410,7 +410,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -421,7 +421,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -432,7 +432,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -458,7 +458,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 3,
                 errors: {},
                 name: 'name_3',
-                primaryKey: 3,
+                id: 3,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -469,7 +469,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 2,
                 errors: {},
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -480,7 +480,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -520,7 +520,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -531,7 +531,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -556,7 +556,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
               ]);
               done();
@@ -582,7 +582,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -593,7 +593,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
               ]);
               done();
@@ -618,7 +618,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             done();
@@ -629,7 +629,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
 
     describe("when specify 'where' after specify 'limit'", () => {
       it('should correctly', (done) => {
-        QueryingRecord.where({ primaryKey: [1, 2] }).then((relation) => {
+        QueryingRecord.where({ id: [1, 2] }).then((relation) => {
           relation
             .limit(1)
             .toPA()
@@ -644,7 +644,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
               ]);
               done();
@@ -670,7 +670,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 3,
                   errors: {},
                   name: 'name_3',
-                  primaryKey: 3,
+                  id: 3,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -681,7 +681,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
               ]);
               done();
@@ -694,7 +694,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
   describe('[static] group', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        QueryingRecord.create([{ primaryKey: 4, name: 'name_2', age: 2 }]);
+        QueryingRecord.create([{ id: 4, name: 'name_2', age: 2 }]);
         QueryingRecord.group<QueryingRecord, QueryingRecordParams>('name', 'age').then(
           (relation) => {
             relation.toPA().then((grouped) => {
@@ -709,7 +709,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                     age: 1,
                     errors: {},
                     name: 'name_1',
-                    primaryKey: 1,
+                    id: 1,
                   },
                 ],
                 '[name_2,2]': [
@@ -722,7 +722,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                     age: 2,
                     errors: {},
                     name: 'name_2',
-                    primaryKey: 2,
+                    id: 2,
                   },
                   {
                     __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -733,7 +733,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                     age: 2,
                     errors: {},
                     name: 'name_2',
-                    primaryKey: 4,
+                    id: 4,
                   },
                 ],
                 '[name_3,3]': [
@@ -746,7 +746,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                     age: 3,
                     errors: {},
                     name: 'name_3',
-                    primaryKey: 3,
+                    id: 3,
                   },
                 ],
               });
@@ -776,7 +776,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 1,
                   errors: {},
                   name: 'name_1',
-                  primaryKey: 1,
+                  id: 1,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -787,7 +787,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 2,
                   errors: {},
                   name: 'name_2',
-                  primaryKey: 2,
+                  id: 2,
                 },
                 {
                   __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -798,7 +798,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
                   age: 3,
                   errors: {},
                   name: 'name_3',
-                  primaryKey: 3,
+                  id: 3,
                 },
               ]);
               done();

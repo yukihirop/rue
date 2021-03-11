@@ -20,13 +20,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#isExists', () => {
     type IsExistsRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class IsExistsRecord extends Record {
-      public primaryKey: IsExistsRecordParams['primaryKey'];
+      public id: IsExistsRecordParams['id'];
       public name: IsExistsRecordParams['name'];
       public age: IsExistsRecordParams['age'];
 
@@ -36,9 +36,9 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     }
 
     const records = IsExistsRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]) as IsExistsRecord[];
 
     let relation = new Relation<IsExistsRecord>(IsExistsRecord, records);
@@ -92,13 +92,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#find', () => {
     type FindRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class FindRecord extends Record {
-      public primaryKey: at.Associations$PrimaryKey;
+      public id: at.Associations$PrimaryKey;
       public name: FindRecordParams['name'];
       public age: FindRecordParams['age'];
 
@@ -110,9 +110,9 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
 
     const records = FindRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]) as FindRecord[];
 
     let relation = new Relation<FindRecord>(FindRecord, records);
@@ -129,14 +129,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
       });
     });
 
-    describe("when specify array of 'primaryKey'", () => {
+    describe("when specify array of 'id'", () => {
       it('should correctly', (done) => {
         relation.find(1, 2).then((records: FindRecord[]) => {
           expect(records.length).toEqual(2);
@@ -150,7 +150,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -161,7 +161,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
           ]);
           done();
@@ -170,33 +170,33 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     });
 
     describe('when throw error', () => {
-      describe("when do not specify 'primaryKey'", () => {
+      describe("when do not specify 'id'", () => {
         it('should correctly', (done) => {
           relation.find().catch((err) => {
             expect(err.toString()).toEqual(
-              "Error: Could'nt find 'FindRecord' without an 'primaryKey'"
+              "Error: Could'nt find 'FindRecord' without an 'id'"
             );
             done();
           });
         });
       });
 
-      describe("when specify don't exists 'primaryKey'", () => {
+      describe("when specify don't exists 'id'", () => {
         it('should correctly', (done) => {
           relation.find(100).catch((err) => {
             expect(err.toString()).toEqual(
-              "Error: Couldn't find 'FindRecord' with 'primaryKey' = '100'"
+              "Error: Couldn't find 'FindRecord' with 'id' = '100'"
             );
             done();
           });
         });
       });
 
-      describe("when specify don't exists array of 'primaryKey'", () => {
+      describe("when specify don't exists array of 'id'", () => {
         it('should correctly', (done) => {
           relation.find(100, 200).catch((err) => {
             expect(err.toString()).toEqual(
-              "Error: Could't find all 'FindRecord' with 'primaryKey': [100,200] (found 0 results, but was looking for 2)"
+              "Error: Could't find all 'FindRecord' with 'id': [100,200] (found 0 results, but was looking for 2)"
             );
             done();
           });
@@ -207,28 +207,28 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#findBy', () => {
     type FindByRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class FindByRecord extends Record {
-      public primaryKey: FindByRecordParams['primaryKey'];
+      public id: FindByRecordParams['id'];
       public name: FindByRecordParams['name'];
       public age: FindByRecordParams['age'];
     }
 
     const records = FindByRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]) as FindByRecord[];
 
     let relation = new Relation<FindByRecord>(FindByRecord, records);
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.findBy({ primaryKey: [1, 2] }).then((record) => {
+        relation.findBy({ id: [1, 2] }).then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -238,7 +238,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -257,13 +257,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#findByOrThrow', () => {
     type FindByOrThrowRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class FindByOrThrowRecord extends Record {
-      public primaryKey: FindByOrThrowRecordParams['primaryKey'];
+      public id: FindByOrThrowRecordParams['id'];
       public name: FindByOrThrowRecordParams['name'];
       public age: FindByOrThrowRecordParams['age'];
 
@@ -275,16 +275,16 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
 
     const records = FindByOrThrowRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]) as FindByOrThrowRecord[];
 
     let relation = new Relation<FindByOrThrowRecord>(FindByOrThrowRecord, records);
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.findByOrThrow({ primaryKey: [1, 2] }).then((records) => {
+        relation.findByOrThrow({ id: [1, 2] }).then((records) => {
           expect(records).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -294,7 +294,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });

@@ -24,8 +24,8 @@ import { ActiveRecord } from '<%- libPath %>';
 import * as t from '@rue/activerecord';
 
 export type <%- className %>Params = {
-  // Please do not change the name 'primaryKey' arbitrarily.
-  primaryKey: t.Record$ForeignKey;
+  // Please do not change the name 'id' arbitrarily.
+  id: t.Record$ForeignKey;
   // Please do not change the name 'errors' arbitrarily.
   errors: t.Record$Validations$Errors;
 <% Object.keys(params).forEach(function(key) { -%>
@@ -34,8 +34,8 @@ export type <%- className %>Params = {
 };
 
 export class <%- className %> extends ActiveRecord {
-  // Please do not change the name 'primaryKey' arbitrarily.
-  public primaryKey: <%- className %>Params['primaryKey'];
+  // Please do not change the name 'id' arbitrarily.
+  public id: <%- className %>Params['id'];
   public errors: <%- className %>Params['errors'];
 <% Object.keys(params).forEach(function(key) { -%>
   public <%- key %>: <%- className %>Params['<%- key %>'];
@@ -58,7 +58,7 @@ template.record.defaultJS = helper`// locals
 const { ActiveRecord } = require('<%- libPath %>');
 
 /**
- * @property {number|string} primaryKey - Please do not change the name 'primaryKey' arbitrarily.
+ * @property {number|string} id - Please do not change the name 'id' arbitrarily.
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
  * @property {<%- params[key] %>} <%- key %>

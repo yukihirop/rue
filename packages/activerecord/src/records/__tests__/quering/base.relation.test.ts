@@ -9,13 +9,13 @@ import MockDate from 'mockdate';
 import type * as at from '@/records/modules/associations';
 
 type QueryingRecordParams = {
-  primaryKey: at.Associations$PrimaryKey;
+  id: at.Associations$PrimaryKey;
   name: string;
   age: number;
 };
 
 class QueryingRecord extends Record {
-  public primaryKey: QueryingRecordParams['primaryKey'];
+  public id: QueryingRecordParams['id'];
   public name: QueryingRecordParams['name'];
   public age: QueryingRecordParams['age'];
 
@@ -33,9 +33,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
     QueryingRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]);
   });
 
@@ -138,7 +138,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     describe('when return true', () => {
       it('should correctly', (done) => {
         RecordCache.destroy(QueryingRecord.name);
-        QueryingRecord.create({ primaryKey: 1, name: 'name_1', age: 1 });
+        QueryingRecord.create({ id: 1, name: 'name_1', age: 1 });
         QueryingRecord.isOne().then((result) => {
           expect(result).toEqual(true);
           done();
@@ -174,9 +174,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
       StaticFindOrCreateByRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
-        { primaryKey: 3, name: 'name_3', age: 3 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
       ]);
     });
 
@@ -203,7 +203,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: [],
             },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(3);
           done();
@@ -229,7 +229,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
       it('should correctly', (done) => {
         StaticFindOrCreateByRecord.findOrCreateBy<StaticFindOrCreateByRecord, QueryingRecordParams>(
           {
-            primaryKey: 4,
+            id: 4,
             name: 'name_4',
             age: 4,
           }
@@ -246,7 +246,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: [],
             },
             name: 'name_4',
-            primaryKey: 4,
+            id: 4,
           });
           expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(4);
           done();
@@ -258,7 +258,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
           StaticFindOrCreateByRecord.findOrCreateBy<
             StaticFindOrCreateByRecord,
             QueryingRecordParams
-          >({ primaryKey: 4, name: 'name_4', age: 4 }, (self) => {
+          >({ id: 4, name: 'name_4', age: 4 }, (self) => {
             self.age = 100;
           }).then((record) => {
             expect(record).toEqual({
@@ -273,7 +273,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
                 age: [],
               },
               name: 'name_4',
-              primaryKey: 4,
+              id: 4,
             });
             expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(4);
             done();
@@ -292,9 +292,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
       StaticFindOrCreateByOrThrowRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
-        { primaryKey: 3, name: 'name_3', age: 3 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
       ]);
     });
 
@@ -319,7 +319,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             age: 1,
             errors: { age: [], name: [] },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           expect(
             RecordCache.data[StaticFindOrCreateByOrThrowRecord.name][RECORD_ALL].length
@@ -335,7 +335,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
           StaticFindOrCreateByOrThrowRecord,
           QueryingRecordParams
         >({
-          primaryKey: 4,
+          id: 4,
           name: 'name_4',
           age: 4,
         }).then((record) => {
@@ -348,7 +348,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             age: 4,
             errors: { age: [], name: [] },
             name: 'name_4',
-            primaryKey: 4,
+            id: 4,
           });
           expect(
             RecordCache.data[StaticFindOrCreateByOrThrowRecord.name][RECORD_ALL].length
@@ -363,7 +363,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
         StaticFindOrCreateByOrThrowRecord.findOrCreateByOrThrow<
           StaticFindOrCreateByOrThrowRecord,
           QueryingRecordParams
-        >({ primaryKey: 4, name: 'name_4', age: 4 }, (self) => {
+        >({ id: 4, name: 'name_4', age: 4 }, (self) => {
           self.age = undefined;
         }).then((record) => {
           expect(record).toEqual({
@@ -375,7 +375,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             age: undefined,
             errors: { age: [], name: [] },
             name: 'name_4',
-            primaryKey: 4,
+            id: 4,
           });
           expect(
             RecordCache.data[StaticFindOrCreateByOrThrowRecord.name][RECORD_ALL].length
@@ -428,7 +428,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           expect(RecordCache.data[QueryingRecord.name][RECORD_ALL].length).toEqual(3);
           done();
@@ -468,7 +468,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           expect(RecordCache.data[QueryingRecord.name][RECORD_ALL].length).toEqual(3);
           done();
@@ -508,9 +508,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
       StaticCreateOrFindByOrThrowRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
-        { primaryKey: 3, name: 'name_3', age: 3 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
       ]);
     });
 
@@ -531,7 +531,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: 1,
               errors: { age: [], name: [] },
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             });
             expect(
               RecordCache.data[StaticCreateOrFindByOrThrowRecord.name][RECORD_ALL].length
@@ -611,7 +611,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -622,7 +622,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -633,7 +633,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -664,8 +664,8 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
     beforeEach(() => {
       StaticUpdateAllRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]);
     });
 
@@ -701,8 +701,8 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     let records = [];
     beforeEach(() => {
       records = StaticTouchAllRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]);
     });
 
@@ -726,7 +726,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
                 age: 1,
                 errors: { age: [], name: [] },
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -737,7 +737,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
                 age: 2,
                 errors: { age: [], name: [] },
                 name: 'name_2',
-                primaryKey: 2,
+                id: 2,
               },
             ]);
             done();
@@ -765,7 +765,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: [],
             },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -792,7 +792,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: [],
             },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -820,7 +820,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: [],
             },
             name: 'name_2',
-            primaryKey: 2,
+            id: 2,
           });
           done();
         });
@@ -842,7 +842,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               _newRecord: false,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -853,7 +853,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               errors: {},
               _newRecord: false,
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -864,7 +864,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           expect(RecordCache.data[QueryingRecord.name][RECORD_ALL].length).toEqual(0);
@@ -887,7 +887,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
                 age: 1,
                 errors: {},
                 name: 'name_1',
-                primaryKey: 1,
+                id: 1,
               },
             ]);
             expect(RecordCache.data[QueryingRecord.name][RECORD_ALL].length).toEqual(2);
@@ -904,9 +904,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     let records;
     beforeEach(() => {
       records = StaticDeleteByRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
-        { primaryKey: 3, name: 'name_3', age: 3 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
       ]);
     });
 

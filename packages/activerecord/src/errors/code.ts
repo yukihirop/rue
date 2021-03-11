@@ -18,7 +18,7 @@ export const ErrMessages: { [code: string]: t.ErrMessage } = {
   },
   [ErrCodes.RECORD_NOT_FOUND]: {
     message: (params = {} as any) =>
-      `Couldn't find '${params['resource']}' with 'primaryKey' = '${params['primaryKey']}'`,
+      `Couldn't find '${params['resource']}' with 'id' = '${params['id']}'`,
   },
   [ErrCodes.DIRECTION_IS_INVALID]: {
     message: (params = {} as any) =>

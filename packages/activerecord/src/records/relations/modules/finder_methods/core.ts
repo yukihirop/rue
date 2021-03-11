@@ -31,8 +31,8 @@ export class ActiveRecord$FinderMethods extends RueModule {
         .toPA()
         .then((records) => records.length > 0);
     } else {
-      const primaryKey = Number(condition) as at.Associations$PrimaryKey;
-      return _this.find<U>(primaryKey).then((record) => !!record);
+      const id = Number(condition) as at.Associations$PrimaryKey;
+      return _this.find<U>(id).then((record) => !!record);
     }
   }
 
@@ -40,37 +40,37 @@ export class ActiveRecord$FinderMethods extends RueModule {
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find
    */
   find<T extends ActiveRecord$Base, U = { [key: string]: any }>(
-    ...primaryKeys: at.Associations$PrimaryKey[]
+    ...ids: at.Associations$PrimaryKey[]
   ): Promise<T | T[]> {
-    if (primaryKeys.length === 0) {
+    if (ids.length === 0) {
       return Promise.reject(
         errObj({
           code: ErrCodes.RECORD_NOT_FOUND,
           // @ts-expect-error
-          message: `Could'nt find '${this.recordKlass.name}' without an 'primaryKey'`,
+          message: `Could'nt find '${this.recordKlass.name}' without an 'id'`,
         })
       );
     } else {
       // @ts-expect-error
       return (this as ActiveRecord$Relation)
-        .where<T, U>({ primaryKey: primaryKeys })
+        .where<T, U>({ id: ids })
         .toPA()
         .then((records) => {
           if (records.length === 0) {
-            if (primaryKeys.length === 1) {
+            if (ids.length === 1) {
               throw errObj({
                 code: ErrCodes.RECORD_NOT_FOUND,
                 params: {
                   // @ts-expect-error
                   resource: this.recordKlass.name,
-                  primaryKey: primaryKeys[0],
+                  id: ids[0],
                 },
               });
             } else {
               throw errObj({
                 code: ErrCodes.RECORD_NOT_FOUND,
                 // @ts-expect-error
-                message: `Could't find all '${this.recordKlass.name}' with 'primaryKey': [${primaryKeys}] (found 0 results, but was looking for ${primaryKeys.length})`,
+                message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
               });
             }
           } else if (records.length === 1) {

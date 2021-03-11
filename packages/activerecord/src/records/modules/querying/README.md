@@ -87,7 +87,7 @@
 - []<ActiveRecord$Calculations>pluck
 - []<ActiveRecord$Calculations>pick
 - []<ActiveRecord$Calculations>ids
-- []<ActiveRecord$Calculations>primaryKeys (alias to ids)
+- []<ActiveRecord$Calculations>ids (alias to ids)
 
 ## Reference
 

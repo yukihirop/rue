@@ -42,12 +42,12 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ) => T | T[];
-  static delete: (primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]) => number;
+  static delete: (id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]) => number;
   static destroy: <T extends ActiveRecord$Base<t.Params>>(
-    primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
   ) => T | T[];
   static update: <T extends ActiveRecord$Base, U>(
-    primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ) => T | T[];
   // ActiveRecord$Associations
@@ -74,11 +74,11 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static all: <T extends ActiveRecord$Base<t.Params>>() => Promise<ActiveRecord$Relation<T>>;
   // ActiveRecord$Core
   static find: <T extends ActiveRecord$Base<t.Params>>(
-    ...primaryKeys: at.Associations$PrimaryKey[]
+    ...ids: at.Associations$PrimaryKey[]
   ) => T | T[];
   // ActiveRecord$Querying
   // static find: <T extends ActiveRecord$Base, U = { [key: string]: any }>(
-  //   ...primaryKeys: at.Associations$PrimaryKey[]
+  //   ...ids: at.Associations$PrimaryKey[]
   // ) => Promise<T | T[]>;
   static findBy: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params: Partial<U>
@@ -195,7 +195,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    */
   public updateProp: (name: string, value: any) => boolean;
   // ActiveRecord$Associations
-  public primaryKey: at.Associations$PrimaryKey;
+  public id: at.Associations$PrimaryKey;
   public hasAndBelongsToMany: <T extends ActiveRecord$Base<P>>(
     record: T
   ) => { [key: string]: at.Associations$ForeignKey };

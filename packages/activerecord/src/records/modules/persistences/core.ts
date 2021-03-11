@@ -296,14 +296,14 @@ export class ActiveRecord$Persistence extends RueModule {
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-delete
    */
   static delete<T extends ActiveRecord$Base>(
-    primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
   ): number {
     const { RECORD_ALL } = ActiveRecord$Persistence;
-    const ids = Array.isArray(primaryKey) ? primaryKey : [primaryKey];
+    const ids = Array.isArray(id) ? id : [id];
     const klassName = this.name;
     const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
     const allDataLen = allData.length;
-    const filteredData = allData.filter((record) => !ids.includes(record.primaryKey));
+    const filteredData = allData.filter((record) => !ids.includes(record.id));
     const filteredDataLen = filteredData.length;
 
     _ensureRecordCache(klassName);
@@ -316,14 +316,14 @@ export class ActiveRecord$Persistence extends RueModule {
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-destroy
    */
   static destroy<T extends ActiveRecord$Base>(
-    primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
   ): T | T[] {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    if (Array.isArray(primaryKey)) {
-      return (_this.find<T>(...primaryKey) as T[]).map((r) => r.destroy());
+    if (Array.isArray(id)) {
+      return (_this.find<T>(...id) as T[]).map((r) => r.destroy());
     } else {
-      return (_this.find<T>(primaryKey) as T).destroy();
+      return (_this.find<T>(id) as T).destroy();
     }
   }
 
@@ -331,12 +331,12 @@ export class ActiveRecord$Persistence extends RueModule {
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-update
    */
   static update<T extends ActiveRecord$Base, U>(
-    primaryKey: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ): T | T[] {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    const ids = Array.isArray(primaryKey) ? primaryKey : [primaryKey];
+    const ids = Array.isArray(id) ? id : [id];
     let updatedRecords;
 
     if (ids.length === 1 && ids[0] === 'all') {

@@ -18,7 +18,7 @@ export const enum Association {
 }
 
 export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
-  public primaryKey: t.PrimaryKey;
+  public id: t.PrimaryKey;
 
   static belongsTo<T extends ActiveRecord$Base = any>(
     relationName: string,
@@ -26,7 +26,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     foreignKey: string
   ) {
     Registry.create(this.name, Association.belongsTo, {
-      [relationName]: (self: T) => (klass as any).findBy({ primaryKey: self[foreignKey] }),
+      [relationName]: (self: T) => (klass as any).findBy({ id: self[foreignKey] }),
     });
   }
 
@@ -36,7 +36,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     foreignKey: t.ForeignKey
   ) {
     Registry.create(this.name, Association.hasOne, {
-      [relationName]: (self: T) => (klass as any).findBy({ [foreignKey]: self.primaryKey }),
+      [relationName]: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
     });
   }
 
@@ -46,7 +46,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     foreignKey: t.ForeignKey
   ) {
     Registry.create(this.name, Association.hasMany, {
-      [relationName]: (self: T) => (klass as any).where({ [foreignKey]: self.primaryKey }),
+      [relationName]: (self: T) => (klass as any).where({ [foreignKey]: self.id }),
     });
   }
 
@@ -58,7 +58,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         'array'
       );
       return tables.reduce((acc, pair) => {
-        if (pair[0] == self.primaryKey) {
+        if (pair[0] == self.id) {
           acc.push(pair[1]);
         }
         return acc;
@@ -67,7 +67,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     IntermediateTable.create(this.name, klass.name, []);
     Registry.create(this.name, Association.hasAndBelongsToMany, {
-      [relationName]: (self: T) => (klass as any).where({ primaryKey: foreignKeysFn(self) }),
+      [relationName]: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
     });
   }
 
@@ -85,9 +85,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     if (Array.isArray(tables)) {
       IntermediateTable.create(klassNameLeft, klassNameRight, [
-        [this.primaryKey, record.primaryKey],
+        [this.id, record.id],
       ]);
-      return { [klassNameLeft]: this.primaryKey, [klassNameRight]: record.primaryKey };
+      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
     } else {
       throw errObj({
         code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,
@@ -114,14 +114,14 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       let leavedData = [];
       let deleteData = [];
       beforeIntermediateTable.forEach((pair) => {
-        if (this.primaryKey == pair[0] && record.primaryKey == pair[1]) {
+        if (this.id == pair[0] && record.id == pair[1]) {
           deleteData.push(pair);
         } else {
           leavedData.push(pair);
         }
       });
       IntermediateTable.update(klassNameLeft, klassNameRight, leavedData);
-      return { [klassNameLeft]: this.primaryKey, [klassNameRight]: record.primaryKey };
+      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
     } else {
       throw errObj({
         code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,

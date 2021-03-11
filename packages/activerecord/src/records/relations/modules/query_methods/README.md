@@ -45,7 +45,7 @@ It can be called at the end of all methods.
 e.g.)
 
 ```ts
-Record.where({ primaryKey: [1,2] }).toPA().then((records) => {...})
+Record.where({ id: [1,2] }).toPA().then((records) => {...})
 ```
 
 - [x]toPromiseArray

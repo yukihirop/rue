@@ -987,13 +987,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] delete', () => {
     type DeleteRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class DeleteRecord extends Record {
-      public primaryKey: at.Associations$PrimaryKey;
+      public id: at.Associations$PrimaryKey;
       public name: DeleteRecordParams['name'];
       public age: DeleteRecordParams['age'];
 
@@ -1009,8 +1009,8 @@ describe('Record(Persistence)', () => {
     describe('when default', () => {
       it('should correctly', () => {
         DeleteRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DeleteRecord.delete(1)).toEqual(1);
@@ -1018,11 +1018,11 @@ describe('Record(Persistence)', () => {
       });
     });
 
-    describe("when specify 'array of primaryKey'", () => {
+    describe("when specify 'array of id'", () => {
       it('should correctly', () => {
         DeleteRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DeleteRecord.delete([1, 2])).toEqual(2);
@@ -1049,8 +1049,8 @@ describe('Record(Persistence)', () => {
     describe('when default', () => {
       it('should correctly', () => {
         DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DestroyRecord.destroy(1)).toEqual({
@@ -1062,7 +1062,7 @@ describe('Record(Persistence)', () => {
           age: 1,
           errors: {},
           name: 'name_1',
-          primaryKey: 1,
+          id: 1,
         });
       });
     });
@@ -1070,8 +1070,8 @@ describe('Record(Persistence)', () => {
     describe("when specify 'array of params'", () => {
       it('should correctly', () => {
         DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DestroyRecord.destroy([1, 2])).toEqual([
@@ -1084,7 +1084,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1095,7 +1095,7 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: {},
             name: 'name_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
@@ -1104,27 +1104,27 @@ describe('Record(Persistence)', () => {
     describe('when throw error when params is not array', () => {
       it('should correctly', () => {
         DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(() => {
           DestroyRecord.destroy(3);
-        }).toThrowError("Couldn't find 'DestroyRecord' with 'primaryKey' = '3'");
+        }).toThrowError("Couldn't find 'DestroyRecord' with 'id' = '3'");
       });
     });
 
     describe('when throw error when params is array', () => {
       it('should correctly', () => {
         DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(() => {
           DestroyRecord.destroy([3, 4]);
         }).toThrowError(
-          "Could't find all 'DestroyRecord' with 'primaryKey': [3,4] (found 0 results, but was looking for 2)"
+          "Could't find all 'DestroyRecord' with 'id': [3,4] (found 0 results, but was looking for 2)"
         );
       });
     });
@@ -1132,13 +1132,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] update', () => {
     type StaticUpdateRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: at.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class StaticUpdateRecord extends Record {
-      public primaryKey: at.Associations$PrimaryKey;
+      public id: at.Associations$PrimaryKey;
       public name: StaticUpdateRecordParams['name'];
       public age: StaticUpdateRecordParams['age'];
 
@@ -1153,12 +1153,12 @@ describe('Record(Persistence)', () => {
     beforeEach(() => {
       RecordCache.destroy(StaticUpdateRecord.name);
       StaticUpdateRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]);
     });
 
-    describe("when give 'primaryKey = all'", () => {
+    describe("when give 'id = all'", () => {
       it('should correctly', () => {
         const updatedRecord = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1176,7 +1176,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: { age: [], name: [] },
             name: 'rename',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1187,13 +1187,13 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: { age: [], name: [] },
             name: 'rename',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
     });
 
-    describe("when give 'primaryKey'", () => {
+    describe("when give 'id'", () => {
       it('should correctly', () => {
         const updatedRecord = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1210,12 +1210,12 @@ describe('Record(Persistence)', () => {
           age: 1,
           errors: { age: [], name: [] },
           name: 'rename',
-          primaryKey: 1,
+          id: 1,
         });
       });
     });
 
-    describe("when given 'array of primaryKey'", () => {
+    describe("when given 'array of id'", () => {
       it('should correctly', () => {
         const updatedRecords = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1232,7 +1232,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: { age: [], name: [] },
             name: 'rename_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1243,7 +1243,7 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: { age: [], name: [] },
             name: 'rename_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
@@ -1271,7 +1271,7 @@ describe('Record(Persistence)', () => {
               ],
             },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1289,24 +1289,24 @@ describe('Record(Persistence)', () => {
               ],
             },
             name: 'name_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
     });
 
     describe('when throw error', () => {
-      describe("when can't find record when specify 'primaryKey'", () => {
+      describe("when can't find record when specify 'id'", () => {
         it('should correctly', () => {
           expect(() => {
             StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(3, {
               name: 'rename_3',
             });
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'primaryKey' = '3'");
+          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
         });
       });
 
-      describe("when can't find records when specify 'array of primaryKey'", () => {
+      describe("when can't find records when specify 'array of id'", () => {
         it('should correctly', () => {
           expect(() => {
             StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(
@@ -1320,7 +1320,7 @@ describe('Record(Persistence)', () => {
                 },
               ]
             );
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'primaryKey' = '3'");
+          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
         });
       });
     });

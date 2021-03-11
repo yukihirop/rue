@@ -5,7 +5,7 @@ import type * as t from '@rue/activerecord';
 import { Task } from '@/records';
 
 type Params = {
-  primaryKey: t.Record$ForeignKey;
+  id: t.Record$ForeignKey;
   name: string;
   email: string;
 };
@@ -19,8 +19,8 @@ export class Account extends ActiveRecord {
   protected static fetchAll<Params>(): Promise<Array<Params>> {
     // @ts-ignore
     return Promise.resolve([
-      { primaryKey: 1, name: 'name_1', email: 'name_1@example.com' },
-      { primaryKey: 2, name: 'name_2', email: 'name_2@example.com' },
+      { id: 1, name: 'name_1', email: 'name_1@example.com' },
+      { id: 2, name: 'name_2', email: 'name_2@example.com' },
     ]);
   }
 }
