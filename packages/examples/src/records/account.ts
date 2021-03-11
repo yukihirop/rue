@@ -4,23 +4,22 @@ import type * as t from '@rue/activerecord';
 
 import { Task } from '@/records';
 
-type Params = {
-  primaryKey: t.Record$ForeignKey;
+type AccountParams = {
+  id: t.Record$ForeignKey;
   name: string;
   email: string;
 };
 
-export class Account extends ActiveRecord {
-  public name: Params['name'];
-  public email: Params['email'];
+export class Account extends ActiveRecord<AccountParams> {
+  public name: AccountParams['name'];
+  public email: AccountParams['email'];
   public tasks: t.Record$HasMany<Task>;
   public fromName: t.Record$Scope<Account>;
 
-  protected static fetchAll<Params>(): Promise<Array<Params>> {
-    // @ts-ignore
+  protected fetchAll(): Promise<AccountParams[]> {
     return Promise.resolve([
-      { primaryKey: 1, name: 'name_1', email: 'name_1@example.com' },
-      { primaryKey: 2, name: 'name_2', email: 'name_2@example.com' },
+      { id: 1, name: 'name_1', email: 'name_1@example.com' },
+      { id: 2, name: 'name_2', email: 'name_2@example.com' },
     ]);
   }
 }

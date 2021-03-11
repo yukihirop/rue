@@ -69,9 +69,9 @@ describe('WhereChain', () => {
     }
 
     const relation = new ActiveRecord$Relation<WhereChainToPA>(WhereChainToPA, [
-      new WhereChainToPA({ name: 'name_1', age: 1 }),
-      new WhereChainToPA({ name: 'name_2', age: 2 }),
-      new WhereChainToPA({ name: 'name_3', age: 3 }),
+      new WhereChainToPA({ id: 1, name: 'name_1', age: 1 }),
+      new WhereChainToPA({ id: 2, name: 'name_2', age: 2 }),
+      new WhereChainToPA({ id: 3, name: 'name_3', age: 3 }),
     ]);
 
     it('should correctly', (done) => {
@@ -82,8 +82,15 @@ describe('WhereChain', () => {
         .toPromiseArray()
         .then((records: WhereChainToPA[]) => {
           expect(records.length).toEqual(1);
-          expect(records[0].name).toEqual('name_1');
-          expect(records[0].age).toEqual(1);
+          expect(records[0]).toEqual({
+            __rue_record_id__: undefined,
+            _destroyed: false,
+            _newRecord: true,
+            age: 1,
+            errors: {},
+            id: 1,
+            name: 'name_1',
+          });
           done();
         });
 
@@ -92,10 +99,26 @@ describe('WhereChain', () => {
         .toPA()
         .then((records: WhereChainToPA[]) => {
           expect(records.length).toEqual(2);
-          expect(records[0].name).toEqual('name_1');
-          expect(records[0].age).toEqual(1);
-          expect(records[1].name).toEqual('name_2');
-          expect(records[1].age).toEqual(2);
+          expect(records).toEqual([
+            {
+              __rue_record_id__: undefined,
+              _destroyed: false,
+              _newRecord: true,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+            {
+              __rue_record_id__: undefined,
+              _destroyed: false,
+              _newRecord: true,
+              age: 2,
+              errors: {},
+              id: 2,
+              name: 'name_2',
+            },
+          ]);
           done();
         });
 
@@ -105,8 +128,17 @@ describe('WhereChain', () => {
         .toPA()
         .then((records: WhereChainToPA[]) => {
           expect(records.length).toEqual(1);
-          expect(records[0].name).toEqual('name_1');
-          expect(records[0].age).toEqual(1);
+          expect(records).toEqual([
+            {
+              __rue_record_id__: undefined,
+              _destroyed: false,
+              _newRecord: true,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+          ]);
           done();
         });
     });

@@ -11,7 +11,7 @@ import MockDate from 'mockdate';
 import dayjs from 'dayjs';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 describe('Record(Persistence)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
@@ -25,20 +25,21 @@ describe('Record(Persistence)', () => {
 
   describe('#delete', () => {
     type TestDeleteRecordParams = {
+      id: t.Record$PrimaryKey;
       profile: {
         name: string;
         age: number;
       };
     };
-    class TestDeleteRecord extends Record {
+    class TestDeleteRecord extends Record<TestDeleteRecordParams> {
+      public id: TestDeleteRecordParams['id'];
       public profile: TestDeleteRecordParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestDeleteRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestDeleteRecordParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -49,8 +50,8 @@ describe('Record(Persistence)', () => {
     }
 
     describe('when default', () => {
-      const record_3 = new TestDeleteRecord({ profile: { name: 'name_3', age: 3 } });
-      const record_4 = new TestDeleteRecord({ profile: { name: 'name_4', age: 4 } });
+      const record_3 = new TestDeleteRecord({ id: 3, profile: { name: 'name_3', age: 3 } });
+      const record_4 = new TestDeleteRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
       it('should return destory this', () => {
         record_3.save();
@@ -63,6 +64,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 3,
             profile: { age: 3, name: 'name_3' },
           },
           {
@@ -72,6 +74,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 4,
             profile: { age: 4, name: 'name_4' },
           },
         ]);
@@ -88,6 +91,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 3,
             profile: { age: 3, name: 'name_3' },
           },
         ]);
@@ -97,22 +101,24 @@ describe('Record(Persistence)', () => {
 
   describe('#isDestroyed', () => {
     type IsDestroyedRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsDestroyedRecord extends Record {
+    class IsDestroyedRecord extends Record<IsDestroyedRecordParams> {
+      public id: IsDestroyedRecordParams['id'];
       public name: IsDestroyedRecordParams['name'];
       public age: IsDestroyedRecordParams['age'];
     }
 
     describe('when return false', () => {
-      const record = new IsDestroyedRecord({ name: 'name_1', age: 1 });
+      const record = new IsDestroyedRecord({ id: 1, name: 'name_1', age: 1 });
       expect(record.isDestroyed()).toEqual(false);
     });
 
     describe('when return true', () => {
-      const record = new IsDestroyedRecord({ name: 'name_2', age: 2 });
+      const record = new IsDestroyedRecord({ id: 2, name: 'name_2', age: 2 });
       record.destroy();
       expect(record.isDestroyed()).toEqual(true);
     });
@@ -120,22 +126,24 @@ describe('Record(Persistence)', () => {
 
   describe('#isNewRecord', () => {
     type IsNewRecordRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsNewRecordRecord extends Record {
+    class IsNewRecordRecord extends Record<IsNewRecordRecordParams> {
+      public id: IsNewRecordRecordParams['id'];
       public name: IsNewRecordRecordParams['name'];
       public age: IsNewRecordRecordParams['age'];
     }
 
     describe('when return true', () => {
-      const record = new IsNewRecordRecord({ name: 'name_1', age: 1 });
+      const record = new IsNewRecordRecord({ id: 1, name: 'name_1', age: 1 });
       expect(record.isNewRecord()).toEqual(true);
     });
 
     describe('when return false', () => {
-      const record = new IsNewRecordRecord({ name: 'name_2', age: 2 });
+      const record = new IsNewRecordRecord({ id: 2, name: 'name_2', age: 2 });
       record.save();
       expect(record.isNewRecord()).toEqual(false);
     });
@@ -143,43 +151,46 @@ describe('Record(Persistence)', () => {
 
   describe('#isPersisted', () => {
     type IsPersistedRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsPersistedRecord extends Record {
+    class IsPersistedRecord extends Record<IsPersistedRecordParams> {
+      public id: IsPersistedRecordParams['id'];
       public name: IsPersistedRecordParams['name'];
       public age: IsPersistedRecordParams['age'];
     }
 
     describe('when return true', () => {
-      const record = new IsPersistedRecord({ name: 'name_2', age: 2 });
+      const record = new IsPersistedRecord({ id: 2, name: 'name_2', age: 2 });
       record.save();
       expect(record.isPersisted()).toEqual(true);
     });
 
     describe('when return false', () => {
-      const record = new IsPersistedRecord({ name: 'name_1', age: 1 });
+      const record = new IsPersistedRecord({ id: 1, name: 'name_1', age: 1 });
       expect(record.isPersisted()).toEqual(false);
     });
   });
 
   describe('#save', () => {
     type TestSaveParams = {
+      id: t.Record$PrimaryKey;
       profile: {
         name: string;
         age: number;
       };
     };
-    class TestSaveRecord extends Record {
+    class TestSaveRecord extends Record<TestSaveParams> {
+      public id: TestSaveParams['id'];
       public profile: TestSaveParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestSaveParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestSaveParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -196,7 +207,7 @@ describe('Record(Persistence)', () => {
         TestSaveSuccessRecord.validates('profile.name', { presence: true });
         TestSaveSuccessRecord.validates('profile.age', { numericality: { onlyInteger: true } });
 
-        const record = new TestSaveSuccessRecord({ profile: { name: 'name_1', age: 20 } });
+        const record = new TestSaveSuccessRecord({ id: 1, profile: { name: 'name_1', age: 20 } });
         it('should return true', () => {
           expect(record.save()).toEqual(true);
           // Even after saving once, the state does not change no matter how many times you save
@@ -223,7 +234,7 @@ describe('Record(Persistence)', () => {
         // register validations
         TestSaveFailureRecord.validates('profile.name', { absence: true });
 
-        const record = new TestSaveFailureRecord({ profile: { name: 'name_2', age: 30 } });
+        const record = new TestSaveFailureRecord({ id: 2, profile: { name: 'name_2', age: 30 } });
         it('should retrun false', () => {
           expect(record.save()).toEqual(false);
           expect(RecordCache.data['TestSaveFailureRecord']).toEqual(undefined);
@@ -234,20 +245,21 @@ describe('Record(Persistence)', () => {
 
   describe('#saveOrThrow', () => {
     type TestSaveOrThrowParams = {
+      id: t.Record$PrimaryKey;
       profile: {
         name: string;
         age: number;
       };
     };
-    class TestSaveOrThrowRecord extends Record {
+    class TestSaveOrThrowRecord extends Record<TestSaveOrThrowParams> {
+      public id: TestSaveOrThrowParams['id'];
       public profile: TestSaveOrThrowParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestSaveOrThrowParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestSaveOrThrowParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -265,7 +277,10 @@ describe('Record(Persistence)', () => {
         numericality: { onlyInteger: true },
       });
 
-      const record = new TestSaveOrThrowSuccessRecord({ profile: { name: 'name_1', age: 20 } });
+      const record = new TestSaveOrThrowSuccessRecord({
+        id: 1,
+        profile: { name: 'name_1', age: 20 },
+      });
       it('should return true', () => {
         expect(record.save()).toEqual(true);
         expect(
@@ -291,7 +306,10 @@ describe('Record(Persistence)', () => {
       // register validations
       TestSaveOrThrowFailureRecord.validates('profile.name', { absence: true });
 
-      const record = new TestSaveOrThrowFailureRecord({ profile: { name: 'name_2', age: 30 } });
+      const record = new TestSaveOrThrowFailureRecord({
+        id: 2,
+        profile: { name: 'name_2', age: 30 },
+      });
       it('should throw error', () => {
         expect(() => {
           record.saveOrThrow();
@@ -309,6 +327,7 @@ describe('Record(Persistence)', () => {
       ]
     }
   },
+  "id": 2,
   "profile": {
     "name": "name_2",
     "age": 30
@@ -321,20 +340,21 @@ describe('Record(Persistence)', () => {
 
   describe('#destroy', () => {
     type TestDestroyParams = {
+      id: t.Record$PrimaryKey;
       profile: {
         name: string;
         age: number;
       };
     };
-    class TestDestroyRecord extends Record {
+    class TestDestroyRecord extends Record<TestDestroyParams> {
+      public id: TestDestroyParams['id'];
       public profile: TestDestroyParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestDestroyParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestDestroyParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -345,8 +365,8 @@ describe('Record(Persistence)', () => {
     }
 
     describe('when default', () => {
-      const record_3 = new TestDestroyRecord({ profile: { name: 'name_3', age: 3 } });
-      const record_4 = new TestDestroyRecord({ profile: { name: 'name_4', age: 4 } });
+      const record_3 = new TestDestroyRecord({ id: 3, profile: { name: 'name_3', age: 3 } });
+      const record_4 = new TestDestroyRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
       it('should return destory this', () => {
         record_3.save();
@@ -359,6 +379,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 3,
             profile: { age: 3, name: 'name_3' },
           },
           {
@@ -368,6 +389,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 4,
             profile: { age: 4, name: 'name_4' },
           },
         ]);
@@ -384,6 +406,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             _destroyed: false,
             errors: {},
+            id: 3,
             profile: { age: 3, name: 'name_3' },
           },
         ]);
@@ -393,24 +416,24 @@ describe('Record(Persistence)', () => {
 
   describe('#isDestroyed', () => {
     type IsDestroyedRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsDestroyedRecord extends Record {
+    class IsDestroyedRecord extends Record<IsDestroyedRecordParams> {
+      public id: IsDestroyedRecordParams['id'];
       public name: IsDestroyedRecordParams['name'];
       public age: IsDestroyedRecordParams['age'];
     }
 
-    const createRecord = (params: IsDestroyedRecordParams): IsDestroyedRecord => {
-      const record = new IsDestroyedRecord(params);
-      record.save();
-      return record;
-    };
-
     describe('when return false', () => {
       it('should correctly', () => {
-        const record = createRecord({ name: 'name_1', age: 1 });
+        const record = IsDestroyedRecord.create<IsDestroyedRecord, IsDestroyedRecordParams>({
+          id: 1,
+          name: 'name_1',
+          age: 1,
+        }) as IsDestroyedRecord;
         expect(record.isDestroyed()).toEqual(false);
       });
     });
@@ -418,11 +441,13 @@ describe('Record(Persistence)', () => {
 
   describe('#touch', () => {
     type TouchRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class TouchRecord extends Record {
+    class TouchRecord extends Record<TouchRecordParams> {
+      public id: TouchRecordParams['id'];
       public name: TouchRecordParams['name'];
       public age: TouchRecordParams['age'];
     }
@@ -433,7 +458,7 @@ describe('Record(Persistence)', () => {
 
     describe('when default', () => {
       it('should correctly', () => {
-        const record = new TouchRecord({ name: 'name_1', age: 1 });
+        const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
         record.save();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch()).toEqual(true);
@@ -445,6 +470,7 @@ describe('Record(Persistence)', () => {
           _newRecord: false,
           age: 1,
           errors: {},
+          id: 1,
           name: 'name_1',
         });
       });
@@ -452,7 +478,7 @@ describe('Record(Persistence)', () => {
 
     describe("when specify 'withCreatedAt'", () => {
       it('should correctly', () => {
-        const record = new TouchRecord({ name: 'name_1', age: 1 });
+        const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
         record.save();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch({ withCreatedAt: true })).toEqual(true);
@@ -464,6 +490,7 @@ describe('Record(Persistence)', () => {
           _newRecord: false,
           age: 1,
           errors: {},
+          id: 1,
           name: 'name_1',
         });
       });
@@ -471,7 +498,7 @@ describe('Record(Persistence)', () => {
 
     describe("when specify 'time'", () => {
       it('should correctly', () => {
-        const record = new TouchRecord({ name: 'name_1', age: 1 });
+        const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
         record.save();
         const time = dayjs().format();
         expect(record.touch({ time })).toEqual(true);
@@ -483,6 +510,7 @@ describe('Record(Persistence)', () => {
           _newRecord: false,
           age: 1,
           errors: {},
+          id: 1,
           name: 'name_1',
         });
       });
@@ -491,11 +519,13 @@ describe('Record(Persistence)', () => {
 
   describe('#update', () => {
     type UpdateRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class UpdateRecord extends Record {
+    class UpdateRecord extends Record<UpdateRecordParams> {
+      public id: UpdateRecordParams['id'];
       public name: UpdateRecordParams['name'];
       public age: UpdateRecordParams['age'];
 
@@ -503,11 +533,10 @@ describe('Record(Persistence)', () => {
         return key;
       }
 
-      static fetchAll<T = UpdateRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<UpdateRecordParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -520,7 +549,7 @@ describe('Record(Persistence)', () => {
         UpdateRecord.all<UpdateRecord>().then((relation) => {
           const records = relation.toA();
           const record = records[0];
-          const updateResult = record.update<UpdateRecordParams>({ name: 'rename' });
+          const updateResult = record.update({ name: 'rename' });
           expect(updateResult).toEqual(true);
           expect(record.name).toEqual('rename');
           done();
@@ -533,7 +562,7 @@ describe('Record(Persistence)', () => {
         UpdateRecord.all<UpdateRecord>().then((relation) => {
           const records = relation.toA();
           const record = records[1];
-          const updateResult = record.update<UpdateRecordParams>({ age: 100 });
+          const updateResult = record.update({ age: 100 });
           expect(updateResult).toEqual(false);
           expect(record.age).toEqual(2);
           done();
@@ -544,11 +573,13 @@ describe('Record(Persistence)', () => {
 
   describe('#updateOrThrow', () => {
     type UpdateOrThrowRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class UpdateOrThrowRecord extends Record {
+    class UpdateOrThrowRecord extends Record<UpdateOrThrowRecordParams> {
+      public id: UpdateOrThrowRecordParams['id'];
       public name: UpdateOrThrowRecordParams['name'];
       public age: UpdateOrThrowRecordParams['age'];
 
@@ -556,11 +587,10 @@ describe('Record(Persistence)', () => {
         return key;
       }
 
-      static fetchAll<T = UpdateOrThrowRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<UpdateOrThrowRecordParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -604,6 +634,7 @@ describe('Record(Persistence)', () => {
       }
     ]
   },
+  "id": 2,
   "name": "name_2"
 } is invalid.`);
           expect(record.age).toEqual(2);
@@ -615,11 +646,13 @@ describe('Record(Persistence)', () => {
 
   describe('#updateAttribute (alias: updateProperty, updateProp', () => {
     type UpdateAttributeRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class UpdateAttributeRecord extends Record {
+    class UpdateAttributeRecord extends Record<UpdateAttributeRecordParams> {
+      public id: UpdateAttributeRecordParams['id'];
       public name: UpdateAttributeRecordParams['name'];
       public age: UpdateAttributeRecordParams['age'];
     }
@@ -634,7 +667,7 @@ describe('Record(Persistence)', () => {
     describe('when return true', () => {
       describe('when default', () => {
         it('should correctly', () => {
-          const record = new UpdateAttributeRecord({ name: 'name_1', age: 1 });
+          const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
           record.save();
           expect(record.updateAttribute('name', 'rename')).toEqual(true);
           expect(record).toEqual({
@@ -645,6 +678,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             age: 1,
             errors: { age: [], name: [] },
+            id: 1,
             name: 'rename',
           });
         });
@@ -652,7 +686,7 @@ describe('Record(Persistence)', () => {
 
       describe('when give invalid value (age = 100)', () => {
         it('should correctly', () => {
-          const record = new UpdateAttributeRecord({ name: 'name_1', age: 1 });
+          const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
           record.save();
           expect(record.updateProperty('age', 100)).toEqual(true);
           expect(record).toEqual({
@@ -663,6 +697,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             age: 100,
             errors: { age: [], name: [] },
+            id: 1,
             name: 'name_1',
           });
         });
@@ -670,7 +705,7 @@ describe('Record(Persistence)', () => {
 
       describe('when given invalid value (name = invalid)', () => {
         it('should correctly', () => {
-          const record = new UpdateAttributeRecord({ name: 'name_1', age: 1 });
+          const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
           record.save();
           expect(record.updateProp('name', 'invalid')).toEqual(true);
           expect(record).toEqual({
@@ -681,6 +716,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             age: 1,
             errors: { age: [], name: [] },
+            id: 1,
             name: 'invalid',
           });
         });
@@ -690,7 +726,7 @@ describe('Record(Persistence)', () => {
     describe('when return false', () => {
       describe('when given do not exist attribute', () => {
         it('should correctly', () => {
-          const record = new UpdateAttributeRecord({ name: 'name_1', age: 1 });
+          const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
           record.save();
           expect(record.updateAttribute('doNotExist', 1)).toEqual(false);
           expect(record).toEqual({
@@ -701,6 +737,7 @@ describe('Record(Persistence)', () => {
             _newRecord: false,
             age: 1,
             errors: { age: [], name: [] },
+            id: 1,
             name: 'name_1',
           });
         });
@@ -710,11 +747,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] create', () => {
     type CreateRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateRecord extends Record {
+    class CreateRecord extends Record<CreateRecordParams> {
+      public id: CreateRecordParams['id'];
       public name: CreateRecordParams['name'];
       public age: CreateRecordParams['age'];
     }
@@ -823,11 +862,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] createOrThrow', () => {
     type CreateOrThrowRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class CreateOrThrowRecord extends Record {
+    class CreateOrThrowRecord extends Record<CreateOrThrowRecordParams> {
+      public id: CreateOrThrowRecordParams['id'];
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
 
@@ -987,17 +1028,17 @@ describe('Record(Persistence)', () => {
 
   describe('[static] delete', () => {
     type DeleteRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DeleteRecord extends Record {
-      public primaryKey: at.Associations$PrimaryKey;
+    class DeleteRecord extends Record<DeleteRecordParams> {
+      public id: DeleteRecordParams['id'];
       public name: DeleteRecordParams['name'];
       public age: DeleteRecordParams['age'];
 
-      protected static fetchAll<T = DeleteRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<DeleteRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -1008,9 +1049,9 @@ describe('Record(Persistence)', () => {
 
     describe('when default', () => {
       it('should correctly', () => {
-        DeleteRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DeleteRecord.delete(1)).toEqual(1);
@@ -1018,11 +1059,11 @@ describe('Record(Persistence)', () => {
       });
     });
 
-    describe("when specify 'array of primaryKey'", () => {
+    describe("when specify 'array of id'", () => {
       it('should correctly', () => {
-        DeleteRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DeleteRecord.delete([1, 2])).toEqual(2);
@@ -1033,11 +1074,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] destroy', () => {
     type DestroyRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class DestroyRecord extends Record {
+    class DestroyRecord extends Record<DestroyRecordParams> {
+      public id: DestroyRecordParams['id'];
       public name: DestroyRecordParams['name'];
       public age: DestroyRecordParams['age'];
     }
@@ -1048,9 +1091,9 @@ describe('Record(Persistence)', () => {
 
     describe('when default', () => {
       it('should correctly', () => {
-        DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DestroyRecord.destroy(1)).toEqual({
@@ -1062,16 +1105,16 @@ describe('Record(Persistence)', () => {
           age: 1,
           errors: {},
           name: 'name_1',
-          primaryKey: 1,
+          id: 1,
         });
       });
     });
 
     describe("when specify 'array of params'", () => {
       it('should correctly', () => {
-        DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(DestroyRecord.destroy([1, 2])).toEqual([
@@ -1084,7 +1127,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1095,7 +1138,7 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: {},
             name: 'name_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
@@ -1103,28 +1146,28 @@ describe('Record(Persistence)', () => {
 
     describe('when throw error when params is not array', () => {
       it('should correctly', () => {
-        DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(() => {
           DestroyRecord.destroy(3);
-        }).toThrowError("Couldn't find 'DestroyRecord' with 'primaryKey' = '3'");
+        }).toThrowError("Couldn't find 'DestroyRecord' with 'id' = '3'");
       });
     });
 
     describe('when throw error when params is array', () => {
       it('should correctly', () => {
-        DestroyRecord.create([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
         expect(() => {
           DestroyRecord.destroy([3, 4]);
         }).toThrowError(
-          "Could't find all 'DestroyRecord' with 'primaryKey': [3,4] (found 0 results, but was looking for 2)"
+          "Could't find all 'DestroyRecord' with 'id': [3,4] (found 0 results, but was looking for 2)"
         );
       });
     });
@@ -1132,13 +1175,13 @@ describe('Record(Persistence)', () => {
 
   describe('[static] update', () => {
     type StaticUpdateRecordParams = {
-      primaryKey: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class StaticUpdateRecord extends Record {
-      public primaryKey: at.Associations$PrimaryKey;
+    class StaticUpdateRecord extends Record<StaticUpdateRecordParams> {
+      public id: StaticUpdateRecordParams['id'];
       public name: StaticUpdateRecordParams['name'];
       public age: StaticUpdateRecordParams['age'];
 
@@ -1152,13 +1195,13 @@ describe('Record(Persistence)', () => {
 
     beforeEach(() => {
       RecordCache.destroy(StaticUpdateRecord.name);
-      StaticUpdateRecord.create([
-        { primaryKey: 1, name: 'name_1', age: 1 },
-        { primaryKey: 2, name: 'name_2', age: 2 },
+      StaticUpdateRecord.create<StaticUpdateRecord, StaticUpdateRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]);
     });
 
-    describe("when give 'primaryKey = all'", () => {
+    describe("when give 'id = all'", () => {
       it('should correctly', () => {
         const updatedRecord = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1176,7 +1219,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: { age: [], name: [] },
             name: 'rename',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1187,13 +1230,13 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: { age: [], name: [] },
             name: 'rename',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
     });
 
-    describe("when give 'primaryKey'", () => {
+    describe("when give 'id'", () => {
       it('should correctly', () => {
         const updatedRecord = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1210,12 +1253,12 @@ describe('Record(Persistence)', () => {
           age: 1,
           errors: { age: [], name: [] },
           name: 'rename',
-          primaryKey: 1,
+          id: 1,
         });
       });
     });
 
-    describe("when given 'array of primaryKey'", () => {
+    describe("when given 'array of id'", () => {
       it('should correctly', () => {
         const updatedRecords = StaticUpdateRecord.update<
           StaticUpdateRecord,
@@ -1232,7 +1275,7 @@ describe('Record(Persistence)', () => {
             age: 1,
             errors: { age: [], name: [] },
             name: 'rename_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1243,7 +1286,7 @@ describe('Record(Persistence)', () => {
             age: 2,
             errors: { age: [], name: [] },
             name: 'rename_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
@@ -1271,7 +1314,7 @@ describe('Record(Persistence)', () => {
               ],
             },
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           },
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -1289,24 +1332,24 @@ describe('Record(Persistence)', () => {
               ],
             },
             name: 'name_2',
-            primaryKey: 2,
+            id: 2,
           },
         ]);
       });
     });
 
     describe('when throw error', () => {
-      describe("when can't find record when specify 'primaryKey'", () => {
+      describe("when can't find record when specify 'id'", () => {
         it('should correctly', () => {
           expect(() => {
             StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(3, {
               name: 'rename_3',
             });
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'primaryKey' = '3'");
+          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
         });
       });
 
-      describe("when can't find records when specify 'array of primaryKey'", () => {
+      describe("when can't find records when specify 'array of id'", () => {
         it('should correctly', () => {
           expect(() => {
             StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(
@@ -1320,7 +1363,7 @@ describe('Record(Persistence)', () => {
                 },
               ]
             );
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'primaryKey' = '3'");
+          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
         });
       });
     });

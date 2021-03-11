@@ -15,10 +15,10 @@ describe('Association', () => {
         foreignKey: string
       ) => void;
 
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
     }
     class TestBelongsToChildRecod {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public foreignKey: t.ForeignKey;
       public parent: t.BelongsTo<TestBelongsToRecord>;
 
@@ -37,14 +37,14 @@ describe('Association', () => {
 
     it('should correctly', () => {
       expect(Registry.data['TestBelongsToChildRecod']['belongsTo']['parent'].toString()).toEqual(
-        '(self) => klass.findBy({ primaryKey: self[foreignKey] })'
+        '(self) => klass.findBy({ id: self[foreignKey] })'
       );
     });
   });
 
   describe(`[static] hasOne`, () => {
     class TestHasOneRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public child: t.HasOne<TestHasOneChildRecod>;
 
       static hasOne: <T extends AssociationsModule = any>(
@@ -54,7 +54,7 @@ describe('Association', () => {
       ) => void;
     }
     class TestHasOneChildRecod {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasOneRecord, { only: ['hasOne'] });
@@ -65,14 +65,14 @@ describe('Association', () => {
 
     it('should correctly', () => {
       expect(Registry.data['TestHasOneRecord']['hasOne']['child'].toString()).toEqual(
-        '(self) => klass.findBy({ [foreignKey]: self.primaryKey })'
+        '(self) => klass.findBy({ [foreignKey]: self.id })'
       );
     });
   });
 
   describe(`[static] hasMany`, () => {
     class TestHasManyRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public children: t.HasOne<TestHasManyChildRecod>;
 
       static hasMany: <T extends AssociationsModule = any>(
@@ -83,7 +83,7 @@ describe('Association', () => {
     }
 
     class TestHasManyChildRecod {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
 
       static hasMany: <T extends AssociationsModule = any>(
         relationName: string,
@@ -100,7 +100,7 @@ describe('Association', () => {
 
     it('should correctly', () => {
       expect(Registry.data['TestHasManyRecord']['hasMany']['children'].toString()).toEqual(
-        '(self) => klass.where({ [foreignKey]: self.primaryKey })'
+        '(self) => klass.where({ [foreignKey]: self.id })'
       );
     });
   });
@@ -108,7 +108,7 @@ describe('Association', () => {
   // https://railsguides.jp/association_basics.html#has-many-through%E3%81%A8has-and-belongs-to-many%E3%81%AE%E3%81%A9%E3%81%A1%E3%82%89%E3%82%92%E9%81%B8%E3%81%B6%E3%81%8B
   describe(`[static] hasAndBelongsToMany`, () => {
     class TestHasAndBelongsToManyAssemblyRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public parts: t.HasAndBelongsToMany<TestHasAndBelongsToManyPartRecord>;
 
       static hasAndBelongsToMany: <T extends AssociationsModule = any>(
@@ -117,7 +117,7 @@ describe('Association', () => {
       ) => void;
     }
     class TestHasAndBelongsToManyPartRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public assemblies: t.HasAndBelongsToMany<TestHasAndBelongsToManyAssemblyRecord>;
 
       static hasAndBelongsToMany: <T extends AssociationsModule = any>(
@@ -148,18 +148,18 @@ describe('Association', () => {
         Registry.data['TestHasAndBelongsToManyAssemblyRecord']['hasAndBelongsToMany'][
           'parts'
         ].toString()
-      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) })');
+      ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');
       expect(
         Registry.data['TestHasAndBelongsToManyPartRecord']['hasAndBelongsToMany'][
           'assemblies'
         ].toString()
-      ).toEqual('(self) => klass.where({ primaryKey: foreignKeysFn(self) })');
+      ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');
     });
   });
 
   describe('#hasAndBelongsToMany', () => {
     class TestHasAndBelongsToManyFooRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public name: string;
       public bars: t.HasAndBelongsToMany<TestHasAndBelongsToManyBarRecord>;
 
@@ -169,13 +169,13 @@ describe('Association', () => {
       ) => void;
 
       constructor(data) {
-        this.primaryKey = data['primaryKey'];
+        this.id = data['id'];
         this.name = data['name'];
       }
     }
 
     class TestHasAndBelongsToManyBarRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public name: string;
       public foos: t.HasAndBelongsToMany<TestHasAndBelongsToManyFooRecord>;
 
@@ -185,7 +185,7 @@ describe('Association', () => {
       ) => void;
 
       constructor(data) {
-        this.primaryKey = data['primaryKey'];
+        this.id = data['id'];
         this.name = data['name'];
       }
     }
@@ -224,14 +224,14 @@ describe('Association', () => {
       it('should correctly', () => {
         const foos = [1, 2, 3, 4].map((num) => {
           return new TestHasAndBelongsToManyFooRecord({
-            primaryKey: num,
+            id: num,
             name: `foo_${num}`,
           });
         });
 
         const bars = [1, 2, 3, 4].map((num) => {
           return new TestHasAndBelongsToManyBarRecord({
-            primaryKey: num,
+            id: num,
             name: `bar_${num}`,
           });
         });
@@ -261,7 +261,7 @@ describe('Association', () => {
 
   describe('#releaseAndBelongsToMany', () => {
     class TestReleaseAndBelongsToManyFooRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public name: string;
       public bars: t.HasAndBelongsToMany<TestReleaseAndBelongsToManyBarRecord>;
 
@@ -271,13 +271,13 @@ describe('Association', () => {
       ) => void;
 
       constructor(data) {
-        this.primaryKey = data['primaryKey'];
+        this.id = data['id'];
         this.name = data['name'];
       }
     }
 
     class TestReleaseAndBelongsToManyBarRecord {
-      public primaryKey: t.PrimaryKey;
+      public id: t.PrimaryKey;
       public name: string;
       public foos: t.HasAndBelongsToMany<TestReleaseAndBelongsToManyFooRecord>;
 
@@ -287,7 +287,7 @@ describe('Association', () => {
       ) => void;
 
       constructor(data) {
-        this.primaryKey = data['primaryKey'];
+        this.id = data['id'];
         this.name = data['name'];
       }
     }
@@ -338,14 +338,14 @@ describe('Association', () => {
       it('should correctly', () => {
         const foos = [1, 2, 3, 4].map((num) => {
           return new TestReleaseAndBelongsToManyFooRecord({
-            primaryKey: num,
+            id: num,
             name: `foo_${num}`,
           });
         });
 
         const bars = [1, 2, 3, 4].map((num) => {
           return new TestReleaseAndBelongsToManyBarRecord({
-            primaryKey: num,
+            id: num,
             name: `bar_${num}`,
           });
         });
@@ -379,11 +379,11 @@ describe('Association', () => {
 
     describe('when throw error', () => {
       class TestReleaseAndBelongsToManyBazRecord {
-        public primaryKey: t.PrimaryKey;
+        public id: t.PrimaryKey;
         public name: string;
 
         constructor(data) {
-          this.primaryKey = data['primaryKey'];
+          this.id = data['id'];
           this.name = data['name'];
         }
       }
@@ -401,14 +401,14 @@ describe('Association', () => {
       it('should correctly', () => {
         const foos = [1, 2, 3, 4].map((num) => {
           return new TestReleaseAndBelongsToManyFooRecord({
-            primaryKey: num,
+            id: num,
             name: `foo_${num}`,
           });
         });
 
         const bazs = [1, 2, 3, 4].map((num) => {
           return new TestReleaseAndBelongsToManyBazRecord({
-            primaryKey: num,
+            id: num,
             name: `bar_${num}`,
           });
         });

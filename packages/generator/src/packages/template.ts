@@ -2,8 +2,9 @@ const template = Object.create({ activemodel: {}, activerecord: {}, activeform: 
 export default template;
 
 template.activerecord.defaultTS = `import { ActiveRecord$Base } from '@rue/activerecord';
+import type * as t from '@rue/activerecord';
 
-export class ActiveRecord extends ActiveRecord$Base {
+export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
   static translate(key: string, opts?: any): string {
     /**
      * e.g.) return i18n.t(key, opts)
@@ -11,8 +12,8 @@ export class ActiveRecord extends ActiveRecord$Base {
     throw 'Please override';
   }
 
-  protected static fetchAll<T = any>(): Promise<Array<T>> {
-    throw "Please implement '[static] fetchAll' in Inherited Class";
+  protected fetchAll(): Promise<T[]> {
+    throw "Please implement 'fetchAll' in Inherited Class";
   }
 }
 `;
@@ -36,7 +37,7 @@ class ActiveRecord extends ActiveRecord$Base {
    * @protected
    * @return {Promise<Array<object>>}
    */
-  static fetchAll() {
+  fetchAll() {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 }

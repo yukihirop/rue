@@ -1,47 +1,49 @@
 import { ActiveRecord$Base as Record } from '../base';
 
 // types
+import type * as t from '@/index';
 import type * as rt from '@/records/modules/associations';
 
 describe('Record(Association)', () => {
   describe('[static] belongsTo', () => {
     type TestAssociationBelongsToParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationBelongsToChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
 
     class TestAssociationBelongsToRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
+      public id: rt.Associations$PrimaryKey;
       public name: TestAssociationBelongsToParams['name'];
       public age: TestAssociationBelongsToParams['age'];
 
-      protected static fetchAll<T = TestAssociationBelongsToParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationBelongsToParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
     class TestAssociationBelongsToChildRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationBelongsToChildParams['id'];
+      public foreignKey: TestAssociationBelongsToChildParams['foreignKey'];
       public childName: TestAssociationBelongsToChildParams['childName'];
       public childAge: TestAssociationBelongsToChildParams['childAge'];
       public parent: rt.Associations$BelongsTo<TestAssociationBelongsToRecord>;
 
-      protected static fetchAll<T = TestAssociationBelongsToChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationBelongsToChildParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
-          { primaryKey: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
-          { primaryKey: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
-          { primaryKey: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
+          { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
+          { id: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
+          { id: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
+          { id: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
         ]);
       }
     }
@@ -58,13 +60,13 @@ describe('Record(Association)', () => {
         (relation) => {
           const records = relation.toA();
           const record = records[0];
-          expect(record.primaryKey).toEqual(1);
+          expect(record.id).toEqual(1);
           expect(record.foreignKey).toEqual(1);
           expect(record.childName).toEqual('child_name_11');
           expect(record.childAge).toEqual(11);
 
           record.parent().then((record) => {
-            expect(record.primaryKey).toEqual(1);
+            expect(record.id).toEqual(1);
             expect(record.name).toEqual('name_1');
             expect(record.age).toEqual(1);
             done();
@@ -76,40 +78,41 @@ describe('Record(Association)', () => {
 
   describe('[static] hasOne', () => {
     type TestAssociationHasOneParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationHasOneChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
 
     class TestAssociationHasOneRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasOneParams['id'];
       public name: TestAssociationHasOneParams['name'];
       public age: TestAssociationHasOneParams['age'];
       public child: rt.Associations$HasOne<TestAssociationHasOneChildRecord>;
 
-      protected static fetchAll<T = TestAssociationHasOneParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasOneParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
     class TestAssociationHasOneChildRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationHasOneChildParams['id'];
+      public foreignKey: TestAssociationHasOneChildParams['foreignKey'];
       public childName: TestAssociationHasOneChildParams['childName'];
       public childAge: TestAssociationHasOneChildParams['childAge'];
 
-      protected static fetchAll<T = TestAssociationHasOneChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasOneChildParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
-          { primaryKey: 2, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
+          { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
+          { id: 2, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
         ]);
       }
     }
@@ -121,12 +124,12 @@ describe('Record(Association)', () => {
       TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((relation) => {
         const records = relation.toA();
         const record = records[0];
-        expect(record.primaryKey).toEqual(1);
+        expect(record.id).toEqual(1);
         expect(record.name).toEqual('name_1');
         expect(record.age).toEqual(1);
 
         record.child().then((record) => {
-          expect(record.primaryKey).toEqual(1);
+          expect(record.id).toEqual(1);
           expect(record.foreignKey).toEqual(1);
           expect(record.childName).toEqual('child_name_11');
           expect(record.childAge).toEqual(11);
@@ -138,42 +141,43 @@ describe('Record(Association)', () => {
 
   describe('[static] hasMany', () => {
     type TestAssociationHasManyParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationHasManyChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
 
     class TestAssociationHasManyRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasManyParams['id'];
       public name: TestAssociationHasManyParams['name'];
       public age: TestAssociationHasManyParams['age'];
       public children: rt.Associations$HasMany<TestAssociationHasManyChildRecord>;
 
-      protected static fetchAll<T = TestAssociationHasManyParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasManyParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
     class TestAssociationHasManyChildRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationHasManyChildParams['id'];
+      public foreignKey: TestAssociationHasManyChildParams['foreignKey'];
       public childName: TestAssociationHasManyChildParams['childName'];
       public childAge: TestAssociationHasManyChildParams['childAge'];
 
-      protected static fetchAll<T = TestAssociationHasManyChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasManyChildParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
-          { primaryKey: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
-          { primaryKey: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
-          { primaryKey: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
+          { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
+          { id: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
+          { id: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
+          { id: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
         ]);
       }
     }
@@ -189,18 +193,18 @@ describe('Record(Association)', () => {
       TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((relation) => {
         const records = relation.toA();
         const record = records[0];
-        expect(record.primaryKey).toEqual(1);
+        expect(record.id).toEqual(1);
         expect(record.name).toEqual('name_1');
         expect(record.age).toEqual(1);
 
         record.children().then((relation) => {
           const records = relation.toA();
           expect(records.length).toEqual(2);
-          expect(records[0].primaryKey).toEqual(1);
+          expect(records[0].id).toEqual(1);
           expect(records[0].foreignKey).toEqual(1);
           expect(records[0].childName).toEqual('child_name_11');
           expect(records[0].childAge).toEqual(11);
-          expect(records[1].primaryKey).toEqual(2);
+          expect(records[1].id).toEqual(2);
           expect(records[1].foreignKey).toEqual(1);
           expect(records[1].childName).toEqual('child_name_21');
           expect(records[1].childAge).toEqual(21);
@@ -213,42 +217,40 @@ describe('Record(Association)', () => {
   // https://railsguides.jp/association_basics.html#has-many-through%E3%81%A8has-and-belongs-to-many%E3%81%AE%E3%81%A9%E3%81%A1%E3%82%89%E3%82%92%E9%81%B8%E3%81%B6%E3%81%8B
   describe('[static] hasAndBelongsToMany', () => {
     type TestAssociationHasAndBelongsToManyAssemblyParams = {
+      id: t.Record$PrimaryKey;
       name: string;
     };
 
     type TestAssociationHasAndBelongsToManyPartParams = {
+      id: t.Record$PrimaryKey;
       name: string;
     };
 
-    class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
+    class TestAssociationHasAndBelongsToManyAssemblyRecord extends Record<TestAssociationHasAndBelongsToManyAssemblyParams> {
+      public id: TestAssociationHasAndBelongsToManyAssemblyParams['id'];
       public parts: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
       public name: TestAssociationHasAndBelongsToManyAssemblyParams['name'];
 
-      protected static fetchAll<T = TestAssociationHasAndBelongsToManyAssemblyRecord>(): Promise<
-        T[]
-      > {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasAndBelongsToManyAssemblyParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'assembly_name_1' },
-          { primaryKey: 2, name: 'assembly_name_2' },
-          { primaryKey: 3, name: 'assembly_name_3' },
-          { primaryKey: 4, name: 'assembly_name_4' },
+          { id: 1, name: 'assembly_name_1' },
+          { id: 2, name: 'assembly_name_2' },
+          { id: 3, name: 'assembly_name_3' },
+          { id: 4, name: 'assembly_name_4' },
         ]);
       }
     }
-    class TestAssociationHasAndBelongsToManyPartRecord extends Record {
-      public primaryKey: rt.Associations$PrimaryKey;
+    class TestAssociationHasAndBelongsToManyPartRecord extends Record<TestAssociationHasAndBelongsToManyPartParams> {
+      public id: TestAssociationHasAndBelongsToManyPartParams['id'];
       public assemblies: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
       public name: TestAssociationHasAndBelongsToManyPartParams['name'];
 
-      protected static fetchAll<T = TestAssociationHasAndBelongsToManyPartParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasAndBelongsToManyPartParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'part_name_1' },
-          { primaryKey: 2, name: 'part_name_2' },
-          { primaryKey: 3, name: 'part_name_3' },
-          { primaryKey: 4, name: 'part_name_4' },
+          { id: 1, name: 'part_name_1' },
+          { id: 2, name: 'part_name_2' },
+          { id: 3, name: 'part_name_3' },
+          { id: 4, name: 'part_name_4' },
         ]);
       }
     }
@@ -281,9 +283,9 @@ describe('Record(Association)', () => {
           .then((relation) => {
             const records = relation.toA();
             expect(records.length).toEqual(2);
-            expect(records[0].primaryKey).toEqual(1);
+            expect(records[0].id).toEqual(1);
             expect(records[0].name).toEqual('part_name_1');
-            expect(records[1].primaryKey).toEqual(2);
+            expect(records[1].id).toEqual(2);
             expect(records[1].name).toEqual('part_name_2');
             done();
           })
@@ -307,9 +309,9 @@ describe('Record(Association)', () => {
         part.assemblies().then((relation) => {
           const records = relation.toA();
           expect(records.length).toEqual(2);
-          expect(records[0].primaryKey).toEqual(1);
+          expect(records[0].id).toEqual(1);
           expect(records[0].name).toEqual('assembly_name_1');
-          expect(records[1].primaryKey).toEqual(2);
+          expect(records[1].id).toEqual(2);
           expect(records[1].name).toEqual('assembly_name_2');
           done();
         });
@@ -319,24 +321,23 @@ describe('Record(Association)', () => {
 
   describe('[static] scope', () => {
     type TestScopeParams = {
-      primaryKey: rt.Associations$PrimaryKey;
+      id: rt.Associations$PrimaryKey;
       name: string;
       age: number;
     };
 
     class TestScopeRecord extends Record {
-      public primaryKey: TestScopeParams['primaryKey'];
+      public id: TestScopeParams['id'];
       public name: TestScopeParams['name'];
       public age: TestScopeParams['age'];
 
       // scope
       static fromName: rt.Associations$CollectionProxy$Scope<TestScopeRecord>;
 
-      protected static fetchAll<T = TestScopeParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestScopeParams[]> {
         return Promise.resolve([
-          { primaryKey: 1, name: 'name_1', age: 1 },
-          { primaryKey: 2, name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -347,7 +348,7 @@ describe('Record(Association)', () => {
       TestScopeRecord.fromName('name_1').then((relation) => {
         const records = relation.toA();
         expect(records.length).toEqual(1);
-        expect(records[0].primaryKey).toEqual(1);
+        expect(records[0].id).toEqual(1);
         expect(records[0].name).toEqual('name_1');
         expect(records[0].age).toEqual(1);
         done();
@@ -355,7 +356,7 @@ describe('Record(Association)', () => {
       TestScopeRecord.fromName('name_2').then((relation) => {
         const records = relation.toA();
         expect(records.length).toEqual(1);
-        expect(records[0].primaryKey).toEqual(2);
+        expect(records[0].id).toEqual(2);
         expect(records[0].name).toEqual('name_2');
         expect(records[0].age).toEqual(2);
         done();

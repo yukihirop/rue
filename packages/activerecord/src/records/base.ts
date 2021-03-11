@@ -13,17 +13,19 @@ export const RUE_UPDATED_AT = ActiveRecord$Impl['RUE_UPDATED_AT'] as string;
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
 export const RUE_RECORD_ID = ActiveRecord$Impl['RUE_RECORD_ID'] as string;
 
-export class ActiveRecord$Base extends ActiveRecord$Impl {
+export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveRecord$Impl<P> {
   public errors: t.Validations$Errors;
 
-  constructor(data: t.Params = {}) {
+  constructor(data?: P) {
     super();
 
     (this as any)[RUE_RECORD_ID] = undefined;
 
-    Object.keys(data).forEach((key) => {
-      (this as any)[key] = data[key];
-    });
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        (this as any)[key] = data[key];
+      });
+    }
 
     this._newRecord = true;
     this._destroyed = false;
@@ -36,8 +38,14 @@ export class ActiveRecord$Base extends ActiveRecord$Impl {
     return 'record';
   }
 
-  protected static fetchAll<T = any>(): Promise<Array<T>> {
-    throw "Please implement '[static] fetchAll' in Inherited Class";
+  protected fetchAll(): Promise<Array<P>> {
+    throw "Please implement 'fetchAll' in Inherited Class";
+  }
+
+  // All starting points
+  protected static fetchAll(): Promise<Array<t.Params>> {
+    const instance = new this();
+    return instance.fetchAll();
   }
 
   static resetRecordCache() {

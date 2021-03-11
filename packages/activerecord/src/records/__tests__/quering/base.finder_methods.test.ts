@@ -5,20 +5,20 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 type QueryingRecordParams = {
-  primaryKey: at.Associations$PrimaryKey;
+  id: t.Record$PrimaryKey;
   name: string;
   age: number;
 };
 
 class QueryingRecord extends Record {
-  public primaryKey: QueryingRecordParams['primaryKey'];
+  public id: QueryingRecordParams['id'];
   public name: QueryingRecordParams['name'];
   public age: QueryingRecordParams['age'];
 
-  protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {
+  protected fetchAll(): Promise<QueryingRecordParams[]> {
     return Promise.resolve([]);
   }
 
@@ -31,10 +31,10 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    QueryingRecord.create([
-      { primaryKey: 1, name: 'name_1', age: 1 },
-      { primaryKey: 2, name: 'name_2', age: 2 },
-      { primaryKey: 3, name: 'name_3', age: 3 },
+    QueryingRecord.create<QueryingRecord, QueryingRecordParams>([
+      { id: 1, name: 'name_1', age: 1 },
+      { id: 2, name: 'name_2', age: 2 },
+      { id: 3, name: 'name_3', age: 3 },
     ]);
   });
 
@@ -46,7 +46,8 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
   describe('[static] findBy', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        QueryingRecord.findBy({ primaryKey: [1, 2] }).then((record) => {
+        // TODO: remove any
+        QueryingRecord.findBy({ id: [1, 2] as any }).then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -56,7 +57,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -76,7 +77,8 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
   describe('[static] findByOrThrow', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        QueryingRecord.findByOrThrow({ primaryKey: [1, 2] }).then((records) => {
+        // TODO: remove any
+        QueryingRecord.findByOrThrow({ id: [1, 2] as any }).then((records) => {
           expect(records).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -86,7 +88,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -116,7 +118,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -136,7 +138,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -147,7 +149,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
           ]);
           done();
@@ -168,7 +170,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -179,7 +181,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -190,7 +192,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -222,7 +224,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -253,7 +255,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -273,7 +275,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -284,7 +286,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
           ]);
           done();
@@ -305,7 +307,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -316,7 +318,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -327,7 +329,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -359,7 +361,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -390,7 +392,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });
@@ -410,7 +412,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -421,7 +423,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -443,7 +445,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 1,
               errors: {},
               name: 'name_1',
-              primaryKey: 1,
+              id: 1,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -454,7 +456,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 2,
               errors: {},
               name: 'name_2',
-              primaryKey: 2,
+              id: 2,
             },
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -465,7 +467,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
               age: 3,
               errors: {},
               name: 'name_3',
-              primaryKey: 3,
+              id: 3,
             },
           ]);
           done();
@@ -497,7 +499,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
             age: 1,
             errors: {},
             name: 'name_1',
-            primaryKey: 1,
+            id: 1,
           });
           done();
         });

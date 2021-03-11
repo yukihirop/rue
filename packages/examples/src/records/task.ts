@@ -4,27 +4,26 @@ import type * as t from '@rue/activerecord';
 
 import { Account } from '@/records';
 
-type Params = {
-  primaryKey: t.Record$ForeignKey;
+type TaskParams = {
+  id: t.Record$ForeignKey;
   content: string;
   status: 'success' | 'failure' | 'wip';
   accountId: t.Record$ForeignKey;
 };
 
-export class Task extends ActiveRecord {
-  public content: Params['content'];
-  public status: Params['status'];
-  public accountId: Params['accountId'];
+export class Task extends ActiveRecord<TaskParams> {
+  public content: TaskParams['content'];
+  public status: TaskParams['status'];
+  public accountId: TaskParams['accountId'];
   public account: t.Record$BelongsTo<Account>;
   public fromStatus: t.Record$Scope<Task>;
 
-  protected static fetchAll<Params>(): Promise<Array<Params>> {
-    // @ts-ignore
+  protected static fetchAll(): Promise<TaskParams[]> {
     return Promise.resolve([
-      { primaryKey: 1, content: 'Create @rue of web micro framework', status: 'wip', accountId: 1 },
-      { primaryKey: 2, content: 'Update r2-oas gem', status: 'success', accountId: 1 },
-      { primaryKey: 3, content: 'Work since morning', status: 'failure', accountId: 2 },
-      { primaryKey: 4, content: 'Get it done to the end', status: 'wip', accountId: 2 },
+      { id: 1, content: 'Create @rue of web micro framework', status: 'wip', accountId: 1 },
+      { id: 2, content: 'Update r2-oas gem', status: 'success', accountId: 1 },
+      { id: 3, content: 'Work since morning', status: 'failure', accountId: 2 },
+      { id: 4, content: 'Get it done to the end', status: 'wip', accountId: 2 },
     ]);
   }
 }

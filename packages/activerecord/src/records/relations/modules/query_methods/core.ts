@@ -93,7 +93,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
       });
     } else {
       // @ts-expect-error
-      _this._scopeParams['order']['primaryKey'] = 'asc';
+      _this._scopeParams['order']['id'] = 'asc';
     }
     // @ts-expect-error
     _this._currentScopeFn = _this.toPromiseArray;

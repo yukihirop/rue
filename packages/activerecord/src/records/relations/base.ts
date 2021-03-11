@@ -227,7 +227,7 @@ export class ActiveRecord$Relation$Base<
   destroyAll(): T[] {
     // @ts-ignore
     const destroyed = this.records.map((record: T) => {
-      const destroyed = record.destroy<T>();
+      const destroyed = record.destroy();
       Object.freeze(destroyed);
       return destroyed;
     });

@@ -6,9 +6,6 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
 import { ActiveRecord$Relation } from '@/records/relations';
 
-// modules
-import { ActiveRecord$FinderMethods } from '@/records/relations/modules/finder_methods';
-
 // types
 import type * as ct from '@/types';
 

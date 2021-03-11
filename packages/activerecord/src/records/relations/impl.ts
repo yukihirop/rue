@@ -19,7 +19,7 @@ abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
 
 interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
   // ActiveRecord$FinderMethods
-  find<U = { [key: string]: any }>(...primaryKeys: at.Associations$PrimaryKey[]): Promise<T | T[]>;
+  find<U = { [key: string]: any }>(...ids: at.Associations$PrimaryKey[]): Promise<T | T[]>;
   isExists<U>(condition?: mt.FinderMethods$ExistsCondition<U>): Promise<boolean>;
   findBy<U>(params: Partial<U>): Promise<T>;
   findByOrThrow<U>(params: Partial<U>): Promise<T>;

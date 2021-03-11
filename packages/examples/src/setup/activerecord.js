@@ -17,7 +17,7 @@ class ActiveRecord extends ActiveRecord$Base {
    * @protected
    * @return {Promise<Array<object>>}
    */
-  static fetchAll() {
+  fetchAll() {
     throw "Please implement '[static] fetchAll' in Inherited Class";
   }
 }

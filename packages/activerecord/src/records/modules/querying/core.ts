@@ -19,11 +19,11 @@ export class ActiveRecord$Querying extends RueModule {
    */
 
   static find<T extends ActiveRecord$Base, U = { [key: string]: any }>(
-    ...primaryKeys: at.Associations$PrimaryKey[]
+    ...ids: at.Associations$PrimaryKey[]
   ): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.find<U>(...primaryKeys));
+    return _this.all<T>().then((relation) => relation.find<U>(...ids));
   }
 
   static findBy<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
