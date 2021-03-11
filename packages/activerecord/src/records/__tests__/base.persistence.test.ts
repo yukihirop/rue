@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 
 // types
 import type * as t from '@/index';
-import type * as at from '@/records/modules/associations';
 
 describe('Record(Persistence)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
@@ -37,11 +36,10 @@ describe('Record(Persistence)', () => {
       public profile: TestDeleteRecordParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestDeleteRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestDeleteRecordParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -189,8 +187,7 @@ describe('Record(Persistence)', () => {
       public profile: TestSaveParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestSaveParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestSaveParams[]> {
         return Promise.resolve([
           { id: 1, profile: { name: 'name_1', age: 1 } },
           { id: 2, profile: { name: 'name_2', age: 2 } },
@@ -255,11 +252,11 @@ describe('Record(Persistence)', () => {
       };
     };
     class TestSaveOrThrowRecord extends Record<TestSaveOrThrowParams> {
+      public id: TestSaveOrThrowParams['id'];
       public profile: TestSaveOrThrowParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestSaveOrThrowParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestSaveOrThrowParams[]> {
         return Promise.resolve([
           { id: 1, profile: { name: 'name_1', age: 1 } },
           { id: 2, profile: { name: 'name_2', age: 2 } },
@@ -354,11 +351,10 @@ describe('Record(Persistence)', () => {
       public profile: TestDestroyParams['profile'];
 
       // The cache is not updated once [static]all is not called
-      static fetchAll<T = TestDestroyParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestDestroyParams[]> {
         return Promise.resolve([
-          { profile: { name: 'name_1', age: 1 } },
-          { profile: { name: 'name_2', age: 2 } },
+          { id: 1, profile: { name: 'name_1', age: 1 } },
+          { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
       }
 
@@ -523,7 +519,7 @@ describe('Record(Persistence)', () => {
 
   describe('#update', () => {
     type UpdateRecordParams = {
-      id: string;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
@@ -537,11 +533,10 @@ describe('Record(Persistence)', () => {
         return key;
       }
 
-      static fetchAll<T = UpdateRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<UpdateRecordParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -592,11 +587,10 @@ describe('Record(Persistence)', () => {
         return key;
       }
 
-      static fetchAll<T = UpdateOrThrowRecordParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<UpdateOrThrowRecordParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -640,6 +634,7 @@ describe('Record(Persistence)', () => {
       }
     ]
   },
+  "id": 2,
   "name": "name_2"
 } is invalid.`);
           expect(record.age).toEqual(2);
@@ -1033,17 +1028,17 @@ describe('Record(Persistence)', () => {
 
   describe('[static] delete', () => {
     type DeleteRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
     class DeleteRecord extends Record<DeleteRecordParams> {
-      public id: at.Associations$PrimaryKey;
+      public id: DeleteRecordParams['id'];
       public name: DeleteRecordParams['name'];
       public age: DeleteRecordParams['age'];
 
-      protected static fetchAll<T = DeleteRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<DeleteRecordParams[]> {
         return Promise.resolve([]);
       }
     }

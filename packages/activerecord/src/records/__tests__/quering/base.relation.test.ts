@@ -6,10 +6,10 @@ import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 type QueryingRecordParams = {
-  id: at.Associations$PrimaryKey;
+  id: t.Record$PrimaryKey;
   name: string;
   age: number;
 };
@@ -19,7 +19,7 @@ class QueryingRecord extends Record {
   public name: QueryingRecordParams['name'];
   public age: QueryingRecordParams['age'];
 
-  protected static fetchAll<T = QueryingRecordParams>(): Promise<T[]> {
+  protected fetchAll(): Promise<QueryingRecordParams[]> {
     return Promise.resolve([]);
   }
 

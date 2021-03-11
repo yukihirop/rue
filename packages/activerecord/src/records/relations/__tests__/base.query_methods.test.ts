@@ -6,22 +6,22 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 const { RECORD_ALL, RUE_AUTO_INCREMENT_RECORD_ID } = Record;
 
 type QueryMethodsRecordParams = {
-  id: at.Associations$PrimaryKey;
+  id: t.Record$PrimaryKey;
   name: string;
   age: number;
 };
 
-class QueryMethodsRecord extends Record {
+class QueryMethodsRecord extends Record<QueryMethodsRecordParams> {
   public id: QueryMethodsRecordParams['id'];
   public name: QueryMethodsRecordParams['name'];
   public age: QueryMethodsRecordParams['age'];
 
-  protected static fetchAll<T = QueryMethodsRecordParams>(): Promise<T[]> {
+  protected fetchAll(): Promise<QueryMethodsRecordParams[]> {
     return Promise.resolve([]);
   }
 

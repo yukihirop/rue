@@ -38,8 +38,14 @@ export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveReco
     return 'record';
   }
 
+  protected fetchAll(): Promise<Array<P>> {
+    throw "Please implement 'fetchAll' in Inherited Class";
+  }
+
+  // All starting points
   protected static fetchAll(): Promise<Array<t.Params>> {
-    throw "Please implement '[static] fetchAll' in Inherited Class";
+    const instance = new this();
+    return instance.fetchAll();
   }
 
   static resetRecordCache() {

@@ -7,11 +7,14 @@ import type * as rt from '@/records/modules/associations';
 describe('Record(Association)', () => {
   describe('[static] belongsTo', () => {
     type TestAssociationBelongsToParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationBelongsToChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
@@ -21,8 +24,7 @@ describe('Record(Association)', () => {
       public name: TestAssociationBelongsToParams['name'];
       public age: TestAssociationBelongsToParams['age'];
 
-      protected static fetchAll<T = TestAssociationBelongsToParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationBelongsToParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
@@ -30,14 +32,13 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationBelongsToChildRecord extends Record {
-      public id: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationBelongsToChildParams['id'];
+      public foreignKey: TestAssociationBelongsToChildParams['foreignKey'];
       public childName: TestAssociationBelongsToChildParams['childName'];
       public childAge: TestAssociationBelongsToChildParams['childAge'];
       public parent: rt.Associations$BelongsTo<TestAssociationBelongsToRecord>;
 
-      protected static fetchAll<T = TestAssociationBelongsToChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationBelongsToChildParams[]> {
         return Promise.resolve([
           { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
           { id: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
@@ -77,23 +78,25 @@ describe('Record(Association)', () => {
 
   describe('[static] hasOne', () => {
     type TestAssociationHasOneParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationHasOneChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
 
     class TestAssociationHasOneRecord extends Record {
-      public id: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasOneParams['id'];
       public name: TestAssociationHasOneParams['name'];
       public age: TestAssociationHasOneParams['age'];
       public child: rt.Associations$HasOne<TestAssociationHasOneChildRecord>;
 
-      protected static fetchAll<T = TestAssociationHasOneParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasOneParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
@@ -101,13 +104,12 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasOneChildRecord extends Record {
-      public id: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationHasOneChildParams['id'];
+      public foreignKey: TestAssociationHasOneChildParams['foreignKey'];
       public childName: TestAssociationHasOneChildParams['childName'];
       public childAge: TestAssociationHasOneChildParams['childAge'];
 
-      protected static fetchAll<T = TestAssociationHasOneChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasOneChildParams[]> {
         return Promise.resolve([
           { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
           { id: 2, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
@@ -139,23 +141,25 @@ describe('Record(Association)', () => {
 
   describe('[static] hasMany', () => {
     type TestAssociationHasManyParams = {
+      id: t.Record$PrimaryKey;
       name: String;
       age: number;
     };
 
     type TestAssociationHasManyChildParams = {
+      id: t.Record$PrimaryKey;
+      foreignKey: t.Record$ForeignKey;
       childName: String;
       childAge: number;
     };
 
     class TestAssociationHasManyRecord extends Record {
-      public id: rt.Associations$PrimaryKey;
+      public id: TestAssociationHasManyParams['id'];
       public name: TestAssociationHasManyParams['name'];
       public age: TestAssociationHasManyParams['age'];
       public children: rt.Associations$HasMany<TestAssociationHasManyChildRecord>;
 
-      protected static fetchAll<T = TestAssociationHasManyParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasManyParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
@@ -163,13 +167,12 @@ describe('Record(Association)', () => {
       }
     }
     class TestAssociationHasManyChildRecord extends Record {
-      public id: rt.Associations$PrimaryKey;
-      public foreignKey: rt.Associations$ForeignKey;
+      public id: TestAssociationHasManyChildParams['id'];
+      public foreignKey: TestAssociationHasManyChildParams['foreignKey'];
       public childName: TestAssociationHasManyChildParams['childName'];
       public childAge: TestAssociationHasManyChildParams['childAge'];
 
-      protected static fetchAll<T = TestAssociationHasManyChildParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasManyChildParams[]> {
         return Promise.resolve([
           { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
           { id: 2, foreignKey: 1, childName: 'child_name_21', childAge: 21 },
@@ -228,10 +231,7 @@ describe('Record(Association)', () => {
       public parts: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>;
       public name: TestAssociationHasAndBelongsToManyAssemblyParams['name'];
 
-      protected static fetchAll<T = TestAssociationHasAndBelongsToManyAssemblyRecord>(): Promise<
-        T[]
-      > {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasAndBelongsToManyAssemblyParams[]> {
         return Promise.resolve([
           { id: 1, name: 'assembly_name_1' },
           { id: 2, name: 'assembly_name_2' },
@@ -245,8 +245,7 @@ describe('Record(Association)', () => {
       public assemblies: rt.Associations$HasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>;
       public name: TestAssociationHasAndBelongsToManyPartParams['name'];
 
-      protected static fetchAll<T = TestAssociationHasAndBelongsToManyPartParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestAssociationHasAndBelongsToManyPartParams[]> {
         return Promise.resolve([
           { id: 1, name: 'part_name_1' },
           { id: 2, name: 'part_name_2' },
@@ -335,8 +334,7 @@ describe('Record(Association)', () => {
       // scope
       static fromName: rt.Associations$CollectionProxy$Scope<TestScopeRecord>;
 
-      protected static fetchAll<T = TestScopeParams>(): Promise<T[]> {
-        // @ts-ignore
+      protected fetchAll(): Promise<TestScopeParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },

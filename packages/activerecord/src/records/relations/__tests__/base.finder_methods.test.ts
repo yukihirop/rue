@@ -1,12 +1,11 @@
 import { ActiveRecord$Relation$Base as Relation } from '../base';
 import { ActiveRecord$Base as Record } from '@/records/base';
-import { cacheForRecords as RecordCache } from '@/registries';
 
 // third party
 import MockDate from 'mockdate';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 describe('ActiveRecord$Relation (FinderMethods)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
@@ -20,17 +19,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#isExists', () => {
     type IsExistsRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsExistsRecord extends Record {
+    class IsExistsRecord extends Record<IsExistsRecordParams> {
       public id: IsExistsRecordParams['id'];
       public name: IsExistsRecordParams['name'];
       public age: IsExistsRecordParams['age'];
 
-      protected static fetchAll<T = IsExistsRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<IsExistsRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -92,17 +91,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#find', () => {
     type FindRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindRecord extends Record {
-      public id: at.Associations$PrimaryKey;
+    class FindRecord extends Record<FindRecordParams> {
+      public id: FindRecordParams['id'];
       public name: FindRecordParams['name'];
       public age: FindRecordParams['age'];
 
-      protected static fetchAll<T = FindRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<FindRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -203,12 +202,12 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#findBy', () => {
     type FindByRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindByRecord extends Record {
+    class FindByRecord extends Record<FindByRecordParams> {
       public id: FindByRecordParams['id'];
       public name: FindByRecordParams['name'];
       public age: FindByRecordParams['age'];
@@ -253,17 +252,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#findByOrThrow', () => {
     type FindByOrThrowRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindByOrThrowRecord extends Record {
+    class FindByOrThrowRecord extends Record<FindByOrThrowRecordParams> {
       public id: FindByOrThrowRecordParams['id'];
       public name: FindByOrThrowRecordParams['name'];
       public age: FindByOrThrowRecordParams['age'];
 
-      protected static fetchAll<T = FindByOrThrowRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<FindByOrThrowRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -309,15 +308,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#first', () => {
     type FirstRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FirstRecord extends Record {
+    class FirstRecord extends Record<FirstRecordParams> {
+      public id: FirstRecordParams['id'];
       public name: FirstRecordParams['name'];
       public age: FirstRecordParams['age'];
 
-      protected static fetchAll<T = FirstRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<FirstRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -433,15 +434,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#firstOrThrow', () => {
     type FirstOrThrowParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FirstOrThrowRecord extends Record {
+    class FirstOrThrowRecord extends Record<FirstOrThrowParams> {
+      public id: FirstOrThrowParams['id'];
       public name: FirstOrThrowParams['name'];
       public age: FirstOrThrowParams['age'];
 
-      protected static fetchAll<T = FirstOrThrowParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<FirstOrThrowParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -485,11 +488,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#isInclude', () => {
     type IsIncludeRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class IsIncludeRecord extends Record {
+    class IsIncludeRecord extends Record<IsIncludeRecordParams> {
+      public id: IsIncludeRecordParams['id'];
       public name: IsIncludeRecordParams['name'];
       public age: IsIncludeRecordParams['age'];
     }
@@ -519,15 +524,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#last', () => {
     type LastRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
     class LastRecord extends Record {
+      public id: LastRecordParams['id'];
       public name: LastRecordParams['name'];
       public age: LastRecordParams['age'];
 
-      protected static fetchAll<T = LastRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<LastRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -643,15 +650,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#lastOrThrow', () => {
     type LastOrThrowParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class LastOrThrowRecord extends Record {
+    class LastOrThrowRecord extends Record<LastOrThrowParams> {
+      public id: LastOrThrowParams['id'];
       public name: LastOrThrowParams['name'];
       public age: LastOrThrowParams['age'];
 
-      protected static fetchAll<T = LastOrThrowParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<LastOrThrowParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -695,15 +704,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#take', () => {
     type TakeRecordParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class TakeRecord extends Record {
+    class TakeRecord extends Record<TakeRecordParams> {
+      public id: TakeRecordParams['id'];
       public name: TakeRecordParams['name'];
       public age: TakeRecordParams['age'];
 
-      protected static fetchAll<T = TakeRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<TakeRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -819,15 +830,17 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
   describe('#takeOrThrow', () => {
     type TakeOrThrowParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class TakeOrThrowRecord extends Record {
+    class TakeOrThrowRecord extends Record<TakeOrThrowParams> {
+      public id: TakeOrThrowParams['id'];
       public name: TakeOrThrowParams['name'];
       public age: TakeOrThrowParams['age'];
 
-      protected static fetchAll<T = TakeOrThrowParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<TakeOrThrowParams[]> {
         return Promise.resolve([]);
       }
     }

@@ -6,21 +6,26 @@ import {
 } from '../base';
 import { cacheForRecords as RecordCache } from '@/registries';
 
+// types
+import type * as t from '@/index';
+
 describe('Record (Scoping)', () => {
   describe('[static] all', () => {
     type TestAllParams = {
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
     class TestAllRecord extends Record {
-      public name?: TestAllParams['name'];
-      public age?: TestAllParams['age'];
-      protected static fetchAll<T = TestAllParams>(): Promise<T[]> {
-        // @ts-ignore
+      public id: TestAllParams['id'];
+      public name: TestAllParams['name'];
+      public age: TestAllParams['age'];
+
+      protected fetchAll(): Promise<TestAllParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }

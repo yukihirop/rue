@@ -684,7 +684,7 @@ describe('ActiveRecord$Relation$Base', () => {
         return key;
       }
 
-      protected static fetchAll<T = DeleteByRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<DeleteByRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -840,7 +840,7 @@ describe('ActiveRecord$Relation$Base', () => {
         return key;
       }
 
-      protected static fetchAll<T = DeleteAllRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<DeleteAllRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -888,7 +888,7 @@ describe('ActiveRecord$Relation$Base', () => {
         return key;
       }
 
-      protected static fetchAll<T = DestroyAllRecordParams>(): Promise<T[]> {
+      protected fetchAll(): Promise<DestroyAllRecordParams[]> {
         return Promise.resolve([]);
       }
     }
@@ -1268,11 +1268,10 @@ describe('ActiveRecord$Relation$Base', () => {
         return key;
       }
 
-      protected static fetchAll<T = UpdateAllRecord>(): T {
-        // @ts-ignore
+      protected fetchAll(): Promise<UpdateAllRecordParams[]> {
         return Promise.resolve([
-          { name: 'name_1', age: 1 },
-          { name: 'name_2', age: 2 },
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
         ]);
       }
     }
@@ -1313,7 +1312,7 @@ describe('ActiveRecord$Relation$Base', () => {
       age: number;
     };
 
-    class TouchAllRecord extends ActiveRecord$Base {
+    class TouchAllRecord extends ActiveRecord$Base<TouchAllRecordParams> {
       public id: TouchAllRecordParams['id'];
       public name: TouchAllRecordParams['name'];
       public age: TouchAllRecordParams['age'];

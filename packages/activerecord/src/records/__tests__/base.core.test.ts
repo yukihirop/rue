@@ -3,7 +3,7 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
 
 // types
-import type * as at from '@/records/modules/associations';
+import type * as t from '@/index';
 
 describe('ActiveRecord$Base (Core)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
@@ -17,12 +17,12 @@ describe('ActiveRecord$Base (Core)', () => {
 
   describe('[static] find', () => {
     type FindRecordParams = {
-      id: at.Associations$PrimaryKey;
+      id: t.Record$PrimaryKey;
       name: string;
       age: number;
     };
 
-    class FindRecord extends Record {
+    class FindRecord extends Record<FindRecordParams> {
       public id: FindRecordParams['id'];
       public name: FindRecordParams['name'];
       public age: FindRecordParams['age'];
