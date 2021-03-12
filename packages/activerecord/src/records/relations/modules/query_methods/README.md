@@ -42,14 +42,19 @@
 
 It can be called at the end of all methods.
 
+- [x] then
+- [x] rueThen
+- [x] catce
+- [x] rueCatch
+
 e.g.)
 
 ```ts
-Record.where({ id: [1,2] }).toPA().then((records) => {...})
+Record.where({ id: [1,2] }).then((records) => {...})
+Record.where({ id: [1,2,3,4,5] }).limit(3).offset(1).rueThen((records) => {...})
+Record.where({ id: [1,2,3,4,5] }).limit(3).offset(1).catch((err) => {...})
+Record.where({ id: [1,2,3,4,5] }).limit(3).offset(1).rueCatch((err) => {...})
 ```
-
-- [x]toPromiseArray
-- [x]toPA (alias to `toPromiseArray`)
 
 ## Classes
 

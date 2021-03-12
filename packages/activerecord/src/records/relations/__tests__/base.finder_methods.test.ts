@@ -1,5 +1,6 @@
 import { ActiveRecord$Relation$Base as Relation } from '../base';
 import { ActiveRecord$Base as Record } from '@/records/base';
+import { ActiveRecord$Relation$Holder as Holder } from '../holder';
 
 // third party
 import MockDate from 'mockdate';
@@ -34,13 +35,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    const records = IsExistsRecord.create<IsExistsRecord, IsExistsRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as IsExistsRecord[];
+    let records: IsExistsRecord[];
+    let holder: Holder<IsExistsRecord>;
+    let relation: Relation<IsExistsRecord>;
 
-    let relation = new Relation<IsExistsRecord>(IsExistsRecord, records);
+    beforeEach(() => {
+      IsExistsRecord.resetRecordCache();
+
+      records = IsExistsRecord.create<IsExistsRecord, IsExistsRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as IsExistsRecord[];
+
+      holder = new Holder(IsExistsRecord, records);
+
+      relation = new Relation<IsExistsRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(IsExistsRecord);
+    });
 
     describe("when don't give args", () => {
       it('should correctly', (done) => {
@@ -80,10 +94,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when throw error', () => {
       describe('when give args as array', () => {
-        it('should correctly', () => {
-          expect(() => {
-            relation.isExists([1, 2, 3]);
-          }).toThrowError('Do not suppport because where does not correspond to an array argument');
+        it('should correctly', (done) => {
+          relation.isExists([1, 2, 3]).catch((err) => {
+            expect(err.toString()).toEqual(
+              'Do not suppport because where does not correspond to an array argument'
+            );
+            done();
+          });
         });
       });
     });
@@ -106,15 +123,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
+    let records: FindRecord[];
+    let holder: Holder<FindRecord>;
+    let relation: Relation<FindRecord>;
 
-    const records = FindRecord.create<FindRecord, FindRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as FindRecord[];
+    beforeEach(() => {
+      FindRecord.resetRecordCache();
 
-    let relation = new Relation<FindRecord>(FindRecord, records);
+      records = FindRecord.create<FindRecord, FindRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as FindRecord[];
+
+      holder = new Holder(FindRecord, records);
+
+      // @ts-expect-error
+      relation = new Relation<FindRecord>((resolve, _reject) => resolve([holder, records])).init(
+        FindRecord
+      );
+    });
 
     describe("when specify 'primarykey'", () => {
       it('should correctly', (done) => {
@@ -213,13 +241,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public age: FindByRecordParams['age'];
     }
 
-    const records = FindByRecord.create<FindByRecord, FindByRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as FindByRecord[];
+    let records: FindByRecord[];
+    let holder: Holder<FindByRecord>;
+    let relation: Relation<FindByRecord>;
 
-    let relation = new Relation<FindByRecord>(FindByRecord, records);
+    beforeEach(() => {
+      FindByRecord.resetRecordCache();
+
+      records = FindByRecord.create<FindByRecord, FindByRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as FindByRecord[];
+
+      holder = new Holder(FindByRecord, records);
+
+      // @ts-expect-error
+      relation = new Relation<FindByRecord>((resolve, _reject) => resolve([holder, records])).init(
+        FindByRecord
+      );
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -267,15 +308,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
+    let records: FindByOrThrowRecord[];
+    let holder: Holder<FindByOrThrowRecord>;
+    let relation: Relation<FindByOrThrowRecord>;
 
-    const records = FindByOrThrowRecord.create<FindByOrThrowRecord, FindByOrThrowRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as FindByOrThrowRecord[];
+    beforeEach(() => {
+      FindByOrThrowRecord.resetRecordCache();
 
-    let relation = new Relation<FindByOrThrowRecord>(FindByOrThrowRecord, records);
+      records = FindByOrThrowRecord.create<FindByOrThrowRecord, FindByOrThrowRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as FindByOrThrowRecord[];
+
+      holder = new Holder(FindByOrThrowRecord, records);
+
+      relation = new Relation<FindByOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(FindByOrThrowRecord);
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -323,15 +375,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
+    let records: FirstRecord[];
+    let holder: Holder<FirstRecord>;
+    let relation: Relation<FirstRecord>;
 
-    const records = FirstRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as FirstRecord[];
+    beforeEach(() => {
+      FirstRecord.resetRecordCache();
 
-    let relation = new Relation<FirstRecord>(FirstRecord, records);
+      records = FirstRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as FirstRecord[];
+
+      holder = new Holder(FirstRecord, records);
+
+      // @ts-expect-error
+      relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, records])).init(
+        FirstRecord
+      );
+    });
 
     describe('when default', () => {
       it('should return first record', (done) => {
@@ -423,7 +486,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record do not exist', () => {
       it('should return null', (done) => {
-        relation = new Relation<FirstRecord>(FirstRecord, []);
+        holder = new Holder(FirstRecord, []);
+        // @ts-expect-error
+        relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, []])).init(
+          FirstRecord
+        );
         relation.take().then((record) => {
           expect(record).toEqual(null);
           done();
@@ -449,13 +516,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    const records = FirstOrThrowRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as FirstOrThrowRecord[];
+    let records: FirstOrThrowRecord[];
+    let holder: Holder<FirstOrThrowRecord>;
+    let relation: Relation<FirstOrThrowRecord>;
 
-    let relation = new Relation<FirstOrThrowRecord>(FirstOrThrowRecord, records);
+    beforeEach(() => {
+      FirstOrThrowRecord.resetRecordCache();
+
+      records = FirstOrThrowRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as FirstOrThrowRecord[];
+
+      holder = new Holder(FirstOrThrowRecord, records);
+
+      relation = new Relation<FirstOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(FirstOrThrowRecord);
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -477,7 +557,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record not found', () => {
       it('should correctly', (done) => {
-        relation = new Relation<FirstOrThrowRecord>(FirstOrThrowRecord, []);
+        holder = new Holder(FirstOrThrowRecord, []);
+        relation = new Relation<FirstOrThrowRecord>(
+          (resolve, _reject) => resolve([holder, []])
+          // @ts-expect-error
+        ).init(FirstOrThrowRecord);
         relation.firstOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'FirstOrThrowRecord'");
           done();
@@ -501,23 +585,42 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = IsIncludeRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-    ]) as IsIncludeRecord[];
+    let records: IsIncludeRecord[];
+    let holder: Holder<IsIncludeRecord>;
+    let relation: Relation<IsIncludeRecord>;
 
-    let relation = new Relation<IsIncludeRecord>(IsIncludeRecord, records);
+    beforeEach(() => {
+      IsIncludeRecord.resetRecordCache();
+
+      records = IsIncludeRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+      ]) as IsIncludeRecord[];
+
+      holder = new Holder(IsIncludeRecord, records);
+
+      relation = new Relation<IsIncludeRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(IsIncludeRecord);
+    });
 
     describe('when return true', () => {
-      it('should correctly', () => {
-        expect(relation.isInclude(records[0])).toEqual(true);
+      it('should correctly', (done) => {
+        relation.isInclude(records[0]).then((result) => {
+          expect(result).toEqual(true);
+          done();
+        });
       });
     });
 
     describe('when return false', () => {
-      it('should correctly', () => {
+      it('should correctly', (done) => {
         const record = IsIncludeRecord.create({ name: 'name_3', age: 3 }) as IsIncludeRecord;
-        expect(relation.isInclude(record)).toEqual(false);
+        relation.isInclude(record).then((result) => {
+          expect(result).toEqual(false);
+          done();
+        });
       });
     });
   });
@@ -541,13 +644,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = LastRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as LastRecord[];
+    let records: LastRecord[];
+    let holder: Holder<LastRecord>;
+    let relation: Relation<LastRecord>;
 
-    let relation = new Relation<LastRecord>(LastRecord, records);
+    beforeEach(() => {
+      LastRecord.resetRecordCache();
+
+      records = LastRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as LastRecord[];
+
+      holder = new Holder(LastRecord, records);
+
+      // @ts-expect-error
+      relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, records])).init(
+        LastRecord
+      );
+    });
 
     describe('when default', () => {
       it('should return first record', (done) => {
@@ -639,7 +755,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record do not exist', () => {
       it('should return null', (done) => {
-        relation = new Relation<LastRecord>(LastRecord, []);
+        holder = new Holder(LastRecord, []);
+        // @ts-expect-error
+        relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, []])).init(
+          LastRecord
+        );
         relation.last().then((record) => {
           expect(record).toEqual(null);
           done();
@@ -665,13 +785,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    const records = LastOrThrowRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as LastOrThrowRecord[];
+    let records: LastOrThrowRecord[];
+    let holder: Holder<LastOrThrowRecord>;
+    let relation: Relation<LastOrThrowRecord>;
 
-    let relation = new Relation<LastOrThrowRecord>(LastOrThrowRecord, records);
+    beforeEach(() => {
+      LastOrThrowRecord.resetRecordCache();
+
+      records = LastOrThrowRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as LastOrThrowRecord[];
+
+      holder = new Holder(LastOrThrowRecord, records);
+
+      relation = new Relation<LastOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(LastOrThrowRecord);
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -693,7 +826,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record not found', () => {
       it('should correctly', (done) => {
-        relation = new Relation<LastOrThrowRecord>(LastOrThrowRecord, []);
+        holder = new Holder(LastOrThrowRecord, []);
+        relation = new Relation<LastOrThrowRecord>(
+          (resolve, _reject) => resolve([holder, []])
+          // @ts-expect-error
+        ).init(LastOrThrowRecord);
         relation.lastOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'LastOrThrowRecord'");
           done();
@@ -721,13 +858,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     MockDate.set('2021-03-05T23:03:21+09:00');
 
-    const records = TakeRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as TakeRecord[];
+    let records: TakeRecord[];
+    let holder: Holder<TakeRecord>;
+    let relation: Relation<TakeRecord>;
 
-    let relation = new Relation<TakeRecord>(TakeRecord, records);
+    beforeEach(() => {
+      TakeRecord.resetRecordCache();
+
+      records = TakeRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as TakeRecord[];
+
+      holder = new Holder(TakeRecord, records);
+
+      // @ts-expect-error
+      relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, records])).init(
+        TakeRecord
+      );
+    });
 
     describe('when default', () => {
       it('should return first record', (done) => {
@@ -819,7 +969,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record do not exist', () => {
       it('should return null', (done) => {
-        relation = new Relation<TakeRecord>(TakeRecord, []);
+        holder = new Holder(TakeRecord, []);
+        // @ts-expect-error
+        relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, []])).init(
+          TakeRecord
+        );
         relation.take().then((record) => {
           expect(record).toEqual(null);
           done();
@@ -845,13 +999,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    const records = TakeOrThrowRecord.create([
-      { name: 'name_1', age: 1 },
-      { name: 'name_2', age: 2 },
-      { name: 'name_3', age: 3 },
-    ]) as TakeOrThrowRecord[];
+    let records: TakeOrThrowRecord[];
+    let holder: Holder<TakeOrThrowRecord>;
+    let relation: Relation<TakeOrThrowRecord>;
 
-    let relation = new Relation<TakeOrThrowRecord>(TakeOrThrowRecord, records);
+    beforeEach(() => {
+      TakeOrThrowRecord.resetRecordCache();
+
+      records = TakeOrThrowRecord.create([
+        { name: 'name_1', age: 1 },
+        { name: 'name_2', age: 2 },
+        { name: 'name_3', age: 3 },
+      ]) as TakeOrThrowRecord[];
+
+      holder = new Holder(TakeOrThrowRecord, records);
+
+      relation = new Relation<TakeOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(TakeOrThrowRecord);
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -873,7 +1040,11 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
     describe('when record not found', () => {
       it('should correctly', (done) => {
-        relation = new Relation<TakeOrThrowRecord>(TakeOrThrowRecord, []);
+        holder = new Holder(TakeOrThrowRecord, []);
+        relation = new Relation<TakeOrThrowRecord>(
+          (resolve, _reject) => resolve([holder, []])
+          // @ts-expect-error
+        ).init(TakeOrThrowRecord);
         relation.takeOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'TakeOrThrowRecord'");
           done();

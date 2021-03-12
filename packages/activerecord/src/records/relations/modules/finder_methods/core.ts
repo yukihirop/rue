@@ -5,6 +5,7 @@ import { RueModule } from '@rue/activesupport';
 import { errObj, ErrCodes } from '@/errors';
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from '@/records/relations/modules/query_methods';
 
 // types
 import type * as t from './types';
@@ -20,20 +21,23 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
 
-    if (!condition) {
-      // @ts-expect-error
-      return Promise.resolve(_this.records.length > 0);
-    } else if (Array.isArray(condition)) {
-      throw 'Do not suppport because where does not correspond to an array argument';
-    } else if (typeof condition === 'object' && condition != null) {
-      return _this
-        .where<U>(condition as Partial<U>)
-        .toPA()
-        .then((records) => records.length > 0);
-    } else {
-      const id = Number(condition) as at.Associations$PrimaryKey;
-      return _this.find<U>(id).then((record) => !!record);
-    }
+    // @ts-expect-error
+    return _this.evaluateThen<boolean>((holder) => {
+      const records = holder.records;
+
+      if (!condition) {
+        return records.length > 0;
+      } else if (Array.isArray(condition)) {
+        throw 'Do not suppport because where does not correspond to an array argument';
+      } else if (typeof condition === 'object' && condition != null) {
+        return _this.where<U>(condition as Partial<U>).rueThen((records: T[]) => {
+          return records.length > 0;
+        });
+      } else {
+        const id = Number(condition) as at.Associations$PrimaryKey;
+        return _this.find<U>(id).then((record) => !!record);
+      }
+    });
   }
 
   /**
@@ -54,8 +58,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
       // @ts-expect-error
       return (this as ActiveRecord$Relation)
         .where<T, U>({ id: ids })
-        .toPA()
-        .then((records) => {
+        .rueThen((records: T[]) => {
           if (records.length === 0) {
             if (ids.length === 1) {
               throw errObj({
@@ -115,18 +118,22 @@ export class ActiveRecord$FinderMethods extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-include-3F
    */
-  isInclude<T extends ActiveRecord$Base>(record: T): boolean {
+  isInclude<T extends ActiveRecord$Base>(record: T): Promise<boolean> {
     const { RUE_RECORD_ID } = ActiveRecord$Base;
     // @ts-expect-error
-    const allRecordIds = (this as ActiveRecord$Relation<T>).records.map((r) => r[RUE_RECORD_ID]);
-    return allRecordIds.includes(record[RUE_RECORD_ID]);
+    const _this = this as ActiveRecord$Relation<T>;
+    // @ts-expect-error
+    return _this.evaluateThen<boolean>((holder) => {
+      const allRecordIds = holder.records.map((r) => r[RUE_RECORD_ID]);
+      return allRecordIds.includes(record[RUE_RECORD_ID]);
+    });
   }
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-member-3F
    * @alias isInclude
    */
-  isMember<T extends ActiveRecord$Base>(record: T): boolean {
+  isMember<T extends ActiveRecord$Base>(record: T): Promise<boolean> {
     return this.isInclude(record);
   }
 
@@ -139,13 +146,12 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    if (!_this._currentScopeFn) _this._currentScopeFn = () => Promise.resolve(_this.records);
-    // @ts-expect-error
-    return _this._currentScopeFn().then((records) => {
+    return _this.evaluateThen((holder) => {
+      const records = holder.records;
       if (records.length === 0) {
-        return Promise.resolve(null);
+        return null;
       } else if (limit === 1) {
-        return Promise.resolve(records[0]);
+        return records[0];
       } else {
         const slicedRecords = records
           .sort((a, b) => b[RUE_RECORD_ID] - a[RUE_RECORD_ID])
@@ -180,16 +186,15 @@ export class ActiveRecord$FinderMethods extends RueModule {
     if (!limit) limit = 1;
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
+
     // @ts-expect-error
-    if (!_this._currentScopeFn) _this._currentScopeFn = () => Promise.resolve(_this.records);
-    // @ts-expect-error
-    return _this._currentScopeFn().then((records) => {
-      if (records.length === 0) {
+    return _this.evaluateThen((holder) => {
+      if (holder.records.length === 0) {
         return null;
       } else if (limit === 1) {
-        return records[0];
+        return holder.records[0];
       } else {
-        return records.slice(0, limit);
+        return holder.records.slice(0, limit);
       }
     });
   }

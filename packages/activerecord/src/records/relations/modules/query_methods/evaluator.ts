@@ -1,23 +1,22 @@
 // locals
 import { ActiveRecord$Base } from '@/records';
-import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$Relation$Holder } from '@/records/relations';
 import { ErrCodes, errObj } from '@/errors';
 
 import type * as t from './types';
 
 export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U> {
-  private relation: ActiveRecord$Relation<T>;
+  private holder: ActiveRecord$Relation$Holder<T>;
   private scopeParams: t.ScopeParams<U>;
 
-  constructor(relation: ActiveRecord$Relation<T>, scopeParams: t.ScopeParams<U>) {
-    this.relation = relation;
+  constructor(holder: ActiveRecord$Relation$Holder<T>, scopeParams: t.ScopeParams<U>) {
+    this.holder = holder;
     this.scopeParams = scopeParams;
   }
 
-  static all<U extends ActiveRecord$Base>(relation: ActiveRecord$Relation<U>) {
-    // @ts-expect-error
-    const scopeParams = relation._scopeParams;
-    const instance = new this(relation, scopeParams);
+  static all<U extends ActiveRecord$Base>(holder: ActiveRecord$Relation$Holder<U>) {
+    const scopeParams = holder.scopeParams;
+    const instance = new this(holder, scopeParams);
     instance.all();
   }
 
@@ -36,8 +35,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const whereParams = this.scopeParams['where'];
     if (!this.isPresent(whereParams)) return this;
 
-    // @ts-expect-error
-    const records = this.relation.records;
+    const records = this.holder.records;
     const result = records.reduce((acc: Array<T>, record: T) => {
       const isMatch = Object.keys(whereParams)
         .map((key: string) => {
@@ -52,8 +50,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
       if (isMatch) acc.push(record);
       return acc;
     }, [] as Array<T>);
-    // @ts-expect-error
-    this.relation.records = result;
+    this.holder.records = result;
     return this;
   }
 
@@ -61,8 +58,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const orderParams = this.scopeParams['order'];
     if (!this.isPresent(orderParams)) return this;
 
-    // @ts-expect-error
-    const records = this.relation.records;
+    const records = this.holder.records;
     Object.keys(orderParams).forEach((propName) => {
       const direction = orderParams[propName];
       records.sort((a: T, b: T) => {
@@ -93,8 +89,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
         }
       });
     });
-    // @ts-expect-error
-    this.relation.records = records;
+    this.holder.records = records;
     return this;
   }
 
@@ -102,10 +97,8 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const offsetValue = this.scopeParams['offset'];
     if (!this.isPresent(offsetValue)) return this;
 
-    // @ts-expect-error
-    const records = this.relation.records;
-    // @ts-expect-error
-    this.relation.records = records.slice(offsetValue, records.length);
+    const records = this.holder.records;
+    this.holder.records = records.slice(offsetValue, records.length);
     return this;
   }
 
@@ -113,10 +106,8 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const limitValue = this.scopeParams['limit'];
     if (!this.isPresent(limitValue)) return this;
 
-    // @ts-expect-error
-    const records = this.relation.records;
-    // @ts-expect-error
-    this.relation.records = records.slice(0, limitValue);
+    const records = this.holder.records;
+    this.holder.records = records.slice(0, limitValue);
     return this;
   }
 
@@ -124,8 +115,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const groupParams = this.scopeParams['group'];
     if (!this.isPresent(groupParams)) return this;
 
-    // @ts-expect-error
-    const records = this.relation.records;
+    const records = this.holder.records;
     let foundPairs = [];
     const groupedRecords = records.reduce((acc, record) => {
       const pairs = groupParams.reduce((propAcc, propName) => {
@@ -141,16 +131,12 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
       }
       return acc;
     }, {} as any);
-    // @ts-expect-error
-    this.relation._groupedRecords = groupedRecords;
+    this.holder.groupedRecords = groupedRecords;
     return this;
   }
 
   isGroupedRecords(): boolean {
-    return (
-      // @ts-expect-error
-      this.isPresent(this.relation._groupedRecords) && this.isPresent(this.scopeParams['group'])
-    );
+    return this.isPresent(this.holder.groupedRecords) && this.isPresent(this.scopeParams['group']);
   }
 
   private isPresent(params: any): boolean {

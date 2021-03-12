@@ -23,55 +23,55 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.find<U>(...ids));
+    return _this.all<T>().find<U>(...ids);
   }
 
   static findBy<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findBy<U>(params));
+    return _this.all<T>().findBy<U>(params);
   }
 
   static findByOrThrow<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findByOrThrow<U>(params));
+    return _this.all<T>().findByOrThrow<U>(params);
   }
 
   static take<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.take(limit));
+    return _this.all<T>().take(limit);
   }
 
   static takeOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.takeOrThrow(limit));
+    return _this.all<T>().takeOrThrow(limit);
   }
 
   static first<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.first(limit));
+    return _this.all<T>().first(limit);
   }
 
   static firstOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.firstOrThrow(limit));
+    return _this.all<T>().firstOrThrow(limit);
   }
 
   static last<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.last(limit));
+    return _this.all<T>().last(limit);
   }
 
   static lastOrThrow<T extends ActiveRecord$Base>(limit?: number): Promise<T | T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.lastOrThrow(limit));
+    return _this.all<T>().lastOrThrow(limit);
   }
 
   static isExists<T extends ActiveRecord$Base, U>(
@@ -79,7 +79,7 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isExists<U>(condition));
+    return _this.all<T>().isExists<U>(condition);
   }
 
   /**
@@ -89,25 +89,25 @@ export class ActiveRecord$Querying extends RueModule {
   static isAny<T extends ActiveRecord$Base>(filter?: (record: T) => boolean): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isAny(filter));
+    return _this.all<T>().isAny(filter);
   }
 
   static isMany<T extends ActiveRecord$Base>(filter?: (record: T) => boolean): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isMany(filter));
+    return _this.all<T>().isMany(filter);
   }
 
   static isNone<T extends ActiveRecord$Base>(filter?: (record: T) => boolean): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isNone(filter));
+    return _this.all<T>().isNone(filter);
   }
 
   static isOne<T extends ActiveRecord$Base>(filter?: (record: T) => boolean): Promise<boolean> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.isOne(filter));
+    return _this.all<T>().isOne(filter);
   }
 
   static findOrCreateBy<T extends ActiveRecord$Base, U>(
@@ -116,7 +116,7 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findOrCreateBy<U>(params, yielder));
+    return _this.all<T>().findOrCreateBy<U>(params, yielder);
   }
 
   static findOrCreateByOrThrow<T extends ActiveRecord$Base, U>(
@@ -125,7 +125,7 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findOrCreateByOrThrow<U>(params, yielder));
+    return _this.all<T>().findOrCreateByOrThrow<U>(params, yielder);
   }
 
   static findOrInitializeBy<T extends ActiveRecord$Base, U>(
@@ -134,37 +134,37 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.findOrInitializeBy<U>(params, yielder));
+    return _this.all<T>().findOrInitializeBy<U>(params, yielder);
   }
 
   static createOrFindBy<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.createOrFindBy<U>(params));
+    return _this.all<T>().createOrFindBy<U>(params);
   }
 
   static createOrFindByOrThrow<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.createOrFindByOrThrow<U>(params));
+    return _this.all<T>().createOrFindByOrThrow<U>(params);
   }
 
   static destroyAll<T extends ActiveRecord$Base>(): Promise<T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.destroyAll());
+    return _this.all<T>().destroyAll();
   }
 
   static deleteAll<T extends ActiveRecord$Base>(): Promise<number> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.deleteAll());
+    return _this.all<T>().deleteAll();
   }
 
   static updateAll<T extends ActiveRecord$Base, U>(params: Partial<U>): Promise<number> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.updateAll<U>(params));
+    return _this.all<T>().updateAll<U>(params);
   }
 
   static touchAll<T extends ActiveRecord$Base, U>(
@@ -173,82 +173,78 @@ export class ActiveRecord$Querying extends RueModule {
   ): Promise<number> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.touchAll<U>(params, opts));
+    return _this.all<T>().touchAll<U>(params, opts);
   }
 
   static destroyBy<T extends ActiveRecord$Base>(filter?: (self: T) => boolean): Promise<T[]> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.destroyBy(filter));
+    return _this.all<T>().destroyBy(filter);
   }
 
   static deleteBy<T extends ActiveRecord$Base, U>(params?: Partial<U>): Promise<number> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.deleteBy<U>(params));
+    return _this.all<T>().deleteBy<U>(params);
   }
 
   /**
    * delegate to ActiveRecord$QueryMethods
    */
 
-  static where<T extends ActiveRecord$Base, U>(
-    params: Partial<U>
-  ): Promise<ActiveRecord$Relation<T>> {
+  static where<T extends ActiveRecord$Base, U>(params: Partial<U>): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.where<U>(params));
+    return _this.all<T>().where<U>(params);
   }
 
-  static rewhere<T extends ActiveRecord$Base, U>(
-    params: Partial<U>
-  ): Promise<ActiveRecord$Relation<T>> {
+  static rewhere<T extends ActiveRecord$Base, U>(params: Partial<U>): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.rewhere<U>(params));
+    return _this.all<T>().rewhere<U>(params);
   }
 
   static order<T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
     params: Partial<U>
-  ): Promise<ActiveRecord$Relation<T>> {
+  ): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.order<U>(params));
+    return _this.all<T>().order<U>(params);
   }
 
   static reorder<T extends ActiveRecord$Base, U = { [key: string]: rmt.QueryMethods$Directions }>(
     params: Partial<U>
-  ): Promise<ActiveRecord$Relation<T>> {
+  ): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.reorder<U>(params));
+    return _this.all<T>().reorder<U>(params);
   }
 
-  static offset<T extends ActiveRecord$Base>(value: number): Promise<ActiveRecord$Relation<T>> {
+  static offset<T extends ActiveRecord$Base>(value: number): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.offset(value));
+    return _this.all<T>().offset(value);
   }
 
-  static limit<T extends ActiveRecord$Base>(value: number): Promise<ActiveRecord$Relation<T>> {
+  static limit<T extends ActiveRecord$Base>(value: number): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.limit(value));
+    return _this.all<T>().limit(value);
   }
 
   static group<T extends ActiveRecord$Base, U = { [key: string]: any }>(
     ...props: Array<keyof U>
-  ): Promise<ActiveRecord$Relation<T>> {
+  ): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.group<U>(...props));
+    return _this.all<T>().group<U>(...props);
   }
 
   static unscope<T extends ActiveRecord$Base>(
     ...scopeMethods: rmt.QueryMethods$ScopeMethods[]
-  ): Promise<ActiveRecord$Relation<T>> {
+  ): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
-    return _this.all<T>().then((relation) => relation.unscope(...scopeMethods));
+    return _this.all<T>().unscope(...scopeMethods);
   }
 }

@@ -1,4 +1,4 @@
-import { ActiveRecord$Base as Record, RECORD_ALL } from '@/records/base';
+import { ActiveRecord$Base as Record } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
 
 // third party
@@ -39,8 +39,8 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
   });
 
   afterEach(() => {
+    QueryingRecord.resetRecordCache();
     MockDate.reset();
-    RecordCache.destroy(QueryingRecord.name);
   });
 
   describe('[static] findBy', () => {
@@ -477,7 +477,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
 
     describe('when record do not exist', () => {
       it('should return null', (done) => {
-        RecordCache.destroy(QueryingRecord.name);
+        QueryingRecord.resetRecordCache();
         QueryingRecord.last().then((record) => {
           expect(record).toEqual(null);
           done();
@@ -508,7 +508,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
 
     describe('when record not found', () => {
       it('should correctly', (done) => {
-        RecordCache.destroy(QueryingRecord.name);
+        QueryingRecord.resetRecordCache();
         QueryingRecord.lastOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'QueryingRecord'");
           done();

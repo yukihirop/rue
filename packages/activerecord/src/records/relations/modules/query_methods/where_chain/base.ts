@@ -35,31 +35,4 @@ export class ActiveRecord$QueryMethods$WhereChain<T extends ActiveRecord$Base> {
 
     return `${klassName} ${JSON.stringify(sorted, null, 2)}`;
   }
-
-  // First evaluated here
-  toPromiseArray(): Promise<T[]> {
-    return this.allPromiseFn().then((relation: ActiveRecord$Relation<T>) => {
-      const records = relation.toA();
-      const result = records.reduce((acc: Array<T>, record: T) => {
-        const isMatch = Object.keys(this.params)
-          .map((key: string) => {
-            const val = this.params[key];
-            if (Array.isArray(val)) {
-              return val.includes(record[key]);
-            } else {
-              return (record as any)[key] === val;
-            }
-          })
-          .every(Boolean);
-        if (isMatch) acc.push(record);
-        return acc;
-      }, [] as Array<T>);
-      return Promise.resolve(result);
-    });
-  }
-
-  // alias toPromiseArray
-  toPA(): Promise<T[]> {
-    return this.toPromiseArray();
-  }
 }
