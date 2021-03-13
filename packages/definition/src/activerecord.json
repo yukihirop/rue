@@ -2,7 +2,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/03/13 12:27:06 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -86,7 +86,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -114,7 +114,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -400,7 +400,7 @@
   "ActiveRecord$Relation$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/holder.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -424,7 +424,7 @@
   "ActiveRecord$Relation$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/impl.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -448,7 +448,7 @@
   "QueryingRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -504,7 +504,7 @@
   "StaticFindOrCreateByRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -520,7 +520,7 @@
   "StaticFindOrCreateByOrThrowRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -536,7 +536,7 @@
   "StaticCreateOrFindByOrThrowRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -552,7 +552,7 @@
   "StaticUpdateAllRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -568,7 +568,7 @@
   "StaticTouchAllRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -584,7 +584,7 @@
   "StaticDeleteByRecord": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/__tests__/quering/base.relation.test.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -597,10 +597,38 @@
       }
     ]
   },
+  "ActiveRecord$Core": {
+    "metadata": {
+      "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
+    },
+    "class": [
+      {
+        "text": "export class ActiveRecord$Core extends RueModule {\n  /**\n   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/core.rb#L322-L339\n   */\n  static find<T extends ActiveRecord$Base>(...ids: at.Associations$PrimaryKey[]): T | T[] {\n    if (ids.length == 0) {\n      throw errObj({\n        code: ErrCodes.RECORD_NOT_FOUND,\n        message: `Could'nt find '${this.name}' without an 'id'`,\n      });\n    } else {\n      const klassName = this.name;\n      const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');\n      const filteredData = allData.filter((record) => ids.includes(record.id));\n      if (filteredData.length === 0) {\n        if (ids.length === 1) {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            params: {\n              resource: this.name,\n              id: ids[0],\n            },\n          });\n        } else {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            message: `Could't find all '${this.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,\n          });\n        }\n      } else if (filteredData.length === 1) {\n        return filteredData[0];\n      } else {\n        return filteredData;\n      }\n    }\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Core\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/core.rb#L322-L339\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfind\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m...\u001b[39mids\u001b[38;2;248;248;242m:\u001b[39m at\u001b[38;2;248;248;242m.\u001b[39mAssociations$PrimaryKey\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m|\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n        code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n        message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould'nt find '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' without an 'id'\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m allData \u001b[38;2;248;248;242m=\u001b[39m RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m filteredData \u001b[38;2;248;248;242m=\u001b[39m allData\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfilter\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m ids\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m.\u001b[39mid\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            params\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n              resource\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m,\u001b[39m\n              id\u001b[38;2;248;248;242m:\u001b[39m ids\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould't find all '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' with 'id': [\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m] (found 0 results, but was looking for \u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m)\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          12,
+          48
+        ]
+      }
+    ],
+    "static": {
+      "find": {
+        "text": "static find<T extends ActiveRecord$Base>(...ids: at.Associations$PrimaryKey[]): T | T[] {\n    if (ids.length == 0) {\n      throw errObj({\n        code: ErrCodes.RECORD_NOT_FOUND,\n        message: `Could'nt find '${this.name}' without an 'id'`,\n      });\n    } else {\n      const klassName = this.name;\n      const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');\n      const filteredData = allData.filter((record) => ids.includes(record.id));\n      if (filteredData.length === 0) {\n        if (ids.length === 1) {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            params: {\n              resource: this.name,\n              id: ids[0],\n            },\n          });\n        } else {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            message: `Could't find all '${this.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,\n          });\n        }\n      } else if (filteredData.length === 1) {\n        return filteredData[0];\n      } else {\n        return filteredData;\n      }\n    }\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfind\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m...\u001b[39mids\u001b[38;2;248;248;242m:\u001b[39m at\u001b[38;2;248;248;242m.\u001b[39mAssociations$PrimaryKey\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m|\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n        code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n        message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould'nt find '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' without an 'id'\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m allData \u001b[38;2;248;248;242m=\u001b[39m RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m filteredData \u001b[38;2;248;248;242m=\u001b[39m allData\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfilter\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m ids\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m.\u001b[39mid\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            params\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n              resource\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m,\u001b[39m\n              id\u001b[38;2;248;248;242m:\u001b[39m ids\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould't find all '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' with 'id': [\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m] (found 0 results, but was looking for \u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m)\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          16,
+          47
+        ]
+      }
+    }
+  },
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -690,7 +718,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -711,38 +739,10 @@
       }
     ]
   },
-  "ActiveRecord$Core": {
-    "metadata": {
-      "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveRecord$Core extends RueModule {\n  /**\n   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/core.rb#L322-L339\n   */\n  static find<T extends ActiveRecord$Base>(...ids: at.Associations$PrimaryKey[]): T | T[] {\n    if (ids.length == 0) {\n      throw errObj({\n        code: ErrCodes.RECORD_NOT_FOUND,\n        message: `Could'nt find '${this.name}' without an 'id'`,\n      });\n    } else {\n      const klassName = this.name;\n      const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');\n      const filteredData = allData.filter((record) => ids.includes(record.id));\n      if (filteredData.length === 0) {\n        if (ids.length === 1) {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            params: {\n              resource: this.name,\n              id: ids[0],\n            },\n          });\n        } else {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            message: `Could't find all '${this.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,\n          });\n        }\n      } else if (filteredData.length === 1) {\n        return filteredData[0];\n      } else {\n        return filteredData;\n      }\n    }\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Core\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/core.rb#L322-L339\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfind\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m...\u001b[39mids\u001b[38;2;248;248;242m:\u001b[39m at\u001b[38;2;248;248;242m.\u001b[39mAssociations$PrimaryKey\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m|\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n        code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n        message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould'nt find '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' without an 'id'\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m allData \u001b[38;2;248;248;242m=\u001b[39m RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m filteredData \u001b[38;2;248;248;242m=\u001b[39m allData\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfilter\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m ids\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m.\u001b[39mid\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            params\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n              resource\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m,\u001b[39m\n              id\u001b[38;2;248;248;242m:\u001b[39m ids\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould't find all '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' with 'id': [\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m] (found 0 results, but was looking for \u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m)\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          12,
-          48
-        ]
-      }
-    ],
-    "static": {
-      "find": {
-        "text": "static find<T extends ActiveRecord$Base>(...ids: at.Associations$PrimaryKey[]): T | T[] {\n    if (ids.length == 0) {\n      throw errObj({\n        code: ErrCodes.RECORD_NOT_FOUND,\n        message: `Could'nt find '${this.name}' without an 'id'`,\n      });\n    } else {\n      const klassName = this.name;\n      const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');\n      const filteredData = allData.filter((record) => ids.includes(record.id));\n      if (filteredData.length === 0) {\n        if (ids.length === 1) {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            params: {\n              resource: this.name,\n              id: ids[0],\n            },\n          });\n        } else {\n          throw errObj({\n            code: ErrCodes.RECORD_NOT_FOUND,\n            message: `Could't find all '${this.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,\n          });\n        }\n      } else if (filteredData.length === 1) {\n        return filteredData[0];\n      } else {\n        return filteredData;\n      }\n    }\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mfind\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m...\u001b[39mids\u001b[38;2;248;248;242m:\u001b[39m at\u001b[38;2;248;248;242m.\u001b[39mAssociations$PrimaryKey\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m|\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n        code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n        message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould'nt find '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' without an 'id'\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m allData \u001b[38;2;248;248;242m=\u001b[39m RecordCache\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mRECORD_ALL\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m filteredData \u001b[38;2;248;248;242m=\u001b[39m allData\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mfilter\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m ids\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mrecord\u001b[38;2;248;248;242m.\u001b[39mid\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            params\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n              resource\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m,\u001b[39m\n              id\u001b[38;2;248;248;242m:\u001b[39m ids\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n          \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;230;219;116merrObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\n            code\u001b[38;2;248;248;242m:\u001b[39m ErrCodes\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;249;38;114mRECORD_NOT_FOUND\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n            message\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mCould't find all '\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' with 'id': [\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m] (found 0 results, but was looking for \u001b[39m\u001b[38;2;248;248;242m${\u001b[39mids\u001b[38;2;248;248;242m.\u001b[39mlength\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m)\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n          \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mfilteredData\u001b[38;2;248;248;242m.\u001b[39mlength \u001b[38;2;248;248;242m===\u001b[39m \u001b[38;2;174;129;255m1\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;174;129;255m0\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m filteredData\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          16,
-          47
-        ]
-      }
-    }
-  },
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:46 +09:00"
     },
     "class": [
       {
@@ -942,7 +942,7 @@
   "ActiveRecord$Querying": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/querying/core.ts",
-      "updatedAt": "2021/03/13 12:27:07 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1290,7 +1290,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1306,7 +1306,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1322,7 +1322,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1350,7 +1350,7 @@
   "ActiveRecord$FinderMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/finder_methods/core.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1488,7 +1488,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/core.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1596,7 +1596,7 @@
   "ActiveRecord$QueryMethods$Evaluator": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/evaluator.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1714,7 +1714,7 @@
   "ActiveRecord$Associations$CollectionProxy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/modules/collection_proxy/core.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
+      "updatedAt": "2021/03/13 12:36:47 +09:00"
     },
     "class": [
       {
@@ -1737,62 +1737,6 @@
           18
         ]
       }
-    }
-  },
-  "ActiveRecord$QueryMethods$WhereChain": {
-    "metadata": {
-      "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/where_chain/base.ts",
-      "updatedAt": "2021/03/13 12:27:08 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveRecord$QueryMethods$WhereChain<T extends ActiveRecord$Base> {\n  private params: t.WhereParams;\n  private allPromiseFn: () => Promise<ActiveRecord$Relation<T>>;\n\n  constructor(allPromiseFn: () => Promise<ActiveRecord$Relation<T>>) {\n    this.params = {};\n    this.allPromiseFn = allPromiseFn;\n  }\n\n  where<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {\n    Object.assign(this.params, params);\n    return this;\n  }\n\n  rewhere<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {\n    this.params = params || {};\n    return this;\n  }\n\n  inspect(): string {\n    const klassName = this.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(this).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, this);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$QueryMethods$WhereChain\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m params\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mWhereParams\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;230;219;116mallPromiseFn\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mActiveRecord$Relation\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>>\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;230;219;116mallPromiseFn\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mActiveRecord$Relation\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mallPromiseFn \u001b[38;2;248;248;242m=\u001b[39m allPromiseFn\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m ActiveRecord$QueryMethods$WhereChain\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams\u001b[38;2;248;248;242m,\u001b[39m params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mrewhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m ActiveRecord$QueryMethods$WhereChain\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams \u001b[38;2;248;248;242m=\u001b[39m params \u001b[38;2;248;248;242m||\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          8,
-          38
-        ]
-      }
-    ],
-    "instance": {
-      "where": {
-        "text": "where<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {\n    Object.assign(this.params, params);\n    return this;\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mwhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m ActiveRecord$QueryMethods$WhereChain\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams\u001b[38;2;248;248;242m,\u001b[39m params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          17,
-          20
-        ]
-      },
-      "rewhere": {
-        "text": "rewhere<U>(params: Partial<U>): ActiveRecord$QueryMethods$WhereChain<T> {\n    this.params = params || {};\n    return this;\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mrewhere\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mparams\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m ActiveRecord$QueryMethods$WhereChain\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams \u001b[38;2;248;248;242m=\u001b[39m params \u001b[38;2;248;248;242m||\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          22,
-          25
-        ]
-      },
-      "inspect": {
-        "text": "inspect(): string {\n    const klassName = this.constructor.name;\n    let sorted = {};\n\n    const keys = Object.keys(this).sort();\n    keys.forEach(function (key) {\n      sorted[key] = this[key];\n    }, this);\n\n    return `${klassName} ${JSON.stringify(sorted, null, 2)}`;\n  }",
-        "highlightText": "\u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mname\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mlet\u001b[39m sorted \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mconst\u001b[39m keys \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116msort\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    keys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mfunction\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      sorted\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mklassName\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m \u001b[39m\u001b[38;2;248;248;242m${\u001b[39m\u001b[38;2;249;38;114mJSON\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstringify\u001b[39m\u001b[38;2;248;248;242m(\u001b[39msorted\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mnull\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;174;129;255m2\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          27,
-          37
-        ]
-      }
-    },
-    "$constructor": {
-      "text": "constructor(allPromiseFn: () => Promise<ActiveRecord$Relation<T>>) {\n    this.params = {};\n    this.allPromiseFn = allPromiseFn;\n  }",
-      "highlightText": "\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;230;219;116mallPromiseFn\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;248;248;242m<\u001b[39mActiveRecord$Relation\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m>>\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mparams \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mallPromiseFn \u001b[38;2;248;248;242m=\u001b[39m allPromiseFn\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-      "line": [
-        12,
-        15
-      ]
     }
   }
 }
