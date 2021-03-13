@@ -84,7 +84,7 @@ function createRuntimeRelation<T extends ActiveRecord$Base>(
   }[runtimeKlassName];
 
   // @ts-expect-error
-  return new runtimeKlass(executor).init(recordKlass);
+  return new runtimeKlass(executor)._init(recordKlass);
 }
 
 function defineScope<T extends ActiveRecord$Base>(klass: ct.Constructor<T>, scopeName: string) {

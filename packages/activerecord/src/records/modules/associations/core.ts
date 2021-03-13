@@ -182,5 +182,5 @@ function createRuntimeCollectionProxy<T extends ActiveRecord$Base>(
   }[runtimeKlassName];
 
   // @ts-expect-error
-  return new runtimeKlass(executor).init(recordKlass);
+  return new runtimeKlass(executor)._init(recordKlass);
 }

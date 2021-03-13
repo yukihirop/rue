@@ -29,7 +29,7 @@ describe('ActiveRecord$Relation$Base', () => {
       const relation = new Relation<ConstructorRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(ConstructorRecord);
+      )._init(ConstructorRecord);
       // @ts-ignore
       expect(typeof relation.recordKlass === 'function').toEqual(true);
       // @ts-ignore
@@ -61,7 +61,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsManyRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(IsManyRecord);
+    )._init(IsManyRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -123,7 +123,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsNoneRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(IsNoneRecord);
+    )._init(IsNoneRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -182,7 +182,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsOneRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(IsOneRecord);
+    )._init(IsOneRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -238,7 +238,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsAnyRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(IsAnyRecord);
+    )._init(IsAnyRecord);
 
     describe('when return true', () => {
       it('should correctly', (done) => {
@@ -296,7 +296,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<IsBlankRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(IsBlankRecord);
+    )._init(IsBlankRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -345,7 +345,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<BuildRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(BuildRecord);
+    )._init(BuildRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -433,7 +433,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<CreateRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(CreateRecord);
+      )._init(CreateRecord);
     });
 
     describe('when default', () => {
@@ -534,7 +534,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<CreateOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(CreateOrThrowRecord);
+      )._init(CreateOrThrowRecord);
     });
 
     describe('when default', () => {
@@ -631,7 +631,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<CreateOrFindByRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(CreateOrFindByRecord);
+    )._init(CreateOrFindByRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -699,7 +699,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<CreateOrFindByOrThrowRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(CreateOrFindByOrThrowRecord);
+    )._init(CreateOrFindByOrThrowRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -795,7 +795,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<DeleteByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(DeleteByRecord);
+      )._init(DeleteByRecord);
     });
 
     describe('when default', () => {
@@ -850,7 +850,7 @@ describe('ActiveRecord$Relation$Base', () => {
     relation = new Relation<DestroyByRecord>(
       (resolve, _reject) => resolve([holder, []])
       // @ts-expect-error
-    ).init(DestroyByRecord);
+    )._init(DestroyByRecord);
 
     // @important
     // records are object.freeze when destroyed
@@ -866,7 +866,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<DestroyByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(DestroyByRecord);
+      )._init(DestroyByRecord);
     });
 
     describe('when default', () => {
@@ -969,7 +969,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<DeleteAllRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(DeleteAllRecord);
+    )._init(DeleteAllRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -1023,7 +1023,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<DestroyAllRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(DestroyAllRecord);
+    )._init(DestroyAllRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -1109,7 +1109,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<FindOrCreateByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(FindOrCreateByRecord);
+      )._init(FindOrCreateByRecord);
     });
 
     describe("when return 'findBy' result", () => {
@@ -1217,7 +1217,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<FindOrCreateByOrThrowRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(FindOrCreateByOrThrowRecord);
+    )._init(FindOrCreateByOrThrowRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -1343,7 +1343,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<FindOrInitializeByRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(FindOrInitializeByRecord);
+    )._init(FindOrInitializeByRecord);
 
     beforeEach(() => {
       holder.records = Array.from(records);
@@ -1416,7 +1416,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<UpdateAllRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(UpdateAllRecord);
+    )._init(UpdateAllRecord);
 
     describe("when update 'name' failed", () => {
       it('should correctly', (done) => {
@@ -1462,7 +1462,7 @@ describe('ActiveRecord$Relation$Base', () => {
     const relation = new Relation<TouchAllRecord>(
       (resolve, _reject) => resolve([holder, records])
       // @ts-expect-error
-    ).init(TouchAllRecord);
+    )._init(TouchAllRecord);
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -1596,7 +1596,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<ToARecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(ToARecord);
+      )._init(ToARecord);
     });
 
     describe('when default', () => {

@@ -43,7 +43,7 @@ export class ActiveRecord$Relation$Base<
   }
 
   // instead of constructor
-  protected init(recordKlass: ct.Constructor<T>): this {
+  protected _init(recordKlass: ct.Constructor<T>): this {
     this.recordKlass = recordKlass;
     return this;
   }

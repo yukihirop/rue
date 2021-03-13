@@ -38,7 +38,7 @@ class QueryMethodsRelation extends Relation<QueryMethodsRecord> {}
 describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   let holder = new Holder(QueryMethodsRecord, []);
   // @ts-expect-error
-  let relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []])).init(
+  let relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []]))._init(
     QueryMethodsRecord
   );
 
@@ -57,7 +57,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
     // Actually, relation is not reused, so this process is not necessary.
     let holder = new Holder(QueryMethodsRecord, []);
     // @ts-expect-error
-    relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []])).init(
+    relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []]))._init(
       QueryMethodsRecord
     );
   });
