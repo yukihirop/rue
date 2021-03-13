@@ -52,27 +52,15 @@ export class ActiveRecord$Relation$Base<
    */
   rueThen(onFulfilled: t.PromiseResolve<T>, onRejected?: t.PromiseReject<any>) {
     return super.then((value) => {
-      if (onFulfilled) {
-        /**
-         * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
-         */
-        if (Array.isArray(value) && value[0] instanceof ActiveRecord$Relation$Holder) {
-          const [holder, records] = value;
+      /**
+       * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
+       */
+      if (Array.isArray(value) && value[0] instanceof ActiveRecord$Relation$Holder) {
+        const [holder, records] = value;
 
-          if (records instanceof Promise) {
-            records.then((r) => {
-              holder.records = r;
-              Evaluator.all(holder);
-
-              if (Object.keys(holder.groupedRecords).length > 0) {
-                return onFulfilled(holder.groupedRecords);
-              } else {
-                return onFulfilled(holder.records);
-              }
-            });
-          } else {
-            holder.records = records as T[];
-
+        if (records instanceof Promise) {
+          records.then((r) => {
+            holder.records = r;
             Evaluator.all(holder);
 
             if (Object.keys(holder.groupedRecords).length > 0) {
@@ -80,17 +68,25 @@ export class ActiveRecord$Relation$Base<
             } else {
               return onFulfilled(holder.records);
             }
-          }
+          });
         } else {
-          /**
-           * value is records ((e.g.) T | T[])
-           * @description type error
-           */
-          // @ts-expect-error
-          return onFulfilled(value);
+          holder.records = records as T[];
+
+          Evaluator.all(holder);
+
+          if (Object.keys(holder.groupedRecords).length > 0) {
+            return onFulfilled(holder.groupedRecords);
+          } else {
+            return onFulfilled(holder.records);
+          }
         }
-      } else if (onRejected) {
-        return onRejected(value);
+      } else {
+        /**
+         * value is records ((e.g.) T | T[])
+         * @description type error
+         */
+        // @ts-expect-error
+        return onFulfilled(value);
       }
     }, onRejected);
   }
