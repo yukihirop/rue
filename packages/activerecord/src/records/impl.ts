@@ -71,7 +71,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     ActiveRecord$Associations._defineAssociations(self);
   }
   // ActiveRecord$Scoping
-  static all: <T extends ActiveRecord$Base<t.Params>>() => Promise<ActiveRecord$Relation<T>>;
+  static all: <T extends ActiveRecord$Base<t.Params>>() => ActiveRecord$Relation<T>;
   // ActiveRecord$Core
   static find: <T extends ActiveRecord$Base<t.Params>>(
     ...ids: at.Associations$PrimaryKey[]
@@ -142,34 +142,30 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   ) => Promise<number>;
   static where: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params: Partial<U>
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
   static rewhere: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params: Partial<U>
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
   static order: <
     T extends ActiveRecord$Base<t.Params>,
     U = { [key: string]: rmt.QueryMethods$Directions }
   >(
     params: Partial<U>
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
   static reorder: <
     T extends ActiveRecord$Base<t.Params>,
     U = { [key: string]: rmt.QueryMethods$Directions }
   >(
     params: Partial<U>
-  ) => Promise<ActiveRecord$Relation<T>>;
-  static offset: <T extends ActiveRecord$Base<t.Params>>(
-    value: number
-  ) => Promise<ActiveRecord$Relation<T>>;
-  static limit: <T extends ActiveRecord$Base<t.Params>>(
-    value: number
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
+  static offset: <T extends ActiveRecord$Base<t.Params>>(value: number) => ActiveRecord$Relation<T>;
+  static limit: <T extends ActiveRecord$Base<t.Params>>(value: number) => ActiveRecord$Relation<T>;
   static group: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     ...props: Array<keyof U>
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
   static unscope: <T extends ActiveRecord$Base<t.Params>>(
     ...scopeMethods: rmt.QueryMethods$ScopeMethods[]
-  ) => Promise<ActiveRecord$Relation<T>>;
+  ) => ActiveRecord$Relation<T>;
 
   /**
    * prototype

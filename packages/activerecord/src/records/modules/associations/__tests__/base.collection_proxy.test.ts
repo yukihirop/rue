@@ -18,11 +18,11 @@ describe('Association(CollectionProxy)', () => {
 
     AssociationsModule.rueModuleExtendedFrom(TestScopeAssociation, { only: ['scope'] });
 
-    TestScopeAssociation.scope<any>('scopeName', () => Promise.resolve([1, 2, 3] as any));
+    TestScopeAssociation.scope<any>('scopeName', (self) => self.where({ id: [1, 2, 3] }));
 
     it('should correctly', () => {
       expect(Registry.data['TestScopeAssociation']['scope']['scopeName'].toString()).toEqual(
-        '() => Promise.resolve([1, 2, 3])'
+        '(self) => self.where({ id: [1, 2, 3] })'
       );
     });
   });

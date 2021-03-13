@@ -32,8 +32,7 @@ describe('Record (Scoping)', () => {
 
     describe('when do not exists cahce', () => {
       it('should correctly', (done) => {
-        TestAllRecord.all<TestAllRecord>().then((relation) => {
-          const records = relation.toA();
+        TestAllRecord.all<TestAllRecord>().then((records: TestAllRecord[]) => {
           expect(records.length).toEqual(2);
           expect(records[0].name).toEqual('name_1');
           expect(records[0].age).toEqual(1);

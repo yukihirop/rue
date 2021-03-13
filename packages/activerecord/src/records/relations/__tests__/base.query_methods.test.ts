@@ -1,5 +1,8 @@
 import { ActiveRecord$Base as Record } from '@/records';
-import { ActiveRecord$Relation as Relation } from '@/records/relations';
+import {
+  ActiveRecord$Relation as Relation,
+  ActiveRecord$Relation$Holder as Holder,
+} from '@/records/relations';
 import { cacheForRecords as RecordCache } from '@/registries';
 
 // thrid party
@@ -33,14 +36,18 @@ class QueryMethodsRecord extends Record<QueryMethodsRecordParams> {
 class QueryMethodsRelation extends Relation<QueryMethodsRecord> {}
 
 describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
-  let relation = new QueryMethodsRelation(QueryMethodsRecord, []);
+  let holder = new Holder(QueryMethodsRecord, []);
+  // @ts-expect-error
+  let relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []])).init(
+    QueryMethodsRecord
+  );
 
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
-  beforeEach(() => {
+  beforeEach(async () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    relation.create({ id: 1, name: 'name_1', age: 1 });
-    relation.create({ id: 2, name: 'name_2', age: 2 });
-    relation.create({ id: 3, name: 'name_3', age: 3 });
+    await relation.create({ id: 1, name: 'name_1', age: 1 });
+    await relation.create({ id: 2, name: 'name_2', age: 2 });
+    await relation.create({ id: 3, name: 'name_3', age: 3 });
   });
 
   afterEach(() => {
@@ -48,17 +55,11 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
     RecordCache.destroy(QueryMethodsRecord.name);
 
     // Actually, relation is not reused, so this process is not necessary.
-
+    let holder = new Holder(QueryMethodsRecord, []);
     // @ts-expect-error
-    relation.records = [];
-    // @ts-expect-error
-    relation._scopeParams = {
-      where: {},
-      order: {},
-      offset: 0,
-      limit: 0,
-      group: [],
-    };
+    relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []])).init(
+      QueryMethodsRecord
+    );
   });
 
   describe('#where (rewhere)', () => {
@@ -66,8 +67,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
       it('should correctly', (done) => {
         relation
           .where<QueryMethodsRecordParams>({ name: 'name_1' })
-          .toPromiseArray()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -97,8 +97,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
           .where<QueryMethodsRecordParams>({ name: 'name_1' })
           .where<QueryMethodsRecordParams>({ age: 1 })
           .rewhere<QueryMethodsRecordParams>({ name: 'name_2' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -121,199 +120,184 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   describe('#order', () => {
     describe("when specify 'name: 'desc''", () => {
       it('should correctly', (done) => {
-        relation
-          .order({ name: 'desc' })
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-            ]);
-            done();
-          });
+        relation.order({ name: 'desc' }).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+          ]);
+          done();
+        });
       });
     });
 
     describe("when specify 'name: 'DESC''", () => {
       it('should correctly', (done) => {
-        relation
-          .order({ name: 'DESC' })
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-            ]);
-            done();
-          });
+        relation.order({ name: 'DESC' }).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+          ]);
+          done();
+        });
       });
     });
 
     describe("when specify 'name: 'asc''", () => {
       it('should correctly', (done) => {
-        relation
-          .order({ age: 'asc' })
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-            ]);
-            done();
-          });
+        relation.order({ age: 'asc' }).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+          ]);
+          done();
+        });
       });
     });
 
     describe("when specify 'name: 'ASC''", () => {
       it('should correctly', (done) => {
-        relation
-          .order({ age: 'ASC' })
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-            ]);
-            done();
-          });
+        relation.order({ age: 'ASC' }).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+          ]);
+          done();
+        });
       });
     });
 
     describe('when invalid direction', () => {
       it('should correctly', (done) => {
-        relation
-          .order({ name: 'invalid' })
-          .toPA()
-          .catch((err) => {
-            expect(err.toString()).toEqual(
-              "Error: Direction 'invalid' is invalid. Valid directions are: '[asc,desc,ASC,DESC]'"
-            );
-            done();
-          });
+        relation.order({ name: 'invalid' }).rueCatch((err) => {
+          expect(err.toString()).toEqual(
+            "Error: Direction 'invalid' is invalid. Valid directions are: '[asc,desc,ASC,DESC]'"
+          );
+          done();
+        });
       });
     });
   });
@@ -324,8 +308,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ name: 'desc' })
           .reorder({ name: 'asc' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -371,8 +354,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ name: 'DESC' })
           .reorder({ age: 'ASC' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -418,8 +400,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ age: 'asc' })
           .reorder({ name: 'desc' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -465,8 +446,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ age: 'ASC' })
           .reorder({ name: 'DESC' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -512,8 +492,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ name: 'invalid' })
           .reorder({ name: 'reorder' })
-          .toPA()
-          .catch((err) => {
+          .rueCatch((err) => {
             expect(err.toString()).toEqual(
               "Error: Direction 'reorder' is invalid. Valid directions are: '[asc,desc,ASC,DESC]'"
             );
@@ -526,36 +505,33 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   describe('#offset', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation
-          .offset(1)
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-            ]);
-            done();
-          });
+        relation.offset(1).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+          ]);
+          done();
+        });
       });
     });
 
@@ -564,8 +540,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .where({ age: [1, 2] })
           .offset(1)
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -589,8 +564,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .offset(1)
           .order({ age: 'desc' })
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -624,25 +598,22 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   describe('#limit', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation
-          .limit(1)
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-            ]);
-            done();
-          });
+        relation.limit(1).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+          ]);
+          done();
+        });
       });
     });
 
@@ -651,8 +622,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .where({ id: [1, 2] })
           .limit(1)
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -676,8 +646,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ age: 'desc' })
           .limit(2)
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -711,11 +680,8 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   describe('#group', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
-        QueryMethodsRecord.create([{ id: 4, name: 'name_2', age: 2 }]);
-        relation
-          .group<QueryMethodsRecordParams>('name', 'age')
-          .toPA()
-          .then((grouped) => {
+        relation.create({ id: 4, name: 'name_2', age: 2 }).then((_record) => {
+          relation.group<QueryMethodsRecordParams>('name', 'age').rueThen((grouped) => {
             expect(grouped).toEqual({
               '[name_1,1]': [
                 {
@@ -770,6 +736,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
             });
             done();
           });
+        });
       });
     });
   });
@@ -780,7 +747,6 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .order({ age: 'desc' })
           .reverseOrder()
-          .toPA()
           .then((records) => {
             expect(records).toEqual([
               {
@@ -824,47 +790,44 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
 
     describe("when call 'reverseOrder' only", () => {
       it('should correctly', (done) => {
-        relation
-          .reverseOrder()
-          .toPA()
-          .then((records) => {
-            expect(records).toEqual([
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 1,
-                errors: {},
-                name: 'name_1',
-                id: 1,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 2,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 2,
-                errors: {},
-                name: 'name_2',
-                id: 2,
-              },
-              {
-                __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 3,
-                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _destroyed: false,
-                _newRecord: false,
-                age: 3,
-                errors: {},
-                name: 'name_3',
-                id: 3,
-              },
-            ]);
-            done();
-          });
+        relation.reverseOrder().then((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              name: 'name_1',
+              id: 1,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              name: 'name_2',
+              id: 2,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              name: 'name_3',
+              id: 3,
+            },
+          ]);
+          done();
+        });
       });
     });
   });
@@ -875,8 +838,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
         relation
           .where({ name: 'name_1' })
           .unscope('where')
-          .toPA()
-          .then((records) => {
+          .rueThen((records) => {
             expect(records).toEqual([
               {
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -919,20 +881,22 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
 
     describe('when throw errors', () => {
       describe('when do not give arguments', () => {
-        it('should correctly', () => {
-          expect(() => {
-            relation.unscope();
-          }).toThrowError("'unscope()' must contain arguments.");
+        it('should correctly', (done) => {
+          relation.unscope().rueCatch((err) => {
+            expect(err.toString()).toEqual("Error: 'unscope()' must contain arguments.");
+            done();
+          });
         });
       });
 
       describe('when give unsupported arguments', () => {
-        it('should correctly', () => {
-          expect(() => {
-            relation.unscope('unsupported' as any);
-          }).toThrowError(
-            "Called 'unscope()' with invalid unscoping argument '[unsupported]'. Valid arguments are '[where,order,offset,limit,group]'."
-          );
+        it('should correctly', (done) => {
+          relation.unscope('unsupported' as any).rueCatch((err) => {
+            expect(err.toString()).toEqual(
+              "Error: Called 'unscope()' with invalid unscoping argument '[unsupported]'. Valid arguments are '[where,order,offset,limit,group]'."
+            );
+            done();
+          });
         });
       });
     });

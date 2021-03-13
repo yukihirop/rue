@@ -20,6 +20,11 @@ export class Account extends ActiveRecord<AccountParams> {
     return Promise.resolve([
       { id: 1, name: 'name_1', email: 'name_1@example.com' },
       { id: 2, name: 'name_2', email: 'name_2@example.com' },
+      { id: 3, name: 'name_3', email: 'name_3@example.com' },
+      { id: 4, name: 'name_4', email: 'name_4@example.com' },
+      { id: 5, name: 'name_5', email: 'name_5@example.com' },
+      { id: 6, name: 'name_6', email: 'name_6@example.com' },
+      { id: 7, name: 'name_7', email: 'name_7@example.com' },
     ]);
   }
 }

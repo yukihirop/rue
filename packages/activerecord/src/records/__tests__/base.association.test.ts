@@ -57,8 +57,7 @@ describe('Record(Association)', () => {
 
     it('should correctly', (done) => {
       TestAssociationBelongsToChildRecord.all<TestAssociationBelongsToChildRecord>().then(
-        (relation) => {
-          const records = relation.toA();
+        (records) => {
           const record = records[0];
           expect(record.id).toEqual(1);
           expect(record.foreignKey).toEqual(1);
@@ -121,8 +120,7 @@ describe('Record(Association)', () => {
     TestAssociationHasOneRecord.hasOne('child', TestAssociationHasOneChildRecord, 'foreignKey');
 
     it('should correctly', (done) => {
-      TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((relation) => {
-        const records = relation.toA();
+      TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((records) => {
         const record = records[0];
         expect(record.id).toEqual(1);
         expect(record.name).toEqual('name_1');
@@ -190,15 +188,13 @@ describe('Record(Association)', () => {
     );
 
     it('should correctly', (done) => {
-      TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((relation) => {
-        const records = relation.toA();
+      TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((records) => {
         const record = records[0];
         expect(record.id).toEqual(1);
         expect(record.name).toEqual('name_1');
         expect(record.age).toEqual(1);
 
-        record.children().then((relation) => {
-          const records = relation.toA();
+        record.children().then((records) => {
           expect(records.length).toEqual(2);
           expect(records[0].id).toEqual(1);
           expect(records[0].foreignKey).toEqual(1);
@@ -266,55 +262,38 @@ describe('Record(Association)', () => {
     );
 
     describe("when 'Assembly'", () => {
-      it('should correctly', async (done) => {
-        const assemblies = await (
-          await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>()
-        ).toA();
-        const parts = await (
-          await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>()
-        ).toA();
+      it('should correctly', async () => {
+        const assemblies = await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>();
+        const parts = await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>();
         const assembly = assemblies[0];
 
         assembly.hasAndBelongsToMany(parts[0]);
         assembly.hasAndBelongsToMany(parts[1]);
 
-        assembly
-          .parts()
-          .then((relation) => {
-            const records = relation.toA();
-            expect(records.length).toEqual(2);
-            expect(records[0].id).toEqual(1);
-            expect(records[0].name).toEqual('part_name_1');
-            expect(records[1].id).toEqual(2);
-            expect(records[1].name).toEqual('part_name_2');
-            done();
-          })
-          .catch((e) => console.error(e));
+        const records = await assembly.parts();
+        expect(records.length).toEqual(2);
+        expect(records[0].id).toEqual(1);
+        expect(records[0].name).toEqual('part_name_1');
+        expect(records[1].id).toEqual(2);
+        expect(records[1].name).toEqual('part_name_2');
       });
     });
 
     describe("when 'Part'", () => {
-      it('should correctly', async (done) => {
-        const assemblies = await (
-          await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>()
-        ).toA();
-        const parts = await (
-          await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>()
-        ).toA();
+      it('should correctly', async () => {
+        const assemblies = await TestAssociationHasAndBelongsToManyAssemblyRecord.all<TestAssociationHasAndBelongsToManyAssemblyRecord>();
+        const parts = await TestAssociationHasAndBelongsToManyPartRecord.all<TestAssociationHasAndBelongsToManyPartRecord>();
         const part = parts[0];
 
         part.hasAndBelongsToMany(assemblies[0]);
         part.hasAndBelongsToMany(assemblies[1]);
 
-        part.assemblies().then((relation) => {
-          const records = relation.toA();
-          expect(records.length).toEqual(2);
-          expect(records[0].id).toEqual(1);
-          expect(records[0].name).toEqual('assembly_name_1');
-          expect(records[1].id).toEqual(2);
-          expect(records[1].name).toEqual('assembly_name_2');
-          done();
-        });
+        const records = await part.assemblies();
+        expect(records.length).toEqual(2);
+        expect(records[0].id).toEqual(1);
+        expect(records[0].name).toEqual('assembly_name_1');
+        expect(records[1].id).toEqual(2);
+        expect(records[1].name).toEqual('assembly_name_2');
       });
     });
   });
@@ -345,16 +324,14 @@ describe('Record(Association)', () => {
     TestScopeRecord.scope('fromName', (name) => TestScopeRecord.where({ name: name }));
 
     it('should correctly', (done) => {
-      TestScopeRecord.fromName('name_1').then((relation) => {
-        const records = relation.toA();
+      TestScopeRecord.fromName('name_1').then((records: TestScopeRecord[]) => {
         expect(records.length).toEqual(1);
         expect(records[0].id).toEqual(1);
         expect(records[0].name).toEqual('name_1');
         expect(records[0].age).toEqual(1);
         done();
       });
-      TestScopeRecord.fromName('name_2').then((relation) => {
-        const records = relation.toA();
+      TestScopeRecord.fromName('name_2').then((records: TestScopeRecord[]) => {
         expect(records.length).toEqual(1);
         expect(records[0].id).toEqual(2);
         expect(records[0].name).toEqual('name_2');

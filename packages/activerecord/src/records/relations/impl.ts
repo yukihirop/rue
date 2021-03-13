@@ -3,7 +3,7 @@ import { ActiveSupport$ImplBase } from '@rue/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';
-import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$Relation, ActiveRecord$Relation$Holder } from '@/records/relations';
 
 // modules
 import { ActiveRecord$FinderMethods, ActiveRecord$QueryMethods } from './modules';
@@ -12,43 +12,52 @@ import { ActiveRecord$FinderMethods, ActiveRecord$QueryMethods } from './modules
 import type * as at from '@/records/modules/associations';
 import type * as mt from './modules';
 
-abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
+/**
+ * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
+ * @see https://gist.github.com/oliverfoster/00897f4552cef64653ef14d8b26338a6
+ * @see https://github.com/microsoft/TypeScript/issues/12661
+ * @todo Reconsider Promise type
+ */
+abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> extends Promise<
+  [ActiveRecord$Relation$Holder<T>, T[] | PromiseLike<T[]>]
+> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
+
+  /**
+   * prototype
+   */
+
+  // ActiveRecord$FinderMethods
+  find: <P = { [key: string]: any }>(...ids: at.Associations$PrimaryKey[]) => Promise<T | T[]>;
+  isExists: <P>(condition?: mt.FinderMethods$ExistsCondition<P>) => Promise<boolean>;
+  findBy: <P>(params: Partial<P>) => Promise<T>;
+  findByOrThrow: <P>(params: Partial<P>) => Promise<T>;
+  first: (limit?: number) => Promise<T | T[]>;
+  firstOrThrow: (limit?: number) => Promise<T | T[]>;
+  isInclude: (record: T) => Promise<boolean>;
+  isMember: (record: T) => Promise<boolean>;
+  last: (limit?: number) => Promise<T | T[]>;
+  lastOrThrow: (limit?: number) => Promise<T | T[]>;
+  take: (limit?: number) => Promise<T | T[]>;
+  takeOrThrow: (limit?: number) => Promise<T | T[]>;
+  // ActiveRecord$QueryMethods
+  where: <U>(params: Partial<U>) => ActiveRecord$Relation<T>;
+  rewhere: <U>(params: Partial<U>) => ActiveRecord$Relation<T>;
+  order: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
+    params: Partial<U>
+  ) => ActiveRecord$Relation<T>;
+  reorder: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
+    params: Partial<U>
+  ) => ActiveRecord$Relation<T>;
+  reverseOrder: () => ActiveRecord$Relation<T>;
+  offset: (value: number) => ActiveRecord$Relation<T>;
+  limit: (value: number) => ActiveRecord$Relation<T>;
+  group: <U = { [key: string]: any }>(...props: Array<keyof U>) => ActiveRecord$Relation<T>;
+  unscope: (...scopeMethods: mt.QueryMethods$ScopeMethods[]) => ActiveRecord$Relation<T>;
 }
 
-interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {
-  // ActiveRecord$FinderMethods
-  find<U = { [key: string]: any }>(...ids: at.Associations$PrimaryKey[]): Promise<T | T[]>;
-  isExists<U>(condition?: mt.FinderMethods$ExistsCondition<U>): Promise<boolean>;
-  findBy<U>(params: Partial<U>): Promise<T>;
-  findByOrThrow<U>(params: Partial<U>): Promise<T>;
-  first(limit?: number): Promise<T | T[]>;
-  firstOrThrow(limit?: number): Promise<T | T[]>;
-  isInclude(record: T): boolean;
-  isMember(record: T): boolean;
-  last(limit?: number): Promise<T | T[]>;
-  lastOrThrow(limit?: number): Promise<T | T[]>;
-  take(limit?: number): Promise<T | T[]>;
-  takeOrThrow(limit?: number): Promise<T | T[]>;
-  // ActiveRecord$QueryMethods
-  where<U>(params: Partial<U>): ActiveRecord$Relation<T>;
-  rewhere<U>(params: Partial<U>): ActiveRecord$Relation<T>;
-  order<U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
-    params: Partial<U>
-  ): ActiveRecord$Relation<T>;
-  reorder<U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
-    params: Partial<U>
-  ): ActiveRecord$Relation<T>;
-  reverseOrder(): ActiveRecord$Relation<T>;
-  offset(value: number): ActiveRecord$Relation<T>;
-  limit(value: number): ActiveRecord$Relation<T>;
-  group<U = { [key: string]: any }>(...props: Array<keyof U>): ActiveRecord$Relation<T>;
-  unscope(...scopeMethods: mt.QueryMethods$ScopeMethods[]): ActiveRecord$Relation<T>;
-  // inner methods
-  toPromiseArray(): Promise<T[] | { [key: string]: T[] }>;
-  toPA(): Promise<T[] | { [key: string]: T[] }>;
-}
+interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {}
 
 ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
   only: [
@@ -77,8 +86,6 @@ ActiveRecord$QueryMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
     'limit',
     'group',
     'unscope',
-    'toPromiseArray',
-    'toPA',
   ],
 });
 

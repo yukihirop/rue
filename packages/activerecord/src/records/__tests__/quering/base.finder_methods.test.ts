@@ -1,4 +1,4 @@
-import { ActiveRecord$Base as Record, RECORD_ALL } from '@/records/base';
+import { ActiveRecord$Base as Record } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
 
 // third party
@@ -39,8 +39,8 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
   });
 
   afterEach(() => {
+    QueryingRecord.resetRecordCache();
     MockDate.reset();
-    RecordCache.destroy(QueryingRecord.name);
   });
 
   describe('[static] findBy', () => {
@@ -385,14 +385,14 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
         QueryingRecord.last<QueryingRecord>().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
-            __rue_record_id__: 1,
+            __rue_record_id__: 3,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             _destroyed: false,
             _newRecord: false,
-            age: 1,
+            age: 3,
             errors: {},
-            name: 'name_1',
-            id: 1,
+            id: 3,
+            name: 'name_3',
           });
           done();
         });
@@ -477,7 +477,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
 
     describe('when record do not exist', () => {
       it('should return null', (done) => {
-        RecordCache.destroy(QueryingRecord.name);
+        QueryingRecord.resetRecordCache();
         QueryingRecord.last().then((record) => {
           expect(record).toEqual(null);
           done();
@@ -492,14 +492,14 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
         QueryingRecord.lastOrThrow().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
-            __rue_record_id__: 1,
+            __rue_record_id__: 3,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             _destroyed: false,
             _newRecord: false,
-            age: 1,
+            age: 3,
             errors: {},
-            name: 'name_1',
-            id: 1,
+            id: 3,
+            name: 'name_3',
           });
           done();
         });
@@ -508,7 +508,7 @@ describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {
 
     describe('when record not found', () => {
       it('should correctly', (done) => {
-        RecordCache.destroy(QueryingRecord.name);
+        QueryingRecord.resetRecordCache();
         QueryingRecord.lastOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'QueryingRecord'");
           done();
