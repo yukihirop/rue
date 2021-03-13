@@ -141,11 +141,13 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   private isPresent(params: any): boolean {
     if (typeof params === 'number') {
-      return params !== 0;
+      return params >= 0;
     } else if (Array.isArray(params)) {
       return params.length > 0;
-    } else {
+    } else if (typeof params === 'object' && params !== null) {
       return params && Object.keys(params).length > 0;
+    } else {
+      return false;
     }
   }
 }

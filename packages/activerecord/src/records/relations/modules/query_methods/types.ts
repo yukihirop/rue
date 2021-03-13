@@ -5,7 +5,7 @@ export type ScopeMethods = 'group' | 'limit' | 'offset' | 'order' | 'where';
 export type ScopeParams<U> = {
   where: Partial<U>;
   order: { [P in keyof U]: Directions };
-  offset: number;
-  limit: number;
+  offset?: number;
+  limit?: number;
   group: string[];
 };

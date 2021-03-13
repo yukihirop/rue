@@ -12,8 +12,8 @@ export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
   public scopeParams: {
     where: { [key: string]: any };
     order: { [key: string]: mt.QueryMethods$Directions };
-    offset: number;
-    limit: number;
+    offset?: number;
+    limit?: number;
     group: string[];
   };
   public groupedRecords: { [key: string]: T[] };
@@ -27,8 +27,8 @@ export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
     this._defaultScopeParams = {
       where: {},
       order: {},
-      offset: 0,
-      limit: 0,
+      offset: undefined,
+      limit: undefined,
       group: [],
     };
     Object.freeze(this._defaultScopeParams);
