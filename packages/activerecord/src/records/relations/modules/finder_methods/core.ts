@@ -22,7 +22,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     const _this = this as ActiveRecord$Relation<T>;
 
     // @ts-expect-error
-    return _this.evaluateThen<boolean>((holder) => {
+    return _this._evaluateThen<boolean>((holder) => {
       const records = holder.records;
 
       if (!condition) {
@@ -123,7 +123,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    return _this.evaluateThen<boolean>((holder) => {
+    return _this._evaluateThen<boolean>((holder) => {
       const allRecordIds = holder.records.map((r) => r[RUE_RECORD_ID]);
       return allRecordIds.includes(record[RUE_RECORD_ID]);
     });
@@ -146,7 +146,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    return _this.evaluateThen((holder) => {
+    return _this._evaluateThen((holder) => {
       const records = holder.records;
       if (records.length === 0) {
         return null;
@@ -188,7 +188,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     const _this = this as ActiveRecord$Relation<T>;
 
     // @ts-expect-error
-    return _this.evaluateThen((holder) => {
+    return _this._evaluateThen((holder) => {
       if (holder.records.length === 0) {
         return null;
       } else if (limit === 1) {

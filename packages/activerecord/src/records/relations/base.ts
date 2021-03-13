@@ -132,7 +132,7 @@ export class ActiveRecord$Relation$Base<
     );
   }
 
-  private evaluateThen<U>(
+  protected _evaluateThen<U>(
     callback: (holder: ActiveRecord$Relation$Holder<T>) => U | Promise<U>
   ): Promise<U> {
     return super.then(([holder, records]) => {
@@ -371,7 +371,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-destroy_all
    */
   destroyAll(): Promise<T[]> {
-    return this.evaluateThen((holder) => {
+    return this._evaluateThen((holder) => {
       const destroyed = holder.records.map((record: T) => {
         const destroyed = record.destroy();
         Object.freeze(destroyed);
@@ -444,7 +444,7 @@ export class ActiveRecord$Relation$Base<
       return record.update(params);
     };
 
-    return this.evaluateThen<number>((holder) => {
+    return this._evaluateThen<number>((holder) => {
       return Promise.all(holder.records.map(updateFn)).then((result) => {
         return result.filter(Boolean).length;
       });
@@ -487,7 +487,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
    */
   toA(): Promise<T[]> {
-    return this.evaluateThen((holder) => {
+    return this._evaluateThen((holder) => {
       return holder.records;
     });
   }
