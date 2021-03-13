@@ -30,7 +30,8 @@ function _resolveScopes(klass: Function) {
       enumerable: true,
       configurable: false,
       value: (...args) => {
-        const scopeVal = scopeFn(...args);
+        // @ts-expect-error
+        const scopeVal = scopeFn(klass, ...args);
         return scopeVal;
       },
     });

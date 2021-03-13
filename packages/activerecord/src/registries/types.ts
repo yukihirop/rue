@@ -13,7 +13,10 @@ export type Associations = {
 
 export type Scopes = {
   scope: {
-    [uniqueScopeName: string]: (...args) => Promise<ActiveRecord$Base[]>;
+    [uniqueScopeName: string]: (
+      self: typeof ActiveRecord$Base,
+      ...args
+    ) => Promise<ActiveRecord$Base[]>;
   };
 };
 

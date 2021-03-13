@@ -321,7 +321,7 @@ describe('Record(Association)', () => {
       }
     }
 
-    TestScopeRecord.scope('fromName', (name) => TestScopeRecord.where({ name: name }));
+    TestScopeRecord.scope('fromName', (self, name) => self.where({ name }));
 
     it('should correctly', (done) => {
       TestScopeRecord.fromName('name_1').then((records: TestScopeRecord[]) => {
