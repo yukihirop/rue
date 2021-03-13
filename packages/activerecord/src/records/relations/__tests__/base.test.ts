@@ -12,11 +12,11 @@ import type * as t from '@/index';
 
 describe('ActiveRecord$Relation$Base', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
-  beforeAll(() => {
+  beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
   });
 
-  afterAll(() => {
+  afterEach(() => {
     MockDate.reset();
   });
 
@@ -1561,6 +1561,133 @@ describe('ActiveRecord$Relation$Base', () => {
           });
           done();
         });
+      });
+    });
+  });
+
+  describe('#toA (alias to toArray)', () => {
+    type ToARecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class ToARecord extends ActiveRecord$Base<ToARecordParams> {
+      public id: ToARecordParams['id'];
+      public name: ToARecordParams['name'];
+      public age: ToARecordParams['age'];
+    }
+
+    let records: ToARecord[];
+    let holder: Holder<ToARecord>;
+    let relation: Relation<ToARecord>;
+
+    beforeEach(() => {
+      ToARecord.resetRecordCache();
+
+      records = ToARecord.create<ToARecord, ToARecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+        { id: 4, name: 'name_4', age: 4 },
+      ]) as ToARecord[];
+
+      holder = new Holder(ToARecord, records);
+      relation = new Relation<ToARecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      ).init(ToARecord);
+    });
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        relation.toA().then((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              id: 2,
+              name: 'name_2',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              id: 3,
+              name: 'name_3',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 4,
+              errors: {},
+              id: 4,
+              name: 'name_4',
+            },
+          ]);
+          done();
+        });
+      });
+    });
+
+    describe('when advanced', () => {
+      it('should correctly', (done) => {
+        relation
+          .where({ id: [1, 2, 3] })
+          .order({ id: 'desc' })
+          .limit(2)
+          .offset(1)
+          .toArray()
+          .then((records) => {
+            expect(records).toEqual([
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 2,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 2,
+                errors: {},
+                id: 2,
+                name: 'name_2',
+              },
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 1,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 1,
+                errors: {},
+                id: 1,
+                name: 'name_1',
+              },
+            ]);
+            done();
+          });
       });
     });
   });

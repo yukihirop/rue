@@ -2,7 +2,6 @@
 
 ## Methods
 
-- [x] [static]scope
 - [ ] [static]pluck
 - [ ] select
 - [ ] build

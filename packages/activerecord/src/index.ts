@@ -17,8 +17,13 @@ export type {
   Associations$BelongsTo as Record$BelongsTo,
   Associations$HasOne as Record$HasOne,
   Associations$HasMany as Record$HasMany,
-  Associations$CollectionProxy$Scope as Record$Scope,
+  Associations$HasAndBelongsToMany as Record$HasAndBelongsToMany,
 } from './records/modules/associations';
+
+// prettier-ignore
+export type {
+  Associations$Scope as Record$Scope
+} from './records/associations'
 
 // prettier-ignore
 export type {

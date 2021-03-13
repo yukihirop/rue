@@ -2,13 +2,15 @@
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Associations$Impl } from './impl';
 import {
-  registryForAssociations as Registry,
+  registryForAssociations as AssociationRegistry,
   cacheForIntermeditateTables as IntermediateTable,
 } from '@/registries';
 import { errObj, ErrCodes } from '@/errors';
 
 // types
-import * as t from './types';
+import type * as ct from '@/types';
+import type * as t from './types';
+import type * as art from '@/records/relations/types';
 
 export const enum Association {
   belongsTo = 'belongsTo',
@@ -25,7 +27,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     klass: Function,
     foreignKey: string
   ) {
-    Registry.create(this.name, Association.belongsTo, {
+    AssociationRegistry.create(this.name, Association.belongsTo, {
       [relationName]: (self: T) => (klass as any).findBy({ id: self[foreignKey] }),
     });
   }
@@ -35,18 +37,30 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     klass: Function,
     foreignKey: t.ForeignKey
   ) {
-    Registry.create(this.name, Association.hasOne, {
+    AssociationRegistry.create(this.name, Association.hasOne, {
       [relationName]: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
     });
   }
 
-  static hasMany<T extends ActiveRecord$Base = any>(
+  static hasMany<T extends ActiveRecord$Base>(
     relationName: string,
-    klass: Function,
+    klass: typeof ActiveRecord$Base,
     foreignKey: t.ForeignKey
   ) {
-    Registry.create(this.name, Association.hasMany, {
-      [relationName]: (self: T) => (klass as any).where({ [foreignKey]: self.id }),
+    AssociationRegistry.create(this.name, Association.hasMany, {
+      [relationName]: (self: T) => {
+        /**
+         * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+         */
+        const { ActiveRecord$Relation$Holder: Holder } = require('../../relations');
+
+        const records = klass.where({ [foreignKey]: self.id }).toA();
+        const holder = new Holder(klass, []);
+        const collectionProxy = createRuntimeCollectionProxy((resolve, _reject) => {
+          resolve([holder, records]);
+        }, klass);
+        return collectionProxy;
+      },
     });
   }
 
@@ -66,7 +80,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     };
 
     IntermediateTable.create(this.name, klass.name, []);
-    Registry.create(this.name, Association.hasAndBelongsToMany, {
+    AssociationRegistry.create(this.name, Association.hasAndBelongsToMany, {
       [relationName]: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
     });
   }
@@ -132,7 +146,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
   }
 
   static _defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
-    const allAssociations = Registry.data[self.constructor.name];
+    const allAssociations = AssociationRegistry.data[self.constructor.name];
     if (allAssociations == undefined) return;
 
     Object.keys(allAssociations).forEach((associationName: string) => {
@@ -149,4 +163,24 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       });
     });
   }
+}
+
+function createRuntimeCollectionProxy<T extends ActiveRecord$Base>(
+  executor: art.PromiseExecutor<T>,
+  recordKlass: ct.Constructor<T>
+) {
+  /**
+   * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+   */
+  const {
+    ActiveRecord$Associations$CollectionProxy,
+  } = require('../../associations/collection_proxy');
+
+  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Associations_CollectionProxy`;
+  const runtimeKlass = {
+    [runtimeKlassName]: class extends ActiveRecord$Associations$CollectionProxy<T> {},
+  }[runtimeKlassName];
+
+  // @ts-expect-error
+  return new runtimeKlass(executor).init(recordKlass);
 }

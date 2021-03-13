@@ -48,6 +48,8 @@
 - [] updateConters
 - [-] values
 - [-] whereValuesHash
+- [x] toA
+- [x] toArray (alias to `toA`)
 
 ## Reference
 

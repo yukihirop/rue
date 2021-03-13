@@ -1,6 +1,6 @@
 // locals
 import { errObj, ErrCodes } from '@/errors';
-import { ActiveRecord$Base, RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
+import { RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Relation$Impl } from './impl';
 import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from './modules/query_methods';
@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 // types
 import type * as t from './types';
 import type * as ct from '@/types';
+import type { ActiveRecord$Base } from '@/records/base';
 
 /**
  * @description　Make a copy of the Promise `catch`
@@ -479,5 +480,21 @@ export class ActiveRecord$Relation$Base<
           });
         })
     );
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
+   */
+  toA(): Promise<T[]> {
+    return this.evaluateThen((holder) => {
+      return holder.records;
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
+   */
+  toArray(): Promise<T[]> {
+    return this.toA();
   }
 }

@@ -218,6 +218,7 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'updateProp',
   ],
 });
+
 ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['hasAndBelongsToMany', 'releaseAndBelongsToMany'],
 });

@@ -6,7 +6,7 @@ export type PromiseResolve<T> = (
   records?: T | T[] | PromiseLike<T[]> | { [key: string]: T[] }
 ) => void;
 export type PromiseResolveHolder<T extends ActiveRecord$Base> = (
-  value: [ActiveRecord$Relation$Holder<T>, T[]]
+  value: [ActiveRecord$Relation$Holder<T>, T[] | PromiseLike<T[]>]
 ) => void;
 export type PromiseReject<T> = PromiseResolve<T>;
 export type PromiseExecutor<T extends ActiveRecord$Base> = (
