@@ -55,8 +55,9 @@ export class ActiveRecord$Relation$Base<
     return super.then((value) => {
       /**
        * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
+       * There are times when 「 value[0] instanceof ActiveRecord$Relation$Holder 」 cannot evaluate correctly. (Cause unknown)
        */
-      if (Array.isArray(value) && value[0] instanceof ActiveRecord$Relation$Holder) {
+      if (Array.isArray(value) && value[0]['isHolder']) {
         const [holder, records] = value;
 
         if (records instanceof Promise) {
