@@ -154,8 +154,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-many-3F
    */
   isMany(filter?: (record: T) => boolean): Promise<boolean> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<boolean>((holder) => {
       return holder.records.filter(filter || Boolean).length > 1;
     });
   }
@@ -164,8 +163,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-none-3F
    */
   isNone(filter?: (record: T) => boolean): Promise<boolean> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<boolean>((holder) => {
       return holder.records.filter(filter || Boolean).length === 0;
     });
   }
@@ -174,8 +172,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-one-3F
    */
   isOne(filter?: (record: T) => boolean): Promise<boolean> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<boolean>((holder) => {
       return holder.records.filter(filter || Boolean).length === 1;
     });
   }
@@ -184,8 +181,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-any-3F
    */
   isAny(filter?: (record: T) => boolean): Promise<boolean> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<boolean>((holder) => {
       return holder.records.filter(filter || Boolean).length > 0;
     });
   }
@@ -194,8 +190,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-blank-3F
    */
   isBlank(): Promise<boolean> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<boolean>((holder) => {
       return holder.records.length == 0;
     });
   }
