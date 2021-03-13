@@ -150,13 +150,13 @@ export class ActiveRecord$FinderMethods extends RueModule {
       const records = holder.records;
       if (records.length === 0) {
         return null;
-      } else if (limit === 1) {
-        return records[0];
       } else {
         const slicedRecords = records
           .sort((a, b) => b[RUE_RECORD_ID] - a[RUE_RECORD_ID])
           .slice(0, limit)
           .reverse();
+
+        if (limit === 1) return slicedRecords[0];
         return slicedRecords;
       }
     });

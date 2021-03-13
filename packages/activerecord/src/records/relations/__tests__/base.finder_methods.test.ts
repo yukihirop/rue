@@ -670,13 +670,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation.last().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
-            __rue_record_id__: 1,
+            __rue_record_id__: 3,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             _destroyed: false,
             _newRecord: false,
-            age: 1,
+            age: 3,
             errors: {},
-            name: 'name_1',
+            name: 'name_3',
           });
           done();
         });
@@ -811,13 +811,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation.lastOrThrow().then((record) => {
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
-            __rue_record_id__: 1,
+            __rue_record_id__: 3,
             __rue_updated_at__: '2021-03-05T23:03:21+09:00',
             _destroyed: false,
             _newRecord: false,
-            age: 1,
+            age: 3,
             errors: {},
-            name: 'name_1',
+            name: 'name_3',
           });
           done();
         });
