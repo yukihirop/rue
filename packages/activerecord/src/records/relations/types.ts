@@ -8,7 +8,7 @@ export type PromiseResolve<T> = (
 export type PromiseResolveHolder<
   T extends ActiveRecord$Base,
   H extends ActiveRecord$Relation$Holder<T>
-> = (value: [H, T[] | PromiseLike<T[]>]) => void;
+> = (value: { holder: H; scope: T[] | PromiseLike<T[]> }) => void;
 export type PromiseReject<T> = PromiseResolve<T>;
 export type PromiseExecutor<
   T extends ActiveRecord$Base,

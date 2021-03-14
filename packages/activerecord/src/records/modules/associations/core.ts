@@ -57,13 +57,13 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         } = require('../../associations/collection_proxy');
 
         const foreignKeyData = { [foreignKey]: self.id };
-        const records = klass.where<T>(foreignKeyData).toA();
+        const scope = klass.where<T>(foreignKeyData).toA();
         const holder = new Holder(klass, [], foreignKeyData);
         /**
          * @description Since it is a runtime specification, only any type can be given.
          */
         const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
-          resolve([holder, records]);
+          resolve({ holder, scope });
           // @ts-expect-error
         }, klass);
         return collectionProxy;

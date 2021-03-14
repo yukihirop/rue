@@ -23,16 +23,18 @@ export class ActiveRecord$Scoping$Named extends RueModule {
     const klassName = _this.name;
 
     if (RecordCache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
-      const records = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
-      // records passed by value
+      const scope = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
+      // Must pass a copy
+      const holder = new Holder<T>(_this, Array.from(scope));
       const relation = createRuntimeRelation<T, Holder<T>>((resolve, _reject) => {
-        resolve([new Holder(_this, Array.from(records)), Array.from(records)]);
+        // Must pass a copy
+        resolve({ holder, scope: Array.from(scope) });
       }, _this);
 
       return relation;
     } else {
       const relation = createRuntimeRelation<T, Holder<T>>((resolve, _reject) => {
-        const records = _this
+        const scope = _this
           // fetchAll is defined in ActiveRecord$Base but is protected so I get a typescript error.
           // @ts-expect-error
           .fetchAll()
@@ -46,7 +48,8 @@ export class ActiveRecord$Scoping$Named extends RueModule {
             }) as Array<T>;
             return Array.from(records);
           });
-        resolve([new Holder(_this, []), records]);
+        const holder = new Holder<T>(_this, []);
+        resolve({ holder, scope });
       }, _this);
 
       return relation;

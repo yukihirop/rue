@@ -55,13 +55,18 @@ export class ActiveRecord$Relation$Base<
     return super.then((value) => {
       /**
        * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
-       * There are times when 「 value[0] instanceof ActiveRecord$Relation$Holder 」 cannot evaluate correctly. (Cause unknown)
+       * There are times when 「 value['holder'] instanceof ActiveRecord$Relation$Holder 」 cannot evaluate correctly. (Cause unknown)
        */
-      if (Array.isArray(value) && value[0]['isHolder']) {
-        const [holder, records] = value;
+      if (
+        typeof value === 'object' &&
+        value != null &&
+        value['holder'] &&
+        value['holder']['isHolder']
+      ) {
+        const { holder, scope } = value;
 
-        if (records instanceof Promise) {
-          records.then((r) => {
+        if (scope instanceof Promise) {
+          scope.then((r) => {
             holder.scope = r;
             Evaluator.all(holder);
 
@@ -72,7 +77,7 @@ export class ActiveRecord$Relation$Base<
             }
           });
         } else {
-          holder.scope = records as T[];
+          holder.scope = scope as T[];
 
           Evaluator.all(holder);
 
@@ -123,8 +128,13 @@ export class ActiveRecord$Relation$Base<
       super
         // @ts-expect-error
         .__rue_then__((value) => {
-          if (Array.isArray(value) && value[0]['isHolder']) {
-            const [holder] = value;
+          if (
+            typeof value === 'object' &&
+            value != null &&
+            value['holder'] &&
+            value['holder']['isHolder']
+          ) {
+            const { holder } = value;
             Evaluator.all(holder);
             holder.errors.forEach((err) => {
               throw err;
@@ -136,15 +146,15 @@ export class ActiveRecord$Relation$Base<
   }
 
   protected _evaluateThen<U>(callback: (holder: H) => U | Promise<U>): Promise<U> {
-    return super.then(([holder, records]) => {
-      if (records instanceof Promise) {
-        return records.then((r) => {
-          holder.scope = r;
+    return super.then(({ holder, scope }) => {
+      if (scope instanceof Promise) {
+        return scope.then((records) => {
+          holder.scope = records;
           Evaluator.all(holder);
           return callback(holder);
         });
       } else {
-        holder.scope = records as T[];
+        holder.scope = scope as T[];
         Evaluator.all(holder);
         return callback(holder);
       }
@@ -201,13 +211,13 @@ export class ActiveRecord$Relation$Base<
    * Returns true if relation is blank.
    */
   isBlank(): Promise<boolean> {
-    return this.superThen(([_holder, records]) => {
-      if (records instanceof Promise) {
-        return records.then((r) => {
+    return this.superThen(({ scope }) => {
+      if (scope instanceof Promise) {
+        return scope.then((r) => {
           return r.length === 0;
         });
       } else {
-        return (records as T[]).length === 0;
+        return (scope as T[]).length === 0;
       }
     });
   }
@@ -308,16 +318,15 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-delete_by
    */
   deleteBy<U>(params?: Partial<U>): Promise<number> {
-    const deleteRecordFn = (record: T) => {
-      record.destroy();
-      return true;
+    const deleteRecordFn = (record: T): boolean => {
+      return !!record.destroy();
     };
 
     return (
       this.recordKlass
         // @ts-ignore
         .where<T, U>(params)
-        .superThen(([holder]) => {
+        .superThen(({ holder }) => {
           Evaluator.all(holder);
           return Promise.all(holder.scope.map(deleteRecordFn)).then((result) => {
             return result.filter(Boolean).length;
@@ -344,7 +353,7 @@ export class ActiveRecord$Relation$Base<
    * @todo Use ActiveRecord$QueryMethods#where
    */
   destroyBy(filter?: (self: T) => boolean): Promise<T[]> {
-    return super.then(([holder]) => {
+    return this.superThen(({ holder }) => {
       let leavedData = [];
       let deleteData = [];
 
@@ -479,7 +488,7 @@ export class ActiveRecord$Relation$Base<
       this.recordKlass
         // @ts-expect-error
         .where<T, U>(params)
-        .superThen(([holder]) => {
+        .superThen(({ holder }) => {
           Evaluator.all(holder);
           return Promise.all(holder.scope.map(touchFn)).then((result) => {
             holder.scope = RecordCache.read(holder.recordKlass.name, RECORD_ALL, 'array');

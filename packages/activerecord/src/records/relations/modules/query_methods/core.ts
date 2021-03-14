@@ -19,7 +19,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       Object.assign(holder.scopeParams['where'], params || {});
     });
 
@@ -34,7 +34,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder, _]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['where'] = params || {};
     });
 
@@ -51,7 +51,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       Object.assign(holder.scopeParams['order'], params || {});
     });
 
@@ -68,7 +68,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       // @ts-expect-error
       holder.scopeParams['order'] = params || {};
     });
@@ -83,7 +83,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       const orderParams = holder.scopeParams['order'];
       if (isPresent(orderParams)) {
         Object.keys(orderParams).forEach((propName) => {
@@ -109,7 +109,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['offset'] = value;
     });
 
@@ -123,7 +123,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['limit'] = value;
     });
 
@@ -140,7 +140,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       // @ts-expect-error
       holder.scopeParams['group'] = props;
     });
@@ -158,7 +158,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       if (scopeMethods.length === 0) {
         const err = errObj({
           code: ErrCodes.ARGUMENT_IS_INVALID,

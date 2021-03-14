@@ -105,9 +105,9 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     propName?: keyof U,
     filter?: (self: T) => boolean
   ): Promise<number> {
-    return this.superThen(([holder, records]) => {
+    return this.superThen(({ holder }) => {
       // @ts-expect-error
-      return this.recordKlass.all().superThen(([newHolder, _]) => {
+      return this.recordKlass.all().superThen(({ holder: newHolder }) => {
         // deep coppy
         newHolder.scopeParams = Object.assign({}, JSON.parse(JSON.stringify(holder.scopeParams)));
         Object.assign(newHolder.scopeParams['where'], holder.foreignKeyData);

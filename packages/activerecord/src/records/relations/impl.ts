@@ -21,7 +21,7 @@ import type * as mt from './modules';
 abstract class ActiveRecord$Relation$Impl<
   T extends ActiveRecord$Base,
   H extends ActiveRecord$Relation$Holder<T>
-> extends Promise<[H, T[] | PromiseLike<T[]>]> {
+> extends Promise<{ holder: H; scope: T[] | PromiseLike<T[]> }> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
 
