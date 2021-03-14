@@ -57,8 +57,13 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         } = require('../../associations/collection_proxy');
 
         const foreignKeyData = { [foreignKey]: self.id };
-        const scope = klass.where<T>(foreignKeyData).toA();
         const holder = new Holder(klass, [], foreignKeyData);
+        const scope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
+          resolve({ holder, scope: klass.where<T>(foreignKeyData).toA() });
+          // @ts-expect-error
+        }, klass)
+          .where(foreignKeyData)
+          .toA();
         /**
          * @description Since it is a runtime specification, only any type can be given.
          */
@@ -185,6 +190,24 @@ function createRuntimeCollectionProxy<T extends ActiveRecord$Base, H>(
   const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Associations_CollectionProxy`;
   const runtimeKlass = {
     [runtimeKlassName]: class extends ActiveRecord$Associations$CollectionProxy<T> {},
+  }[runtimeKlassName];
+
+  // @ts-expect-error
+  return new runtimeKlass(executor)._init(recordKlass);
+}
+
+function createRuntimeAssociationRelation<T extends ActiveRecord$Base, H>(
+  // @ts-expect-error
+  executor: art.PromiseExecutor<T, H>,
+  recordKlass: ct.Constructor<T>
+) {
+  /**
+   * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+   */
+  const { ActiveRecord$Associations$Relation } = require('../../associations');
+  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_AssociationRelation`;
+  const runtimeKlass = {
+    [runtimeKlassName]: class extends ActiveRecord$Associations$Relation<T> {},
   }[runtimeKlassName];
 
   // @ts-expect-error
