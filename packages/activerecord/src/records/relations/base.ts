@@ -1,5 +1,4 @@
 // locals
-import { errObj, ErrCodes } from '@/errors';
 import { RECORD_ALL, RUE_CREATED_AT, RUE_UPDATED_AT } from '@/records/base';
 import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Relation$Impl } from './impl';
@@ -15,7 +14,7 @@ import type * as ct from '@/types';
 import type { ActiveRecord$Base } from '@/records/base';
 
 /**
- * @description　Make a copy of the Promise `catch`
+ * @description　Make a copy of the Promise `then` and `catch`
  */
 Object.defineProperty(Promise.prototype, '__rue_then__', {
   writable: false,
@@ -32,11 +31,12 @@ Object.defineProperty(Promise.prototype, '__rue_catch__', {
 });
 
 export class ActiveRecord$Relation$Base<
-  T extends ActiveRecord$Base
-> extends ActiveRecord$Relation$Impl<T> {
-  private recordKlass: ct.Constructor<T>;
+  T extends ActiveRecord$Base,
+  H extends ActiveRecord$Relation$Holder<T> = ActiveRecord$Relation$Holder<T>
+> extends ActiveRecord$Relation$Impl<T, H> {
+  protected recordKlass: ct.Constructor<T>;
 
-  constructor(executor: t.PromiseExecutor<T>) {
+  constructor(executor: t.PromiseExecutor<T, H>) {
     super((resolve, reject) => {
       return executor(resolve, reject);
     });
@@ -102,7 +102,10 @@ export class ActiveRecord$Relation$Base<
     return this.rueThen(onFulfilled, onRejected);
   }
 
-  protected superThen(onFulfilled: t.PromiseResolveHolder<T>, onRejected?: t.PromiseReject<any>) {
+  protected superThen(
+    onFulfilled: t.PromiseResolveHolder<T, H>,
+    onRejected?: t.PromiseReject<any>
+  ) {
     // @ts-expect-error
     return super.__rue_then__(onFulfilled, onRejected);
   }
@@ -120,7 +123,7 @@ export class ActiveRecord$Relation$Base<
       super
         // @ts-expect-error
         .__rue_then__((value) => {
-          if (Array.isArray(value) && value[0] instanceof ActiveRecord$Relation$Holder) {
+          if (Array.isArray(value) && value[0]['isHolder']) {
             const [holder] = value;
             Evaluator.all(holder);
             holder.errors.forEach((err) => {
@@ -132,9 +135,7 @@ export class ActiveRecord$Relation$Base<
     );
   }
 
-  protected _evaluateThen<U>(
-    callback: (holder: ActiveRecord$Relation$Holder<T>) => U | Promise<U>
-  ): Promise<U> {
+  protected _evaluateThen<U>(callback: (holder: H) => U | Promise<U>): Promise<U> {
     return super.then(([holder, records]) => {
       if (records instanceof Promise) {
         return records.then((r) => {
@@ -178,6 +179,15 @@ export class ActiveRecord$Relation$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-size
+   */
+  size(): Promise<number> {
+    return this._evaluateThen<number>((holder) => {
+      return holder.records.length;
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-any-3F
    */
   isAny(filter?: (record: T) => boolean): Promise<boolean> {
@@ -188,51 +198,44 @@ export class ActiveRecord$Relation$Base<
 
   /**
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-blank-3F
+   * Returns true if relation is blank.
    */
   isBlank(): Promise<boolean> {
+    return this.superThen(([_holder, records]) => {
+      if (records instanceof Promise) {
+        return records.then((r) => {
+          return r.length === 0;
+        });
+      } else {
+        return (records as T[]).length === 0;
+      }
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-empty-3F
+   */
+  isEmpty(): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.length == 0;
+      return holder.records.length === 0;
     });
   }
 
   /**
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-build
    */
-  build<U>(params?: Partial<U>, yielder?: (self: T) => void): T {
-    // @ts-ignore
-    const record = new this.recordKlass(params);
-    if (yielder) yielder(record);
-    return record;
-  }
-
-  /**
-   * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-create
-   * @todo Support yielder
-   */
-  create<U>(params?: Partial<U>): Promise<T> {
-    return super.then(([holder, records]) => {
-      if (records instanceof Promise) {
-        records.then((r) => {
-          /**
-           * @description Be sure to pass by reference
-           */
-          holder.records = r;
-
-          // @ts-ignore
-          const record = new this.recordKlass(params);
-          record.save();
+  build<U>(params?: Partial<U> | Array<Partial<U>>, yielder?: (self: T) => void): Promise<T | T[]> {
+    return this._evaluateThen((holder) => {
+      if (Array.isArray(params)) {
+        return params.map((param) => {
+          const record = new this.recordKlass(param);
+          if (yielder) yielder(record);
           holder.records.push(record);
           return record;
         });
       } else {
-        /**
-         * @description Be sure to pass by reference
-         */
-        holder.records = records as T[];
-
-        // @ts-ignore
         const record = new this.recordKlass(params);
-        record.save();
+        if (yielder) yielder(record);
         holder.records.push(record);
         return record;
       }
@@ -240,25 +243,34 @@ export class ActiveRecord$Relation$Base<
   }
 
   /**
-   * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-create-21
-   * @todo Support yielder
+   * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-create
    */
-  createOrThrow<U>(params?: Partial<U>): Promise<T> {
-    return super.then(([holder]) => {
+  create<U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ): Promise<T | T[]> {
+    return this._evaluateThen((holder) => {
       // @ts-ignore
-      const record = new this.recordKlass(params);
+      return this.recordKlass.create(params, (self) => {
+        if (yielder) yielder(self);
+        holder.records.push(self);
+      });
+    });
+  }
 
-      if (record.save()) {
-        holder.records.push(record);
-        return record;
-      } else {
-        throw errObj({
-          code: ErrCodes.RECORD_IS_INVALID,
-          params: {
-            inspect: record.inspect(),
-          },
-        });
-      }
+  /**
+   * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-create-21
+   */
+  createOrThrow<U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ): Promise<T> {
+    return this._evaluateThen((holder) => {
+      // @ts-expect-error
+      return this.recordKlass.createOrThrow(params, (self) => {
+        if (yielder) yielder(self);
+        holder.records.push(self);
+      });
     });
   }
 
@@ -318,8 +330,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-delete_all
    */
   deleteAll(): Promise<number> {
-    return super.then(([holder]) => {
-      Evaluator.all(holder);
+    return this._evaluateThen<number>((holder) => {
       const deleteCount = holder.records.length;
       RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
       holder.records = [];
@@ -386,7 +397,7 @@ export class ActiveRecord$Relation$Base<
         if (yielder) yielder(record);
         return record;
       } else {
-        return this.create<Partial<U>>(params).then((createdRecord) => {
+        return this.create<Partial<U>>(params).then((createdRecord: T) => {
           if (yielder) yielder(createdRecord);
           return createdRecord;
         });

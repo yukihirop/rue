@@ -18,7 +18,7 @@ export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
   };
   public groupedRecords: { [key: string]: T[] };
   public errors: et.ErrObj[];
-  private _defaultScopeParams: any;
+  private readonly _defaultScopeParams: any;
   public readonly isHolder = true;
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {

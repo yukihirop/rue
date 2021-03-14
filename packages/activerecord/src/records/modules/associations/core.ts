@@ -52,12 +52,19 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         /**
          * @description I'm worried about the overhead, but load it dynamically to avoid circular references
          */
-        const { ActiveRecord$Relation$Holder: Holder } = require('../../relations');
+        const {
+          ActiveRecord$Associations$CollectionProxy$Holder: Holder,
+        } = require('../../associations/collection_proxy');
 
-        const records = klass.where({ [foreignKey]: self.id }).toA();
-        const holder = new Holder(klass, []);
-        const collectionProxy = createRuntimeCollectionProxy((resolve, _reject) => {
+        const foreignKeyData = { [foreignKey]: self.id };
+        const records = klass.where<T>(foreignKeyData).toA();
+        const holder = new Holder(klass, [], foreignKeyData);
+        /**
+         * @description Since it is a runtime specification, only any type can be given.
+         */
+        const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
           resolve([holder, records]);
+          // @ts-expect-error
         }, klass);
         return collectionProxy;
       },
@@ -165,8 +172,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
   }
 }
 
-function createRuntimeCollectionProxy<T extends ActiveRecord$Base>(
-  executor: art.PromiseExecutor<T>,
+function createRuntimeCollectionProxy<T extends ActiveRecord$Base, H>(
+  // @ts-expect-error
+  executor: art.PromiseExecutor<T, H>,
   recordKlass: ct.Constructor<T>
 ) {
   /**

@@ -204,7 +204,7 @@ describe('ActiveRecord$Relation$Base', () => {
       )._init(IsOneRecord);
     });
 
-    describe('when return true debug', () => {
+    describe('when return true', () => {
       it('should correctly', (done) => {
         relation
           .where({ id: 1 })
@@ -231,6 +231,61 @@ describe('ActiveRecord$Relation$Base', () => {
           .isOne((record) => record.age === 1)
           .then((result) => {
             expect(result).toEqual(true);
+            done();
+          });
+      });
+    });
+  });
+
+  describe('#size', () => {
+    type SizeRecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class SizeRecord extends ActiveRecord$Base<SizeRecordParams> {
+      public id: SizeRecordParams['id'];
+      public name: SizeRecordParams['name'];
+      public age: SizeRecordParams['age'];
+    }
+
+    let records: SizeRecord[];
+    let holder: Holder<SizeRecord>;
+    let relation: Relation<SizeRecord>;
+
+    beforeEach(() => {
+      SizeRecord.resetRecordCache();
+
+      records = SizeRecord.create<SizeRecord, SizeRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as SizeRecord[];
+
+      holder = new Holder(SizeRecord, records);
+      relation = new Relation<SizeRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(SizeRecord);
+    });
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        relation.size().then((result) => {
+          expect(result).toEqual(3);
+          done();
+        });
+      });
+    });
+
+    describe('when mix', () => {
+      it('should correctly', (done) => {
+        relation
+          .limit(2)
+          .size()
+          .then((result) => {
+            expect(result).toEqual(2);
             done();
           });
       });
@@ -319,13 +374,11 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       IsBlankRecord.resetRecordCache();
 
-      records = [
-        IsBlankRecord.create<IsBlankRecord, IsBlankRecordParams>({
-          id: 1,
-          name: 'name_1',
-          age: 1,
-        }) as IsBlankRecord,
-      ];
+      records = IsBlankRecord.create([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 1, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_3', age: 3 },
+      ]) as IsBlankRecord[];
 
       holder = new Holder(IsBlankRecord, records);
       relation = new Relation<IsBlankRecord>(
@@ -336,9 +389,68 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when return true', () => {
       it('should correctly', (done) => {
+        holder = new Holder(IsBlankRecord, []);
+        relation = new Relation<IsBlankRecord>(
+          (resolve, _reject) => resolve([holder, []])
+          // @ts-expect-error
+        )._init(IsBlankRecord);
+        relation.isBlank().then((result) => {
+          expect(result).toEqual(true);
+          done();
+        });
+      });
+    });
+
+    describe('when return false', () => {
+      it('should correctly', (done) => {
+        relation.isBlank().then((result) => {
+          expect(result).toEqual(false);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#IsEmpty', () => {
+    type IsEmptyRecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class IsEmptyRecord extends ActiveRecord$Base<IsEmptyRecordParams> {
+      public id: IsEmptyRecordParams['id'];
+      public name: IsEmptyRecordParams['name'];
+      public age: IsEmptyRecordParams['age'];
+    }
+
+    let records: IsEmptyRecord[];
+    let holder: Holder<IsEmptyRecord>;
+    let relation: Relation<IsEmptyRecord>;
+
+    beforeEach(() => {
+      IsEmptyRecord.resetRecordCache();
+
+      records = [
+        IsEmptyRecord.create<IsEmptyRecord, IsEmptyRecordParams>({
+          id: 1,
+          name: 'name_1',
+          age: 1,
+        }) as IsEmptyRecord,
+      ];
+
+      holder = new Holder(IsEmptyRecord, records);
+      relation = new Relation<IsEmptyRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsEmptyRecord);
+    });
+
+    describe('when return true', () => {
+      it('should correctly', (done) => {
         relation
           .where({ id: 100 })
-          .isBlank()
+          .isEmpty()
           .then((result) => {
             expect(result).toEqual(true);
             done();
@@ -348,7 +460,7 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when return false', () => {
       it('should correctly', (done) => {
-        relation.isBlank().then((result) => {
+        relation.isEmpty().then((result) => {
           expect(result).toEqual(false);
           done();
         });
@@ -390,46 +502,87 @@ describe('ActiveRecord$Relation$Base', () => {
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        expect(relation.build()).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          errors: {},
+      it('should correctly', (done) => {
+        relation.build().then((record) => {
+          expect(record).toEqual({
+            __rue_record_id__: undefined,
+            _destroyed: false,
+            _newRecord: true,
+            errors: {},
+          });
+          expect(holder.records.length).toEqual(4);
+          done();
         });
-        expect(holder.records.length).toEqual(3);
       });
     });
 
     describe("when specify 'params'", () => {
-      it('should correctly', () => {
-        expect(relation.build({ name: 'name_4', age: 4 })).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          age: 4,
-          errors: {},
-          name: 'name_4',
+      it('should correctly', (done) => {
+        relation.build({ name: 'name_4', age: 4 }).then((record) => {
+          expect(record).toEqual({
+            __rue_record_id__: undefined,
+            _destroyed: false,
+            _newRecord: true,
+            age: 4,
+            errors: {},
+            name: 'name_4',
+          });
+          expect(holder.records.length).toEqual(4);
+          done();
         });
-        expect(holder.records.length).toEqual(3);
+      });
+    });
+
+    describe("when specify 'array of params'", () => {
+      it('should correctly', (done) => {
+        relation
+          .build([
+            { name: 'name_4', age: 4 },
+            { name: 'name_5', age: 5 },
+          ])
+          .then((records) => {
+            expect(records).toEqual([
+              {
+                __rue_record_id__: undefined,
+                _destroyed: false,
+                _newRecord: true,
+                age: 4,
+                errors: {},
+                name: 'name_4',
+              },
+              {
+                __rue_record_id__: undefined,
+                _destroyed: false,
+                _newRecord: true,
+                age: 5,
+                errors: {},
+                name: 'name_5',
+              },
+            ]);
+            expect(holder.records.length).toEqual(5);
+            done();
+          });
       });
     });
 
     describe("when specify 'yielder'", () => {
-      it('shoulld correctly', () => {
-        expect(
-          relation.build({ name: 'name_5' }, (self) => {
+      it('shoulld correctly', (done) => {
+        relation
+          .build({ name: 'name_5' }, (self) => {
             self.age = 5;
           })
-        ).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          age: 5,
-          errors: {},
-          name: 'name_5',
-        });
-        expect(holder.records.length).toEqual(3);
+          .then((record) => {
+            expect(record).toEqual({
+              __rue_record_id__: undefined,
+              _destroyed: false,
+              _newRecord: true,
+              age: 5,
+              errors: {},
+              name: 'name_5',
+            });
+            expect(holder.records.length).toEqual(4);
+            done();
+          });
       });
     });
   });
@@ -461,11 +614,11 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       CreateRecord.resetRecordCache();
 
-      records = [
-        new CreateRecord({ id: 1, name: 'name_1', age: 1 }),
-        new CreateRecord({ id: 2, name: 'name_2', age: 2 }),
-        new CreateRecord({ id: 3, name: 'name_3', age: 3 }),
-      ];
+      records = CreateRecord.create<CreateRecord, CreateRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as CreateRecord[];
 
       holder = new Holder(CreateRecord, records);
       relation = new Relation<CreateRecord>(
@@ -476,13 +629,17 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.create<CreateRecordParams>().then((record) => {
+        relation.create<CreateRecordParams>().then((record: CreateRecord) => {
           const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
-          expect(record.name).toEqual(undefined);
-          expect(record.age).toEqual(undefined);
-          expect(cacheAll.length).toEqual(1);
-          expect(cacheAll[0].name).toEqual(undefined);
-          expect(cacheAll[0].age).toEqual(undefined);
+          expect(cacheAll.length).toEqual(4);
+          expect(record).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            errors: { age: [], name: [] },
+          });
           expect(holder.records.length).toEqual(4);
           done();
         });
@@ -494,19 +651,17 @@ describe('ActiveRecord$Relation$Base', () => {
         it('should correctly', (done) => {
           relation
             .create<CreateRecordParams>({ name: 'name_4', age: 4 })
-            .then((record) => {
+            .then((record: CreateRecord) => {
               const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
-              expect(record.name).toEqual('name_4');
-              expect(record.age).toEqual(4);
-              expect(cacheAll.length).toEqual(1);
-              expect(cacheAll[0]).toEqual({
+              expect(cacheAll.length).toEqual(4);
+              expect(record).toEqual({
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
+                __rue_record_id__: 4,
                 __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _newRecord: false,
                 _destroyed: false,
+                _newRecord: false,
                 age: 4,
-                errors: { name: [], age: [] },
+                errors: { age: [], name: [] },
                 name: 'name_4',
               });
               expect(holder.records.length).toEqual(4);
@@ -519,15 +674,75 @@ describe('ActiveRecord$Relation$Base', () => {
         it('should correctly', (done) => {
           relation
             .create<CreateRecordParams>({ name: 'name_10', age: 10 })
-            .then((record) => {
+            .then((record: CreateRecord) => {
               const cacheAll = RecordCache.data[CreateRecord.name][RECORD_ALL];
               expect(record.name).toEqual('name_10');
               expect(record.age).toEqual(10);
-              expect(cacheAll.length).toEqual(0);
+              expect(cacheAll.length).toEqual(3);
               expect(holder.records.length).toEqual(4);
               done();
             });
         });
+      });
+    });
+
+    describe("when specify 'array of params'", () => {
+      it('should correctly', (done) => {
+        relation
+          .create<CreateRecordParams>([
+            { id: 4, name: 'name_4', age: 4 },
+            { id: 5, name: 'name_5', age: 5 },
+          ])
+          .then((records: CreateRecord[]) => {
+            expect(records).toEqual([
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 4,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 4,
+                errors: { age: [], name: [] },
+                id: 4,
+                name: 'name_4',
+              },
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 5,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 5,
+                errors: { age: [], name: [] },
+                id: 5,
+                name: 'name_5',
+              },
+            ]);
+            done();
+          });
+      });
+    });
+
+    describe("when specify 'yielder'", () => {
+      it('should correctly', (done) => {
+        relation
+          .create<CreateRecordParams>({ id: 4, name: 'name_4' }, (self) => {
+            self.age = 4;
+          })
+          .then((record: CreateRecord) => {
+            expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 4,
+              errors: { age: [], name: [] },
+              id: 4,
+              name: 'name_4',
+            });
+            done();
+          });
       });
     });
   });
@@ -577,8 +792,8 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.create<CreateOrThrowRecordParams>().then((record) => {
-          const cacheAll = RecordCache.data['CreateOrThrowRecord'][RECORD_ALL];
+        relation.createOrThrow<CreateOrThrowRecordParams>().then((record: CreateOrThrowRecord) => {
+          const cacheAll = RecordCache.data[CreateOrThrowRecord.name][RECORD_ALL];
           expect(record.name).toEqual(undefined);
           expect(record.age).toEqual(undefined);
           expect(cacheAll.length).toEqual(1);
@@ -638,7 +853,67 @@ describe('ActiveRecord$Relation$Base', () => {
 } is invalid.`);
               const cacheAll = RecordCache.data[CreateOrThrowRecord.name][RECORD_ALL];
               expect(cacheAll.length).toEqual(0);
-              expect(holder.records.length).toEqual(3);
+              expect(holder.records.length).toEqual(4);
+              done();
+            });
+        });
+      });
+
+      describe("when specify 'array of params'", () => {
+        it('should correctly', (done) => {
+          relation
+            .createOrThrow<CreateOrThrowRecordParams>([
+              { id: 4, name: 'name_4', age: 4 },
+              { id: 5, name: 'name_5', age: 5 },
+            ])
+            .then((records) => {
+              expect(records).toEqual([
+                {
+                  __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                  __rue_record_id__: 1,
+                  __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                  _destroyed: false,
+                  _newRecord: false,
+                  age: 4,
+                  errors: { age: [], name: [] },
+                  id: 4,
+                  name: 'name_4',
+                },
+                {
+                  __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                  __rue_record_id__: 2,
+                  __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                  _destroyed: false,
+                  _newRecord: false,
+                  age: 5,
+                  errors: { age: [], name: [] },
+                  id: 5,
+                  name: 'name_5',
+                },
+              ]);
+              done();
+            });
+        });
+      });
+
+      describe("when specify 'yielder'", () => {
+        it('should correctly', (done) => {
+          relation
+            .createOrThrow({ id: 4, name: 'name_4' }, (self) => {
+              self.age = 4;
+            })
+            .then((record) => {
+              expect(record).toEqual({
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 1,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 4,
+                errors: { age: [], name: [] },
+                id: 4,
+                name: 'name_4',
+              });
               done();
             });
         });
@@ -795,7 +1070,7 @@ describe('ActiveRecord$Relation$Base', () => {
   },
   "name": "name_10"
 } is invalid.`);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.records.length).toEqual(4);
           done();
         });
       });
@@ -1203,7 +1478,10 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            /**
+             * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
+             */
+            expect(holder.records.length).toEqual(1);
             done();
           });
       });
@@ -1225,7 +1503,10 @@ describe('ActiveRecord$Relation$Base', () => {
                 errors: {},
                 name: 'name_4',
               });
-              expect(holder.records.length).toEqual(4);
+              /**
+               * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
+               */
+              expect(holder.records.length).toEqual(1);
               done();
             });
         });

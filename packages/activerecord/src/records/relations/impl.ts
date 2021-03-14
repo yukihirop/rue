@@ -18,9 +18,10 @@ import type * as mt from './modules';
  * @see https://github.com/microsoft/TypeScript/issues/12661
  * @todo Reconsider Promise type
  */
-abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> extends Promise<
-  [ActiveRecord$Relation$Holder<T>, T[] | PromiseLike<T[]>]
-> {
+abstract class ActiveRecord$Relation$Impl<
+  T extends ActiveRecord$Base,
+  H extends ActiveRecord$Relation$Holder<T>
+> extends Promise<[H, T[] | PromiseLike<T[]>]> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
 
@@ -35,29 +36,32 @@ abstract class ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> extends P
   findByOrThrow: <P>(params: Partial<P>) => Promise<T>;
   first: (limit?: number) => Promise<T | T[]>;
   firstOrThrow: (limit?: number) => Promise<T | T[]>;
-  isInclude: (record: T) => Promise<boolean>;
+  isInclude: (record: T | T[] | Promise<T | T[]>) => Promise<boolean>;
   isMember: (record: T) => Promise<boolean>;
   last: (limit?: number) => Promise<T | T[]>;
   lastOrThrow: (limit?: number) => Promise<T | T[]>;
   take: (limit?: number) => Promise<T | T[]>;
   takeOrThrow: (limit?: number) => Promise<T | T[]>;
   // ActiveRecord$QueryMethods
-  where: <U>(params: Partial<U>) => ActiveRecord$Relation<T>;
-  rewhere: <U>(params: Partial<U>) => ActiveRecord$Relation<T>;
+  where: <U>(params: Partial<U>) => ActiveRecord$Relation<T, H>;
+  rewhere: <U>(params: Partial<U>) => ActiveRecord$Relation<T, H>;
   order: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
     params: Partial<U>
-  ) => ActiveRecord$Relation<T>;
+  ) => ActiveRecord$Relation<T, H>;
   reorder: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
     params: Partial<U>
-  ) => ActiveRecord$Relation<T>;
-  reverseOrder: () => ActiveRecord$Relation<T>;
-  offset: (value: number) => ActiveRecord$Relation<T>;
-  limit: (value: number) => ActiveRecord$Relation<T>;
-  group: <U = { [key: string]: any }>(...props: Array<keyof U>) => ActiveRecord$Relation<T>;
-  unscope: (...scopeMethods: mt.QueryMethods$ScopeMethods[]) => ActiveRecord$Relation<T>;
+  ) => ActiveRecord$Relation<T, H>;
+  reverseOrder: () => ActiveRecord$Relation<T, H>;
+  offset: (value: number) => ActiveRecord$Relation<T, H>;
+  limit: (value: number) => ActiveRecord$Relation<T, H>;
+  group: <U = { [key: string]: any }>(...props: Array<keyof U>) => ActiveRecord$Relation<T, H>;
+  unscope: (...scopeMethods: mt.QueryMethods$ScopeMethods[]) => ActiveRecord$Relation<T, H>;
 }
 
-interface ActiveRecord$Relation$Impl<T extends ActiveRecord$Base> {}
+interface ActiveRecord$Relation$Impl<
+  T extends ActiveRecord$Base,
+  H extends ActiveRecord$Relation$Holder<T>
+> {}
 
 ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
   only: [

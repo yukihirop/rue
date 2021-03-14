@@ -25,13 +25,13 @@ export class ActiveRecord$Scoping$Named extends RueModule {
     if (RecordCache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
       const records = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
       // records passed by value
-      const relation = createRuntimeRelation<T>((resolve, _reject) => {
+      const relation = createRuntimeRelation<T, Holder<T>>((resolve, _reject) => {
         resolve([new Holder(_this, Array.from(records)), Array.from(records)]);
       }, _this);
 
       return relation;
     } else {
-      const relation = createRuntimeRelation<T>((resolve, _reject) => {
+      const relation = createRuntimeRelation<T, Holder<T>>((resolve, _reject) => {
         const records = _this
           // fetchAll is defined in ActiveRecord$Base but is protected so I get a typescript error.
           // @ts-expect-error
@@ -74,8 +74,8 @@ export class ActiveRecord$Scoping$Named extends RueModule {
   }
 }
 
-function createRuntimeRelation<T extends ActiveRecord$Base>(
-  executor: art.PromiseExecutor<T>,
+function createRuntimeRelation<T extends ActiveRecord$Base, H extends Holder<T>>(
+  executor: art.PromiseExecutor<T, H>,
   recordKlass: ct.Constructor<T>
 ): ActiveRecord$Relation<T> {
   const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Relation`;

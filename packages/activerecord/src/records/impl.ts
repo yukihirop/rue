@@ -141,7 +141,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static deleteBy: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params?: Partial<U>
   ) => Promise<number>;
-  static where: <T extends ActiveRecord$Base<U>, U extends t.Params>(
+  static where: <T extends ActiveRecord$Base<U>, U extends t.Params = t.Params>(
     params: Partial<U>
   ) => ActiveRecord$Relation<T>;
   static rewhere: <T extends ActiveRecord$Base<U>, U extends t.Params>(

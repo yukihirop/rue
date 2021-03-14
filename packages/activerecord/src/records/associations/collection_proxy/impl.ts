@@ -4,6 +4,7 @@ import { ActiveSupport$ImplBase } from '@rue/activesupport';
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
 
 /**
  * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
@@ -13,7 +14,7 @@ import { ActiveRecord$Relation } from '@/records/relations';
  */
 abstract class ActiveRecord$Associations$CollectionProxy$Impl<
   T extends ActiveRecord$Base
-> extends ActiveRecord$Relation<T> {
+> extends ActiveRecord$Relation<T, ActiveRecord$Associations$CollectionProxy$Holder<T>> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
 }

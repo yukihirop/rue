@@ -5,7 +5,6 @@ import { RueModule } from '@rue/activesupport';
 import { errObj, ErrCodes } from '@/errors';
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
-import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from '@/records/relations/modules/query_methods';
 
 // types
 import type * as t from './types';
@@ -118,14 +117,33 @@ export class ActiveRecord$FinderMethods extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-include-3F
    */
-  isInclude<T extends ActiveRecord$Base>(record: T): Promise<boolean> {
-    const { RUE_RECORD_ID } = ActiveRecord$Base;
+  isInclude<T extends ActiveRecord$Base>(record: T | T[] | Promise<T | T[]>): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
     return _this._evaluateThen<boolean>((holder) => {
-      const allRecordIds = holder.records.map((r) => r[RUE_RECORD_ID]);
-      return allRecordIds.includes(record[RUE_RECORD_ID]);
+      const allRecordIds = holder.records.map((r) => r['id']);
+      if (record instanceof Promise) {
+        return record.then((recordVal) => {
+          if (recordVal && !Array.isArray(recordVal)) {
+            return allRecordIds.includes(recordVal['id']);
+          } else {
+            /**
+             * @description Same specifications as rails
+             */
+            return false;
+          }
+        });
+      } else {
+        if (record && !Array.isArray(record)) {
+          return allRecordIds.includes(record['id']);
+        } else {
+          /**
+           * @description Same specifications as rails
+           */
+          return false;
+        }
+      }
     });
   }
 

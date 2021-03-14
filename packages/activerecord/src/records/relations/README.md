@@ -18,7 +18,7 @@
 - [x] deleteAll
 - [x] destroyBy
 - [-] isEagerLoading
-- [] isEmpty
+- [x] isEmpty
 - [-] encodeWith
 - [-] explain
 - [x] findOrCreateBy
@@ -38,8 +38,7 @@
 - [-] reset
 - [-] scopeForCreate
 - [-] scoping
-- [] size
-- [] length (alias to `size`)
+- [x] size
 - [x] toArray
 - [x] toA (alias to toArray)
 - [-] toSQL

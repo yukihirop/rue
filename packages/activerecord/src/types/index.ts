@@ -1,1 +1,1 @@
-export { Constructor } from './core';
+export { Constructor, valueOf } from './core';

@@ -583,8 +583,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public age: IsIncludeRecordParams['age'];
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
     let records: IsIncludeRecord[];
     let holder: Holder<IsIncludeRecord>;
     let relation: Relation<IsIncludeRecord>;
@@ -592,9 +590,9 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     beforeEach(() => {
       IsIncludeRecord.resetRecordCache();
 
-      records = IsIncludeRecord.create([
-        { name: 'name_1', age: 1 },
-        { name: 'name_2', age: 2 },
+      records = IsIncludeRecord.create<IsIncludeRecord, IsIncludeRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]) as IsIncludeRecord[];
 
       holder = new Holder(IsIncludeRecord, records);
@@ -623,6 +621,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         });
       });
     });
+
+    describe('when give Promise<record>', () => {
+      describe('when return true', () => {
+        it('should correctly', (done) => {
+          relation.isInclude(relation.find(1)).then((result) => {
+            expect(result).toEqual(true);
+            done();
+          });
+        });
+      });
+
+      describe('when return false', () => {
+        it('should correctly', (done) => {
+          relation.isInclude(Promise.resolve(undefined)).then((result) => {
+            expect(result).toEqual(false);
+            done();
+          });
+        });
+      });
+    });
   });
 
   describe('#last', () => {
@@ -641,8 +659,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         return Promise.resolve([]);
       }
     }
-
-    MockDate.set('2021-03-05T23:03:21+09:00');
 
     let records: LastRecord[];
     let holder: Holder<LastRecord>;
@@ -855,8 +871,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         return Promise.resolve([]);
       }
     }
-
-    MockDate.set('2021-03-05T23:03:21+09:00');
 
     let records: TakeRecord[];
     let holder: Holder<TakeRecord>;
