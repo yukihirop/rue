@@ -22,7 +22,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
 
     // @ts-expect-error
     return _this._evaluateThen<boolean>((holder) => {
-      const records = holder.records;
+      const records = holder.scope;
 
       if (!condition) {
         return records.length > 0;
@@ -122,7 +122,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
     return _this._evaluateThen<boolean>((holder) => {
-      const allRecordIds = holder.records.map((r) => r['id']);
+      const allRecordIds = holder.scope.map((r) => r['id']);
       if (record instanceof Promise) {
         return record.then((recordVal) => {
           if (recordVal && !Array.isArray(recordVal)) {
@@ -165,7 +165,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
     return _this._evaluateThen((holder) => {
-      const records = holder.records;
+      const records = holder.scope;
       if (records.length === 0) {
         return null;
       } else {
@@ -207,12 +207,12 @@ export class ActiveRecord$FinderMethods extends RueModule {
 
     // @ts-expect-error
     return _this._evaluateThen((holder) => {
-      if (holder.records.length === 0) {
+      if (holder.scope.length === 0) {
         return null;
       } else if (limit === 1) {
-        return holder.records[0];
+        return holder.scope[0];
       } else {
-        return holder.records.slice(0, limit);
+        return holder.scope.slice(0, limit);
       }
     });
   }

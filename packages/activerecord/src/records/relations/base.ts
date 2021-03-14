@@ -62,24 +62,24 @@ export class ActiveRecord$Relation$Base<
 
         if (records instanceof Promise) {
           records.then((r) => {
-            holder.records = r;
+            holder.scope = r;
             Evaluator.all(holder);
 
             if (Object.keys(holder.groupedRecords).length > 0) {
               return onFulfilled(holder.groupedRecords);
             } else {
-              return onFulfilled(holder.records);
+              return onFulfilled(holder.scope);
             }
           });
         } else {
-          holder.records = records as T[];
+          holder.scope = records as T[];
 
           Evaluator.all(holder);
 
           if (Object.keys(holder.groupedRecords).length > 0) {
             return onFulfilled(holder.groupedRecords);
           } else {
-            return onFulfilled(holder.records);
+            return onFulfilled(holder.scope);
           }
         }
       } else {
@@ -139,12 +139,12 @@ export class ActiveRecord$Relation$Base<
     return super.then(([holder, records]) => {
       if (records instanceof Promise) {
         return records.then((r) => {
-          holder.records = r;
+          holder.scope = r;
           Evaluator.all(holder);
           return callback(holder);
         });
       } else {
-        holder.records = records as T[];
+        holder.scope = records as T[];
         Evaluator.all(holder);
         return callback(holder);
       }
@@ -156,7 +156,7 @@ export class ActiveRecord$Relation$Base<
    */
   isMany(filter?: (record: T) => boolean): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.filter(filter || Boolean).length > 1;
+      return holder.scope.filter(filter || Boolean).length > 1;
     });
   }
 
@@ -165,7 +165,7 @@ export class ActiveRecord$Relation$Base<
    */
   isNone(filter?: (record: T) => boolean): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.filter(filter || Boolean).length === 0;
+      return holder.scope.filter(filter || Boolean).length === 0;
     });
   }
 
@@ -174,7 +174,7 @@ export class ActiveRecord$Relation$Base<
    */
   isOne(filter?: (record: T) => boolean): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.filter(filter || Boolean).length === 1;
+      return holder.scope.filter(filter || Boolean).length === 1;
     });
   }
 
@@ -183,7 +183,7 @@ export class ActiveRecord$Relation$Base<
    */
   size(): Promise<number> {
     return this._evaluateThen<number>((holder) => {
-      return holder.records.length;
+      return holder.scope.length;
     });
   }
 
@@ -192,7 +192,7 @@ export class ActiveRecord$Relation$Base<
    */
   isAny(filter?: (record: T) => boolean): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.filter(filter || Boolean).length > 0;
+      return holder.scope.filter(filter || Boolean).length > 0;
     });
   }
 
@@ -217,7 +217,7 @@ export class ActiveRecord$Relation$Base<
    */
   isEmpty(): Promise<boolean> {
     return this._evaluateThen<boolean>((holder) => {
-      return holder.records.length === 0;
+      return holder.scope.length === 0;
     });
   }
 
@@ -230,13 +230,13 @@ export class ActiveRecord$Relation$Base<
         return params.map((param) => {
           const record = new this.recordKlass(param);
           if (yielder) yielder(record);
-          holder.records.push(record);
+          holder.scope.push(record);
           return record;
         });
       } else {
         const record = new this.recordKlass(params);
         if (yielder) yielder(record);
-        holder.records.push(record);
+        holder.scope.push(record);
         return record;
       }
     });
@@ -253,7 +253,7 @@ export class ActiveRecord$Relation$Base<
       // @ts-ignore
       return this.recordKlass.create(params, (self) => {
         if (yielder) yielder(self);
-        holder.records.push(self);
+        holder.scope.push(self);
       });
     });
   }
@@ -269,7 +269,7 @@ export class ActiveRecord$Relation$Base<
       // @ts-expect-error
       return this.recordKlass.createOrThrow(params, (self) => {
         if (yielder) yielder(self);
-        holder.records.push(self);
+        holder.scope.push(self);
       });
     });
   }
@@ -319,7 +319,7 @@ export class ActiveRecord$Relation$Base<
         .where<T, U>(params)
         .superThen(([holder]) => {
           Evaluator.all(holder);
-          return Promise.all(holder.records.map(deleteRecordFn)).then((result) => {
+          return Promise.all(holder.scope.map(deleteRecordFn)).then((result) => {
             return result.filter(Boolean).length;
           });
         })
@@ -331,9 +331,9 @@ export class ActiveRecord$Relation$Base<
    */
   deleteAll(): Promise<number> {
     return this._evaluateThen<number>((holder) => {
-      const deleteCount = holder.records.length;
+      const deleteCount = holder.scope.length;
       RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
-      holder.records = [];
+      holder.scope = [];
       return deleteCount;
     });
   }
@@ -348,7 +348,7 @@ export class ActiveRecord$Relation$Base<
       let leavedData = [];
       let deleteData = [];
 
-      holder.records.forEach((record) => {
+      holder.scope.forEach((record) => {
         if (filter) {
           if (filter(record)) {
             deleteData.push(record);
@@ -361,7 +361,7 @@ export class ActiveRecord$Relation$Base<
       });
 
       RecordCache.update(this.recordKlass.name, RECORD_ALL, leavedData);
-      holder.records = leavedData;
+      holder.scope = leavedData;
 
       Evaluator.all(holder);
 
@@ -378,12 +378,12 @@ export class ActiveRecord$Relation$Base<
    */
   destroyAll(): Promise<T[]> {
     return this._evaluateThen((holder) => {
-      const destroyed = holder.records.map((record: T) => {
+      const destroyed = holder.scope.map((record: T) => {
         const destroyed = record.destroy();
         Object.freeze(destroyed);
         return destroyed;
       });
-      holder.records = [];
+      holder.scope = [];
       return destroyed;
     });
   }
@@ -451,7 +451,7 @@ export class ActiveRecord$Relation$Base<
     };
 
     return this._evaluateThen<number>((holder) => {
-      return Promise.all(holder.records.map(updateFn)).then((result) => {
+      return Promise.all(holder.scope.map(updateFn)).then((result) => {
         return result.filter(Boolean).length;
       });
     });
@@ -481,8 +481,8 @@ export class ActiveRecord$Relation$Base<
         .where<T, U>(params)
         .superThen(([holder]) => {
           Evaluator.all(holder);
-          return Promise.all(holder.records.map(touchFn)).then((result) => {
-            holder.records = RecordCache.read(holder.recordKlass.name, RECORD_ALL, 'array');
+          return Promise.all(holder.scope.map(touchFn)).then((result) => {
+            holder.scope = RecordCache.read(holder.recordKlass.name, RECORD_ALL, 'array');
             return result.filter(Boolean).length;
           });
         })
@@ -494,7 +494,7 @@ export class ActiveRecord$Relation$Base<
    */
   toA(): Promise<T[]> {
     return this._evaluateThen((holder) => {
-      return holder.records;
+      return holder.scope;
     });
   }
 

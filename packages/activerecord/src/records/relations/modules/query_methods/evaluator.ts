@@ -35,7 +35,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const whereParams = this.scopeParams['where'];
     if (!this.isPresent(whereParams)) return this;
 
-    const records = this.holder.records;
+    const records = this.holder.scope;
     const result = records.reduce((acc: Array<T>, record: T) => {
       const isMatch = Object.keys(whereParams)
         .map((key: string) => {
@@ -50,7 +50,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
       if (isMatch) acc.push(record);
       return acc;
     }, [] as Array<T>);
-    this.holder.records = result;
+    this.holder.scope = result;
     return this;
   }
 
@@ -58,7 +58,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const orderParams = this.scopeParams['order'];
     if (!this.isPresent(orderParams)) return this;
 
-    const records = this.holder.records;
+    const records = this.holder.scope;
     Object.keys(orderParams).forEach((propName) => {
       const direction = orderParams[propName];
       records.sort((a: T, b: T) => {
@@ -89,7 +89,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
         }
       });
     });
-    this.holder.records = records;
+    this.holder.scope = records;
     return this;
   }
 
@@ -97,8 +97,8 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const offsetValue = this.scopeParams['offset'];
     if (!this.isPresent(offsetValue)) return this;
 
-    const records = this.holder.records;
-    this.holder.records = records.slice(offsetValue, records.length);
+    const records = this.holder.scope;
+    this.holder.scope = records.slice(offsetValue, records.length);
     return this;
   }
 
@@ -106,8 +106,8 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const limitValue = this.scopeParams['limit'];
     if (!this.isPresent(limitValue)) return this;
 
-    const records = this.holder.records;
-    this.holder.records = records.slice(0, limitValue);
+    const records = this.holder.scope;
+    this.holder.scope = records.slice(0, limitValue);
     return this;
   }
 
@@ -115,7 +115,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
     const groupParams = this.scopeParams['group'];
     if (!this.isPresent(groupParams)) return this;
 
-    const records = this.holder.records;
+    const records = this.holder.scope;
     let foundPairs = [];
     const groupedRecords = records.reduce((acc, record) => {
       const pairs = groupParams.reduce((propAcc, propName) => {

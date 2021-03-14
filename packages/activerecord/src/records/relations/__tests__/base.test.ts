@@ -34,7 +34,7 @@ describe('ActiveRecord$Relation$Base', () => {
       expect(typeof relation.recordKlass === 'function').toEqual(true);
       // @ts-ignore
       expect(relation.recordKlass.name).toEqual('ConstructorRecord');
-      expect(holder.records).toEqual([]);
+      expect(holder.scope).toEqual([]);
     });
   });
 
@@ -510,7 +510,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _newRecord: true,
             errors: {},
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -527,7 +527,7 @@ describe('ActiveRecord$Relation$Base', () => {
             errors: {},
             name: 'name_4',
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -559,7 +559,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 name: 'name_5',
               },
             ]);
-            expect(holder.records.length).toEqual(5);
+            expect(holder.scope.length).toEqual(5);
             done();
           });
       });
@@ -580,7 +580,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_5',
             });
-            expect(holder.records.length).toEqual(4);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -640,7 +640,7 @@ describe('ActiveRecord$Relation$Base', () => {
             _newRecord: false,
             errors: { age: [], name: [] },
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -664,7 +664,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 errors: { age: [], name: [] },
                 name: 'name_4',
               });
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -679,7 +679,7 @@ describe('ActiveRecord$Relation$Base', () => {
               expect(record.name).toEqual('name_10');
               expect(record.age).toEqual(10);
               expect(cacheAll.length).toEqual(3);
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -799,7 +799,7 @@ describe('ActiveRecord$Relation$Base', () => {
           expect(cacheAll.length).toEqual(1);
           expect(cacheAll[0].name).toEqual(undefined);
           expect(cacheAll[0].age).toEqual(undefined);
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -820,7 +820,7 @@ describe('ActiveRecord$Relation$Base', () => {
               expect(cacheAll.length).toEqual(1);
               expect(cacheAll[0].name).toEqual('name_4');
               expect(cacheAll[0].age).toEqual(4);
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -853,7 +853,7 @@ describe('ActiveRecord$Relation$Base', () => {
 } is invalid.`);
               const cacheAll = RecordCache.data[CreateOrThrowRecord.name][RECORD_ALL];
               expect(cacheAll.length).toEqual(0);
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -958,7 +958,7 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation.createOrFindBy({ name: 'name_1' }).then((record) => {
           expect(record).toEqual(records[0]);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -977,7 +977,7 @@ describe('ActiveRecord$Relation$Base', () => {
             errors: {},
             name: 'name_4',
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -1030,7 +1030,7 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation.createOrFindByOrThrow({ name: 'name_1' }).then((record) => {
           expect(record).toEqual(records[0]);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -1048,7 +1048,7 @@ describe('ActiveRecord$Relation$Base', () => {
             errors: { name: [] },
             name: 'name_4',
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -1070,7 +1070,7 @@ describe('ActiveRecord$Relation$Base', () => {
   },
   "name": "name_10"
 } is invalid.`);
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -1125,9 +1125,9 @@ describe('ActiveRecord$Relation$Base', () => {
         relation.deleteBy().then((result) => {
           expect(result).toEqual(3);
           /**
-           * @description Evaluator does not update holder.records when calling deleteBy alone
+           * @description Evaluator does not update holder.scope when calling deleteBy alone
            */
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -1138,9 +1138,9 @@ describe('ActiveRecord$Relation$Base', () => {
         relation.deleteBy({ age: [1, 2] }).then((result) => {
           expect(result).toEqual(2);
           /**
-           * @description Evaluator does not update holder.records when calling deleteBy alone
+           * @description Evaluator does not update holder.scope when calling deleteBy alone
            */
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -1229,7 +1229,7 @@ describe('ActiveRecord$Relation$Base', () => {
               name: 'name_3',
             },
           ]);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -1253,7 +1253,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 name: 'name_1',
               },
             ]);
-            expect(holder.records.length).toEqual(2);
+            expect(holder.scope.length).toEqual(2);
             done();
           });
       });
@@ -1304,11 +1304,11 @@ describe('ActiveRecord$Relation$Base', () => {
     describe('when default', () => {
       it('should correctly', (done) => {
         expect(RecordCache.data[DeleteAllRecord.name][RECORD_ALL].length).toEqual(3);
-        expect(holder.records.length).toEqual(3);
+        expect(holder.scope.length).toEqual(3);
         relation.deleteAll().then((result) => {
           expect(result).toEqual(3);
           expect(RecordCache.data[DeleteAllRecord.name][RECORD_ALL].length).toEqual(0);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -1396,7 +1396,7 @@ describe('ActiveRecord$Relation$Base', () => {
               name: 'name_3',
             },
           ]);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -1445,7 +1445,7 @@ describe('ActiveRecord$Relation$Base', () => {
             /**
              * @description records after being narrowed down by the condition of findBy
              */
-            expect(holder.records.length).toEqual(1);
+            expect(holder.scope.length).toEqual(1);
             done();
           });
       });
@@ -1481,7 +1481,7 @@ describe('ActiveRecord$Relation$Base', () => {
             /**
              * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
              */
-            expect(holder.records.length).toEqual(1);
+            expect(holder.scope.length).toEqual(1);
             done();
           });
       });
@@ -1506,7 +1506,7 @@ describe('ActiveRecord$Relation$Base', () => {
               /**
                * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
                */
-              expect(holder.records.length).toEqual(1);
+              expect(holder.scope.length).toEqual(1);
               done();
             });
         });
@@ -1573,7 +1573,7 @@ describe('ActiveRecord$Relation$Base', () => {
               id: 1,
               name: 'name_1',
             });
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });
@@ -1594,7 +1594,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: { age: [], name: [] },
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -1620,7 +1620,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: { age: [], name: [] },
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -1693,7 +1693,7 @@ describe('ActiveRecord$Relation$Base', () => {
           .findOrInitializeBy<FindOrInitializeByRecordParams>({ name: 'name_1' })
           .then((record) => {
             expect(record).toEqual(records[0]);
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });
@@ -1711,7 +1711,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });

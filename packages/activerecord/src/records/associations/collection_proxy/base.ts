@@ -20,14 +20,14 @@ export class ActiveRecord$Associations$CollectionProxy<
           const merged = Object.assign(param || {}, holder.foreignKeyData);
           const record = new this.recordKlass(merged);
           if (yielder) yielder(record);
-          holder.records.push(record);
+          holder.scope.push(record);
           return record;
         });
       } else {
         const merged = Object.assign(params || {}, holder.foreignKeyData);
         const record = new this.recordKlass(merged);
         if (yielder) yielder(record);
-        holder.records.push(record);
+        holder.scope.push(record);
         return record;
       }
     });
@@ -45,7 +45,7 @@ export class ActiveRecord$Associations$CollectionProxy<
       // @ts-ignore
       return this.recordKlass.create(merged, (self) => {
         if (yielder) yielder(self);
-        holder.records.push(self);
+        holder.scope.push(self);
       });
     });
   }
@@ -62,7 +62,7 @@ export class ActiveRecord$Associations$CollectionProxy<
       // @ts-expect-error
       return this.recordKlass.createOrThrow(merged, (self) => {
         if (yielder) yielder(self);
-        holder.records.push(self);
+        holder.scope.push(self);
       });
     });
   }
@@ -73,7 +73,7 @@ export class ActiveRecord$Associations$CollectionProxy<
   pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
     // @ts-expect-error
     return this._evaluateThen<ct.valueOf<U>>((holder) => {
-      return holder.records.map((record) => {
+      return holder.scope.map((record) => {
         let result;
 
         if (propNames.length === 0) {
@@ -115,9 +115,9 @@ export class ActiveRecord$Associations$CollectionProxy<
 
         let result;
         if (propName) {
-          result = newHolder.records.filter((record) => record[propName]);
+          result = newHolder.scope.filter((record) => record[propName]);
         } else {
-          result = newHolder.records;
+          result = newHolder.scope;
         }
 
         if (filter) result = result.filter(filter);

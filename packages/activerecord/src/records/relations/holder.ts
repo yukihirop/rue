@@ -8,7 +8,7 @@ import type * as mt from './modules';
 
 export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
   public recordKlass: ct.Constructor<T>;
-  public records: T[];
+  public scope: T[];
   public scopeParams: {
     where: { [key: string]: any };
     order: { [key: string]: mt.QueryMethods$Directions };
@@ -23,7 +23,7 @@ export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {
     this.recordKlass = recordKlass;
-    this.records = records || [];
+    this.scope = records || [];
     this._defaultScopeParams = {
       where: {},
       order: {},
