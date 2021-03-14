@@ -511,6 +511,49 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
       });
     });
 
+    describe('when specify 0', () => {
+      it('should return []', (done) => {
+        QueryingRecord.offset(0).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              id: 2,
+              name: 'name_2',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              id: 3,
+              name: 'name_3',
+            },
+          ]);
+          done();
+        });
+      });
+    });
+
     describe("when specify 'offset' after specify 'where'", () => {
       it('should correctly', (done) => {
         QueryingRecord.where({ age: [1, 2] })
@@ -586,6 +629,15 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
               id: 1,
             },
           ]);
+          done();
+        });
+      });
+    });
+
+    describe('when specify 0', () => {
+      it('should return []', (done) => {
+        QueryingRecord.limit(0).rueThen((records) => {
+          expect(records).toEqual([]);
           done();
         });
       });

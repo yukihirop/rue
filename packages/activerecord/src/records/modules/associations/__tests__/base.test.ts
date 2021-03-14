@@ -1,12 +1,12 @@
 // classes
 import { ActiveRecord$Associations as AssociationsModule } from '../core';
-import { registryForAssociations as Registry } from '@/registries';
+import { registryForAssociations as AssociationsRegistry } from '@/registries';
 import { cacheForIntermeditateTables as IntermediateTable } from '@/registries';
 
 // types
 import type * as t from '../types';
 
-describe('Association', () => {
+describe('ActiveRecord$Associations', () => {
   describe(`[static] belongsTo`, () => {
     class TestBelongsToRecord {
       static belongsTo: <T extends AssociationsModule = any>(
@@ -36,9 +36,9 @@ describe('Association', () => {
     TestBelongsToChildRecod.belongsTo('parent', TestBelongsToRecord, 'foreignKey');
 
     it('should correctly', () => {
-      expect(Registry.data['TestBelongsToChildRecod']['belongsTo']['parent'].toString()).toEqual(
-        '(self) => klass.findBy({ id: self[foreignKey] })'
-      );
+      expect(
+        AssociationsRegistry.data['TestBelongsToChildRecod']['belongsTo']['parent'].toString()
+      ).toEqual('(self) => klass.findBy({ id: self[foreignKey] })');
     });
   });
 
@@ -64,7 +64,7 @@ describe('Association', () => {
     TestHasOneRecord.hasOne('child', TestHasOneChildRecod, 'child_id');
 
     it('should correctly', () => {
-      expect(Registry.data['TestHasOneRecord']['hasOne']['child'].toString()).toEqual(
+      expect(AssociationsRegistry.data['TestHasOneRecord']['hasOne']['child'].toString()).toEqual(
         '(self) => klass.findBy({ [foreignKey]: self.id })'
       );
     });
@@ -99,8 +99,12 @@ describe('Association', () => {
     TestHasManyRecord.hasMany('children', TestHasManyChildRecod, 'child_id');
 
     it('should correctly', () => {
-      expect(Registry.data['TestHasManyRecord']['hasMany']['children'].toString()).toEqual(
-        '(self) => klass.where({ [foreignKey]: self.id })'
+      expect(
+        JSON.stringify(
+          AssociationsRegistry.data['TestHasManyRecord']['hasMany']['children'].toString()
+        )
+      ).toEqual(
+        "\"(self) => {\\n                /**\\n                 * @description I'm worried about the overhead, but load it dynamically to avoid circular references\\n                 */\\n                const { ActiveRecord$Associations$CollectionProxy$Holder: Holder, } = require('../../associations/collection_proxy');\\n                const foreignKeyData = { [foreignKey]: self.id };\\n                const records = klass.where(foreignKeyData).toA();\\n                const holder = new Holder(klass, [], foreignKeyData);\\n                /**\\n                 * @description Since it is a runtime specification, only any type can be given.\\n                 */\\n                const collectionProxy = createRuntimeCollectionProxy((resolve, _reject) => {\\n                    resolve([holder, records]);\\n                    // @ts-expect-error\\n                }, klass);\\n                return collectionProxy;\\n            }\""
       );
     });
   });
@@ -145,12 +149,12 @@ describe('Association', () => {
 
     it('should correctly', () => {
       expect(
-        Registry.data['TestHasAndBelongsToManyAssemblyRecord']['hasAndBelongsToMany'][
+        AssociationsRegistry.data['TestHasAndBelongsToManyAssemblyRecord']['hasAndBelongsToMany'][
           'parts'
         ].toString()
       ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');
       expect(
-        Registry.data['TestHasAndBelongsToManyPartRecord']['hasAndBelongsToMany'][
+        AssociationsRegistry.data['TestHasAndBelongsToManyPartRecord']['hasAndBelongsToMany'][
           'assemblies'
         ].toString()
       ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');

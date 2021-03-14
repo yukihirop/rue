@@ -8,26 +8,27 @@ import type * as mt from './modules';
 
 export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
   public recordKlass: ct.Constructor<T>;
-  public records: T[];
+  public scope: T[];
   public scopeParams: {
     where: { [key: string]: any };
     order: { [key: string]: mt.QueryMethods$Directions };
-    offset: number;
-    limit: number;
+    offset?: number;
+    limit?: number;
     group: string[];
   };
   public groupedRecords: { [key: string]: T[] };
   public errors: et.ErrObj[];
-  private _defaultScopeParams: any;
+  private readonly _defaultScopeParams: any;
+  public readonly isHolder = true;
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {
     this.recordKlass = recordKlass;
-    this.records = records || [];
+    this.scope = records || [];
     this._defaultScopeParams = {
       where: {},
       order: {},
-      offset: 0,
-      limit: 0,
+      offset: undefined,
+      limit: undefined,
       group: [],
     };
     Object.freeze(this._defaultScopeParams);

@@ -15,8 +15,9 @@ import {
 
 // types
 import type * as t from './types';
+import type * as ct from '@/types';
+import type * as mt from '@/records/modules';
 import type * as at from '@/records/modules/associations';
-import type * as acpt from '@/records/modules/associations/modules/collection_proxy';
 import type * as rmt from '@/records/relations/modules';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
@@ -63,15 +64,15 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     foreignKey: at.Associations$ForeignKey
   ) => void;
   static hasAndBelongsToMany: (relationName, klass: Function) => void;
-  static scope: <T extends ActiveRecord$Base>(
-    scopeName: string,
-    fn: acpt.CollectionProxy$ScopeFn<T>
-  ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations._defineAssociations(self);
   }
   // ActiveRecord$Scoping
   static all: <T extends ActiveRecord$Base<t.Params>>() => ActiveRecord$Relation<T>;
+  static scope: <T extends ActiveRecord$Base>(
+    scopeName: string,
+    fn: (self: typeof ActiveRecord$Base, ...args: any[]) => mt.Scoping$ScopeVal<T>
+  ) => void;
   // ActiveRecord$Core
   static find: <T extends ActiveRecord$Base<t.Params>>(
     ...ids: at.Associations$PrimaryKey[]
@@ -140,7 +141,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static deleteBy: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params?: Partial<U>
   ) => Promise<number>;
-  static where: <T extends ActiveRecord$Base<U>, U extends t.Params>(
+  static where: <T extends ActiveRecord$Base<U>, U extends t.Params = t.Params>(
     params: Partial<U>
   ) => ActiveRecord$Relation<T>;
   static rewhere: <T extends ActiveRecord$Base<U>, U extends t.Params>(
@@ -217,6 +218,7 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'updateProp',
   ],
 });
+
 ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['hasAndBelongsToMany', 'releaseAndBelongsToMany'],
 });
@@ -235,11 +237,11 @@ ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
   ],
 });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
-  only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany', 'scope'],
+  only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'],
 });
 
 ActiveRecord$Core.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['find'] });
-ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all'] });
+ActiveRecord$Scoping.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['all', 'scope'] });
 ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: [
     /**

@@ -12,11 +12,11 @@ import type * as t from '@/index';
 
 describe('ActiveRecord$Relation$Base', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
-  beforeAll(() => {
+  beforeEach(() => {
     MockDate.set('2021-03-05T23:03:21+09:00');
   });
 
-  afterAll(() => {
+  afterEach(() => {
     MockDate.reset();
   });
 
@@ -29,12 +29,12 @@ describe('ActiveRecord$Relation$Base', () => {
       const relation = new Relation<ConstructorRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(ConstructorRecord);
+      )._init(ConstructorRecord);
       // @ts-ignore
       expect(typeof relation.recordKlass === 'function').toEqual(true);
       // @ts-ignore
       expect(relation.recordKlass.name).toEqual('ConstructorRecord');
-      expect(holder.records).toEqual([]);
+      expect(holder.scope).toEqual([]);
     });
   });
 
@@ -51,20 +51,24 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsManyRecordParams['age'];
     }
 
-    const records = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as IsManyRecord[];
-
-    const holder = new Holder(IsManyRecord, records);
-    const relation = new Relation<IsManyRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(IsManyRecord);
+    let records: IsManyRecord[];
+    let holder: Holder<IsManyRecord>;
+    let relation: Relation<IsManyRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      IsManyRecord.resetRecordCache();
+
+      records = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as IsManyRecord[];
+
+      holder = new Holder(IsManyRecord, records);
+      relation = new Relation<IsManyRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsManyRecord);
     });
 
     describe('when return true', () => {
@@ -78,11 +82,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when return false', () => {
       it('should correctly', (done) => {
-        holder.records = [records[0]];
-        relation.isMany().then((result) => {
-          expect(result).toEqual(false);
-          done();
-        });
+        relation
+          .where({ id: 1 })
+          .isMany()
+          .then((result) => {
+            expect(result).toEqual(false);
+            done();
+          });
       });
     });
 
@@ -111,31 +117,37 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsNoneRecordParams['age'];
     }
 
-    const records = [
-      IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
-        id: 1,
-        name: 'name_1',
-        age: 1,
-      }) as IsNoneRecord,
-    ];
-
-    const holder = new Holder(IsNoneRecord, records);
-    const relation = new Relation<IsNoneRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(IsNoneRecord);
+    let records: IsNoneRecord[];
+    let holder: Holder<IsNoneRecord>;
+    let relation: Relation<IsNoneRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      IsNoneRecord.resetRecordCache();
+
+      records = [
+        IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
+          id: 1,
+          name: 'name_1',
+          age: 1,
+        }) as IsNoneRecord,
+      ];
+
+      holder = new Holder(IsNoneRecord, records);
+      relation = new Relation<IsNoneRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsNoneRecord);
     });
 
     describe('when return true', () => {
       it('should correctly', (done) => {
-        holder.records = [];
-        relation.isNone().then((result) => {
-          expect(result).toEqual(true);
-          done();
-        });
+        relation
+          .where({ id: 100 })
+          .isNone()
+          .then((result) => {
+            expect(result).toEqual(true);
+            done();
+          });
       });
     });
 
@@ -173,28 +185,34 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsOneRecordParams['age'];
     }
 
-    const records = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 1, name: 'name_2', age: 2 },
-    ]) as IsOneRecord[];
-
-    const holder = new Holder(IsOneRecord, records);
-    const relation = new Relation<IsOneRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(IsOneRecord);
+    let records: IsOneRecord[];
+    let holder: Holder<IsOneRecord>;
+    let relation: Relation<IsOneRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      IsOneRecord.resetRecordCache();
+
+      records = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+      ]) as IsOneRecord[];
+
+      holder = new Holder(IsOneRecord, records);
+      relation = new Relation<IsOneRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsOneRecord);
     });
 
     describe('when return true', () => {
       it('should correctly', (done) => {
-        holder.records = [records[0]];
-        relation.isOne().then((result) => {
-          expect(result).toEqual(true);
-          done();
-        });
+        relation
+          .where({ id: 1 })
+          .isOne()
+          .then((result) => {
+            expect(result).toEqual(true);
+            done();
+          });
       });
     });
 
@@ -219,6 +237,61 @@ describe('ActiveRecord$Relation$Base', () => {
     });
   });
 
+  describe('#size', () => {
+    type SizeRecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class SizeRecord extends ActiveRecord$Base<SizeRecordParams> {
+      public id: SizeRecordParams['id'];
+      public name: SizeRecordParams['name'];
+      public age: SizeRecordParams['age'];
+    }
+
+    let records: SizeRecord[];
+    let holder: Holder<SizeRecord>;
+    let relation: Relation<SizeRecord>;
+
+    beforeEach(() => {
+      SizeRecord.resetRecordCache();
+
+      records = SizeRecord.create<SizeRecord, SizeRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as SizeRecord[];
+
+      holder = new Holder(SizeRecord, records);
+      relation = new Relation<SizeRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(SizeRecord);
+    });
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        relation.size().then((result) => {
+          expect(result).toEqual(3);
+          done();
+        });
+      });
+    });
+
+    describe('when mix', () => {
+      it('should correctly', (done) => {
+        relation
+          .limit(2)
+          .size()
+          .then((result) => {
+            expect(result).toEqual(2);
+            done();
+          });
+      });
+    });
+  });
+
   describe('#isAny', () => {
     type IsAnyRecordParams = {
       id: t.Record$PrimaryKey;
@@ -232,13 +305,21 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsAnyRecordParams['age'];
     }
 
-    const records = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
+    let records: IsAnyRecord[];
+    let holder: Holder<IsAnyRecord>;
+    let relation: Relation<IsAnyRecord>;
 
-    const holder = new Holder(IsAnyRecord, records);
-    const relation = new Relation<IsAnyRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(IsAnyRecord);
+    beforeEach(() => {
+      IsAnyRecord.resetRecordCache();
+
+      records = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
+
+      holder = new Holder(IsAnyRecord, records);
+      relation = new Relation<IsAnyRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsAnyRecord);
+    });
 
     describe('when return true', () => {
       it('should correctly', (done) => {
@@ -251,11 +332,13 @@ describe('ActiveRecord$Relation$Base', () => {
 
     describe('when return false', () => {
       it('should correctly', (done) => {
-        holder.records = [];
-        relation.isAny().then((result) => {
-          expect(result).toEqual(false);
-          done();
-        });
+        relation
+          .where({ id: 100 })
+          .isAny()
+          .then((result) => {
+            expect(result).toEqual(false);
+            done();
+          });
       });
     });
 
@@ -284,27 +367,33 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsBlankRecordParams['age'];
     }
 
-    const records = [
-      IsBlankRecord.create<IsBlankRecord, IsBlankRecordParams>({
-        id: 1,
-        name: 'name_1',
-        age: 1,
-      }) as IsBlankRecord,
-    ];
-
-    const holder = new Holder(IsBlankRecord, records);
-    const relation = new Relation<IsBlankRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(IsBlankRecord);
+    let records: IsBlankRecord[];
+    let holder: Holder<IsBlankRecord>;
+    let relation: Relation<IsBlankRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      IsBlankRecord.resetRecordCache();
+
+      records = IsBlankRecord.create([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 1, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_3', age: 3 },
+      ]) as IsBlankRecord[];
+
+      holder = new Holder(IsBlankRecord, records);
+      relation = new Relation<IsBlankRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsBlankRecord);
     });
 
     describe('when return true', () => {
       it('should correctly', (done) => {
-        holder.records = [];
+        holder = new Holder(IsBlankRecord, []);
+        relation = new Relation<IsBlankRecord>(
+          (resolve, _reject) => resolve([holder, []])
+          // @ts-expect-error
+        )._init(IsBlankRecord);
         relation.isBlank().then((result) => {
           expect(result).toEqual(true);
           done();
@@ -315,6 +404,63 @@ describe('ActiveRecord$Relation$Base', () => {
     describe('when return false', () => {
       it('should correctly', (done) => {
         relation.isBlank().then((result) => {
+          expect(result).toEqual(false);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('#IsEmpty', () => {
+    type IsEmptyRecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class IsEmptyRecord extends ActiveRecord$Base<IsEmptyRecordParams> {
+      public id: IsEmptyRecordParams['id'];
+      public name: IsEmptyRecordParams['name'];
+      public age: IsEmptyRecordParams['age'];
+    }
+
+    let records: IsEmptyRecord[];
+    let holder: Holder<IsEmptyRecord>;
+    let relation: Relation<IsEmptyRecord>;
+
+    beforeEach(() => {
+      IsEmptyRecord.resetRecordCache();
+
+      records = [
+        IsEmptyRecord.create<IsEmptyRecord, IsEmptyRecordParams>({
+          id: 1,
+          name: 'name_1',
+          age: 1,
+        }) as IsEmptyRecord,
+      ];
+
+      holder = new Holder(IsEmptyRecord, records);
+      relation = new Relation<IsEmptyRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(IsEmptyRecord);
+    });
+
+    describe('when return true', () => {
+      it('should correctly', (done) => {
+        relation
+          .where({ id: 100 })
+          .isEmpty()
+          .then((result) => {
+            expect(result).toEqual(true);
+            done();
+          });
+      });
+    });
+
+    describe('when return false', () => {
+      it('should correctly', (done) => {
+        relation.isEmpty().then((result) => {
           expect(result).toEqual(false);
           done();
         });
@@ -335,63 +481,108 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: BuildRecordParams['age'];
     }
 
-    const records = BuildRecord.create<BuildRecord, BuildRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as BuildRecord[];
-
-    const holder = new Holder(BuildRecord, records);
-    const relation = new Relation<BuildRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(BuildRecord);
+    let records: BuildRecord[];
+    let holder: Holder<BuildRecord>;
+    let relation: Relation<BuildRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      BuildRecord.resetRecordCache();
+
+      records = BuildRecord.create<BuildRecord, BuildRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as BuildRecord[];
+
+      holder = new Holder(BuildRecord, records);
+      relation = new Relation<BuildRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(BuildRecord);
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        expect(relation.build()).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          errors: {},
+      it('should correctly', (done) => {
+        relation.build().then((record) => {
+          expect(record).toEqual({
+            __rue_record_id__: undefined,
+            _destroyed: false,
+            _newRecord: true,
+            errors: {},
+          });
+          expect(holder.scope.length).toEqual(4);
+          done();
         });
-        expect(holder.records.length).toEqual(3);
       });
     });
 
     describe("when specify 'params'", () => {
-      it('should correctly', () => {
-        expect(relation.build({ name: 'name_4', age: 4 })).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          age: 4,
-          errors: {},
-          name: 'name_4',
+      it('should correctly', (done) => {
+        relation.build({ name: 'name_4', age: 4 }).then((record) => {
+          expect(record).toEqual({
+            __rue_record_id__: undefined,
+            _destroyed: false,
+            _newRecord: true,
+            age: 4,
+            errors: {},
+            name: 'name_4',
+          });
+          expect(holder.scope.length).toEqual(4);
+          done();
         });
-        expect(holder.records.length).toEqual(3);
+      });
+    });
+
+    describe("when specify 'array of params'", () => {
+      it('should correctly', (done) => {
+        relation
+          .build([
+            { name: 'name_4', age: 4 },
+            { name: 'name_5', age: 5 },
+          ])
+          .then((records) => {
+            expect(records).toEqual([
+              {
+                __rue_record_id__: undefined,
+                _destroyed: false,
+                _newRecord: true,
+                age: 4,
+                errors: {},
+                name: 'name_4',
+              },
+              {
+                __rue_record_id__: undefined,
+                _destroyed: false,
+                _newRecord: true,
+                age: 5,
+                errors: {},
+                name: 'name_5',
+              },
+            ]);
+            expect(holder.scope.length).toEqual(5);
+            done();
+          });
       });
     });
 
     describe("when specify 'yielder'", () => {
-      it('shoulld correctly', () => {
-        expect(
-          relation.build({ name: 'name_5' }, (self) => {
+      it('shoulld correctly', (done) => {
+        relation
+          .build({ name: 'name_5' }, (self) => {
             self.age = 5;
           })
-        ).toEqual({
-          __rue_record_id__: undefined,
-          _destroyed: false,
-          _newRecord: true,
-          age: 5,
-          errors: {},
-          name: 'name_5',
-        });
-        expect(holder.records.length).toEqual(3);
+          .then((record) => {
+            expect(record).toEqual({
+              __rue_record_id__: undefined,
+              _destroyed: false,
+              _newRecord: true,
+              age: 5,
+              errors: {},
+              name: 'name_5',
+            });
+            expect(holder.scope.length).toEqual(4);
+            done();
+          });
       });
     });
   });
@@ -423,29 +614,33 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       CreateRecord.resetRecordCache();
 
-      records = [
-        new CreateRecord({ id: 1, name: 'name_1', age: 1 }),
-        new CreateRecord({ id: 2, name: 'name_2', age: 2 }),
-        new CreateRecord({ id: 3, name: 'name_3', age: 3 }),
-      ];
+      records = CreateRecord.create<CreateRecord, CreateRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as CreateRecord[];
 
       holder = new Holder(CreateRecord, records);
       relation = new Relation<CreateRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(CreateRecord);
+      )._init(CreateRecord);
     });
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.create<CreateRecordParams>().then((record) => {
+        relation.create<CreateRecordParams>().then((record: CreateRecord) => {
           const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
-          expect(record.name).toEqual(undefined);
-          expect(record.age).toEqual(undefined);
-          expect(cacheAll.length).toEqual(1);
-          expect(cacheAll[0].name).toEqual(undefined);
-          expect(cacheAll[0].age).toEqual(undefined);
-          expect(holder.records.length).toEqual(4);
+          expect(cacheAll.length).toEqual(4);
+          expect(record).toEqual({
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            errors: { age: [], name: [] },
+          });
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -456,22 +651,20 @@ describe('ActiveRecord$Relation$Base', () => {
         it('should correctly', (done) => {
           relation
             .create<CreateRecordParams>({ name: 'name_4', age: 4 })
-            .then((record) => {
+            .then((record: CreateRecord) => {
               const cacheAll = RecordCache.data['CreateRecord'][RECORD_ALL];
-              expect(record.name).toEqual('name_4');
-              expect(record.age).toEqual(4);
-              expect(cacheAll.length).toEqual(1);
-              expect(cacheAll[0]).toEqual({
+              expect(cacheAll.length).toEqual(4);
+              expect(record).toEqual({
                 __rue_created_at__: '2021-03-05T23:03:21+09:00',
-                __rue_record_id__: 1,
+                __rue_record_id__: 4,
                 __rue_updated_at__: '2021-03-05T23:03:21+09:00',
-                _newRecord: false,
                 _destroyed: false,
+                _newRecord: false,
                 age: 4,
-                errors: { name: [], age: [] },
+                errors: { age: [], name: [] },
                 name: 'name_4',
               });
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -481,15 +674,75 @@ describe('ActiveRecord$Relation$Base', () => {
         it('should correctly', (done) => {
           relation
             .create<CreateRecordParams>({ name: 'name_10', age: 10 })
-            .then((record) => {
+            .then((record: CreateRecord) => {
               const cacheAll = RecordCache.data[CreateRecord.name][RECORD_ALL];
               expect(record.name).toEqual('name_10');
               expect(record.age).toEqual(10);
-              expect(cacheAll.length).toEqual(0);
-              expect(holder.records.length).toEqual(4);
+              expect(cacheAll.length).toEqual(3);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
+      });
+    });
+
+    describe("when specify 'array of params'", () => {
+      it('should correctly', (done) => {
+        relation
+          .create<CreateRecordParams>([
+            { id: 4, name: 'name_4', age: 4 },
+            { id: 5, name: 'name_5', age: 5 },
+          ])
+          .then((records: CreateRecord[]) => {
+            expect(records).toEqual([
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 4,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 4,
+                errors: { age: [], name: [] },
+                id: 4,
+                name: 'name_4',
+              },
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 5,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 5,
+                errors: { age: [], name: [] },
+                id: 5,
+                name: 'name_5',
+              },
+            ]);
+            done();
+          });
+      });
+    });
+
+    describe("when specify 'yielder'", () => {
+      it('should correctly', (done) => {
+        relation
+          .create<CreateRecordParams>({ id: 4, name: 'name_4' }, (self) => {
+            self.age = 4;
+          })
+          .then((record: CreateRecord) => {
+            expect(record).toEqual({
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 4,
+              errors: { age: [], name: [] },
+              id: 4,
+              name: 'name_4',
+            });
+            done();
+          });
       });
     });
   });
@@ -534,19 +787,19 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<CreateOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(CreateOrThrowRecord);
+      )._init(CreateOrThrowRecord);
     });
 
     describe('when default', () => {
       it('should correctly', (done) => {
-        relation.create<CreateOrThrowRecordParams>().then((record) => {
-          const cacheAll = RecordCache.data['CreateOrThrowRecord'][RECORD_ALL];
+        relation.createOrThrow<CreateOrThrowRecordParams>().then((record: CreateOrThrowRecord) => {
+          const cacheAll = RecordCache.data[CreateOrThrowRecord.name][RECORD_ALL];
           expect(record.name).toEqual(undefined);
           expect(record.age).toEqual(undefined);
           expect(cacheAll.length).toEqual(1);
           expect(cacheAll[0].name).toEqual(undefined);
           expect(cacheAll[0].age).toEqual(undefined);
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -567,7 +820,7 @@ describe('ActiveRecord$Relation$Base', () => {
               expect(cacheAll.length).toEqual(1);
               expect(cacheAll[0].name).toEqual('name_4');
               expect(cacheAll[0].age).toEqual(4);
-              expect(holder.records.length).toEqual(4);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -600,7 +853,67 @@ describe('ActiveRecord$Relation$Base', () => {
 } is invalid.`);
               const cacheAll = RecordCache.data[CreateOrThrowRecord.name][RECORD_ALL];
               expect(cacheAll.length).toEqual(0);
-              expect(holder.records.length).toEqual(3);
+              expect(holder.scope.length).toEqual(4);
+              done();
+            });
+        });
+      });
+
+      describe("when specify 'array of params'", () => {
+        it('should correctly', (done) => {
+          relation
+            .createOrThrow<CreateOrThrowRecordParams>([
+              { id: 4, name: 'name_4', age: 4 },
+              { id: 5, name: 'name_5', age: 5 },
+            ])
+            .then((records) => {
+              expect(records).toEqual([
+                {
+                  __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                  __rue_record_id__: 1,
+                  __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                  _destroyed: false,
+                  _newRecord: false,
+                  age: 4,
+                  errors: { age: [], name: [] },
+                  id: 4,
+                  name: 'name_4',
+                },
+                {
+                  __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                  __rue_record_id__: 2,
+                  __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                  _destroyed: false,
+                  _newRecord: false,
+                  age: 5,
+                  errors: { age: [], name: [] },
+                  id: 5,
+                  name: 'name_5',
+                },
+              ]);
+              done();
+            });
+        });
+      });
+
+      describe("when specify 'yielder'", () => {
+        it('should correctly', (done) => {
+          relation
+            .createOrThrow({ id: 4, name: 'name_4' }, (self) => {
+              self.age = 4;
+            })
+            .then((record) => {
+              expect(record).toEqual({
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 1,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 4,
+                errors: { age: [], name: [] },
+                id: 4,
+                name: 'name_4',
+              });
               done();
             });
         });
@@ -621,27 +934,31 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: CreateOrFindByRecordParams['age'];
     }
 
-    const records = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 1, name: 'name_2', age: 2 },
-      { id: 1, name: 'name_3', age: 3 },
-    ]) as CreateOrFindByRecord[];
-
-    const holder = new Holder(CreateOrFindByRecord, records);
-    const relation = new Relation<CreateOrFindByRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(CreateOrFindByRecord);
+    let records: CreateOrFindByRecord[];
+    let holder: Holder<CreateOrFindByRecord>;
+    let relation: Relation<CreateOrFindByRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      CreateOrFindByRecord.resetRecordCache();
+
+      records = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 1, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_3', age: 3 },
+      ]) as CreateOrFindByRecord[];
+
+      holder = new Holder(CreateOrFindByRecord, records);
+      relation = new Relation<CreateOrFindByRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(CreateOrFindByRecord);
     });
 
     describe('when return findBy result', () => {
       it('should correctly', (done) => {
         relation.createOrFindBy({ name: 'name_1' }).then((record) => {
           expect(record).toEqual(records[0]);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -660,7 +977,7 @@ describe('ActiveRecord$Relation$Base', () => {
             errors: {},
             name: 'name_4',
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -686,30 +1003,34 @@ describe('ActiveRecord$Relation$Base', () => {
 
     CreateOrFindByOrThrowRecord.validates('name', { length: { is: 6 } });
 
-    const records = CreateOrFindByOrThrowRecord.create<
-      CreateOrFindByOrThrowRecord,
-      CreateOrFindByOrThrowRecordParams
-    >([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 1, name: 'name_2', age: 2 },
-      { id: 1, name: 'name_3', age: 3 },
-    ]) as CreateOrFindByOrThrowRecord[];
-
-    const holder = new Holder(CreateOrFindByOrThrowRecord, records);
-    const relation = new Relation<CreateOrFindByOrThrowRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(CreateOrFindByOrThrowRecord);
+    let records: CreateOrFindByOrThrowRecord[];
+    let holder: Holder<CreateOrFindByOrThrowRecord>;
+    let relation: Relation<CreateOrFindByOrThrowRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      CreateOrFindByOrThrowRecord.resetRecordCache();
+
+      records = CreateOrFindByOrThrowRecord.create<
+        CreateOrFindByOrThrowRecord,
+        CreateOrFindByOrThrowRecordParams
+      >([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 1, name: 'name_2', age: 2 },
+        { id: 1, name: 'name_3', age: 3 },
+      ]) as CreateOrFindByOrThrowRecord[];
+
+      holder = new Holder(CreateOrFindByOrThrowRecord, records);
+      relation = new Relation<CreateOrFindByOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(CreateOrFindByOrThrowRecord);
     });
 
     describe('when return findBy result', () => {
       it('should correctly', (done) => {
         relation.createOrFindByOrThrow({ name: 'name_1' }).then((record) => {
           expect(record).toEqual(records[0]);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -727,7 +1048,7 @@ describe('ActiveRecord$Relation$Base', () => {
             errors: { name: [] },
             name: 'name_4',
           });
-          expect(holder.records.length).toEqual(4);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -749,7 +1070,7 @@ describe('ActiveRecord$Relation$Base', () => {
   },
   "name": "name_10"
 } is invalid.`);
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(4);
           done();
         });
       });
@@ -785,7 +1106,8 @@ describe('ActiveRecord$Relation$Base', () => {
     // records are object.freeze when destroyed
 
     beforeEach(() => {
-      RecordCache.destroy(DeleteByRecord.name);
+      DeleteByRecord.resetRecordCache();
+
       records = DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
@@ -795,7 +1117,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<DeleteByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(DeleteByRecord);
+      )._init(DeleteByRecord);
     });
 
     describe('when default', () => {
@@ -803,9 +1125,9 @@ describe('ActiveRecord$Relation$Base', () => {
         relation.deleteBy().then((result) => {
           expect(result).toEqual(3);
           /**
-           * @description Evaluator does not update holder.records when calling deleteBy alone
+           * @description Evaluator does not update holder.scope when calling deleteBy alone
            */
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -816,9 +1138,9 @@ describe('ActiveRecord$Relation$Base', () => {
         relation.deleteBy({ age: [1, 2] }).then((result) => {
           expect(result).toEqual(2);
           /**
-           * @description Evaluator does not update holder.records when calling deleteBy alone
+           * @description Evaluator does not update holder.scope when calling deleteBy alone
            */
-          expect(holder.records.length).toEqual(3);
+          expect(holder.scope.length).toEqual(3);
           done();
         });
       });
@@ -850,7 +1172,7 @@ describe('ActiveRecord$Relation$Base', () => {
     relation = new Relation<DestroyByRecord>(
       (resolve, _reject) => resolve([holder, []])
       // @ts-expect-error
-    ).init(DestroyByRecord);
+    )._init(DestroyByRecord);
 
     // @important
     // records are object.freeze when destroyed
@@ -866,7 +1188,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<DestroyByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(DestroyByRecord);
+      )._init(DestroyByRecord);
     });
 
     describe('when default', () => {
@@ -907,7 +1229,7 @@ describe('ActiveRecord$Relation$Base', () => {
               name: 'name_3',
             },
           ]);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -931,7 +1253,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 name: 'name_1',
               },
             ]);
-            expect(holder.records.length).toEqual(2);
+            expect(holder.scope.length).toEqual(2);
             done();
           });
       });
@@ -959,30 +1281,34 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    const records = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as DeleteAllRecord[];
-
-    const holder = new Holder(DeleteAllRecord, records);
-    const relation = new Relation<DeleteAllRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(DeleteAllRecord);
+    let records: DeleteAllRecord[];
+    let holder: Holder<DeleteAllRecord>;
+    let relation: Relation<DeleteAllRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      DeleteAllRecord.resetRecordCache();
+
+      records = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as DeleteAllRecord[];
+
+      holder = new Holder(DeleteAllRecord, records);
+      relation = new Relation<DeleteAllRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(DeleteAllRecord);
     });
 
     describe('when default', () => {
       it('should correctly', (done) => {
         expect(RecordCache.data[DeleteAllRecord.name][RECORD_ALL].length).toEqual(3);
-        expect(holder.records.length).toEqual(3);
+        expect(holder.scope.length).toEqual(3);
         relation.deleteAll().then((result) => {
           expect(result).toEqual(3);
           expect(RecordCache.data[DeleteAllRecord.name][RECORD_ALL].length).toEqual(0);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -1010,23 +1336,24 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
-    const records = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as DestroyAllRecord[];
-
-    const holder = new Holder(DestroyAllRecord, records);
-    const relation = new Relation<DestroyAllRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(DestroyAllRecord);
+    let records: DestroyAllRecord[];
+    let holder: Holder<DestroyAllRecord>;
+    let relation: Relation<DestroyAllRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      DestroyAllRecord.resetRecordCache();
+
+      records = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as DestroyAllRecord[];
+
+      holder = new Holder(DestroyAllRecord, records);
+      relation = new Relation<DestroyAllRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(DestroyAllRecord);
     });
 
     describe('when default', () => {
@@ -1069,7 +1396,7 @@ describe('ActiveRecord$Relation$Base', () => {
               name: 'name_3',
             },
           ]);
-          expect(holder.records.length).toEqual(0);
+          expect(holder.scope.length).toEqual(0);
           done();
         });
       });
@@ -1089,9 +1416,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: FindOrCreateByRecordParams['age'];
     }
 
-    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
     let records: FindOrCreateByRecord[];
     let holder: Holder<FindOrCreateByRecord>;
     let relation: Relation<FindOrCreateByRecord>;
@@ -1109,7 +1433,7 @@ describe('ActiveRecord$Relation$Base', () => {
       relation = new Relation<FindOrCreateByRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(FindOrCreateByRecord);
+      )._init(FindOrCreateByRecord);
     });
 
     describe("when return 'findBy' result", () => {
@@ -1121,7 +1445,7 @@ describe('ActiveRecord$Relation$Base', () => {
             /**
              * @description records after being narrowed down by the condition of findBy
              */
-            expect(holder.records.length).toEqual(1);
+            expect(holder.scope.length).toEqual(1);
             done();
           });
       });
@@ -1154,7 +1478,10 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            /**
+             * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
+             */
+            expect(holder.scope.length).toEqual(1);
             done();
           });
       });
@@ -1176,7 +1503,10 @@ describe('ActiveRecord$Relation$Base', () => {
                 errors: {},
                 name: 'name_4',
               });
-              expect(holder.records.length).toEqual(4);
+              /**
+               * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
+               */
+              expect(holder.scope.length).toEqual(1);
               done();
             });
         });
@@ -1204,23 +1534,27 @@ describe('ActiveRecord$Relation$Base', () => {
     FindOrCreateByOrThrowRecord.validates('name', { length: { is: 6 } });
     FindOrCreateByOrThrowRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    const records = FindOrCreateByOrThrowRecord.create<
-      FindOrCreateByOrThrowRecord,
-      FindOrCreateByOrThrowRecordParams
-    >([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as FindOrCreateByOrThrowRecord[];
-
-    const holder = new Holder(FindOrCreateByOrThrowRecord, records);
-    const relation = new Relation<FindOrCreateByOrThrowRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(FindOrCreateByOrThrowRecord);
+    let records: FindOrCreateByOrThrowRecord[];
+    let holder: Holder<FindOrCreateByOrThrowRecord>;
+    let relation: Relation<FindOrCreateByOrThrowRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      FindOrCreateByOrThrowRecord.resetRecordCache();
+
+      records = FindOrCreateByOrThrowRecord.create<
+        FindOrCreateByOrThrowRecord,
+        FindOrCreateByOrThrowRecordParams
+      >([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as FindOrCreateByOrThrowRecord[];
+
+      holder = new Holder(FindOrCreateByOrThrowRecord, records);
+      relation = new Relation<FindOrCreateByOrThrowRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(FindOrCreateByOrThrowRecord);
     });
 
     describe("when return 'findBy' result", () => {
@@ -1239,7 +1573,7 @@ describe('ActiveRecord$Relation$Base', () => {
               id: 1,
               name: 'name_1',
             });
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });
@@ -1260,7 +1594,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: { age: [], name: [] },
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -1270,7 +1604,7 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         relation
           .findOrCreateByOrThrow<FindOrCreateByOrThrowRecordParams>(
-            { name: 'name_5', age: 5 },
+            { name: 'name_4', age: 4 },
             (self) => {
               self.age = undefined;
             }
@@ -1278,15 +1612,15 @@ describe('ActiveRecord$Relation$Base', () => {
           .then((record) => {
             expect(record).toEqual({
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
-              __rue_record_id__: 5,
+              __rue_record_id__: 4,
               __rue_updated_at__: '2021-03-05T23:03:21+09:00',
               _newRecord: false,
               _destroyed: false,
               age: undefined,
               errors: { age: [], name: [] },
-              name: 'name_5',
+              name: 'name_4',
             });
-            expect(holder.records.length).toEqual(4);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -1330,23 +1664,27 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: FindOrInitializeByRecordParams['age'];
     }
 
-    const records = FindOrInitializeByRecord.create<
-      FindOrInitializeByRecord,
-      FindOrInitializeByRecordParams
-    >([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-      { id: 3, name: 'name_3', age: 3 },
-    ]) as FindOrInitializeByRecord[];
-
-    const holder = new Holder(FindOrInitializeByRecord, records);
-    const relation = new Relation<FindOrInitializeByRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(FindOrInitializeByRecord);
+    let records: FindOrInitializeByRecord[];
+    let holder: Holder<FindOrInitializeByRecord>;
+    let relation: Relation<FindOrInitializeByRecord>;
 
     beforeEach(() => {
-      holder.records = Array.from(records);
+      FindOrInitializeByRecord.resetRecordCache();
+
+      records = FindOrInitializeByRecord.create<
+        FindOrInitializeByRecord,
+        FindOrInitializeByRecordParams
+      >([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+      ]) as FindOrInitializeByRecord[];
+
+      holder = new Holder(FindOrInitializeByRecord, records);
+      relation = new Relation<FindOrInitializeByRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(FindOrInitializeByRecord);
     });
 
     describe("when return 'findBy' result", () => {
@@ -1355,7 +1693,7 @@ describe('ActiveRecord$Relation$Base', () => {
           .findOrInitializeBy<FindOrInitializeByRecordParams>({ name: 'name_1' })
           .then((record) => {
             expect(record).toEqual(records[0]);
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });
@@ -1373,7 +1711,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            expect(holder.records.length).toEqual(3);
+            expect(holder.scope.length).toEqual(3);
             done();
           });
       });
@@ -1407,16 +1745,24 @@ describe('ActiveRecord$Relation$Base', () => {
     UpdateAllRecord.validates('name', { length: { is: 6 } });
     UpdateAllRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    const records = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-    ]) as UpdateAllRecord[];
+    let records: UpdateAllRecord[];
+    let holder: Holder<UpdateAllRecord>;
+    let relation: Relation<UpdateAllRecord>;
 
-    const holder = new Holder(UpdateAllRecord, records);
-    const relation = new Relation<UpdateAllRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(UpdateAllRecord);
+    beforeEach(() => {
+      UpdateAllRecord.resetRecordCache();
+
+      records = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+      ]) as UpdateAllRecord[];
+
+      holder = new Holder(UpdateAllRecord, records);
+      relation = new Relation<UpdateAllRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(UpdateAllRecord);
+    });
 
     describe("when update 'name' failed", () => {
       it('should correctly', (done) => {
@@ -1450,19 +1796,24 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: TouchAllRecordParams['age'];
     }
 
-    // Since the process called dayjs is not executed in the it block, it is necessary to explicitly mock it.
-    MockDate.set('2021-03-05T23:03:21+09:00');
+    let records: TouchAllRecord[];
+    let holder: Holder<TouchAllRecord>;
+    let relation: Relation<TouchAllRecord>;
 
-    const records = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
-      { id: 1, name: 'name_1', age: 1 },
-      { id: 2, name: 'name_2', age: 2 },
-    ]) as TouchAllRecord[];
+    beforeEach(() => {
+      TouchAllRecord.resetRecordCache();
 
-    const holder = new Holder(TouchAllRecord, records);
-    const relation = new Relation<TouchAllRecord>(
-      (resolve, _reject) => resolve([holder, records])
-      // @ts-expect-error
-    ).init(TouchAllRecord);
+      records = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+      ]) as TouchAllRecord[];
+
+      holder = new Holder(TouchAllRecord, records);
+      relation = new Relation<TouchAllRecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(TouchAllRecord);
+    });
 
     describe('when default', () => {
       it('should correctly', (done) => {
@@ -1561,6 +1912,133 @@ describe('ActiveRecord$Relation$Base', () => {
           });
           done();
         });
+      });
+    });
+  });
+
+  describe('#toA (alias to toArray)', () => {
+    type ToARecordParams = {
+      id: t.Record$PrimaryKey;
+      name: string;
+      age: number;
+    };
+
+    class ToARecord extends ActiveRecord$Base<ToARecordParams> {
+      public id: ToARecordParams['id'];
+      public name: ToARecordParams['name'];
+      public age: ToARecordParams['age'];
+    }
+
+    let records: ToARecord[];
+    let holder: Holder<ToARecord>;
+    let relation: Relation<ToARecord>;
+
+    beforeEach(() => {
+      ToARecord.resetRecordCache();
+
+      records = ToARecord.create<ToARecord, ToARecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
+        { id: 3, name: 'name_3', age: 3 },
+        { id: 4, name: 'name_4', age: 4 },
+      ]) as ToARecord[];
+
+      holder = new Holder(ToARecord, records);
+      relation = new Relation<ToARecord>(
+        (resolve, _reject) => resolve([holder, records])
+        // @ts-expect-error
+      )._init(ToARecord);
+    });
+
+    describe('when default', () => {
+      it('should correctly', (done) => {
+        relation.toA().then((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              id: 2,
+              name: 'name_2',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 3,
+              errors: {},
+              id: 3,
+              name: 'name_3',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              age: 4,
+              errors: {},
+              id: 4,
+              name: 'name_4',
+            },
+          ]);
+          done();
+        });
+      });
+    });
+
+    describe('when advanced', () => {
+      it('should correctly', (done) => {
+        relation
+          .where({ id: [1, 2, 3] })
+          .order({ id: 'desc' })
+          .limit(2)
+          .offset(1)
+          .toArray()
+          .then((records) => {
+            expect(records).toEqual([
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 2,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 2,
+                errors: {},
+                id: 2,
+                name: 'name_2',
+              },
+              {
+                __rue_created_at__: '2021-03-05T23:03:21+09:00',
+                __rue_record_id__: 1,
+                __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+                _destroyed: false,
+                _newRecord: false,
+                age: 1,
+                errors: {},
+                id: 1,
+                name: 'name_1',
+              },
+            ]);
+            done();
+          });
       });
     });
   });

@@ -11,6 +11,4 @@ export type {
   HasOne as Associations$HasOne,
   HasMany as Associations$HasMany,
   HasAndBelongsToMany as Associations$HasAndBelongsToMany,
-  // CollectionProxyModule
-  CollectionProxy$Scope as Associations$CollectionProxy$Scope,
 } from './types';

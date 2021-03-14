@@ -53,7 +53,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<IsExistsRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(IsExistsRecord);
+      )._init(IsExistsRecord);
     });
 
     describe("when don't give args", () => {
@@ -139,7 +139,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       holder = new Holder(FindRecord, records);
 
       // @ts-expect-error
-      relation = new Relation<FindRecord>((resolve, _reject) => resolve([holder, records])).init(
+      relation = new Relation<FindRecord>((resolve, _reject) => resolve([holder, records]))._init(
         FindRecord
       );
     });
@@ -257,7 +257,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       holder = new Holder(FindByRecord, records);
 
       // @ts-expect-error
-      relation = new Relation<FindByRecord>((resolve, _reject) => resolve([holder, records])).init(
+      relation = new Relation<FindByRecord>((resolve, _reject) => resolve([holder, records]))._init(
         FindByRecord
       );
     });
@@ -326,7 +326,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<FindByOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(FindByOrThrowRecord);
+      )._init(FindByOrThrowRecord);
     });
 
     describe('when default', () => {
@@ -391,7 +391,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       holder = new Holder(FirstRecord, records);
 
       // @ts-expect-error
-      relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, records])).init(
+      relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, records]))._init(
         FirstRecord
       );
     });
@@ -488,7 +488,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       it('should return null', (done) => {
         holder = new Holder(FirstRecord, []);
         // @ts-expect-error
-        relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, []])).init(
+        relation = new Relation<FirstRecord>((resolve, _reject) => resolve([holder, []]))._init(
           FirstRecord
         );
         relation.take().then((record) => {
@@ -534,7 +534,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<FirstOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(FirstOrThrowRecord);
+      )._init(FirstOrThrowRecord);
     });
 
     describe('when default', () => {
@@ -561,7 +561,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation = new Relation<FirstOrThrowRecord>(
           (resolve, _reject) => resolve([holder, []])
           // @ts-expect-error
-        ).init(FirstOrThrowRecord);
+        )._init(FirstOrThrowRecord);
         relation.firstOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'FirstOrThrowRecord'");
           done();
@@ -583,8 +583,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public age: IsIncludeRecordParams['age'];
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
     let records: IsIncludeRecord[];
     let holder: Holder<IsIncludeRecord>;
     let relation: Relation<IsIncludeRecord>;
@@ -592,9 +590,9 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     beforeEach(() => {
       IsIncludeRecord.resetRecordCache();
 
-      records = IsIncludeRecord.create([
-        { name: 'name_1', age: 1 },
-        { name: 'name_2', age: 2 },
+      records = IsIncludeRecord.create<IsIncludeRecord, IsIncludeRecordParams>([
+        { id: 1, name: 'name_1', age: 1 },
+        { id: 2, name: 'name_2', age: 2 },
       ]) as IsIncludeRecord[];
 
       holder = new Holder(IsIncludeRecord, records);
@@ -602,7 +600,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<IsIncludeRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(IsIncludeRecord);
+      )._init(IsIncludeRecord);
     });
 
     describe('when return true', () => {
@@ -620,6 +618,26 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation.isInclude(record).then((result) => {
           expect(result).toEqual(false);
           done();
+        });
+      });
+    });
+
+    describe('when give Promise<record>', () => {
+      describe('when return true', () => {
+        it('should correctly', (done) => {
+          relation.isInclude(relation.find(1)).then((result) => {
+            expect(result).toEqual(true);
+            done();
+          });
+        });
+      });
+
+      describe('when return false', () => {
+        it('should correctly', (done) => {
+          relation.isInclude(Promise.resolve(undefined)).then((result) => {
+            expect(result).toEqual(false);
+            done();
+          });
         });
       });
     });
@@ -642,8 +660,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
     let records: LastRecord[];
     let holder: Holder<LastRecord>;
     let relation: Relation<LastRecord>;
@@ -660,7 +676,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       holder = new Holder(LastRecord, records);
 
       // @ts-expect-error
-      relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, records])).init(
+      relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, records]))._init(
         LastRecord
       );
     });
@@ -757,7 +773,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       it('should return null', (done) => {
         holder = new Holder(LastRecord, []);
         // @ts-expect-error
-        relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, []])).init(
+        relation = new Relation<LastRecord>((resolve, _reject) => resolve([holder, []]))._init(
           LastRecord
         );
         relation.last().then((record) => {
@@ -803,7 +819,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<LastOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(LastOrThrowRecord);
+      )._init(LastOrThrowRecord);
     });
 
     describe('when default', () => {
@@ -830,7 +846,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation = new Relation<LastOrThrowRecord>(
           (resolve, _reject) => resolve([holder, []])
           // @ts-expect-error
-        ).init(LastOrThrowRecord);
+        )._init(LastOrThrowRecord);
         relation.lastOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'LastOrThrowRecord'");
           done();
@@ -856,8 +872,6 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       }
     }
 
-    MockDate.set('2021-03-05T23:03:21+09:00');
-
     let records: TakeRecord[];
     let holder: Holder<TakeRecord>;
     let relation: Relation<TakeRecord>;
@@ -874,7 +888,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       holder = new Holder(TakeRecord, records);
 
       // @ts-expect-error
-      relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, records])).init(
+      relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, records]))._init(
         TakeRecord
       );
     });
@@ -971,7 +985,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       it('should return null', (done) => {
         holder = new Holder(TakeRecord, []);
         // @ts-expect-error
-        relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, []])).init(
+        relation = new Relation<TakeRecord>((resolve, _reject) => resolve([holder, []]))._init(
           TakeRecord
         );
         relation.take().then((record) => {
@@ -1017,7 +1031,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       relation = new Relation<TakeOrThrowRecord>(
         (resolve, _reject) => resolve([holder, records])
         // @ts-expect-error
-      ).init(TakeOrThrowRecord);
+      )._init(TakeOrThrowRecord);
     });
 
     describe('when default', () => {
@@ -1044,7 +1058,7 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
         relation = new Relation<TakeOrThrowRecord>(
           (resolve, _reject) => resolve([holder, []])
           // @ts-expect-error
-        ).init(TakeOrThrowRecord);
+        )._init(TakeOrThrowRecord);
         relation.takeOrThrow().catch((err) => {
           expect(err.toString()).toEqual("Error: Couldn't find 'TakeOrThrowRecord'");
           done();

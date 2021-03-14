@@ -167,11 +167,16 @@ export class ActiveRecord$QueryMethods extends RueModule {
         holder.errors.push(err);
       } else if (isSuperset(SCOPE_METHODS, scopeMethods)) {
         scopeMethods.forEach((scopeMethod) => {
-          holder.scopeParams[scopeMethod] = Object.assign(
-            {},
-            // @ts-expect-error
-            JSON.parse(JSON.stringify(holder._defaultScopeParams[scopeMethod]))
-          );
+          // @ts-expect-error
+          if (holder._defaultScopeParams[scopeMethod]) {
+            holder.scopeParams[scopeMethod] = Object.assign(
+              {},
+              // @ts-expect-error
+              JSON.parse(JSON.stringify(holder._defaultScopeParams[scopeMethod]))
+            );
+          } else {
+            holder.scopeParams[scopeMethod] = undefined;
+          }
         });
       } else {
         const err = errObj({
@@ -188,11 +193,13 @@ export class ActiveRecord$QueryMethods extends RueModule {
 
 function isPresent(params: any): boolean {
   if (typeof params === 'number') {
-    return params !== 0;
+    return params >= 0;
   } else if (Array.isArray(params)) {
     return params.length > 0;
-  } else {
+  } else if (typeof params === 'object' && params !== null) {
     return params && Object.keys(params).length > 0;
+  } else {
+    return false;
   }
 }
 
