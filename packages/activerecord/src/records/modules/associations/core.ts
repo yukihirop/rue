@@ -180,9 +180,7 @@ function createRuntimeCollectionProxy<T extends ActiveRecord$Base, H>(
   /**
    * @description I'm worried about the overhead, but load it dynamically to avoid circular references
    */
-  const {
-    ActiveRecord$Associations$CollectionProxy,
-  } = require('../../associations/collection_proxy');
+  const { ActiveRecord$Associations$CollectionProxy } = require('../../associations');
 
   const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Associations_CollectionProxy`;
   const runtimeKlass = {

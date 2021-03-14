@@ -7,7 +7,7 @@ import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from '@/records/rela
 import type * as ct from '@/types';
 import type * as rt from '@/index';
 
-export class ActiveRecord$Associations$CollectionProxy<
+export class ActiveRecord$Associations$CollectionProxy$Base<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Associations$CollectionProxy$Impl<T> {
   /**
