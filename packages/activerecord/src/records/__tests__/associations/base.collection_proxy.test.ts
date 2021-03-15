@@ -1021,6 +1021,13 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
       });
     });
 
+    describe('when specify one args', () => {
+      it('should correctly', async () => {
+        const result = await record.children().pluck('id');
+        expect(result).toEqual([1, 2, 3]);
+      });
+    });
+
     describe('when specify args', () => {
       it('should correctly', async () => {
         const result = await record.children().pluck('id', 'childName');

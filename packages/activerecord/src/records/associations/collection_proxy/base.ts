@@ -252,7 +252,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
     // @ts-expect-error
     return this.scoping<ct.valueOf<U>>((holder) => {
-      return holder.scope.map((record) => {
+      const plucked = holder.scope.map((record) => {
         let result;
 
         if (propNames.length === 0) {
@@ -274,6 +274,12 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         }
         return result;
       });
+
+      if (propNames.length === 1) {
+        return plucked.flat();
+      } else {
+        return plucked;
+      }
     });
   }
 
