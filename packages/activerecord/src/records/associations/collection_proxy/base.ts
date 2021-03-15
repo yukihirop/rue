@@ -5,10 +5,13 @@ import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from '@/records/rela
 import { ActiveRecord$Associations$Relation } from '@/records/associations';
 import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
 import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$QueryMethods } from '@/records/relations/modules';
+import { errObj, ErrCodes } from '@/errors';
 
 // types
 import type * as ct from '@/types';
 import type * as rt from '@/index';
+import type * as rmt from '@/records/relations/modules';
 
 export class ActiveRecord$Associations$CollectionProxy$Base<
   T extends ActiveRecord$Base
@@ -22,9 +25,168 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     ActiveRecord$Associations$CollectionProxy$Holder<T>,
     ActiveRecord$Relation<T>
   > {
-    return this.superThen(({ scope }) => {
-      return scope;
+    return this.superThen(({ holder, scope }) => {
+      return { scope, holder };
     });
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  where<U extends rt.Record$Params>(params: Partial<U>): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      Object.assign(holder.scopeParams.where, params || {});
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  rewhere<U extends rt.Record$Params>(params: Partial<U>): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      holder.scopeParams.where = params || {};
+      Object.assign(params, holder.foreignKeyData);
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  order<U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      Object.assign(holder.scopeParams.order, params || {});
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  reorder<U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      holder.scopeParams.order = params || {};
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  reverseOrder(): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      const orderParams = holder.scopeParams.order;
+      if (isPresent(orderParams)) {
+        Object.keys(orderParams).forEach((propName) => {
+          const direction = orderParams[propName];
+          if (['desc', 'DESC'].includes(direction)) {
+            holder.scopeParams.order[propName] = 'asc';
+          } else if (['asc', 'ASC'].includes(direction)) {
+            holder.scopeParams.order[propName] = 'desc';
+          }
+        });
+      } else {
+        holder.scopeParams.order['id'] = 'asc';
+      }
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  offset(value: number): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      holder.scopeParams.offset = value;
+    });
+
+    return this;
+  }
+
+  /**
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  limit(value: number): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      holder.scopeParams.limit = value;
+    });
+
+    return this;
+  }
+
+  /**
+   * @description Behavior is different from rails group
+   * @description delegate to `scope`
+   */
+  // @ts-expect-error
+  group<U = { [key: string]: any }>(...props: Array<keyof U>): this {
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      // @ts-expect-error
+      holder.scopeParams.group = props;
+    });
+
+    return this;
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-unscope
+   */
+  // @ts-expect-error
+  unscope(...scopeMethods: rmt.QueryMethods$ScopeMethods[]): this {
+    const { SCOPE_METHODS } = ActiveRecord$QueryMethods;
+
+    // @ts-expect-error
+    this.scope().superThen(({ holder }) => {
+      if (scopeMethods.length === 0) {
+        const err = errObj({
+          code: ErrCodes.ARGUMENT_IS_INVALID,
+          message: `'unscope()' must contain arguments.`,
+        });
+        holder.errors.push(err);
+      } else if (isSuperset(SCOPE_METHODS, scopeMethods)) {
+        scopeMethods.forEach((scopeMethod) => {
+          // @ts-expect-error
+          if (holder._defaultScopeParams[scopeMethod]) {
+            holder.scopeParams[scopeMethod] = Object.assign(
+              {},
+              // @ts-expect-error
+              JSON.parse(JSON.stringify(holder._defaultScopeParams[scopeMethod]))
+            );
+          } else {
+            holder.scopeParams[scopeMethod] = undefined;
+          }
+        });
+      } else {
+        const err = errObj({
+          code: ErrCodes.ARGUMENT_IS_INVALID,
+          message: `Called 'unscope()' with invalid unscoping argument '[${scopeMethods}]'. Valid arguments are '[${SCOPE_METHODS}]'.`,
+        });
+        holder.errors.push(err);
+      }
+    });
+
+    return this;
   }
 
   /**
@@ -143,4 +305,28 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       });
     });
   }
+}
+
+function isPresent(params: any): boolean {
+  if (typeof params === 'number') {
+    return params >= 0;
+  } else if (Array.isArray(params)) {
+    return params.length > 0;
+  } else if (typeof params === 'object' && params !== null) {
+    return params && Object.keys(params).length > 0;
+  } else {
+    return false;
+  }
+}
+
+// https://qiita.com/toshihikoyanase/items/7b07ca6a94eb72164257
+function isSuperset(target: string[], other: string[]): boolean {
+  const self = new Set(target);
+  const subset = new Set(other);
+  for (let elem of subset) {
+    if (!self.has(elem)) {
+      return false;
+    }
+  }
+  return true;
 }

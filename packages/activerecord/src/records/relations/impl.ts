@@ -43,25 +43,16 @@ abstract class ActiveRecord$Relation$Impl<
   take: (limit?: number) => Promise<T | T[]>;
   takeOrThrow: (limit?: number) => Promise<T | T[]>;
   // ActiveRecord$QueryMethods
-  where: <U>(params: Partial<U>) => ActiveRecord$Relation<T, H>;
-  rewhere: <U>(params: Partial<U>) => ActiveRecord$Relation<T, H>;
-  order: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
-    params: Partial<U>
-  ) => ActiveRecord$Relation<T, H>;
-  reorder: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(
-    params: Partial<U>
-  ) => ActiveRecord$Relation<T, H>;
-  reverseOrder: () => ActiveRecord$Relation<T, H>;
-  offset: (value: number) => ActiveRecord$Relation<T, H>;
-  limit: (value: number) => ActiveRecord$Relation<T, H>;
-  group: <U = { [key: string]: any }>(...props: Array<keyof U>) => ActiveRecord$Relation<T, H>;
-  unscope: (...scopeMethods: mt.QueryMethods$ScopeMethods[]) => ActiveRecord$Relation<T, H>;
+  where: <U>(params: Partial<U>) => this;
+  rewhere: <U>(params: Partial<U>) => this;
+  order: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(params: Partial<U>) => this;
+  reorder: <U = { [key: string]: 'desc' | 'asc' | 'DESC' | 'ASC' }>(params: Partial<U>) => this;
+  reverseOrder: () => this;
+  offset: (value: number) => this;
+  limit: (value: number) => this;
+  group: <U = { [key: string]: any }>(...props: Array<keyof U>) => this;
+  unscope: (...scopeMethods: mt.QueryMethods$ScopeMethods[]) => this;
 }
-
-interface ActiveRecord$Relation$Impl<
-  T extends ActiveRecord$Base,
-  H extends ActiveRecord$Relation$Holder<T>
-> {}
 
 ActiveRecord$FinderMethods.rueModuleIncludedFrom(ActiveRecord$Relation$Impl, {
   only: [

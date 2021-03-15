@@ -32,7 +32,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
   }
 
   where(): this {
-    const whereParams = this.scopeParams['where'];
+    const whereParams = this.scopeParams.where;
     if (!this.isPresent(whereParams)) return this;
 
     const records = this.holder.scope;
@@ -51,11 +51,15 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
       return acc;
     }, [] as Array<T>);
     this.holder.scope = result;
+
+    // initialize
+    this.holder.scopeParams.where = {};
+
     return this;
   }
 
   order(): this {
-    const orderParams = this.scopeParams['order'];
+    const orderParams = this.scopeParams.order;
     if (!this.isPresent(orderParams)) return this;
 
     const records = this.holder.scope;
@@ -79,40 +83,53 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
             return 0;
           }
         } else {
-          throw errObj({
+          const err = errObj({
             code: ErrCodes.DIRECTION_IS_INVALID,
             params: {
               direction,
               directionList: ['asc', 'desc', 'ASC', 'DESC'],
             },
           });
+          this.holder.errors.push(err);
         }
       });
     });
     this.holder.scope = records;
+
+    // initialize
+    this.holder.scopeParams.order = {};
+
     return this;
   }
 
   offset(): this {
-    const offsetValue = this.scopeParams['offset'];
+    const offsetValue = this.scopeParams.offset;
     if (!this.isPresent(offsetValue)) return this;
 
     const records = this.holder.scope;
     this.holder.scope = records.slice(offsetValue, records.length);
+
+    // initialize
+    this.holder.scopeParams.offset = undefined;
+
     return this;
   }
 
   limit(): this {
-    const limitValue = this.scopeParams['limit'];
+    const limitValue = this.scopeParams.limit;
     if (!this.isPresent(limitValue)) return this;
 
     const records = this.holder.scope;
     this.holder.scope = records.slice(0, limitValue);
+
+    // initialize
+    this.holder.scopeParams.limit = undefined;
+
     return this;
   }
 
   group(): this {
-    const groupParams = this.scopeParams['group'];
+    const groupParams = this.scopeParams.group;
     if (!this.isPresent(groupParams)) return this;
 
     const records = this.holder.scope;
@@ -132,11 +149,15 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
       return acc;
     }, {} as any);
     this.holder.groupedRecords = groupedRecords;
+
+    // initialize
+    this.holder.scopeParams.group = [];
+
     return this;
   }
 
   isGroupedRecords(): boolean {
-    return this.isPresent(this.holder.groupedRecords) && this.isPresent(this.scopeParams['group']);
+    return this.isPresent(this.holder.groupedRecords) && this.isPresent(this.scopeParams.group);
   }
 
   private isPresent(params: any): boolean {

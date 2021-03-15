@@ -84,12 +84,12 @@
 - [-] $from (internal methods)
 - [-] setDistinctValue
 - [-] setExtendingValues
-- [ ] where
+- [x] where
 - [-] $skipQueryCache
 - [-] setSkipQueryCacheValue
 - [ ] references
-- [ ] having 
-- [ ] $order (internal methods)
+- [-] having 
+- [-] $order (internal methods)
 - [-] offsetValue
 - [-] limitValue
 - [ ] from
@@ -101,13 +101,13 @@
 - [-] reverseOrderValue
 - [-] setreverseOrderValue
 - [-] setOffsetValue
-- [-] offset
+- [x] offset
 - [-] $where (internal methods)
 - [-] $createWith (internal methods)
-- [ ] reverseOrder
-- [ ] order
+- [x] reverseOrder
+- [x] order
 - [-] lockValue
-- [ ] limit
+- [x] limit
 - [-] $readonly (internal methods)
 - [-] whereClause
 - [-] createWithValue
@@ -121,7 +121,7 @@
 - [-] referenncnesValues
 - [-] includes
 - [-] $reverseOrder (internal methods)
-- [ ] group
+- [x] group
 - [ ] none
 - [-] $limit (internal methods)
 - [ ] $_select (internal methods)
@@ -134,15 +134,15 @@
 - [ ] or
 - [-] $distinct (internal methods)
 - [-] setOrderValues
-- [ ] reorder
+- [x] reorder
 - [-] joins
 - [-] leftJoins
 - [-] leftOuterJoins
-- [ ] rewhere
+- [x] rewhere
 - [ ] readonly
 - [-] extending
 - [ ] createWith
-- [ ] unscope
+- [x] unscope
 - [-] havingClause
 - [-] setGrupValues
 - [-] getValue

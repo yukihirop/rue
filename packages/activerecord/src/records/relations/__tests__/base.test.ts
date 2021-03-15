@@ -1479,15 +1479,12 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            /**
-             * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
-             */
-            expect(holder.scope.length).toEqual(1);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
 
-      describe("when specify 'yielder'", () => {
+      describe("when specify 'yielder' debug", () => {
         it('should correctly', (done) => {
           relation
             .findOrCreateBy<FindOrCreateByRecordParams>({ name: 'name_4' }, (self) => {
@@ -1504,10 +1501,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 errors: {},
                 name: 'name_4',
               });
-              /**
-               * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
-               */
-              expect(holder.scope.length).toEqual(1);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });

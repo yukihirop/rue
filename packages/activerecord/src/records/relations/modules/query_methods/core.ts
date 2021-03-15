@@ -10,7 +10,8 @@ import type * as t from './types';
 
 // this is bound to an instance(class) of ActiveRecord$Relation (include runtime class)
 export class ActiveRecord$QueryMethods extends RueModule {
-  private static SCOPE_METHODS = ['where', 'order', 'offset', 'limit', 'group'];
+  static SCOPE_METHODS = ['where', 'order', 'offset', 'limit', 'group'];
+
   /**
    * Records cannot be created correctly without lazy evaluation
    * @see https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-where

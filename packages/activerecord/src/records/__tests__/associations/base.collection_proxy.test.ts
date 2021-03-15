@@ -122,6 +122,893 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
+  describe('#where (delegate to `scope`)', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record.children().where({ childName: 'child_name_1' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
+  describe('#rewhere (delegate to `scope`)', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .where({ childName: 'child_name_1' })
+          .rewhere({ childAge: 3 });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
+  describe('#order', () => {
+    describe("when specify 'name: 'desc''", () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childName: 'desc' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'name: 'DESC''", () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childName: 'DESC' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'name: 'asc''", () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childAge: 'asc' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'name: 'ASC''", () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childAge: 'ASC' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when invalid direction', () => {
+      it('should correctly', async () => {
+        try {
+          await record.children().order({ childName: 'invalid' });
+        } catch (err) {
+          expect(err.toString()).toEqual(
+            "Error: Direction 'invalid' is invalid. Valid directions are: '[asc,desc,ASC,DESC]'"
+          );
+        }
+      });
+    });
+  });
+
+  describe('#reorder', () => {
+    describe("when specify 'name: 'asc''", () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .order({ childName: 'desc' })
+          .reorder({ childName: 'asc' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'age: 'ASC''", () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .order({ childName: 'DESC' })
+          .reorder({ childAge: 'ASC' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'name: 'desc''", () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .order({ childAge: 'asc' })
+          .order({ childName: 'desc' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'name: 'DESC''", () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .order({ childAge: 'ASC' })
+          .reorder({ childName: 'DESC' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when invalid direction', () => {
+      it('should correctly', async () => {
+        try {
+          await record.children().order({ childName: 'invalid' }).reorder({ childName: 'reorder' });
+        } catch (err) {
+          expect(err.toString()).toEqual(
+            "Error: Direction 'reorder' is invalid. Valid directions are: '[asc,desc,ASC,DESC]'"
+          );
+        }
+      });
+    });
+  });
+
+  describe('#offset', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record.children().offset(1);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when specify 0', () => {
+      it('should correctly', async () => {
+        const result = await record.children().offset(0);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'offset' after specify 'where'", () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .where({ childAge: [1, 2] })
+          .offset(1);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when specify 'order' after specify 'offset'", () => {
+      it('should correctly', async () => {
+        const result = await record.children().offset(1).order({ childAge: 'desc' });
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
+  describe('#limit', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record.children().limit(1);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when specify 0', () => {
+      it('should return []', async () => {
+        const result = await record.children().limit(0);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe("when specify 'where' after specify 'limit'", () => {
+      it('should correctly', async () => {
+        // TODO: remove any
+        const result = await record
+          .children()
+          .where({ id: [1, 2] as any })
+          .limit(1);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when speicfy 'order' after specify 'limit'", () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childAge: 'desc' }).limit(2);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
+  describe('#group', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        await record.children().create({ id: 5, childName: 'child_name_5', childAge: 5 });
+        const result = await record.children().group('childName', 'childAge');
+        expect(result).toEqual({
+          '[child_name_1,1]': [
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 1,
+              childName: 'child_name_1',
+              errors: { childAge: [], childName: [] },
+              id: 1,
+              parentId: 1,
+            },
+          ],
+          '[child_name_2,2]': [
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 2,
+              childName: 'child_name_2',
+              errors: { childAge: [], childName: [] },
+              id: 2,
+              parentId: 1,
+            },
+          ],
+          '[child_name_3,3]': [
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 3,
+              childName: 'child_name_3',
+              errors: { childAge: [], childName: [] },
+              id: 3,
+              parentId: 1,
+            },
+          ],
+          '[child_name_5,5]': [
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 5,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 5,
+              childName: 'child_name_5',
+              errors: { childAge: [], childName: [] },
+              id: 5,
+              parentId: 1,
+            },
+          ],
+        });
+      });
+    });
+  });
+
+  describe('#unscope (delegate to `scope`)', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record
+          .children()
+          .where({ childName: 'child_name_1' })
+          .unscope('where');
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when throw errors', () => {
+      describe('when do not give arguments', () => {
+        it('should correctly', async () => {
+          try {
+            await record.children().unscope();
+          } catch (err) {
+            expect(err.toString()).toEqual("Error: 'unscope()' must contain arguments.");
+          }
+        });
+      });
+
+      describe('when give unsupported arguments', () => {
+        it('should correctly', async () => {
+          try {
+            await record.children().unscope('unsupported' as any);
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Called 'unscope()' with invalid unscoping argument '[unsupported]'. Valid arguments are '[where,order,offset,limit,group]'."
+            );
+          }
+        });
+      });
+    });
+  });
+
+  describe('#reverseOrder (delegate to `scope`)', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record.children().order({ childAge: 'desc' }).reverseOrder();
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe("when call 'reverseOrder' only", () => {
+      it('should correctly', async () => {
+        const result = await record.children().reverseOrder().reverseOrder();
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
   describe('#pluck', () => {
     describe("when don't specify args", () => {
       it('should correctly', async () => {

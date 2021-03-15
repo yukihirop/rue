@@ -265,6 +265,7 @@ export class ActiveRecord$Relation$Base<
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     return this.scoping((holder) => {
+      debugger;
       // @ts-ignore
       return this.recordKlass.create(params, (self) => {
         if (yielder) yielder(self);
