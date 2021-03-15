@@ -76,6 +76,52 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     MockDate.reset();
   });
 
+  describe('#scope', () => {
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const result = await record.children().scope();
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+  });
+
   describe('#pluck', () => {
     describe("when don't specify args", () => {
       it('should correctly', async () => {

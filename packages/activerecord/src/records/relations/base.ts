@@ -32,12 +32,14 @@ Object.defineProperty(Promise.prototype, '__rue_catch__', {
 
 export class ActiveRecord$Relation$Base<
   T extends ActiveRecord$Base,
-  H extends ActiveRecord$Relation$Holder<T> = ActiveRecord$Relation$Holder<T>
+  H extends ActiveRecord$Relation$Holder<T> = ActiveRecord$Relation$Holder<T>,
+  S = PromiseLike<T[]>
 > extends ActiveRecord$Relation$Impl<T, H> {
   protected recordKlass: ct.Constructor<T>;
 
-  constructor(executor: t.PromiseExecutor<T, H>) {
+  constructor(executor: t.PromiseExecutor<T, H, S>) {
     super((resolve, reject) => {
+      // @ts-expect-error
       return executor(resolve, reject);
     });
   }
@@ -51,7 +53,7 @@ export class ActiveRecord$Relation$Base<
   /**
    * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
    */
-  rueThen(onFulfilled: t.PromiseResolve<T>, onRejected?: t.PromiseReject<any>) {
+  rueThen(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
     return super.then((value) => {
       /**
        * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
@@ -103,12 +105,12 @@ export class ActiveRecord$Relation$Base<
    * @alias rueThen
    */
   // @ts-expect-error
-  then(onFulfilled: t.PromiseResolve<T>, onRejected?: t.PromiseReject<any>) {
+  then(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
     return this.rueThen(onFulfilled, onRejected);
   }
 
   protected superThen(
-    onFulfilled: t.PromiseResolveHolder<T, H>,
+    onFulfilled: t.PromiseResolveHolder<T, H, S>,
     onRejected?: t.PromiseReject<any>
   ) {
     // @ts-expect-error

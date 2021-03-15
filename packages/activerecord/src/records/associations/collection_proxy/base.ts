@@ -2,6 +2,9 @@
 import { ActiveRecord$Base } from '@/records/base';
 import { ActiveRecord$Associations$CollectionProxy$Impl } from './impl';
 import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from '@/records/relations/modules/query_methods';
+import { ActiveRecord$Associations$Relation } from '@/records/associations';
+import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
+import { ActiveRecord$Relation } from '@/records/relations';
 
 // types
 import type * as ct from '@/types';
@@ -10,6 +13,20 @@ import type * as rt from '@/index';
 export class ActiveRecord$Associations$CollectionProxy$Base<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Associations$CollectionProxy$Impl<T> {
+  /**
+   * @description All methods are delegated to this instance
+   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/associations/collection_proxy.rb#L1100-L1109
+   */
+  scope(): ActiveRecord$Associations$Relation<
+    T,
+    ActiveRecord$Associations$CollectionProxy$Holder<T>,
+    ActiveRecord$Relation<T>
+  > {
+    return this.superThen(({ scope }) => {
+      return scope;
+    });
+  }
+
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-build
    */

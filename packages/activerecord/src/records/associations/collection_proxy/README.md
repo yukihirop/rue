@@ -37,7 +37,7 @@
 - [-] reload
 - [ ] replace
 - [ ] reset
-- [ ] scope (return `ActiveRecord$AssociationRelation` instance)
+- [x] scope (return `ActiveRecord$AssociationRelation` instance. Many methods are delegated)
 - [-] second
 - [-] secondToLast
 - [-] select
@@ -47,6 +47,116 @@
 - [-] third
 - [-] thirdToLast
 
+## Methods (Delegate to `scope`)
+
+`$[methodName]`: Means a destructive method. (in rails `[methodName]!`. internal methods)
+
+- [-] $preload
+- [-] $includes
+- [-] $leftOuterJoins
+- [-] reorderingValue
+- [-] $reorder (internal methods)
+- [-] $extending
+- [-] lockValue
+- [-] createWithValue
+- [-] fromClause
+- [-] setFromClause
+- [-] setWhereClause
+- [-] setHavingClause
+- [-] $references (internal methods)
+- [-] setIncludesValues
+- [-] setEagerLoadValues
+- [-] setPreloadValues
+- [-] setReferencesValues
+- [-] $group (internal methods)
+- [-] setReorderingValue
+- [-] $unscope (internal methods)
+- [-] unscopeValues
+- [-] setUnscopeValues
+- [-] preload 
+- [-] setJoinsValues
+- [-] setLeftOuterJoinsValues
+- [-] $or (internal methods)
+- [-] egaerLoad
+- [-] $having (internal methods)
+- [-] $offset (internal methods)
+- [-] setReadonlyValue
+- [-] $from (internal methods)
+- [-] setDistinctValue
+- [-] setExtendingValues
+- [ ] where
+- [-] $skipQueryCache
+- [-] setSkipQueryCacheValue
+- [ ] references
+- [ ] having 
+- [ ] $order (internal methods)
+- [-] offsetValue
+- [-] limitValue
+- [ ] from
+- [-] distinctValue 
+- [-] $eagerLoad (internal methods)
+- [-] setSelectValues
+- [-] $lock (internal methods)
+- [-] setLimitValue
+- [-] reverseOrderValue
+- [-] setreverseOrderValue
+- [-] setOffsetValue
+- [-] offset
+- [-] $where (internal methods)
+- [-] $createWith (internal methods)
+- [ ] reverseOrder
+- [ ] order
+- [-] lockValue
+- [ ] limit
+- [-] $readonly (internal methods)
+- [-] whereClause
+- [-] createWithValue
+- [-] eagerLoadValues
+- [-] includesValues
+- [-] joinsValues
+- [-] lefftOuterJoinsValues
+- [-] preloadValues
+- [-] readonlyValue
+- [-] skipQueryCacheValue
+- [-] referenncnesValues
+- [-] includes
+- [-] $reverseOrder (internal methods)
+- [ ] group
+- [ ] none
+- [-] $limit (internal methods)
+- [ ] $_select (internal methods)
+- [-] groupValues
+- [ ] $joins (internal methods)
+- [-] arel
+- [-] lock
+- [-] $none (internal methods)
+- [-] orderValues
+- [ ] or
+- [-] $distinct (internal methods)
+- [-] setOrderValues
+- [ ] reorder
+- [-] joins
+- [-] leftJoins
+- [-] leftOuterJoins
+- [ ] rewhere
+- [ ] readonly
+- [-] extending
+- [ ] createWith
+- [ ] unscope
+- [-] havingClause
+- [-] setGrupValues
+- [-] getValue
+- [-] extensions
+- [-] extendingValues
+- [-] spawn (In rails `[methodName]!` is a dedicated method for this)
+- [ ] merge
+- [ ] only
+- [-] $merge (internal methods)
+- [ ] except
+- [ ] scoping
+
+
 ## Reference
 
 - [ActiveRecord::Associations::CollectionProxy](https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html)
+- [delegate_methods](https://github.com/yukihirop/rue/issues/70#issuecomment-799098077)

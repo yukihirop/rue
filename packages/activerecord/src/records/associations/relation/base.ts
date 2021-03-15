@@ -4,5 +4,6 @@ import { ActiveRecord$Associations$CollectionProxy$Holder } from '../collection_
 
 export class ActiveRecord$Associations$Relation$Base<
   T extends ActiveRecord$Base,
-  H extends ActiveRecord$Associations$CollectionProxy$Holder<T>
-> extends ActiveRecord$Relation<T, H> {}
+  H extends ActiveRecord$Associations$CollectionProxy$Holder<T>,
+  S = T[] | Promise<T>
+> extends ActiveRecord$Relation<T, H, S> {}
