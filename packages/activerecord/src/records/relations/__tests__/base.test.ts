@@ -1484,7 +1484,7 @@ describe('ActiveRecord$Relation$Base', () => {
           });
       });
 
-      describe("when specify 'yielder' debug", () => {
+      describe("when specify 'yielder'", () => {
         it('should correctly', (done) => {
           relation
             .findOrCreateBy<FindOrCreateByRecordParams>({ name: 'name_4' }, (self) => {

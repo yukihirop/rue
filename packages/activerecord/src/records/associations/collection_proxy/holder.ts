@@ -18,6 +18,6 @@ export class ActiveRecord$Associations$CollectionProxy$Holder<
   ) {
     super(recordKlass, records);
     this.foreignKeyData = foreignKeyData;
-    Object.assign(this.scopeParams['where'], foreignKeyData);
+    Object.assign(this.scopeParams.where, foreignKeyData);
   }
 }

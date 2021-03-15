@@ -41,6 +41,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find
+   * @todo Do not use rueThen
    */
   find<T extends ActiveRecord$Base, U = { [key: string]: any }>(
     ...ids: at.Associations$PrimaryKey[]

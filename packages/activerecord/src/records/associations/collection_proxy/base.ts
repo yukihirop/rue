@@ -150,7 +150,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
-   * @see https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-unscope
+   * @description delegate to `scope`
    */
   // @ts-expect-error
   unscope(...scopeMethods: rmt.QueryMethods$ScopeMethods[]): this {
@@ -187,6 +187,43 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     });
 
     return this;
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-find
+   */
+  // @ts-expect-error
+  find<U extends rt.Record$Params>(...ids: rt.Record$PrimaryKey[]): Promise<T | T[]> {
+    if (ids.length === 0) {
+      throw errObj({
+        code: ErrCodes.RECORD_NOT_FOUND,
+        message: `Could'nt find '${this.recordKlass.name}' without an 'id'`,
+      });
+    } else {
+      // @ts-expect-error
+      return this.where<U>({ id: ids }).scoping((holder) => {
+        if (holder.scope.length === 0) {
+          if (ids.length === 1) {
+            throw errObj({
+              code: ErrCodes.RECORD_NOT_FOUND,
+              params: {
+                resource: this.recordKlass.name,
+                id: ids[0],
+              },
+            });
+          } else {
+            throw errObj({
+              code: ErrCodes.RECORD_NOT_FOUND,
+              message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
+            });
+          }
+        } else if (holder.scope.length === 1) {
+          return holder.scope[0];
+        } else {
+          return holder.scope;
+        }
+      });
+    }
   }
 
   /**

@@ -52,6 +52,7 @@ export class ActiveRecord$Relation$Base<
 
   /**
    * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
+   * @description Method for getting results
    */
   rueThen(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
     return super.then((value) => {
@@ -265,7 +266,6 @@ export class ActiveRecord$Relation$Base<
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     return this.scoping((holder) => {
-      debugger;
       // @ts-ignore
       return this.recordKlass.create(params, (self) => {
         if (yielder) yielder(self);

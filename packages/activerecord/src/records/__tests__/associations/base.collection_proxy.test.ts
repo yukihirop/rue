@@ -1056,6 +1056,96 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
+  describe('#find (delegate to `scope`)', () => {
+    describe("when specify 'primarykey'", () => {
+      it('should correctly', async () => {
+        const result = await record.children().find(1);
+        expect(result).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _destroyed: false,
+          _newRecord: false,
+          childAge: 1,
+          childName: 'child_name_1',
+          errors: { childAge: [], childName: [] },
+          id: 1,
+          parentId: 1,
+        });
+      });
+    });
+
+    describe("when specify array of 'id'", () => {
+      it('should correctly', async () => {
+        const result = await record.children().find(1, 2);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+        ]);
+      });
+    });
+
+    describe('when throw error', () => {
+      describe("when do not specify 'id'", () => {
+        it('should correctly', async () => {
+          try {
+            await record.children().find();
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Could'nt find 'CollectionProxyChildRecord' without an 'id'"
+            );
+          }
+        });
+      });
+
+      describe("when specify don't exists 'id'", () => {
+        it('should correctly', async () => {
+          try {
+            await record.children().find(100);
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Couldn't find 'CollectionProxyChildRecord' with 'id' = '100'"
+            );
+          }
+        });
+      });
+
+      describe("when specify don't exists array of 'id'", () => {
+        it('should correctly', async () => {
+          try {
+            await record.children().find(100, 200);
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Could't find all 'CollectionProxyChildRecord' with 'id': [100,200] (found 0 results, but was looking for 2)"
+            );
+          }
+        });
+      });
+    });
+  });
+
   describe('#build (inherited)', () => {
     describe('when default', () => {
       it('should correctly', async () => {
