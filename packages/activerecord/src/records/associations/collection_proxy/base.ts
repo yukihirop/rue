@@ -31,7 +31,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-build
    */
   build<U>(params?: Partial<U> | Array<Partial<U>>, yielder?: (self: T) => void): Promise<T | T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       if (Array.isArray(params)) {
         return params.map((param) => {
           const merged = Object.assign(param || {}, holder.foreignKeyData);
@@ -57,7 +57,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       const merged = Object.assign(params || {}, holder.foreignKeyData);
       // @ts-ignore
       return this.recordKlass.create(merged, (self) => {
@@ -74,7 +74,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       const merged = Object.assign(params || {}, holder.foreignKeyData);
       // @ts-expect-error
       return this.recordKlass.createOrThrow(merged, (self) => {
@@ -89,7 +89,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    */
   pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
     // @ts-expect-error
-    return this._evaluateThen<ct.valueOf<U>>((holder) => {
+    return this.scoping<ct.valueOf<U>>((holder) => {
       return holder.scope.map((record) => {
         let result;
 

@@ -21,7 +21,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     const _this = this as ActiveRecord$Relation<T>;
 
     // @ts-expect-error
-    return _this._evaluateThen<boolean>((holder) => {
+    return _this.scoping<boolean>((holder) => {
       const records = holder.scope;
 
       if (!condition) {
@@ -120,8 +120,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
   isInclude<T extends ActiveRecord$Base>(record: T | T[] | Promise<T | T[]>): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
-    // @ts-expect-error
-    return _this._evaluateThen<boolean>((holder) => {
+    return _this.scoping<boolean>((holder) => {
       const allRecordIds = holder.scope.map((r) => r['id']);
       if (record instanceof Promise) {
         return record.then((recordVal) => {
@@ -163,8 +162,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     if (!limit) limit = 1;
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
-    // @ts-expect-error
-    return _this._evaluateThen((holder) => {
+    return _this.scoping((holder) => {
       const records = holder.scope;
       if (records.length === 0) {
         return null;
@@ -205,8 +203,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
 
-    // @ts-expect-error
-    return _this._evaluateThen((holder) => {
+    return _this.scoping((holder) => {
       if (holder.scope.length === 0) {
         return null;
       } else if (limit === 1) {

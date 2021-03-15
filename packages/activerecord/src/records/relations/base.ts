@@ -147,7 +147,10 @@ export class ActiveRecord$Relation$Base<
     );
   }
 
-  protected _evaluateThen<U>(callback: (holder: H) => U | Promise<U>): Promise<U> {
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-scoping
+   */
+  scoping<U>(callback: (holder: H) => U | Promise<U>): Promise<U> {
     return super.then(({ holder, scope }) => {
       if (scope instanceof Promise) {
         return scope.then((records) => {
@@ -167,7 +170,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-many-3F
    */
   isMany(filter?: (record: T) => boolean): Promise<boolean> {
-    return this._evaluateThen<boolean>((holder) => {
+    return this.scoping<boolean>((holder) => {
       return holder.scope.filter(filter || Boolean).length > 1;
     });
   }
@@ -176,7 +179,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-none-3F
    */
   isNone(filter?: (record: T) => boolean): Promise<boolean> {
-    return this._evaluateThen<boolean>((holder) => {
+    return this.scoping<boolean>((holder) => {
       return holder.scope.filter(filter || Boolean).length === 0;
     });
   }
@@ -185,7 +188,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-one-3F
    */
   isOne(filter?: (record: T) => boolean): Promise<boolean> {
-    return this._evaluateThen<boolean>((holder) => {
+    return this.scoping<boolean>((holder) => {
       return holder.scope.filter(filter || Boolean).length === 1;
     });
   }
@@ -194,7 +197,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-size
    */
   size(): Promise<number> {
-    return this._evaluateThen<number>((holder) => {
+    return this.scoping<number>((holder) => {
       return holder.scope.length;
     });
   }
@@ -203,7 +206,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-any-3F
    */
   isAny(filter?: (record: T) => boolean): Promise<boolean> {
-    return this._evaluateThen<boolean>((holder) => {
+    return this.scoping<boolean>((holder) => {
       return holder.scope.filter(filter || Boolean).length > 0;
     });
   }
@@ -228,7 +231,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-empty-3F
    */
   isEmpty(): Promise<boolean> {
-    return this._evaluateThen<boolean>((holder) => {
+    return this.scoping<boolean>((holder) => {
       return holder.scope.length === 0;
     });
   }
@@ -237,7 +240,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-build
    */
   build<U>(params?: Partial<U> | Array<Partial<U>>, yielder?: (self: T) => void): Promise<T | T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       if (Array.isArray(params)) {
         return params.map((param) => {
           const record = new this.recordKlass(param);
@@ -261,7 +264,7 @@ export class ActiveRecord$Relation$Base<
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       // @ts-ignore
       return this.recordKlass.create(params, (self) => {
         if (yielder) yielder(self);
@@ -277,7 +280,7 @@ export class ActiveRecord$Relation$Base<
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       // @ts-expect-error
       return this.recordKlass.createOrThrow(params, (self) => {
         if (yielder) yielder(self);
@@ -341,7 +344,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-delete_all
    */
   deleteAll(): Promise<number> {
-    return this._evaluateThen<number>((holder) => {
+    return this.scoping<number>((holder) => {
       const deleteCount = holder.scope.length;
       RecordCache.update(this.recordKlass.name, RECORD_ALL, []);
       holder.scope = [];
@@ -388,7 +391,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-destroy_all
    */
   destroyAll(): Promise<T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       const destroyed = holder.scope.map((record: T) => {
         const destroyed = record.destroy();
         Object.freeze(destroyed);
@@ -461,7 +464,7 @@ export class ActiveRecord$Relation$Base<
       return record.update(params);
     };
 
-    return this._evaluateThen<number>((holder) => {
+    return this.scoping<number>((holder) => {
       return Promise.all(holder.scope.map(updateFn)).then((result) => {
         return result.filter(Boolean).length;
       });
@@ -504,7 +507,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
    */
   toA(): Promise<T[]> {
-    return this._evaluateThen((holder) => {
+    return this.scoping((holder) => {
       return holder.scope;
     });
   }
