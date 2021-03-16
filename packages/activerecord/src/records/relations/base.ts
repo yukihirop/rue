@@ -53,7 +53,7 @@ export class ActiveRecord$Relation$Base<
 
   /**
    * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
-   * @description Method for getting results
+   * @description Method for getting results. Do not call it in any other method.
    */
   rueThen(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
     return super.then((value) => {

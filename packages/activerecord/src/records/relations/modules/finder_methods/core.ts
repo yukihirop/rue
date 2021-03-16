@@ -20,7 +20,6 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
 
-    // @ts-expect-error
     return _this.scoping<boolean>((holder) => {
       const records = holder.scope;
 
@@ -29,8 +28,8 @@ export class ActiveRecord$FinderMethods extends RueModule {
       } else if (Array.isArray(condition)) {
         throw 'Do not suppport because where does not correspond to an array argument';
       } else if (typeof condition === 'object' && condition != null) {
-        return _this.where<U>(condition as Partial<U>).rueThen((records: T[]) => {
-          return records.length > 0;
+        return _this.where<U>(condition as Partial<U>).scoping((holder) => {
+          return holder.scope.length > 0;
         });
       } else {
         const id = Number(condition) as at.Associations$PrimaryKey;
@@ -41,7 +40,6 @@ export class ActiveRecord$FinderMethods extends RueModule {
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html#method-i-find
-   * @todo Do not use rueThen
    */
   find<T extends ActiveRecord$Base, U = { [key: string]: any }>(
     ...ids: at.Associations$PrimaryKey[]
@@ -58,8 +56,8 @@ export class ActiveRecord$FinderMethods extends RueModule {
       // @ts-expect-error
       return (this as ActiveRecord$Relation)
         .where<T, U>({ id: ids })
-        .rueThen((records: T[]) => {
-          if (records.length === 0) {
+        .scoping((holder) => {
+          if (holder.scope.length === 0) {
             if (ids.length === 1) {
               throw errObj({
                 code: ErrCodes.RECORD_NOT_FOUND,
@@ -76,10 +74,10 @@ export class ActiveRecord$FinderMethods extends RueModule {
                 message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
               });
             }
-          } else if (records.length === 1) {
-            return records[0];
+          } else if (holder.scope.length === 1) {
+            return holder.scope[0];
           } else {
-            return records;
+            return holder.scope;
           }
         });
     }
