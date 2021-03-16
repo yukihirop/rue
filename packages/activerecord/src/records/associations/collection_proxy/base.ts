@@ -288,8 +288,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-pluck
    */
   pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
-    // @ts-expect-error
-    return this.scoping<ct.valueOf<U>>((holder) => {
+    return this.scoping<Array<ct.valueOf<U>>>((holder) => {
       const plucked = holder.scope.map((record) => {
         let result;
 

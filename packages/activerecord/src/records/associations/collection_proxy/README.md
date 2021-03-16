@@ -46,6 +46,7 @@
 - [-] target
 - [-] third
 - [-] thirdToLast
+- [x] scoping (i)
 
 ## Methods (Delegate to `scope`)
 
@@ -153,7 +154,7 @@
 - [ ] only
 - [-] $merge (internal methods)
 - [ ] except
-- [ ] scoping
+- [-] scoping (inherited `ActiveRecord$Relation.prototype.scoping`)
 
 
 ## Reference
