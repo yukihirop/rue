@@ -36,7 +36,7 @@ Account.validates('email', {
 });
 
 // Register Relashionships
-Account.hasMany('tasks', Task, 'accountId');
+Account.hasMany('tasks', { klass: Task, foreignKey: 'accountId' });
 
 // Register Scopes
 Account.scope('fromName', (name) => Account.where({ name }));

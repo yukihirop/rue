@@ -180,11 +180,10 @@ describe('Record(Association)', () => {
     }
 
     // register relations
-    TestAssociationHasManyRecord.hasMany(
-      'children',
-      TestAssociationHasManyChildRecord,
-      'foreignKey'
-    );
+    TestAssociationHasManyRecord.hasMany<TestAssociationHasManyChildRecord>('children', {
+      klass: TestAssociationHasManyChildRecord,
+      foreignKey: 'foreignKey',
+    });
 
     it('should correctly', (done) => {
       TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((records) => {
@@ -251,13 +250,17 @@ describe('Record(Association)', () => {
     }
 
     // register relations
-    TestAssociationHasAndBelongsToManyAssemblyRecord.hasAndBelongsToMany(
+    TestAssociationHasAndBelongsToManyAssemblyRecord.hasAndBelongsToMany<TestAssociationHasAndBelongsToManyPartRecord>(
       'parts',
-      TestAssociationHasAndBelongsToManyPartRecord
+      {
+        klass: TestAssociationHasAndBelongsToManyPartRecord,
+      }
     );
-    TestAssociationHasAndBelongsToManyPartRecord.hasAndBelongsToMany(
+    TestAssociationHasAndBelongsToManyPartRecord.hasAndBelongsToMany<TestAssociationHasAndBelongsToManyAssemblyRecord>(
       'assemblies',
-      TestAssociationHasAndBelongsToManyAssemblyRecord
+      {
+        klass: TestAssociationHasAndBelongsToManyAssemblyRecord,
+      }
     );
 
     describe("when 'Assembly'", () => {

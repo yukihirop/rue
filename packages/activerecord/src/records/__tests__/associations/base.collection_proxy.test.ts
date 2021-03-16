@@ -55,7 +55,10 @@ class CollectionProxyChildRecord extends ActiveRecord$Base<CollectionProxyChildR
   }
 }
 
-CollectionProxyRecord.hasMany('children', CollectionProxyChildRecord, 'parentId');
+CollectionProxyRecord.hasMany<CollectionProxyChildRecord>('children', {
+  klass: CollectionProxyChildRecord,
+  foreignKey: 'parentId',
+});
 
 CollectionProxyChildRecord.validates('childName', { length: { is: 12 }, allow_undefined: true });
 CollectionProxyChildRecord.validates('childAge', {

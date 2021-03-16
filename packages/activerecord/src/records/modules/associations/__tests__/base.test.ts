@@ -1,32 +1,28 @@
 // classes
 import { ActiveRecord$Associations as AssociationsModule } from '../core';
-import { registryForAssociations as AssociationsRegistry } from '@/registries';
-import { cacheForIntermeditateTables as IntermediateTable } from '@/registries';
+import {
+  registryForAssociations as AssociationsRegistry,
+  cacheForIntermeditateTables as IntermediateTable,
+} from '@/registries';
+import { ActiveRecord$Base as Record } from '@/records';
 
 // types
 import type * as t from '../types';
+import type * as at from '@/records/modules/associations';
 
 describe('ActiveRecord$Associations', () => {
   describe(`[static] belongsTo`, () => {
-    class TestBelongsToRecord {
-      static belongsTo: <T extends AssociationsModule = any>(
-        relationName: string,
-        klass: Function,
-        foreignKey: string
-      ) => void;
+    class TestBelongsToRecord extends Record {
+      static belongsTo: (relationName: string, klass: Function, foreignKey: string) => void;
 
       public id: t.PrimaryKey;
     }
-    class TestBelongsToChildRecod {
+    class TestBelongsToChildRecod extends Record {
       public id: t.PrimaryKey;
       public foreignKey: t.ForeignKey;
       public parent: t.BelongsTo<TestBelongsToRecord>;
 
-      static belongsTo: <T extends AssociationsModule = any>(
-        relationName: string,
-        klass: Function,
-        foreignKey: string
-      ) => void;
+      static belongsTo: (relationName: string, klass: Function, foreignKey: string) => void;
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestBelongsToRecord, { only: ['belongsTo'] });
@@ -43,17 +39,13 @@ describe('ActiveRecord$Associations', () => {
   });
 
   describe(`[static] hasOne`, () => {
-    class TestHasOneRecord {
+    class TestHasOneRecord extends Record {
       public id: t.PrimaryKey;
       public child: t.HasOne<TestHasOneChildRecod>;
 
-      static hasOne: <T extends AssociationsModule = any>(
-        relationName: string,
-        klass: Function,
-        foreignKey: t.ForeignKey
-      ) => void;
+      static hasOne: (relationName: string, klass: Function, foreignKey: t.ForeignKey) => void;
     }
-    class TestHasOneChildRecod {
+    class TestHasOneChildRecod extends Record {
       public id: t.PrimaryKey;
     }
 
@@ -71,32 +63,29 @@ describe('ActiveRecord$Associations', () => {
   });
 
   describe(`[static] hasMany`, () => {
-    class TestHasManyRecord {
+    class TestHasManyRecord extends Record {
       public id: t.PrimaryKey;
-      public children: t.HasOne<TestHasManyChildRecod>;
+      public children: t.HasMany<TestHasManyChildRecod>;
 
-      static hasMany: <T extends AssociationsModule = any>(
+      static hasMany: <T extends Record>(
         relationName: string,
-        klass: Function,
-        foreignKey: t.ForeignKey
+        opts: at.Associations$HasManyOptions<T>,
+        scope?: at.Associations$HasManyScope<T>
       ) => void;
     }
 
-    class TestHasManyChildRecod {
+    class TestHasManyChildRecod extends Record {
       public id: t.PrimaryKey;
-
-      static hasMany: <T extends AssociationsModule = any>(
-        relationName: string,
-        klass: Function,
-        foreignKey: t.ForeignKey
-      ) => void;
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasManyRecord, { only: ['hasMany'] });
     AssociationsModule.rueModuleExtendedFrom(TestHasManyChildRecod, { only: ['hasMany'] });
 
     // register relations
-    TestHasManyRecord.hasMany('children', TestHasManyChildRecod, 'child_id');
+    TestHasManyRecord.hasMany<TestHasManyChildRecod>('children', {
+      klass: TestHasManyChildRecod,
+      foreignKey: 'parentId',
+    });
 
     it('should correctly', () => {
       expect(
@@ -109,23 +98,13 @@ describe('ActiveRecord$Associations', () => {
 
   // https://railsguides.jp/association_basics.html#has-many-through%E3%81%A8has-and-belongs-to-many%E3%81%AE%E3%81%A9%E3%81%A1%E3%82%89%E3%82%92%E9%81%B8%E3%81%B6%E3%81%8B
   describe(`[static] hasAndBelongsToMany`, () => {
-    class TestHasAndBelongsToManyAssemblyRecord {
+    class TestHasAndBelongsToManyAssemblyRecord extends Record {
       public id: t.PrimaryKey;
       public parts: t.HasAndBelongsToMany<TestHasAndBelongsToManyPartRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
     }
-    class TestHasAndBelongsToManyPartRecord {
+    class TestHasAndBelongsToManyPartRecord extends Record {
       public id: t.PrimaryKey;
       public assemblies: t.HasAndBelongsToMany<TestHasAndBelongsToManyAssemblyRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasAndBelongsToManyAssemblyRecord, {
@@ -136,13 +115,17 @@ describe('ActiveRecord$Associations', () => {
     });
 
     // register relations
-    TestHasAndBelongsToManyAssemblyRecord.hasAndBelongsToMany(
+    TestHasAndBelongsToManyAssemblyRecord.hasAndBelongsToMany<TestHasAndBelongsToManyPartRecord>(
       'parts',
-      TestHasAndBelongsToManyPartRecord
+      {
+        klass: TestHasAndBelongsToManyPartRecord,
+      }
     );
-    TestHasAndBelongsToManyPartRecord.hasAndBelongsToMany(
+    TestHasAndBelongsToManyPartRecord.hasAndBelongsToMany<TestHasAndBelongsToManyAssemblyRecord>(
       'assemblies',
-      TestHasAndBelongsToManyAssemblyRecord
+      {
+        klass: TestHasAndBelongsToManyAssemblyRecord,
+      }
     );
 
     it('should correctly', () => {
@@ -160,48 +143,16 @@ describe('ActiveRecord$Associations', () => {
   });
 
   describe('#hasAndBelongsToMany', () => {
-    class TestHasAndBelongsToManyFooRecord {
+    class TestHasAndBelongsToManyFooRecord extends Record {
       public id: t.PrimaryKey;
       public name: string;
       public bars: t.HasAndBelongsToMany<TestHasAndBelongsToManyBarRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
-
-      constructor(data) {
-        this.id = data['id'];
-        this.name = data['name'];
-      }
     }
 
-    class TestHasAndBelongsToManyBarRecord {
+    class TestHasAndBelongsToManyBarRecord extends Record {
       public id: t.PrimaryKey;
       public name: string;
       public foos: t.HasAndBelongsToMany<TestHasAndBelongsToManyFooRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
-
-      constructor(data) {
-        this.id = data['id'];
-        this.name = data['name'];
-      }
-    }
-
-    interface TestHasAndBelongsToManyFooRecord {
-      hasAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
-    }
-
-    interface TestHasAndBelongsToManyBarRecord {
-      hasAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasAndBelongsToManyFooRecord, {
@@ -219,8 +170,12 @@ describe('ActiveRecord$Associations', () => {
     });
 
     // register associations
-    TestHasAndBelongsToManyFooRecord.hasAndBelongsToMany('bazs', TestHasAndBelongsToManyBarRecord);
-    TestHasAndBelongsToManyBarRecord.hasAndBelongsToMany('foos', TestHasAndBelongsToManyFooRecord);
+    TestHasAndBelongsToManyFooRecord.hasAndBelongsToMany<TestHasAndBelongsToManyBarRecord>('bazs', {
+      klass: TestHasAndBelongsToManyBarRecord,
+    });
+    TestHasAndBelongsToManyBarRecord.hasAndBelongsToMany<TestHasAndBelongsToManyFooRecord>('foos', {
+      klass: TestHasAndBelongsToManyFooRecord,
+    });
 
     describe('when success', () => {
       it('should correctly', () => {
@@ -262,54 +217,16 @@ describe('ActiveRecord$Associations', () => {
   });
 
   describe('#releaseAndBelongsToMany', () => {
-    class TestReleaseAndBelongsToManyFooRecord {
+    class TestReleaseAndBelongsToManyFooRecord extends Record {
       public id: t.PrimaryKey;
       public name: string;
       public bars: t.HasAndBelongsToMany<TestReleaseAndBelongsToManyBarRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
-
-      constructor(data) {
-        this.id = data['id'];
-        this.name = data['name'];
-      }
     }
 
-    class TestReleaseAndBelongsToManyBarRecord {
+    class TestReleaseAndBelongsToManyBarRecord extends Record {
       public id: t.PrimaryKey;
       public name: string;
       public foos: t.HasAndBelongsToMany<TestReleaseAndBelongsToManyFooRecord>;
-
-      static hasAndBelongsToMany: <T extends AssociationsModule = any>(
-        relationName,
-        klass: Function
-      ) => void;
-
-      constructor(data) {
-        this.id = data['id'];
-        this.name = data['name'];
-      }
-    }
-
-    interface TestReleaseAndBelongsToManyFooRecord {
-      hasAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
-      releaseAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
-    }
-
-    interface TestReleaseAndBelongsToManyBarRecord {
-      hasAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
-      releaseAndBelongsToMany<T extends AssociationsModule = any>(
-        record: T
-      ): { [key: string]: t.ForeignKey };
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestReleaseAndBelongsToManyFooRecord, {
@@ -327,14 +244,12 @@ describe('ActiveRecord$Associations', () => {
     });
 
     // register associations
-    TestReleaseAndBelongsToManyFooRecord.hasAndBelongsToMany(
-      'bazs',
-      TestReleaseAndBelongsToManyBarRecord
-    );
-    TestReleaseAndBelongsToManyBarRecord.hasAndBelongsToMany(
-      'foos',
-      TestReleaseAndBelongsToManyFooRecord
-    );
+    TestReleaseAndBelongsToManyFooRecord.hasAndBelongsToMany('bazs', {
+      klass: TestReleaseAndBelongsToManyBarRecord,
+    });
+    TestReleaseAndBelongsToManyBarRecord.hasAndBelongsToMany('foos', {
+      klass: TestReleaseAndBelongsToManyFooRecord,
+    });
 
     describe('when success', () => {
       it('should correctly', () => {
@@ -380,20 +295,9 @@ describe('ActiveRecord$Associations', () => {
     });
 
     describe('when throw error', () => {
-      class TestReleaseAndBelongsToManyBazRecord {
+      class TestReleaseAndBelongsToManyBazRecord extends Record {
         public id: t.PrimaryKey;
         public name: string;
-
-        constructor(data) {
-          this.id = data['id'];
-          this.name = data['name'];
-        }
-      }
-
-      interface TestReleaseAndBelongsToManyBazRecord {
-        releaseAndBelongsToMany<T extends AssociationsModule = any>(
-          record: T
-        ): { [key: string]: t.ForeignKey };
       }
 
       AssociationsModule.rueModuleIncludedFrom(TestReleaseAndBelongsToManyBazRecord, {

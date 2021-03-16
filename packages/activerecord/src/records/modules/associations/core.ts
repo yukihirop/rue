@@ -44,39 +44,60 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
   static hasMany<T extends ActiveRecord$Base>(
     relationName: string,
-    klass: typeof ActiveRecord$Base,
-    foreignKey: t.ForeignKey
+    opts: t.HasManyOptions<T>,
+    scope?: t.HasManyScope<T>
   ) {
-    AssociationRegistry.create(this.name, Association.hasMany, {
-      [relationName]: (self: T) => {
-        /**
-         * @description I'm worried about the overhead, but load it dynamically to avoid circular references
-         */
-        const {
-          ActiveRecord$Associations$CollectionProxy$Holder: Holder,
-        } = require('../../associations/collection_proxy');
+    const runtimeFn = (self: T) => {
+      /**
+       * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+       */
+      const {
+        ActiveRecord$Associations$CollectionProxy$Holder: Holder,
+      } = require('../../associations/collection_proxy');
 
-        const foreignKeyData = { [foreignKey]: self.id };
-        const holder = new Holder(klass, [], foreignKeyData);
-        const scope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
-          resolve({ holder, scope: klass.where<T>(foreignKeyData).toA() });
+      const foreignKeyData = { [opts.foreignKey]: self.id };
+      const associationData = {
+        dependent: opts.dependent,
+        validate: opts.validate,
+        foreignKeyData,
+      };
+
+      const holder = new Holder(opts.klass, [], associationData);
+      const runtimeScope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
+        if (scope) {
+          resolve({ holder, scope: scope(opts.klass).toA() });
+        } else {
           // @ts-expect-error
-        }, klass)
-          .where(foreignKeyData)
-          .toA();
-        /**
-         * @description Since it is a runtime specification, only any type can be given.
-         */
-        const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
-          resolve({ holder, scope });
-          // @ts-expect-error
-        }, klass);
-        return collectionProxy;
-      },
+          resolve({ holder, scope: opts.klass.where<T>(foreignKeyData).toA() });
+        }
+      }, opts.klass)
+        .where(foreignKeyData)
+        .toA();
+
+      /**
+       * @description Since it is a runtime specification, only any type can be given.
+       */
+      const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
+        resolve({ holder, scope: runtimeScope });
+      }, opts.klass);
+      return collectionProxy;
+    };
+
+    AssociationRegistry.create(this.name, Association.hasMany, {
+      [relationName]: runtimeFn,
     });
   }
 
-  static hasAndBelongsToMany<T extends ActiveRecord$Base = any>(relationName, klass: Function) {
+  /**
+   * @todo use scope
+   * @todo change return value CollectionProxy runtime instance
+   */
+  static hasAndBelongsToMany<T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: t.HasAndBelongsToManyOptions<T>,
+    _scope?: t.HasAndBelongsToManyOptions<T>
+  ) {
+    const klass = opts.klass;
     const foreignKeysFn = (self: T) => {
       const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
         this.name,

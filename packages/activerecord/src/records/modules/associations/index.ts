@@ -11,4 +11,9 @@ export type {
   HasOne as Associations$HasOne,
   HasMany as Associations$HasMany,
   HasAndBelongsToMany as Associations$HasAndBelongsToMany,
+  // Options
+  HasManyOptions as Associations$HasManyOptions,
+  HasAndBelongsToManyOptions as Associations$HasAndBelongsToManyOptions,
+  HasManyScope as Associations$HasManyScope,
+  HasAndBelongsToManyScope as Associations$HasAndBelongsToManyScope,
 } from './types';

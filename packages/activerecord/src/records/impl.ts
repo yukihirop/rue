@@ -58,12 +58,16 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     klass: Function,
     foreignKey: at.Associations$ForeignKey
   ) => void;
-  static hasMany: (
+  static hasMany: <T extends ActiveRecord$Base>(
     relationName: string,
-    klass: Function,
-    foreignKey: at.Associations$ForeignKey
+    opts: at.Associations$HasManyOptions<T>,
+    scope?: at.Associations$HasManyScope<T>
   ) => void;
-  static hasAndBelongsToMany: (relationName, klass: Function) => void;
+  static hasAndBelongsToMany: <T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: at.Associations$HasAndBelongsToManyOptions<T>,
+    scope?: at.Associations$HasAndBelongsToMany<T>
+  ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations._defineAssociations(self);
   }

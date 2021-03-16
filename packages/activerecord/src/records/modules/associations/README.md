@@ -1,5 +1,7 @@
 # ActiveRecord$Associatioons
 
+The implementation of has_many of [rails](https://github.com/yukihirop/rue/issues/68#issuecomment-800115550) is too difficult, so I made it a simplified original implementation.
+
 ## Methods
 
 - [x] [static]belongsTo
