@@ -285,6 +285,63 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * The return value type is different from that of rails.
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-delete
+   */
+  delete(...recordsOrIds: T[] | rt.Record$PrimaryKey[]): Promise<T[]> {
+    return this.scoping<T[]>((holder) => {
+      let recordIds: rt.Record$PrimaryKey[] = [];
+
+      recordsOrIds.forEach((recordOrId) => {
+        if (recordOrId instanceof ActiveRecord$Base) {
+          recordIds.push((recordOrId as T).id);
+        } else {
+          recordIds.push(recordOrId);
+        }
+      });
+
+      return this.find<T>(...recordIds).then((records: T[]) => {
+        const foreignKey = Object.keys(holder.foreignKeyData)[0];
+        return records.map((record) => {
+          // dependent: 'nullify'
+          record.update({ [foreignKey]: undefined });
+          return record;
+        });
+      });
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-destroy
+   */
+  destroy(...recordsOrIds: T[] | rt.Record$PrimaryKey[]): Promise<T[] | null> {
+    return this.scoping((holder) => {
+      let recordIds: rt.Record$PrimaryKey[] = [];
+
+      recordsOrIds.forEach((recordOrId) => {
+        if (recordOrId instanceof ActiveRecord$Base) {
+          recordIds.push((recordOrId as T).id);
+        } else {
+          recordIds.push(recordOrId);
+        }
+      });
+
+      if (recordIds.length === 0) {
+        /**
+         * @description Make it behave the same as rails
+         */
+        return null;
+      } else {
+        return this.find<T>(...recordIds).then((records: T[]) => {
+          return records.map((record) => {
+            return record.destroy();
+          });
+        });
+      }
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-pluck
    */
   pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {

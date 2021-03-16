@@ -1,4 +1,5 @@
-import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
+import { cacheForRecords as RecordCache } from '@/registries';
 
 // thrid party
 import MockDate from 'mockdate';
@@ -1432,6 +1433,313 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
           errors: { childName: [], childAge: [] },
           parentId: 1,
         });
+      });
+    });
+  });
+
+  describe('#delete', () => {
+    describe("when default (dependent: 'nullify')", () => {
+      describe('when give ids', () => {
+        it('should update parentId = undefined', async () => {
+          const result = await record.children().delete(1, 2);
+          expect(result).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 1,
+              childName: 'child_name_1',
+              errors: { childAge: [], childName: [] },
+              id: 1,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 2,
+              childName: 'child_name_2',
+              errors: { childAge: [], childName: [] },
+              id: 2,
+              parentId: undefined,
+            },
+          ]);
+          expect(await record.children().size()).toEqual(1);
+          expect(RecordCache.data[CollectionProxyChildRecord.name][RECORD_ALL]).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 1,
+              childName: 'child_name_1',
+              errors: { childAge: [], childName: [] },
+              id: 1,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 2,
+              childName: 'child_name_2',
+              errors: { childAge: [], childName: [] },
+              id: 2,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 3,
+              childName: 'child_name_3',
+              errors: { childAge: [], childName: [] },
+              id: 3,
+              parentId: 1,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 4,
+              childName: 'child_name_4',
+              errors: { childAge: [], childName: [] },
+              id: 4,
+              parentId: 2,
+            },
+          ]);
+        });
+      });
+
+      describe('when give records', () => {
+        it('should update parentId = undefined', async () => {
+          await CollectionProxyChildRecord.all();
+          const records = [
+            CollectionProxyChildRecord.find<CollectionProxyChildRecord>(1),
+            CollectionProxyChildRecord.find<CollectionProxyChildRecord>(2),
+          ] as CollectionProxyChildRecord[];
+          const result = await record.children().delete(...records);
+          expect(result).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 1,
+              childName: 'child_name_1',
+              errors: { childAge: [], childName: [] },
+              id: 1,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 2,
+              childName: 'child_name_2',
+              errors: { childAge: [], childName: [] },
+              id: 2,
+              parentId: undefined,
+            },
+          ]);
+          expect(await record.children().size()).toEqual(1);
+          expect(RecordCache.data[CollectionProxyChildRecord.name][RECORD_ALL]).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 1,
+              childName: 'child_name_1',
+              errors: { childAge: [], childName: [] },
+              id: 1,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 2,
+              childName: 'child_name_2',
+              errors: { childAge: [], childName: [] },
+              id: 2,
+              parentId: undefined,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 3,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 3,
+              childName: 'child_name_3',
+              errors: { childAge: [], childName: [] },
+              id: 3,
+              parentId: 1,
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 4,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _destroyed: false,
+              _newRecord: false,
+              childAge: 4,
+              childName: 'child_name_4',
+              errors: { childAge: [], childName: [] },
+              id: 4,
+              parentId: 2,
+            },
+          ]);
+        });
+      });
+    });
+  });
+
+  describe('#destroy', () => {
+    describe("when don't specify ids", () => {
+      it('should correctly', async () => {
+        const result = await record.children().destroy();
+        expect(result).toEqual(null);
+      });
+    });
+
+    describe('when give ids', () => {
+      it('should correctly', async () => {
+        const result = await record.children().destroy(1, 2);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+        ]);
+        expect(await record.children().size()).toEqual(1);
+        expect(RecordCache.data[CollectionProxyChildRecord.name][RECORD_ALL]).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 4,
+            childName: 'child_name_4',
+            errors: { childAge: [], childName: [] },
+            id: 4,
+            parentId: 2,
+          },
+        ]);
+      });
+    });
+
+    describe('when give records', () => {
+      it('should correctly', async () => {
+        await CollectionProxyChildRecord.all();
+        const records = [
+          CollectionProxyChildRecord.find(1),
+          CollectionProxyChildRecord.find(2),
+        ] as CollectionProxyChildRecord[];
+        const result = await record.children().destroy(...records);
+        expect(result).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: true,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+        ]);
+        expect(await record.children().size()).toEqual(1);
+        expect(RecordCache.data[CollectionProxyChildRecord.name][RECORD_ALL]).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 4,
+            childName: 'child_name_4',
+            errors: { childAge: [], childName: [] },
+            id: 4,
+            parentId: 2,
+          },
+        ]);
       });
     });
   });

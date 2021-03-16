@@ -13,9 +13,9 @@
 - [x] count
 - [x] create
 - [x] createOrThrow
-- [ ] delete
+- [x] delete
 - [x] deleteAll (i)
-- [ ] destroy
+- [x] destroy
 - [x] destroyAll (i)
 - [ ] distinct
 - [x] isEmpty (i)
