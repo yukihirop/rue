@@ -7,6 +7,7 @@ import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
 import { ActiveRecord$Relation } from '@/records/relations';
 import { ActiveRecord$QueryMethods } from '@/records/relations/modules';
 import { errObj, ErrCodes } from '@/errors';
+import { isPresent, isSuperset } from '@/utils';
 
 // types
 import type * as ct from '@/types';
@@ -326,50 +327,34 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   count<U extends rt.Record$Params>(
     propName?: keyof U,
     filter?: (self: T) => boolean
-  ): Promise<number> {
+  ): Promise<number | { [key: string]: number }> {
     return this.superThen(({ holder }) => {
       // @ts-expect-error
       return this.recordKlass.all().superThen(({ holder: newHolder }) => {
         // deep coppy
         newHolder.scopeParams = Object.assign({}, JSON.parse(JSON.stringify(holder.scopeParams)));
-        Object.assign(newHolder.scopeParams['where'], holder.foreignKeyData);
+        Object.assign(newHolder.scopeParams.where, holder.foreignKeyData);
         Evaluator.all(newHolder);
 
-        let result;
-        if (propName) {
-          result = newHolder.scope.filter((record) => record[propName]);
+        if (isPresent(newHolder.groupedRecords)) {
+          return Object.keys(newHolder.groupedRecords).reduce((acc, key) => {
+            const records = newHolder.groupedRecords[key];
+            acc[key] = records.length;
+            return acc;
+          }, {});
         } else {
-          result = newHolder.scope;
+          let result;
+
+          if (propName) {
+            result = newHolder.scope.filter((record) => record[propName]);
+          } else {
+            result = newHolder.scope;
+          }
+
+          if (filter) result = result.filter(filter);
+          return result.length;
         }
-
-        if (filter) result = result.filter(filter);
-
-        return result.length;
       });
     });
   }
-}
-
-function isPresent(params: any): boolean {
-  if (typeof params === 'number') {
-    return params >= 0;
-  } else if (Array.isArray(params)) {
-    return params.length > 0;
-  } else if (typeof params === 'object' && params !== null) {
-    return params && Object.keys(params).length > 0;
-  } else {
-    return false;
-  }
-}
-
-// https://qiita.com/toshihikoyanase/items/7b07ca6a94eb72164257
-function isSuperset(target: string[], other: string[]): boolean {
-  const self = new Set(target);
-  const subset = new Set(other);
-  for (let elem of subset) {
-    if (!self.has(elem)) {
-      return false;
-    }
-  }
-  return true;
 }

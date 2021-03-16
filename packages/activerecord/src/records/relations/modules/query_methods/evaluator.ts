@@ -2,6 +2,7 @@
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation$Holder } from '@/records/relations';
 import { ErrCodes, errObj } from '@/errors';
+import { isPresent } from '@/utils';
 
 import type * as t from './types';
 
@@ -33,7 +34,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   where(): this {
     const whereParams = this.scopeParams.where;
-    if (!this.isPresent(whereParams)) return this;
+    if (!isPresent(whereParams)) return this;
 
     const records = this.holder.scope;
     const result = records.reduce((acc: Array<T>, record: T) => {
@@ -60,7 +61,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   order(): this {
     const orderParams = this.scopeParams.order;
-    if (!this.isPresent(orderParams)) return this;
+    if (!isPresent(orderParams)) return this;
 
     const records = this.holder.scope;
     Object.keys(orderParams).forEach((propName) => {
@@ -104,7 +105,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   offset(): this {
     const offsetValue = this.scopeParams.offset;
-    if (!this.isPresent(offsetValue)) return this;
+    if (!isPresent(offsetValue)) return this;
 
     const records = this.holder.scope;
     this.holder.scope = records.slice(offsetValue, records.length);
@@ -117,7 +118,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   limit(): this {
     const limitValue = this.scopeParams.limit;
-    if (!this.isPresent(limitValue)) return this;
+    if (!isPresent(limitValue)) return this;
 
     const records = this.holder.scope;
     this.holder.scope = records.slice(0, limitValue);
@@ -130,7 +131,7 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
 
   group(): this {
     const groupParams = this.scopeParams.group;
-    if (!this.isPresent(groupParams)) return this;
+    if (!isPresent(groupParams)) return this;
 
     const records = this.holder.scope;
     let foundPairs = [];
@@ -157,18 +158,6 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
   }
 
   isGroupedRecords(): boolean {
-    return this.isPresent(this.holder.groupedRecords) && this.isPresent(this.scopeParams.group);
-  }
-
-  private isPresent(params: any): boolean {
-    if (typeof params === 'number') {
-      return params >= 0;
-    } else if (Array.isArray(params)) {
-      return params.length > 0;
-    } else if (typeof params === 'object' && params !== null) {
-      return params && Object.keys(params).length > 0;
-    } else {
-      return false;
-    }
+    return isPresent(this.holder.groupedRecords) && isPresent(this.scopeParams.group);
   }
 }

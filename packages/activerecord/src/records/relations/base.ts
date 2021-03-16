@@ -4,6 +4,7 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Relation$Impl } from './impl';
 import { ActiveRecord$QueryMethods$Evaluator as Evaluator } from './modules/query_methods';
 import { ActiveRecord$Relation$Holder } from './holder';
+import { isPresent } from '@/utils';
 
 // third party
 import dayjs from 'dayjs';
@@ -197,9 +198,17 @@ export class ActiveRecord$Relation$Base<
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-size
    */
-  size(): Promise<number> {
-    return this.scoping<number>((holder) => {
-      return holder.scope.length;
+  size(): Promise<number | { [key: string]: number }> {
+    return this.scoping<number | { [key: string]: number }>((holder) => {
+      if (isPresent(holder.groupedRecords)) {
+        return Object.keys(holder.groupedRecords).reduce((acc, key) => {
+          const records = holder.groupedRecords[key];
+          acc[key] = records.length;
+          return acc;
+        }, {});
+      } else {
+        return holder.scope.length;
+      }
     });
   }
 

@@ -1788,15 +1788,26 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
   describe('#count (inherited)', () => {
     describe('when default', () => {
       it('should correctly', async () => {
-        const result = await record.children().size();
+        const result = await record.children().count();
         expect(result).toEqual(3);
       });
     });
 
     describe('when mix', () => {
       it('should correctly', async () => {
-        const result = await record.children().limit(2).size();
+        const result = await record.children().limit(2).count();
         expect(result).toEqual(2);
+      });
+    });
+
+    describe('when use group', () => {
+      it('should correctly', async () => {
+        const result = await record.children().group('id', 'childName').count();
+        expect(result).toEqual({
+          '[1,child_name_1]': 1,
+          '[2,child_name_2]': 1,
+          '[3,child_name_3]': 1,
+        });
       });
     });
   });

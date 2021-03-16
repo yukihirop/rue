@@ -279,6 +279,18 @@ describe('ActiveRecord$Relation$Base', () => {
       });
     });
 
+    describe('when use group', () => {
+      it('should correctly', (done) => {
+        relation
+          .group('id', 'name')
+          .size()
+          .then((result) => {
+            expect(result).toEqual({ '[1,name_1]': 1, '[2,name_2]': 1, '[3,name_3]': 1 });
+            done();
+          });
+      });
+    });
+
     describe('when mix', () => {
       it('should correctly', (done) => {
         relation
