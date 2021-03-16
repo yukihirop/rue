@@ -37,10 +37,10 @@ class QueryMethodsRelation extends Relation<QueryMethodsRecord> {}
 
 describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   let holder = new Holder(QueryMethodsRecord, []);
-  // @ts-expect-error
-  let relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []]))._init(
-    QueryMethodsRecord
-  );
+  let relation = new QueryMethodsRelation(
+    (resolve, _reject) => resolve({ holder, scope: [] })
+    // @ts-expect-error
+  )._init(QueryMethodsRecord);
 
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(async () => {
@@ -57,7 +57,7 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
     // Actually, relation is not reused, so this process is not necessary.
     let holder = new Holder(QueryMethodsRecord, []);
     // @ts-expect-error
-    relation = new QueryMethodsRelation((resolve, _reject) => resolve([holder, []]))._init(
+    relation = new QueryMethodsRelation((resolve, _reject) => resolve({ holder, scope: [] }))._init(
       QueryMethodsRecord
     );
   });

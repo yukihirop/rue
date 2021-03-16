@@ -512,7 +512,7 @@ describe('ActiveRecord$Base (Querying) (delegate to QueryMethods)', () => {
     });
 
     describe('when specify 0', () => {
-      it('should return []', (done) => {
+      it('should correctly', (done) => {
         QueryingRecord.offset(0).rueThen((records) => {
           expect(records).toEqual([
             {

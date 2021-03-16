@@ -20,8 +20,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
 
-    // @ts-expect-error
-    return _this._evaluateThen<boolean>((holder) => {
+    return _this.scoping<boolean>((holder) => {
       const records = holder.scope;
 
       if (!condition) {
@@ -29,8 +28,8 @@ export class ActiveRecord$FinderMethods extends RueModule {
       } else if (Array.isArray(condition)) {
         throw 'Do not suppport because where does not correspond to an array argument';
       } else if (typeof condition === 'object' && condition != null) {
-        return _this.where<U>(condition as Partial<U>).rueThen((records: T[]) => {
-          return records.length > 0;
+        return _this.where<U>(condition as Partial<U>).scoping((holder) => {
+          return holder.scope.length > 0;
         });
       } else {
         const id = Number(condition) as at.Associations$PrimaryKey;
@@ -57,8 +56,8 @@ export class ActiveRecord$FinderMethods extends RueModule {
       // @ts-expect-error
       return (this as ActiveRecord$Relation)
         .where<T, U>({ id: ids })
-        .rueThen((records: T[]) => {
-          if (records.length === 0) {
+        .scoping((holder) => {
+          if (holder.scope.length === 0) {
             if (ids.length === 1) {
               throw errObj({
                 code: ErrCodes.RECORD_NOT_FOUND,
@@ -75,10 +74,10 @@ export class ActiveRecord$FinderMethods extends RueModule {
                 message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
               });
             }
-          } else if (records.length === 1) {
-            return records[0];
+          } else if (holder.scope.length === 1) {
+            return holder.scope[0];
           } else {
-            return records;
+            return holder.scope;
           }
         });
     }
@@ -120,8 +119,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
   isInclude<T extends ActiveRecord$Base>(record: T | T[] | Promise<T | T[]>): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
-    // @ts-expect-error
-    return _this._evaluateThen<boolean>((holder) => {
+    return _this.scoping<boolean>((holder) => {
       const allRecordIds = holder.scope.map((r) => r['id']);
       if (record instanceof Promise) {
         return record.then((recordVal) => {
@@ -163,8 +161,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     if (!limit) limit = 1;
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
-    // @ts-expect-error
-    return _this._evaluateThen((holder) => {
+    return _this.scoping((holder) => {
       const records = holder.scope;
       if (records.length === 0) {
         return null;
@@ -205,8 +202,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
 
-    // @ts-expect-error
-    return _this._evaluateThen((holder) => {
+    return _this.scoping((holder) => {
       if (holder.scope.length === 0) {
         return null;
       } else if (limit === 1) {

@@ -23,11 +23,11 @@ describe('ActiveRecord$Relation$Base', () => {
   describe('costructor', () => {
     class ConstructorRecord extends ActiveRecord$Base {}
 
-    const records = [new ConstructorRecord(), new ConstructorRecord(), new ConstructorRecord()];
+    const scope = [new ConstructorRecord(), new ConstructorRecord(), new ConstructorRecord()];
     it('should correctly', () => {
       const holder = new Holder(ConstructorRecord, []);
       const relation = new Relation<ConstructorRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(ConstructorRecord);
       // @ts-ignore
@@ -51,22 +51,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsManyRecordParams['age'];
     }
 
-    let records: IsManyRecord[];
+    let scope: IsManyRecord[];
     let holder: Holder<IsManyRecord>;
     let relation: Relation<IsManyRecord>;
 
     beforeEach(() => {
       IsManyRecord.resetRecordCache();
 
-      records = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
+      scope = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as IsManyRecord[];
 
-      holder = new Holder(IsManyRecord, records);
+      holder = new Holder(IsManyRecord, scope);
       relation = new Relation<IsManyRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsManyRecord);
     });
@@ -117,14 +117,14 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsNoneRecordParams['age'];
     }
 
-    let records: IsNoneRecord[];
+    let scope: IsNoneRecord[];
     let holder: Holder<IsNoneRecord>;
     let relation: Relation<IsNoneRecord>;
 
     beforeEach(() => {
       IsNoneRecord.resetRecordCache();
 
-      records = [
+      scope = [
         IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
           id: 1,
           name: 'name_1',
@@ -132,9 +132,9 @@ describe('ActiveRecord$Relation$Base', () => {
         }) as IsNoneRecord,
       ];
 
-      holder = new Holder(IsNoneRecord, records);
+      holder = new Holder(IsNoneRecord, scope);
       relation = new Relation<IsNoneRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsNoneRecord);
     });
@@ -185,21 +185,21 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsOneRecordParams['age'];
     }
 
-    let records: IsOneRecord[];
+    let scope: IsOneRecord[];
     let holder: Holder<IsOneRecord>;
     let relation: Relation<IsOneRecord>;
 
     beforeEach(() => {
       IsOneRecord.resetRecordCache();
 
-      records = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
+      scope = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]) as IsOneRecord[];
 
-      holder = new Holder(IsOneRecord, records);
+      holder = new Holder(IsOneRecord, scope);
       relation = new Relation<IsOneRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsOneRecord);
     });
@@ -250,22 +250,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: SizeRecordParams['age'];
     }
 
-    let records: SizeRecord[];
+    let scope: SizeRecord[];
     let holder: Holder<SizeRecord>;
     let relation: Relation<SizeRecord>;
 
     beforeEach(() => {
       SizeRecord.resetRecordCache();
 
-      records = SizeRecord.create<SizeRecord, SizeRecordParams>([
+      scope = SizeRecord.create<SizeRecord, SizeRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as SizeRecord[];
 
-      holder = new Holder(SizeRecord, records);
+      holder = new Holder(SizeRecord, scope);
       relation = new Relation<SizeRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(SizeRecord);
     });
@@ -276,6 +276,18 @@ describe('ActiveRecord$Relation$Base', () => {
           expect(result).toEqual(3);
           done();
         });
+      });
+    });
+
+    describe('when use group', () => {
+      it('should correctly', (done) => {
+        relation
+          .group('id', 'name')
+          .size()
+          .then((result) => {
+            expect(result).toEqual({ '[1,name_1]': 1, '[2,name_2]': 1, '[3,name_3]': 1 });
+            done();
+          });
       });
     });
 
@@ -305,18 +317,18 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsAnyRecordParams['age'];
     }
 
-    let records: IsAnyRecord[];
+    let scope: IsAnyRecord[];
     let holder: Holder<IsAnyRecord>;
     let relation: Relation<IsAnyRecord>;
 
     beforeEach(() => {
       IsAnyRecord.resetRecordCache();
 
-      records = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
+      scope = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
 
-      holder = new Holder(IsAnyRecord, records);
+      holder = new Holder(IsAnyRecord, scope);
       relation = new Relation<IsAnyRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsAnyRecord);
     });
@@ -367,22 +379,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsBlankRecordParams['age'];
     }
 
-    let records: IsBlankRecord[];
+    let scope: IsBlankRecord[];
     let holder: Holder<IsBlankRecord>;
     let relation: Relation<IsBlankRecord>;
 
     beforeEach(() => {
       IsBlankRecord.resetRecordCache();
 
-      records = IsBlankRecord.create([
+      scope = IsBlankRecord.create([
         { id: 1, name: 'name_1', age: 1 },
         { id: 1, name: 'name_2', age: 2 },
         { id: 1, name: 'name_3', age: 3 },
       ]) as IsBlankRecord[];
 
-      holder = new Holder(IsBlankRecord, records);
+      holder = new Holder(IsBlankRecord, scope);
       relation = new Relation<IsBlankRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsBlankRecord);
     });
@@ -391,7 +403,7 @@ describe('ActiveRecord$Relation$Base', () => {
       it('should correctly', (done) => {
         holder = new Holder(IsBlankRecord, []);
         relation = new Relation<IsBlankRecord>(
-          (resolve, _reject) => resolve([holder, []])
+          (resolve, _reject) => resolve({ holder, scope: [] })
           // @ts-expect-error
         )._init(IsBlankRecord);
         relation.isBlank().then((result) => {
@@ -424,14 +436,14 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: IsEmptyRecordParams['age'];
     }
 
-    let records: IsEmptyRecord[];
+    let scope: IsEmptyRecord[];
     let holder: Holder<IsEmptyRecord>;
     let relation: Relation<IsEmptyRecord>;
 
     beforeEach(() => {
       IsEmptyRecord.resetRecordCache();
 
-      records = [
+      scope = [
         IsEmptyRecord.create<IsEmptyRecord, IsEmptyRecordParams>({
           id: 1,
           name: 'name_1',
@@ -439,9 +451,9 @@ describe('ActiveRecord$Relation$Base', () => {
         }) as IsEmptyRecord,
       ];
 
-      holder = new Holder(IsEmptyRecord, records);
+      holder = new Holder(IsEmptyRecord, scope);
       relation = new Relation<IsEmptyRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(IsEmptyRecord);
     });
@@ -481,22 +493,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: BuildRecordParams['age'];
     }
 
-    let records: BuildRecord[];
+    let scope: BuildRecord[];
     let holder: Holder<BuildRecord>;
     let relation: Relation<BuildRecord>;
 
     beforeEach(() => {
       BuildRecord.resetRecordCache();
 
-      records = BuildRecord.create<BuildRecord, BuildRecordParams>([
+      scope = BuildRecord.create<BuildRecord, BuildRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as BuildRecord[];
 
-      holder = new Holder(BuildRecord, records);
+      holder = new Holder(BuildRecord, scope);
       relation = new Relation<BuildRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(BuildRecord);
     });
@@ -607,22 +619,22 @@ describe('ActiveRecord$Relation$Base', () => {
     CreateRecord.validates('name', { length: { is: 6 }, allow_undefined: true });
     CreateRecord.validates('age', { numericality: { lessThan: 10 }, allow_undefined: true });
 
-    let records: CreateRecord[];
+    let scope: CreateRecord[];
     let holder: Holder<CreateRecord>;
     let relation: Relation<CreateRecord>;
 
     beforeEach(() => {
       CreateRecord.resetRecordCache();
 
-      records = CreateRecord.create<CreateRecord, CreateRecordParams>([
+      scope = CreateRecord.create<CreateRecord, CreateRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as CreateRecord[];
 
-      holder = new Holder(CreateRecord, records);
+      holder = new Holder(CreateRecord, scope);
       relation = new Relation<CreateRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(CreateRecord);
     });
@@ -770,22 +782,22 @@ describe('ActiveRecord$Relation$Base', () => {
       allow_undefined: true,
     });
 
-    let records: CreateOrThrowRecord[];
+    let scope: CreateOrThrowRecord[];
     let holder: Holder<CreateOrThrowRecord>;
     let relation: Relation<CreateOrThrowRecord>;
 
     beforeEach(() => {
       CreateOrThrowRecord.resetRecordCache();
 
-      records = [
+      scope = [
         new CreateOrThrowRecord({ id: 1, name: 'name_1', age: 1 }),
         new CreateOrThrowRecord({ id: 2, name: 'name_2', age: 2 }),
         new CreateOrThrowRecord({ id: 3, name: 'name_3', age: 3 }),
       ];
 
-      holder = new Holder(CreateOrThrowRecord, records);
+      holder = new Holder(CreateOrThrowRecord, scope);
       relation = new Relation<CreateOrThrowRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(CreateOrThrowRecord);
     });
@@ -934,22 +946,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: CreateOrFindByRecordParams['age'];
     }
 
-    let records: CreateOrFindByRecord[];
+    let scope: CreateOrFindByRecord[];
     let holder: Holder<CreateOrFindByRecord>;
     let relation: Relation<CreateOrFindByRecord>;
 
     beforeEach(() => {
       CreateOrFindByRecord.resetRecordCache();
 
-      records = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
+      scope = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 1, name: 'name_2', age: 2 },
         { id: 1, name: 'name_3', age: 3 },
       ]) as CreateOrFindByRecord[];
 
-      holder = new Holder(CreateOrFindByRecord, records);
+      holder = new Holder(CreateOrFindByRecord, scope);
       relation = new Relation<CreateOrFindByRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(CreateOrFindByRecord);
     });
@@ -957,7 +969,7 @@ describe('ActiveRecord$Relation$Base', () => {
     describe('when return findBy result', () => {
       it('should correctly', (done) => {
         relation.createOrFindBy({ name: 'name_1' }).then((record) => {
-          expect(record).toEqual(records[0]);
+          expect(record).toEqual(scope[0]);
           expect(holder.scope.length).toEqual(3);
           done();
         });
@@ -1003,14 +1015,14 @@ describe('ActiveRecord$Relation$Base', () => {
 
     CreateOrFindByOrThrowRecord.validates('name', { length: { is: 6 } });
 
-    let records: CreateOrFindByOrThrowRecord[];
+    let scope: CreateOrFindByOrThrowRecord[];
     let holder: Holder<CreateOrFindByOrThrowRecord>;
     let relation: Relation<CreateOrFindByOrThrowRecord>;
 
     beforeEach(() => {
       CreateOrFindByOrThrowRecord.resetRecordCache();
 
-      records = CreateOrFindByOrThrowRecord.create<
+      scope = CreateOrFindByOrThrowRecord.create<
         CreateOrFindByOrThrowRecord,
         CreateOrFindByOrThrowRecordParams
       >([
@@ -1019,9 +1031,9 @@ describe('ActiveRecord$Relation$Base', () => {
         { id: 1, name: 'name_3', age: 3 },
       ]) as CreateOrFindByOrThrowRecord[];
 
-      holder = new Holder(CreateOrFindByOrThrowRecord, records);
+      holder = new Holder(CreateOrFindByOrThrowRecord, scope);
       relation = new Relation<CreateOrFindByOrThrowRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(CreateOrFindByOrThrowRecord);
     });
@@ -1029,7 +1041,7 @@ describe('ActiveRecord$Relation$Base', () => {
     describe('when return findBy result', () => {
       it('should correctly', (done) => {
         relation.createOrFindByOrThrow({ name: 'name_1' }).then((record) => {
-          expect(record).toEqual(records[0]);
+          expect(record).toEqual(scope[0]);
           expect(holder.scope.length).toEqual(3);
           done();
         });
@@ -1098,7 +1110,7 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    let records: DeleteByRecord[];
+    let scope: DeleteByRecord[];
     let holder: Holder<DeleteByRecord>;
     let relation: Relation<DeleteByRecord>;
 
@@ -1108,14 +1120,14 @@ describe('ActiveRecord$Relation$Base', () => {
     beforeEach(() => {
       DeleteByRecord.resetRecordCache();
 
-      records = DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
+      scope = DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as DeleteByRecord[];
-      holder = new Holder(DeleteByRecord, records);
+      holder = new Holder(DeleteByRecord, scope);
       relation = new Relation<DeleteByRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(DeleteByRecord);
     });
@@ -1164,13 +1176,14 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    let records: DestroyByRecord[];
+    let scope: DestroyByRecord[];
     let holder: Holder<DestroyByRecord>;
     let relation: Relation<DestroyByRecord>;
 
-    holder = new Holder(DestroyByRecord, []);
+    scope = [];
+    holder = new Holder(DestroyByRecord, scope);
     relation = new Relation<DestroyByRecord>(
-      (resolve, _reject) => resolve([holder, []])
+      (resolve, _reject) => resolve({ holder, scope })
       // @ts-expect-error
     )._init(DestroyByRecord);
 
@@ -1179,14 +1192,14 @@ describe('ActiveRecord$Relation$Base', () => {
 
     beforeEach(() => {
       RecordCache.destroy(DestroyByRecord.name);
-      records = DestroyByRecord.create<DestroyByRecord, DestoryByRecordParams>([
+      scope = DestroyByRecord.create<DestroyByRecord, DestoryByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as DestroyByRecord[];
-      holder = new Holder(DestroyByRecord, records);
+      holder = new Holder(DestroyByRecord, scope);
       relation = new Relation<DestroyByRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(DestroyByRecord);
     });
@@ -1281,22 +1294,22 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    let records: DeleteAllRecord[];
+    let scope: DeleteAllRecord[];
     let holder: Holder<DeleteAllRecord>;
     let relation: Relation<DeleteAllRecord>;
 
     beforeEach(() => {
       DeleteAllRecord.resetRecordCache();
 
-      records = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
+      scope = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as DeleteAllRecord[];
 
-      holder = new Holder(DeleteAllRecord, records);
+      holder = new Holder(DeleteAllRecord, scope);
       relation = new Relation<DeleteAllRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(DeleteAllRecord);
     });
@@ -1336,22 +1349,22 @@ describe('ActiveRecord$Relation$Base', () => {
       }
     }
 
-    let records: DestroyAllRecord[];
+    let scope: DestroyAllRecord[];
     let holder: Holder<DestroyAllRecord>;
     let relation: Relation<DestroyAllRecord>;
 
     beforeEach(() => {
       DestroyAllRecord.resetRecordCache();
 
-      records = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
+      scope = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as DestroyAllRecord[];
 
-      holder = new Holder(DestroyAllRecord, records);
+      holder = new Holder(DestroyAllRecord, scope);
       relation = new Relation<DestroyAllRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(DestroyAllRecord);
     });
@@ -1416,22 +1429,22 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: FindOrCreateByRecordParams['age'];
     }
 
-    let records: FindOrCreateByRecord[];
+    let scope: FindOrCreateByRecord[];
     let holder: Holder<FindOrCreateByRecord>;
     let relation: Relation<FindOrCreateByRecord>;
 
     beforeEach(() => {
       RecordCache.destroy(FindOrCreateByRecord.name);
 
-      records = FindOrCreateByRecord.create<FindOrCreateByRecord, FindOrCreateByRecordParams>([
+      scope = FindOrCreateByRecord.create<FindOrCreateByRecord, FindOrCreateByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
       ]) as FindOrCreateByRecord[];
 
-      holder = new Holder(FindOrCreateByRecord, records);
+      holder = new Holder(FindOrCreateByRecord, scope);
       relation = new Relation<FindOrCreateByRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(FindOrCreateByRecord);
     });
@@ -1441,7 +1454,7 @@ describe('ActiveRecord$Relation$Base', () => {
         relation
           .findOrCreateBy<FindOrCreateByRecordParams>({ name: 'name_1' })
           .then((record) => {
-            expect(record).toEqual(records[0]);
+            expect(record).toEqual(scope[0]);
             /**
              * @description records after being narrowed down by the condition of findBy
              */
@@ -1478,10 +1491,7 @@ describe('ActiveRecord$Relation$Base', () => {
               errors: {},
               name: 'name_4',
             });
-            /**
-             * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
-             */
-            expect(holder.scope.length).toEqual(1);
+            expect(holder.scope.length).toEqual(4);
             done();
           });
       });
@@ -1503,10 +1513,7 @@ describe('ActiveRecord$Relation$Base', () => {
                 errors: {},
                 name: 'name_4',
               });
-              /**
-               * @description The '{ name: 'name_4' }' passed as an argument is called a scope parameter and is passed to where, and the scope is evaluated and narrowed down to one.
-               */
-              expect(holder.scope.length).toEqual(1);
+              expect(holder.scope.length).toEqual(4);
               done();
             });
         });
@@ -1534,14 +1541,14 @@ describe('ActiveRecord$Relation$Base', () => {
     FindOrCreateByOrThrowRecord.validates('name', { length: { is: 6 } });
     FindOrCreateByOrThrowRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    let records: FindOrCreateByOrThrowRecord[];
+    let scope: FindOrCreateByOrThrowRecord[];
     let holder: Holder<FindOrCreateByOrThrowRecord>;
     let relation: Relation<FindOrCreateByOrThrowRecord>;
 
     beforeEach(() => {
       FindOrCreateByOrThrowRecord.resetRecordCache();
 
-      records = FindOrCreateByOrThrowRecord.create<
+      scope = FindOrCreateByOrThrowRecord.create<
         FindOrCreateByOrThrowRecord,
         FindOrCreateByOrThrowRecordParams
       >([
@@ -1550,9 +1557,9 @@ describe('ActiveRecord$Relation$Base', () => {
         { id: 3, name: 'name_3', age: 3 },
       ]) as FindOrCreateByOrThrowRecord[];
 
-      holder = new Holder(FindOrCreateByOrThrowRecord, records);
+      holder = new Holder(FindOrCreateByOrThrowRecord, scope);
       relation = new Relation<FindOrCreateByOrThrowRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(FindOrCreateByOrThrowRecord);
     });
@@ -1664,14 +1671,14 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: FindOrInitializeByRecordParams['age'];
     }
 
-    let records: FindOrInitializeByRecord[];
+    let scope: FindOrInitializeByRecord[];
     let holder: Holder<FindOrInitializeByRecord>;
     let relation: Relation<FindOrInitializeByRecord>;
 
     beforeEach(() => {
       FindOrInitializeByRecord.resetRecordCache();
 
-      records = FindOrInitializeByRecord.create<
+      scope = FindOrInitializeByRecord.create<
         FindOrInitializeByRecord,
         FindOrInitializeByRecordParams
       >([
@@ -1680,9 +1687,9 @@ describe('ActiveRecord$Relation$Base', () => {
         { id: 3, name: 'name_3', age: 3 },
       ]) as FindOrInitializeByRecord[];
 
-      holder = new Holder(FindOrInitializeByRecord, records);
+      holder = new Holder(FindOrInitializeByRecord, scope);
       relation = new Relation<FindOrInitializeByRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(FindOrInitializeByRecord);
     });
@@ -1692,7 +1699,7 @@ describe('ActiveRecord$Relation$Base', () => {
         relation
           .findOrInitializeBy<FindOrInitializeByRecordParams>({ name: 'name_1' })
           .then((record) => {
-            expect(record).toEqual(records[0]);
+            expect(record).toEqual(scope[0]);
             expect(holder.scope.length).toEqual(3);
             done();
           });
@@ -1745,21 +1752,21 @@ describe('ActiveRecord$Relation$Base', () => {
     UpdateAllRecord.validates('name', { length: { is: 6 } });
     UpdateAllRecord.validates('age', { numericality: { lessThan: 10 } });
 
-    let records: UpdateAllRecord[];
+    let scope: UpdateAllRecord[];
     let holder: Holder<UpdateAllRecord>;
     let relation: Relation<UpdateAllRecord>;
 
     beforeEach(() => {
       UpdateAllRecord.resetRecordCache();
 
-      records = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
+      scope = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]) as UpdateAllRecord[];
 
-      holder = new Holder(UpdateAllRecord, records);
+      holder = new Holder(UpdateAllRecord, scope);
       relation = new Relation<UpdateAllRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(UpdateAllRecord);
     });
@@ -1796,21 +1803,21 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: TouchAllRecordParams['age'];
     }
 
-    let records: TouchAllRecord[];
+    let scope: TouchAllRecord[];
     let holder: Holder<TouchAllRecord>;
     let relation: Relation<TouchAllRecord>;
 
     beforeEach(() => {
       TouchAllRecord.resetRecordCache();
 
-      records = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
+      scope = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]) as TouchAllRecord[];
 
-      holder = new Holder(TouchAllRecord, records);
+      holder = new Holder(TouchAllRecord, scope);
       relation = new Relation<TouchAllRecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(TouchAllRecord);
     });
@@ -1820,7 +1827,7 @@ describe('ActiveRecord$Relation$Base', () => {
         MockDate.set('2021-03-06T23:03:21+09:00');
         relation.touchAll<TouchAllRecordParams>().then((result) => {
           expect(result).toEqual(2);
-          expect(records[0]).toEqual({
+          expect(scope[0]).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
             __rue_updated_at__: '2021-03-06T23:03:21+09:00',
@@ -1831,7 +1838,7 @@ describe('ActiveRecord$Relation$Base', () => {
             id: 1,
             name: 'name_1',
           });
-          expect(records[1]).toEqual({
+          expect(scope[1]).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 2,
             __rue_updated_at__: '2021-03-06T23:03:21+09:00',
@@ -1854,7 +1861,7 @@ describe('ActiveRecord$Relation$Base', () => {
           .touchAll<TouchAllRecordParams>({ name: 'name_1' })
           .then((result) => {
             expect(result).toEqual(1);
-            expect(records[0]).toEqual({
+            expect(scope[0]).toEqual({
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 1,
               __rue_updated_at__: '2021-03-06T23:03:21+09:00',
@@ -1877,7 +1884,7 @@ describe('ActiveRecord$Relation$Base', () => {
           .touchAll<TouchAllRecordParams>({ name: 'name_1' }, { withCreatedAt: true })
           .then((result) => {
             expect(result).toEqual(1);
-            expect(records[0]).toEqual({
+            expect(scope[0]).toEqual({
               __rue_created_at__: '2021-03-06T23:03:21+09:00',
               __rue_record_id__: 1,
               __rue_updated_at__: '2021-03-06T23:03:21+09:00',
@@ -1899,7 +1906,7 @@ describe('ActiveRecord$Relation$Base', () => {
         const time = dayjs().format();
         relation.touchAll<TouchAllRecordParams>({ name: 'name_2' }, { time }).then((result) => {
           expect(result).toEqual(1);
-          expect(records[1]).toEqual({
+          expect(scope[1]).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 2,
             __rue_updated_at__: time,
@@ -1929,23 +1936,23 @@ describe('ActiveRecord$Relation$Base', () => {
       public age: ToARecordParams['age'];
     }
 
-    let records: ToARecord[];
+    let scope: ToARecord[];
     let holder: Holder<ToARecord>;
     let relation: Relation<ToARecord>;
 
     beforeEach(() => {
       ToARecord.resetRecordCache();
 
-      records = ToARecord.create<ToARecord, ToARecordParams>([
+      scope = ToARecord.create<ToARecord, ToARecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
         { id: 4, name: 'name_4', age: 4 },
       ]) as ToARecord[];
 
-      holder = new Holder(ToARecord, records);
+      holder = new Holder(ToARecord, scope);
       relation = new Relation<ToARecord>(
-        (resolve, _reject) => resolve([holder, records])
+        (resolve, _reject) => resolve({ holder, scope })
         // @ts-expect-error
       )._init(ToARecord);
     });

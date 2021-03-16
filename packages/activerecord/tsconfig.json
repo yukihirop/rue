@@ -15,6 +15,9 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "lib": [
+      "ES2019.Array"
+    ]
   }
 }

@@ -14,7 +14,11 @@ import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
  */
 abstract class ActiveRecord$Associations$CollectionProxy$Impl<
   T extends ActiveRecord$Base
-> extends ActiveRecord$Relation<T, ActiveRecord$Associations$CollectionProxy$Holder<T>> {
+> extends ActiveRecord$Relation<
+  T,
+  ActiveRecord$Associations$CollectionProxy$Holder<T>,
+  ActiveRecord$Relation<T>
+> {
   // Prepared for checking with hasOwnProperty ()
   static __rue_impl_class__ = ActiveSupport$ImplBase.__rue_impl_class__;
 }

@@ -4,13 +4,15 @@ import { RueModule } from '@rue/activesupport';
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
 import { ErrCodes, errObj } from '@/errors';
+import { isPresent, isSuperset } from '@/utils';
 
 // types
 import type * as t from './types';
 
 // this is bound to an instance(class) of ActiveRecord$Relation (include runtime class)
 export class ActiveRecord$QueryMethods extends RueModule {
-  private static SCOPE_METHODS = ['where', 'order', 'offset', 'limit', 'group'];
+  static SCOPE_METHODS = ['where', 'order', 'offset', 'limit', 'group'];
+
   /**
    * Records cannot be created correctly without lazy evaluation
    * @see https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-where
@@ -19,7 +21,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       Object.assign(holder.scopeParams['where'], params || {});
     });
 
@@ -34,7 +36,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder, _]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['where'] = params || {};
     });
 
@@ -51,7 +53,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       Object.assign(holder.scopeParams['order'], params || {});
     });
 
@@ -68,7 +70,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       // @ts-expect-error
       holder.scopeParams['order'] = params || {};
     });
@@ -83,7 +85,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       const orderParams = holder.scopeParams['order'];
       if (isPresent(orderParams)) {
         Object.keys(orderParams).forEach((propName) => {
@@ -109,7 +111,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['offset'] = value;
     });
 
@@ -123,7 +125,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       holder.scopeParams['limit'] = value;
     });
 
@@ -140,7 +142,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       // @ts-expect-error
       holder.scopeParams['group'] = props;
     });
@@ -158,7 +160,7 @@ export class ActiveRecord$QueryMethods extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Relation<T>;
     // @ts-expect-error
-    _this.superThen(([holder]) => {
+    _this.superThen(({ holder }) => {
       if (scopeMethods.length === 0) {
         const err = errObj({
           code: ErrCodes.ARGUMENT_IS_INVALID,
@@ -189,28 +191,4 @@ export class ActiveRecord$QueryMethods extends RueModule {
 
     return _this;
   }
-}
-
-function isPresent(params: any): boolean {
-  if (typeof params === 'number') {
-    return params >= 0;
-  } else if (Array.isArray(params)) {
-    return params.length > 0;
-  } else if (typeof params === 'object' && params !== null) {
-    return params && Object.keys(params).length > 0;
-  } else {
-    return false;
-  }
-}
-
-// https://qiita.com/toshihikoyanase/items/7b07ca6a94eb72164257
-function isSuperset(target: string[], other: string[]): boolean {
-  const self = new Set(target);
-  const subset = new Set(other);
-  for (let elem of subset) {
-    if (!self.has(elem)) {
-      return false;
-    }
-  }
-  return true;
 }

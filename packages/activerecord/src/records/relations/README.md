@@ -37,7 +37,7 @@
 - [-] reload
 - [-] reset
 - [-] scopeForCreate
-- [-] scoping
+- [x] scoping
 - [x] size
 - [x] toArray
 - [x] toA (alias to toArray)
