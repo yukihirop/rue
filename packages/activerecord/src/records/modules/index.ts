@@ -3,6 +3,7 @@ export { ActiveRecord$Associations } from './associations';
 export { ActiveRecord$Scoping } from './scoping';
 export { ActiveRecord$Core } from './core';
 export { ActiveRecord$Querying } from './querying';
+export { ActiveRecord$Validations } from './validations';
 
 // types
 export type {
