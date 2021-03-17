@@ -12,7 +12,10 @@ import { AssociationList } from '@/records/modules/associations';
 import * as rt from '@/registries/types';
 
 export class ActiveRecord$Validations extends RueModule {
-  saveAsync(opts?: { validate: boolean }): Promise<boolean> {
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save
+   */
+  save(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 
@@ -38,7 +41,10 @@ export class ActiveRecord$Validations extends RueModule {
     });
   }
 
-  saveAsyncOrThrow(opts?: { validate: boolean }): Promise<boolean> {
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save-21
+   */
+  saveOrThrow(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 

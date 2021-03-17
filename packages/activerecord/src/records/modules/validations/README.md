@@ -2,15 +2,10 @@
 
 ## Methods
 
-- [ ] save
-- [ ] saveOrThrow
-- [ ] isValid
+- [x] save
+- [x] saveOrThrow
+- [ ] isValid ()
 - [ ] isInValid
-
-## OriginalMethods
-
-- [x] saveAsync
-- [x] saveAsyncOrThrow
 
 ## Reference
 

@@ -178,8 +178,8 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    */
 
   // AcitveRecord$Validations
-  public saveAsync: (opts?: { validate: boolean }) => Promise<boolean>;
-  public saveAsyncOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
+  public save: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
 
   // ActiveRecord$Persistence
   public isNewRecord: () => boolean;
@@ -213,7 +213,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
 
 // includes module
 ActiveRecord$Validations.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['saveAsync', 'saveAsyncOrThrow'],
+  only: ['save', 'saveOrThrow'],
 });
 
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
