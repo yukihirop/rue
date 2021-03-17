@@ -17,7 +17,21 @@ export type HasMany<
   T extends ActiveRecord$Base
 > = () => ActiveRecord$Associations$CollectionProxy<T>;
 export type HasAndBelongsToMany<T extends ActiveRecord$Base> = () => ActiveRecord$Relation<T>;
-export type AssociationList = 'belongsTo' | 'hasOne' | 'hasMany' | 'hasAndBelongsToManny';
+
+export const enum AssociationList {
+  belongsTo = 'belongsTo',
+  hasOne = 'hasOne',
+  hasMany = 'hasMany',
+  hasAndBelongsToMany = 'hasAndBelongsToMany',
+}
+
+export const enum DependentList {
+  destroy = 'destroy',
+  deleteAll = 'deleteAll',
+  nullify = 'nullify',
+  restrictWithException = 'restrictWithException',
+  restrictWithError = 'restrictWithError',
+}
 
 /**
  * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
@@ -25,7 +39,7 @@ export type AssociationList = 'belongsTo' | 'hasOne' | 'hasMany' | 'hasAndBelong
 export type HasManyOptions<T extends ActiveRecord$Base> = {
   klass: ct.Constructor<T>;
   foreignKey: ForeignKey;
-  dependent?: 'destroy' | 'deleteAll' | 'nullify' | 'restrictWithException' | 'restrictWithError';
+  dependent?: ct.valueOf<DependentList>;
   validate?: boolean;
 };
 /**

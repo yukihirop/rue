@@ -33,7 +33,9 @@ describe('ActiveRecord$Associations', () => {
 
     it('should correctly', () => {
       expect(
-        AssociationsRegistry.data['TestBelongsToChildRecod']['belongsTo']['parent'].toString()
+        AssociationsRegistry.data['TestBelongsToChildRecod']['belongsTo']['parent'][
+          'relationFn'
+        ].toString()
       ).toEqual('(self) => klass.findBy({ id: self[foreignKey] })');
     });
   });
@@ -56,9 +58,9 @@ describe('ActiveRecord$Associations', () => {
     TestHasOneRecord.hasOne('child', TestHasOneChildRecod, 'child_id');
 
     it('should correctly', () => {
-      expect(AssociationsRegistry.data['TestHasOneRecord']['hasOne']['child'].toString()).toEqual(
-        '(self) => klass.findBy({ [foreignKey]: self.id })'
-      );
+      expect(
+        AssociationsRegistry.data['TestHasOneRecord']['hasOne']['child']['relationFn'].toString()
+      ).toEqual('(self) => klass.findBy({ [foreignKey]: self.id })');
     });
   });
 
@@ -132,12 +134,12 @@ describe('ActiveRecord$Associations', () => {
       expect(
         AssociationsRegistry.data['TestHasAndBelongsToManyAssemblyRecord']['hasAndBelongsToMany'][
           'parts'
-        ].toString()
+        ]['relationFn'].toString()
       ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');
       expect(
         AssociationsRegistry.data['TestHasAndBelongsToManyPartRecord']['hasAndBelongsToMany'][
           'assemblies'
-        ].toString()
+        ]['relationFn'].toString()
       ).toEqual('(self) => klass.where({ id: foreignKeysFn(self) })');
     });
   });

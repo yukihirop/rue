@@ -6,18 +6,12 @@ import {
   cacheForIntermeditateTables as IntermediateTable,
 } from '@/registries';
 import { errObj, ErrCodes } from '@/errors';
+import { DependentList, AssociationList } from './types';
 
 // types
 import type * as ct from '@/types';
 import type * as t from './types';
 import type * as art from '@/records/relations/types';
-
-export const enum Association {
-  belongsTo = 'belongsTo',
-  hasOne = 'hasOne',
-  hasMany = 'hasMany',
-  hasAndBelongsToMany = 'hasAndBelongsToMany',
-}
 
 export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
   public id: t.PrimaryKey;
@@ -27,8 +21,10 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     klass: Function,
     foreignKey: string
   ) {
-    AssociationRegistry.create(this.name, Association.belongsTo, {
-      [relationName]: (self: T) => (klass as any).findBy({ id: self[foreignKey] }),
+    AssociationRegistry.create(this.name, AssociationList.belongsTo, {
+      [relationName]: {
+        relationFn: (self: T) => (klass as any).findBy({ id: self[foreignKey] }),
+      },
     });
   }
 
@@ -37,8 +33,10 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     klass: Function,
     foreignKey: t.ForeignKey
   ) {
-    AssociationRegistry.create(this.name, Association.hasOne, {
-      [relationName]: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
+    AssociationRegistry.create(this.name, AssociationList.hasOne, {
+      [relationName]: {
+        relationFn: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
+      },
     });
   }
 
@@ -47,7 +45,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     opts: t.HasManyOptions<T>,
     scope?: t.HasManyScope<T>
   ) {
-    const runtimeFn = (self: T) => {
+    const relationFn = (self: T) => {
       /**
        * @description I'm worried about the overhead, but load it dynamically to avoid circular references
        */
@@ -83,8 +81,56 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       return collectionProxy;
     };
 
-    AssociationRegistry.create(this.name, Association.hasMany, {
-      [relationName]: runtimeFn,
+    if (!opts.validate) opts.validate = true;
+    const saveStrategy = (self: T): Promise<boolean> => {
+      return self[relationName]()
+        .toA()
+        .then((childrens: T[]) => {
+          return childrens
+            .map((c) => {
+              return c.save({ validate: opts.validate });
+            })
+            .every(Boolean);
+        });
+    };
+
+    const saveOrThrowStrategy = (self: T): Promise<boolean> => {
+      return self[relationName]()
+        .toA()
+        .then((childrens: T[]) => {
+          return childrens
+            .map((c) => {
+              return c.saveOrThrow();
+            })
+            .every(Boolean);
+        });
+    };
+
+    const destroyStrategy = (self: T): Promise<T[]> => {
+      return self[relationName]()
+        .toA()
+        .then((records: T[]) => {
+          if (opts.dependent === DependentList.destroy) {
+            return records.map((r) => r.destroy());
+          } else if (opts.dependent === DependentList.nullify) {
+            return records.map((r) => {
+              r.update({ [opts.foreignKey]: undefined });
+              return r;
+            });
+          }
+        });
+    };
+
+    /**
+     * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
+     */
+    AssociationRegistry.create(this.name, AssociationList.hasMany, {
+      [relationName]: {
+        relationFn,
+        saveStrategy,
+        saveOrThrowStrategy,
+        destroyStrategy,
+      },
     });
   }
 
@@ -113,8 +159,10 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     };
 
     IntermediateTable.create(this.name, klass.name, []);
-    AssociationRegistry.create(this.name, Association.hasAndBelongsToMany, {
-      [relationName]: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
+    AssociationRegistry.create(this.name, AssociationList.hasAndBelongsToMany, {
+      [relationName]: {
+        relationFn: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
+      },
     });
   }
 
@@ -178,7 +226,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     }
   }
 
-  static _defineAssociations<T extends ActiveRecord$Base = any>(self: T) {
+  static _defineAssociations<T extends ActiveRecord$Base>(self: T) {
     const allAssociations = AssociationRegistry.data[self.constructor.name];
     if (allAssociations == undefined) return;
 
@@ -186,12 +234,12 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       const relationData = allAssociations[associationName];
 
       Object.keys(relationData).forEach((relationName: string) => {
-        const relationFn = relationData[relationName];
+        const relationFn = relationData[relationName].relationFn;
 
         Object.defineProperty(self, relationName, {
           enumerable: true,
           configurable: false,
-          value: () => relationFn(self),
+          value: () => relationFn<T>(self),
         });
       });
     });
