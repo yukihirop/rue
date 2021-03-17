@@ -42,7 +42,7 @@ export class ActiveRecord$Scoping$Named extends RueModule {
             const records = data.map((d) => {
               const record = new _this(d);
 
-              record.save();
+              record.saveSync();
 
               return record;
             }) as Array<T>;

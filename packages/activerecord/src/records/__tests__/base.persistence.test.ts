@@ -54,8 +54,8 @@ describe('Record(Persistence)', () => {
       const record_4 = new TestDeleteRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
       it('should return destory this', () => {
-        record_3.save();
-        record_4.save();
+        record_3.saveSync();
+        record_4.saveSync();
         expect(RecordCache.read('TestDeleteRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -144,7 +144,7 @@ describe('Record(Persistence)', () => {
 
     describe('when return false', () => {
       const record = new IsNewRecordRecord({ id: 2, name: 'name_2', age: 2 });
-      record.save();
+      record.saveSync();
       expect(record.isNewRecord()).toEqual(false);
     });
   });
@@ -164,7 +164,7 @@ describe('Record(Persistence)', () => {
 
     describe('when return true', () => {
       const record = new IsPersistedRecord({ id: 2, name: 'name_2', age: 2 });
-      record.save();
+      record.saveSync();
       expect(record.isPersisted()).toEqual(true);
     });
 
@@ -174,7 +174,7 @@ describe('Record(Persistence)', () => {
     });
   });
 
-  describe('#save', () => {
+  describe('#saveSync', () => {
     type TestSaveParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -209,10 +209,10 @@ describe('Record(Persistence)', () => {
 
         const record = new TestSaveSuccessRecord({ id: 1, profile: { name: 'name_1', age: 20 } });
         it('should return true', () => {
-          expect(record.save()).toEqual(true);
-          // Even after saving once, the state does not change no matter how many times you save
-          expect(record.save()).toEqual(true);
-          expect(record.save()).toEqual(true);
+          expect(record.saveSync()).toEqual(true);
+          // Even after saving once, the state does not change no matter how many times you saveSync
+          expect(record.saveSync()).toEqual(true);
+          expect(record.saveSync()).toEqual(true);
           expect(RecordCache.read('TestSaveSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(
             2
           );
@@ -236,14 +236,14 @@ describe('Record(Persistence)', () => {
 
         const record = new TestSaveFailureRecord({ id: 2, profile: { name: 'name_2', age: 30 } });
         it('should retrun false', () => {
-          expect(record.save()).toEqual(false);
+          expect(record.saveSync()).toEqual(false);
           expect(RecordCache.data['TestSaveFailureRecord']).toEqual(undefined);
         });
       });
     });
   });
 
-  describe('#saveOrThrow', () => {
+  describe('#saveSyncOrThrow', () => {
     type TestSaveOrThrowParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -282,7 +282,7 @@ describe('Record(Persistence)', () => {
         profile: { name: 'name_1', age: 20 },
       });
       it('should return true', () => {
-        expect(record.save()).toEqual(true);
+        expect(record.saveSync()).toEqual(true);
         expect(
           RecordCache.read('TestSaveOrThrowSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)
         ).toEqual(2);
@@ -312,7 +312,7 @@ describe('Record(Persistence)', () => {
       });
       it('should throw error', () => {
         expect(() => {
-          record.saveOrThrow();
+          record.saveSyncOrThrow();
         }).toThrowError(
           `TestSaveOrThrowFailureRecord {
   "_destroyed": false,
@@ -369,8 +369,8 @@ describe('Record(Persistence)', () => {
       const record_4 = new TestDestroyRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
       it('should return destory this', () => {
-        record_3.save();
-        record_4.save();
+        record_3.saveSync();
+        record_4.saveSync();
         expect(RecordCache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -459,7 +459,7 @@ describe('Record(Persistence)', () => {
     describe('when default', () => {
       it('should correctly', () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.save();
+        record.saveSync();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch()).toEqual(true);
         expect(record).toEqual({
@@ -479,7 +479,7 @@ describe('Record(Persistence)', () => {
     describe("when specify 'withCreatedAt'", () => {
       it('should correctly', () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.save();
+        record.saveSync();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch({ withCreatedAt: true })).toEqual(true);
         expect(record).toEqual({
@@ -499,7 +499,7 @@ describe('Record(Persistence)', () => {
     describe("when specify 'time'", () => {
       it('should correctly', () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.save();
+        record.saveSync();
         const time = dayjs().format();
         expect(record.touch({ time })).toEqual(true);
         expect(record).toEqual({
@@ -664,7 +664,7 @@ describe('Record(Persistence)', () => {
       describe('when default', () => {
         it('should correctly', () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.save();
+          record.saveSync();
           expect(record.updateAttribute('name', 'rename')).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -683,7 +683,7 @@ describe('Record(Persistence)', () => {
       describe('when give invalid value (age = 100)', () => {
         it('should correctly', () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.save();
+          record.saveSync();
           expect(record.updateProperty('age', 100)).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -702,7 +702,7 @@ describe('Record(Persistence)', () => {
       describe('when given invalid value (name = invalid)', () => {
         it('should correctly', () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.save();
+          record.saveSync();
           expect(record.updateProp('name', 'invalid')).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -723,7 +723,7 @@ describe('Record(Persistence)', () => {
       describe('when given do not exist attribute', () => {
         it('should correctly', () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.save();
+          record.saveSync();
           expect(record.updateAttribute('doNotExist', 1)).toEqual(false);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',

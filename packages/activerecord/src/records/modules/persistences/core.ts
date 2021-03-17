@@ -52,7 +52,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-persisted-3F
    */
-  save(opts?: { validate: boolean }): boolean {
+  saveSync(opts?: { validate: boolean }): boolean {
     const {
       RUE_RECORD_ID,
       RUE_AUTO_INCREMENT_RECORD_ID,
@@ -107,12 +107,12 @@ export class ActiveRecord$Persistence extends RueModule {
   }
 
   /**
-   * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-save-21
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-saveSync-21
    */
-  saveOrThrow(): void | boolean {
+  saveSyncOrThrow(): void | boolean {
     const _this = this as any;
     if (_this.isValid()) {
-      this.save({ validate: false });
+      this.saveSync({ validate: false });
     } else {
       throw errObj({
         code: ErrCodes.RECORD_IS_INVALID,
@@ -190,7 +190,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     if (oldRecord.isValid()) {
       updateProps(_this);
-      _this.save({ validate: false });
+      _this.saveSync({ validate: false });
       return true;
     } else {
       _this.errors = oldRecord.errors;
@@ -215,7 +215,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     if (oldRecord.isValid()) {
       updateProps(_this);
-      return _this.save({ validate: false });
+      return _this.saveSync({ validate: false });
     } else {
       throw errObj({
         code: ErrCodes.RECORD_IS_INVALID,
@@ -234,7 +234,7 @@ export class ActiveRecord$Persistence extends RueModule {
     const _this = this as T;
     if (_this.hasOwnProperty(name)) {
       _this[name] = value;
-      return _this.save({ validate: false });
+      return _this.saveSync({ validate: false });
     } else {
       return false;
     }
@@ -268,7 +268,7 @@ export class ActiveRecord$Persistence extends RueModule {
       const _this = this as ct.Constructor<T>;
       const record = new _this(params);
       if (yielder) yielder(record);
-      record.save();
+      record.saveSync();
       return record;
     }
   }
@@ -287,7 +287,7 @@ export class ActiveRecord$Persistence extends RueModule {
       const _this = this as ct.Constructor<T>;
       const record = new _this(params);
       if (yielder) yielder(record);
-      record.saveOrThrow();
+      record.saveSyncOrThrow();
       return record;
     }
   }

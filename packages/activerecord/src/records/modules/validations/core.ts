@@ -16,7 +16,7 @@ export class ActiveRecord$Validations extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 
-    _this.save(opts);
+    _this.saveSync(opts);
 
     // save hasMany association records
     const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
@@ -42,7 +42,7 @@ export class ActiveRecord$Validations extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 
-    _this.saveOrThrow(opts);
+    _this.saveSyncOrThrow();
 
     // save hasMany association records
     const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(

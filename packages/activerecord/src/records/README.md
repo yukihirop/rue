@@ -25,8 +25,8 @@
 
 - [x] destroy
 - [x] [static]destroyAll
-- [x] save
-- [x] saveOrThrow
+- [x] saveSync
+- [x] saveSyncOrThrow
 
 ## Modules
 

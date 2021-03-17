@@ -13,8 +13,8 @@
 - [x] isNewRecord
 - [x] isPersisted
 - [-] isPreviouslyNewRecord
-- [x] save
-- [x] saveOrThrow
+- [-] save (nanmed AciveRecord$Validations.prototype.save)
+- [-] saveOrThrow (named ActiveRecord$Validations.prototype.saveOrThrow)
 - [-] toggle
 - [-] toggleOrThrow
 - [x] touch
@@ -23,6 +23,11 @@
 - [x] updateAttribute
 - [x] updateProperty (alias to updateAttribute)
 - [x] updateProp (alias to updateAttribute)
+
+## Orignal Methods
+
+- [x] saveSync
+- [x] saveSyncOrThrow
 
 ## Static Methods
 

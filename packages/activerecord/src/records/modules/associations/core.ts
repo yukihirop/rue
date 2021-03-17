@@ -88,7 +88,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {
-              return c.save({ validate: opts.validate });
+              return c.saveSync({ validate: opts.validate });
             })
             .every(Boolean);
         });
@@ -100,7 +100,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {
-              return c.saveOrThrow();
+              return c.saveSyncOrThrow();
             })
             .every(Boolean);
         });
