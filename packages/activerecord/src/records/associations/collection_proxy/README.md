@@ -4,7 +4,7 @@
 
 (i): inherited from `ActiveRecord$Relation`
 
-- [x] isAny (i)
+- [x] isAny
 - [ ] append
 - [x] build
 - [ ] calculate
@@ -18,19 +18,19 @@
 - [x] destroy
 - [x] destroyAll (i)
 - [ ] distinct
-- [x] isEmpty (i)
+- [x] isEmpty
 - [-] fifth
 - [x] find (after implement `scope`)
 - [x] first
 - [-] fortyTwo
 - [-] fourth
-- [x] isInclude (i)
+- [x] isInclude
 - [x] last
 - [-] length
 - [-] loadTarget
 - [-] loaded
 - [-] isLoaded
-- [x] isMany (i)
+- [x] isMany
 - [-] new
 - [x] pluck
 - [ ] push
@@ -41,7 +41,7 @@
 - [-] second
 - [-] secondToLast
 - [-] select
-- [x] size (i)
+- [x] size
 - [x] take (i)
 - [-] target
 - [-] third

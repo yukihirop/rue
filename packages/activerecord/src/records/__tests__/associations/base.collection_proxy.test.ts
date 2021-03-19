@@ -73,6 +73,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
   beforeEach(async () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
     CollectionProxyRecord.resetRecordCache();
+    CollectionProxyChildRecord.resetRecordCache();
     record = (await CollectionProxyRecord.first()) as CollectionProxyRecord;
   });
 
@@ -1097,9 +1098,22 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
         ]);
       });
     });
+
+    describe('when after build', () => {
+      it('should correctly', async () => {
+        await record.children().build({ id: 5, childName: 'child_name_5' });
+        const result = await record.children().pluck('id', 'childName');
+        expect(result).toEqual([
+          [1, 'child_name_1'],
+          [2, 'child_name_2'],
+          [3, 'child_name_3'],
+          [5, 'child_name_5'],
+        ]);
+      });
+    });
   });
 
-  describe('#isAny (inherited)', () => {
+  describe('#isAny', () => {
     describe('when return true', () => {
       it('should correctly', async () => {
         const result = await record.children().isAny();
@@ -1111,6 +1125,14 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
       it('should correctly', async () => {
         const result = await record.children().limit(0).isAny();
         expect(result).toEqual(false);
+      });
+    });
+
+    describe('when after build', () => {
+      it('should correctly', async () => {
+        await record.children().build();
+        const result = await record.children().isAny();
+        expect(result).toEqual(true);
       });
     });
   });
@@ -1208,7 +1230,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
-  describe('#build (inherited)', () => {
+  describe('#build', () => {
     describe('when default', () => {
       it('should correctly', async () => {
         const result = await record
@@ -1305,9 +1327,16 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
         expect(result).toEqual(1);
       });
     });
+
+    describe('when after build', () => {
+      it('should do not include build result', async () => {
+        await record.children().build();
+        expect(await record.children().count()).toEqual(3);
+      });
+    });
   });
 
-  describe('#create (inherited)', () => {
+  describe('#create', () => {
     describe('when default', () => {
       it('should correctly', async () => {
         const result = await record
@@ -1381,7 +1410,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
-  describe('#createOrThrow (inherited)', () => {
+  describe('#createOrThrow', () => {
     describe('when default', () => {
       it('should correctly', async () => {
         const result = await record.children().createOrThrow<CollectionProxyChildRecordParams>();
@@ -2058,7 +2087,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
-  describe('#isEmpty (inherited)', () => {
+  describe('#isEmpty', () => {
     describe('when return true', () => {
       it('should correctly', async () => {
         const result = await record.children().limit(0).isEmpty();
@@ -2072,9 +2101,17 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
         expect(result).toEqual(false);
       });
     });
+
+    describe('when after build', () => {
+      it('should correctly', async () => {
+        await record.children().build();
+        const result = await record.children().isEmpty();
+        expect(result).toEqual(false);
+      });
+    });
   });
 
-  describe('#isInclude (inherited)', () => {
+  describe('#isInclude', () => {
     describe('when return true', () => {
       describe('when default', () => {
         it('should correctly', async () => {
@@ -2128,6 +2165,13 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
         it('should correctly', async () => {
           const result = await record.children().isInclude(Promise.resolve(undefined));
           expect(result).toEqual(false);
+        });
+      });
+
+      describe('when after build', () => {
+        it('should correctly', async () => {
+          const buildRecord = await record.children().build();
+          expect(await record.children().isInclude(buildRecord)).toEqual(true);
         });
       });
     });
@@ -2256,7 +2300,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
-  describe('#isMany (inherited)', () => {
+  describe('#isMany', () => {
     describe('when return true', () => {
       it('should correcly', async () => {
         const result = await record.children().isMany();
@@ -2270,9 +2314,17 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
         expect(result).toEqual(false);
       });
     });
+
+    describe('when after build', () => {
+      it('should correctly', async () => {
+        CollectionProxyChildRecord.resetRecordCache();
+        await record.children().build();
+        expect(await record.children().isMany()).toEqual(true);
+      });
+    });
   });
 
-  describe('#count (inherited)', () => {
+  describe('#count', () => {
     describe('when default', () => {
       it('should correctly', async () => {
         const result = await record.children().count();
@@ -2295,6 +2347,23 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
           '[2,child_name_2]': 1,
           '[3,child_name_3]': 1,
         });
+      });
+    });
+  });
+
+  describe('#size', () => {
+    describe('when default', () => {
+      it('should correct', async () => {
+        await record.children().create({ id: 5, childName: 'child_name_5', childAge: undefined });
+        expect(await record.children().size()).toEqual(4);
+      });
+    });
+
+    describe('when after build', () => {
+      it('should include build result', async () => {
+        await record.children().create({ id: 5, childName: 'child_name_5', childAge: undefined });
+        await record.children().build();
+        expect(await record.children().size()).toEqual(5);
       });
     });
   });

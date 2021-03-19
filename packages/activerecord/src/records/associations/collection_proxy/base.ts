@@ -96,13 +96,19 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       if (scope instanceof Promise) {
         return scope.then((records) => {
           holder.scope = records as T[];
-          if (Object.keys(holder.proxy).length === 0) holder.proxy = records as T[];
+          /**
+           * @description Pass by value so that 「proxy === record」 does not occur
+           */
+          if (Object.keys(holder.proxy).length === 0) holder.proxy = Array.from(records as T[]);
           Evaluator.all(holder);
           return callback(holder);
         });
       } else {
         holder.scope = scope as T[];
-        if (Object.keys(holder.proxy).length === 0) holder.proxy = scope;
+        /**
+         * @description Pass by value so that 「proxy === record」 does not occur
+         */
+        if (Object.keys(holder.proxy).length === 0) holder.proxy = Array.from(scope);
         Evaluator.all(holder);
         return callback(holder);
       }
@@ -269,6 +275,16 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-empty-3F
+   * @description use holder.proxy
+   */
+  isEmpty(): Promise<boolean> {
+    return this.scoping<boolean>((holder) => {
+      return holder.proxy.length === 0;
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-find
    */
   // @ts-expect-error
@@ -306,7 +322,18 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-any-3F
+   * @description use holder.proxy
+   */
+  isAny(filter?: (record: T) => boolean): Promise<boolean> {
+    return this.scoping<boolean>((holder) => {
+      return holder.proxy.filter(filter || Boolean).length > 0;
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-build
+   * @description use holder.proxy
    */
   build<U>(params?: Partial<U> | Array<Partial<U>>, yielder?: (self: T) => void): Promise<T | T[]> {
     return this.scoping((holder) => {
@@ -331,6 +358,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-create
+   * @description use holder.proxy
    */
   create<U>(
     params?: Partial<U> | Array<Partial<U>>,
@@ -342,12 +370,14 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       return this.recordKlass.create(merged, (self) => {
         if (yielder) yielder(self);
         holder.scope.push(self);
+        holder.proxy.push(self);
       });
     });
   }
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-create-21
+   * @description use holder.proxy
    */
   createOrThrow<U>(
     params?: Partial<U> | Array<Partial<U>>,
@@ -359,6 +389,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       return this.recordKlass.createOrThrow(merged, (self) => {
         if (yielder) yielder(self);
         holder.scope.push(self);
+        holder.proxy.push(self);
       });
     });
   }
@@ -381,17 +412,28 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
 
       return this.find<T>(...recordIds).then((records: T[]) => {
         const foreignKey = Object.keys(holder.foreignKeyData)[0];
-        return records.map((record) => {
+        const deletedRecords = records.map((record) => {
           // dependent: 'nullify'
           record.update({ [foreignKey]: undefined });
           return record;
         });
+        const destroyedIds = deletedRecords.map((r) => r.id);
+        const newScope = Array.from(holder.scope).reduce((acc, record) => {
+          if (!destroyedIds.includes(record.id)) {
+            acc.push(record);
+          }
+          return acc;
+        }, []);
+        holder.scope = Array.from(newScope);
+        holder.proxy = Array.from(newScope);
+        return deletedRecords;
       });
     });
   }
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-destroy
+   * @description use holder.proxy
    */
   destroy(...recordsOrIds: T[] | it.Record$PrimaryKey[]): Promise<T[] | null> {
     return this.scoping((holder) => {
@@ -422,7 +464,8 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
             }
             return acc;
           }, []);
-          holder.scope = newScope;
+          holder.scope = Array.from(newScope);
+          holder.proxy = Array.from(newScope);
           return destroyedRecords;
         });
       }
@@ -431,10 +474,11 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-pluck
+   * @description use holder.proxy
    */
   pluck<U extends it.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
     return this.scoping<Array<ct.valueOf<U>>>((holder) => {
-      const plucked = holder.scope.map((record) => {
+      const plucked = holder.proxy.map((record) => {
         let result;
 
         if (propNames.length === 0) {
@@ -504,12 +548,12 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-first
+   * @description use holder.proxy
    */
   // @ts-expect-error
   first(limit?: number): Promise<T | T[]> {
     if (!limit) limit = 1;
     return this.scoping((holder) => {
-      holder.flags.useProxy = true;
       const records = holder.proxy;
       if (records.length === 0) {
         return null;
@@ -523,13 +567,45 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-include-3F
+   * @description use holder.proxy
+   */
+  // @ts-expect-error
+  isInclude(record: T | T[] | Promise<T | T[]>): Promise<boolean> {
+    return this.scoping<boolean>((holder) => {
+      const allRecordIds = holder.proxy.map((r) => r['id']);
+      if (record instanceof Promise) {
+        return record.then((recordVal) => {
+          if (recordVal && !Array.isArray(recordVal)) {
+            return allRecordIds.includes(recordVal['id']);
+          } else {
+            /**
+             * @description Same specifications as rails
+             */
+            return false;
+          }
+        });
+      } else {
+        if (record && !Array.isArray(record)) {
+          return allRecordIds.includes(record['id']);
+        } else {
+          /**
+           * @description Same specifications as rails
+           */
+          return false;
+        }
+      }
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-last
+   * @description use holder.proxy
    */
   // @ts-expect-error
   last(limit?: number): Promise<T | T[]> {
     if (!limit) limit = 1;
     return this.scoping((holder) => {
-      holder.flags.useProxy = true;
       const records = holder.proxy;
       if (records.length === 0) {
         return null;
@@ -538,6 +614,34 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
 
         if (limit === 1) return slicedRecords[0];
         return slicedRecords;
+      }
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-many-3F
+   * @description use holder.proxy
+   */
+  isMany(filter?: (record: T) => boolean): Promise<boolean> {
+    return this.scoping<boolean>((holder) => {
+      return holder.proxy.filter(filter || Boolean).length > 1;
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-size
+   * @description use holder.proxy
+   */
+  size(): Promise<number | { [key: string]: number }> {
+    return this.scoping<number | { [key: string]: number }>((holder) => {
+      if (isPresent(holder.groupedRecords)) {
+        return Object.keys(holder.groupedRecords).reduce((acc, key) => {
+          const records = holder.groupedRecords[key];
+          acc[key] = records.length;
+          return acc;
+        }, {});
+      } else {
+        return holder.proxy.length;
       }
     });
   }
@@ -558,7 +662,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     return this.toA();
   }
 
-  _mergeProxy(): Promise<T[]> {
+  _currentScope(): Promise<T[]> {
     return this.scoping((holder) => {
       if (holder.flags.useProxy) {
         return holder.proxy;

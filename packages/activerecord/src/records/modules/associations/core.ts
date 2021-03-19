@@ -73,7 +73,10 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
       let useScope;
       if (holder.flags.useProxy) {
-        useScope = holder.proxy;
+        /**
+         * @description Pass by value so that 「proxy === record」 does not occur
+         */
+        useScope = Array.from(holder.proxy);
       } else {
         if (scope) {
           useScope = scope(opts.klass).toA();
@@ -101,7 +104,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     if (opts.validate === undefined) opts.validate = true;
     const saveStrategy = (self: T): Promise<boolean> => {
       return self[relationName]()
-        ._mergeProxy()
+        ._currentScope()
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {
@@ -113,7 +116,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     const saveOrThrowStrategy = (self: T): Promise<boolean> => {
       return self[relationName]()
-        ._mergeProxy()
+        ._currentScope()
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {

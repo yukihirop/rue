@@ -22,7 +22,10 @@ export class ActiveRecord$Associations$CollectionProxy$Holder<
     associationData: t.HolderAssociationData
   ) {
     super(recordKlass, records);
-    this.proxy = records;
+    /**
+     * @description Pass by value so that 「proxy === record」 does not occur
+     */
+    this.proxy = Array.from(records || []);
     this.flags = {
       useProxy: false,
     };
