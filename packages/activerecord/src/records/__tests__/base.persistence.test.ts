@@ -80,7 +80,7 @@ describe('Record(Persistence)', () => {
             profile: { age: 4, name: 'name_4' },
           },
         ]);
-        record_4.destroy();
+        record_4.destroySync();
         expect(record_4[RUE_RECORD_ID]).toEqual(2);
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);
@@ -122,7 +122,7 @@ describe('Record(Persistence)', () => {
 
     describe('when return true', () => {
       const record = new IsDestroyedRecord({ id: 2, name: 'name_2', age: 2 });
-      record.destroy();
+      record.destroySync();
       expect(record.isDestroyed()).toEqual(true);
     });
   });
@@ -342,7 +342,7 @@ describe('Record(Persistence)', () => {
     });
   });
 
-  describe('#destroy', () => {
+  describe('#destroySync', () => {
     type TestDestroyParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -399,7 +399,7 @@ describe('Record(Persistence)', () => {
             profile: { age: 4, name: 'name_4' },
           },
         ]);
-        record_4.destroy();
+        record_4.destroySync();
         expect(record_4[RUE_RECORD_ID]).toEqual(2);
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);

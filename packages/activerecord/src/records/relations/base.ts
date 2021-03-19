@@ -334,7 +334,7 @@ export class ActiveRecord$Relation$Base<
    */
   deleteBy<U>(params?: Partial<U>): Promise<number> {
     const deleteRecordFn = (record: T): boolean => {
-      return !!record.destroy();
+      return !!record.destroySync();
     };
 
     return (
@@ -403,7 +403,7 @@ export class ActiveRecord$Relation$Base<
   destroyAll(): Promise<T[]> {
     return this.scoping((holder) => {
       const destroyed = holder.scope.map((record: T) => {
-        const destroyed = record.destroy();
+        const destroyed = record.destroySync();
         Object.freeze(destroyed);
         return destroyed;
       });

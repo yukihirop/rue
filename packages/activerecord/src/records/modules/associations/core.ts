@@ -131,7 +131,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         .toA()
         .then((records: T[]) => {
           if (opts.dependent === DependentList.destroy) {
-            return records.map((r) => r.destroy());
+            return records.map((r) => r.destroySync());
           } else if (opts.dependent === DependentList.nullify) {
             return records.map((r) => {
               r.update({ [opts.foreignKey]: undefined });

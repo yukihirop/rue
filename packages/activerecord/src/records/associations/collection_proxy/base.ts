@@ -455,7 +455,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       } else {
         return this.find<T>(...recordIds).then((records: T[]) => {
           const destroyedRecords = records.map((record) => {
-            return record.destroy();
+            return record.destroySync();
           });
           const destroyedIds = destroyedRecords.map((r) => r.id);
           const newScope = Array.from(holder.scope).reduce((acc, record) => {

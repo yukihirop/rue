@@ -187,7 +187,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   public isPersisted: () => boolean;
   public saveSync: (opts?: { validate: boolean }) => boolean;
   public saveSyncOrThrow: () => void | boolean;
-  public destroy: () => this;
+  public destroySync: () => this;
   public isDestroyed: () => boolean;
   public touch: (opts?: { withCreatedAt?: boolean; time?: string }) => boolean;
   public update: (params?: Partial<P>) => boolean;
@@ -223,7 +223,7 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'isPersisted',
     'saveSync',
     'saveSyncOrThrow',
-    'destroy',
+    'destroySync',
     'isDestroyed',
     'touch',
     'update',

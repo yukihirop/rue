@@ -26,7 +26,7 @@ export class ActiveRecord$Persistence extends RueModule {
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-delete
    */
   delete<T extends ActiveRecord$Base>(): T {
-    return this.destroy();
+    return this.destroySync();
   }
 
   /**
@@ -126,7 +126,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
    */
-  destroy<T extends ActiveRecord$Base>(): T {
+  destroySync<T extends ActiveRecord$Base>(): T {
     // @ts-ignore
     const _this = this as ActiveRecord$Base;
     const { RECORD_ALL, RUE_RECORD_ID } = ActiveRecord$Persistence;
@@ -321,9 +321,9 @@ export class ActiveRecord$Persistence extends RueModule {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
     if (Array.isArray(id)) {
-      return (_this.find<T>(...id) as T[]).map((r) => r.destroy());
+      return (_this.find<T>(...id) as T[]).map((r) => r.destroySync());
     } else {
-      return (_this.find<T>(id) as T).destroy();
+      return (_this.find<T>(id) as T).destroySync();
     }
   }
 

@@ -5,8 +5,8 @@
 ## Methods
 
 - [x] delete
-- [x] destroy
-- [-] destroyOrThrow
+- [x] destroySync
+- [-] destroySyncOrThrow
 - [x] isDestroyed
 - [-] increment
 - [-] incrementOrThrow
