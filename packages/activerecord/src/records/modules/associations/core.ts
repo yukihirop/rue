@@ -59,15 +59,28 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         validate: opts.validate,
         foreignKeyData,
       };
-
       const holder = new Holder(opts.klass, [], associationData);
+
+      if (self._associationCache[relationName]) {
+        const oldHolder = self._associationCache[relationName].associationHolder;
+        holder.proxy = Array.from(oldHolder.proxy);
+        holder.flags = oldHolder.flags;
+        self._associationCache[relationName].associationHolder = holder;
+      } else {
+        self._associationCache[relationName] = {};
+        self._associationCache[relationName].associationHolder = holder;
+      }
+
+      let useScope;
+      if (scope) {
+        useScope = scope(opts.klass).toA();
+      } else {
+        // @ts-expect-error
+        useScope = opts.klass.where<T>(foreignKeyData).toA();
+      }
+
       const runtimeScope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
-        if (scope) {
-          resolve({ holder, scope: scope(opts.klass).toA() });
-        } else {
-          // @ts-expect-error
-          resolve({ holder, scope: opts.klass.where<T>(foreignKeyData).toA() });
-        }
+        resolve({ holder, scope: useScope });
       }, opts.klass)
         .where(foreignKeyData)
         .toA();
@@ -84,7 +97,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     if (!opts.validate) opts.validate = true;
     const saveStrategy = (self: T): Promise<boolean> => {
       return self[relationName]()
-        .toA()
+        ._mergeProxy()
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {
@@ -96,7 +109,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     const saveOrThrowStrategy = (self: T): Promise<boolean> => {
       return self[relationName]()
-        .toA()
+        ._mergeProxy()
         .then((childrens: T[]) => {
           return childrens
             .map((c) => {

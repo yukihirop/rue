@@ -1,5 +1,6 @@
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation } from '@/records/relations';
+import { ActiveRecord$Associations$CollectionProxy$Holder } from './holder';
 
 // types
 import type * as t from '@/index';
@@ -14,3 +15,11 @@ type HolderHasManyData = {
   foreignKeyData: { [key: string]: t.Record$ForeignKey };
 };
 export type HolderAssociationData = HolderHasManyData;
+
+// Instance Variables type
+export type AssociationCache = {
+  [relationName: string]: {
+    associationHolder?: ActiveRecord$Associations$CollectionProxy$Holder<ActiveRecord$Base>;
+    associationScope?: Promise<ActiveRecord$Base[]> | ActiveRecord$Base[];
+  };
+};

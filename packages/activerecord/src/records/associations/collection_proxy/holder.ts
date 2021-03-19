@@ -11,6 +11,10 @@ export class ActiveRecord$Associations$CollectionProxy$Holder<
 > extends ActiveRecord$Relation$Holder<T> {
   public associationData: t.HolderAssociationData;
   public foreignKeyData: t.HolderAssociationData['foreignKeyData'];
+  public proxy: T[];
+  public flags: {
+    useProxy: boolean;
+  };
 
   constructor(
     recordKlass: ct.Constructor<T>,
@@ -18,6 +22,10 @@ export class ActiveRecord$Associations$CollectionProxy$Holder<
     associationData: t.HolderAssociationData
   ) {
     super(recordKlass, records);
+    this.proxy = records;
+    this.flags = {
+      useProxy: false,
+    };
     this.associationData = associationData;
     // use it a lot so I have it as a member
     this.foreignKeyData = associationData.foreignKeyData;

@@ -16,10 +16,10 @@ import {
 
 // types
 import type * as t from './types';
-import type * as ct from '@/types';
 import type * as mt from '@/records/modules';
 import type * as at from '@/records/modules/associations';
 import type * as rmt from '@/records/relations/modules';
+import type * as act from '@/records/associations/collection_proxy/types';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveModel$Base {
@@ -29,6 +29,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   // Instance vairalbes
   protected _destroyed: boolean;
   protected _newRecord: boolean;
+  _associationCache: act.AssociationCache;
 
   // ActiveRecord$Persistence
   static RUE_RECORD_ID = ActiveRecord$Persistence.RUE_RECORD_ID;

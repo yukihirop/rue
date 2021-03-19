@@ -11,12 +11,75 @@ import { isPresent, isSuperset } from '@/utils';
 
 // types
 import type * as ct from '@/types';
-import type * as rt from '@/index';
+import type * as it from '@/index';
 import type * as rmt from '@/records/relations/modules';
+import type * as rt from '@/records/relations/types';
 
 export class ActiveRecord$Associations$CollectionProxy$Base<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Associations$CollectionProxy$Impl<T> {
+  /**
+   * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
+   * @description Method for getting results. Do not call it in any other method.
+   */
+  rueThen(
+    onFulfilled: rt.PromiseResolve<T, ActiveRecord$Relation<T>>,
+    onRejected?: rt.PromiseReject<any>
+  ) {
+    return this.superThen((value) => {
+      /**
+       * If you use the `ActiveRecord$QueryMethods` methods, it will enter this branch
+       * There are times when 「 value['holder'] instanceof ActiveRecord$Relation$Holder 」 cannot evaluate correctly. (Cause unknown)
+       */
+      if (
+        typeof value === 'object' &&
+        value != null &&
+        value['holder'] &&
+        value['holder']['isHolder']
+      ) {
+        const { holder, scope } = value;
+
+        if (scope instanceof Promise) {
+          scope.then((r) => {
+            holder.scope = r as T[];
+            Evaluator.all(holder);
+
+            if (Object.keys(holder.groupedRecords).length > 0) {
+              return onFulfilled(holder.groupedRecords);
+            } else {
+              if (holder.flags.useProxy) {
+                return onFulfilled([...holder.scope, ...holder.proxy]);
+              } else {
+                return onFulfilled(holder.scope);
+              }
+            }
+          });
+        } else {
+          holder.scope = scope as T[];
+
+          Evaluator.all(holder);
+
+          if (Object.keys(holder.groupedRecords).length > 0) {
+            return onFulfilled(holder.groupedRecords);
+          } else {
+            if (holder.flags.useProxy) {
+              return onFulfilled([...holder.scope, ...holder.proxy]);
+            } else {
+              return onFulfilled(holder.scope);
+            }
+          }
+        }
+      } else {
+        /**
+         * value is records ((e.g.) T | T[])
+         * @description type error
+         */
+        // @ts-expect-error
+        return onFulfilled(value);
+      }
+    }, onRejected);
+  }
+
   /**
    * @description All methods are delegated to this instance
    * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/associations/collection_proxy.rb#L1100-L1109
@@ -32,10 +95,33 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-scoping
+   */
+  scoping<U>(
+    callback: (holder: ActiveRecord$Associations$CollectionProxy$Holder<T>) => U | Promise<U>
+  ): Promise<U> {
+    return this.superThen(({ holder, scope }) => {
+      if (scope instanceof Promise) {
+        return scope.then((records) => {
+          holder.scope = records as T[];
+          if (!holder.proxy) holder.proxy = records as T[];
+          Evaluator.all(holder);
+          return callback(holder);
+        });
+      } else {
+        holder.scope = scope as T[];
+        if (!holder.proxy) holder.proxy = scope;
+        Evaluator.all(holder);
+        return callback(holder);
+      }
+    });
+  }
+
+  /**
    * @description delegate to `scope`
    */
   // @ts-expect-error
-  where<U extends rt.Record$Params>(params: Partial<U>): this {
+  where<U extends it.Record$Params>(params: Partial<U>): this {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       Object.assign(holder.scopeParams.where, params || {});
@@ -48,7 +134,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * @description delegate to `scope`
    */
   // @ts-expect-error
-  rewhere<U extends rt.Record$Params>(params: Partial<U>): this {
+  rewhere<U extends it.Record$Params>(params: Partial<U>): this {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       holder.scopeParams.where = params || {};
@@ -194,7 +280,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-find
    */
   // @ts-expect-error
-  find<U extends rt.Record$Params>(...ids: rt.Record$PrimaryKey[]): Promise<T | T[]> {
+  find<U extends it.Record$Params>(...ids: it.Record$PrimaryKey[]): Promise<T | T[]> {
     if (ids.length === 0) {
       throw errObj({
         code: ErrCodes.RECORD_NOT_FOUND,
@@ -232,19 +318,20 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    */
   build<U>(params?: Partial<U> | Array<Partial<U>>, yielder?: (self: T) => void): Promise<T | T[]> {
     return this.scoping((holder) => {
+      holder.flags.useProxy = true;
       if (Array.isArray(params)) {
         return params.map((param) => {
           const merged = Object.assign(param || {}, holder.foreignKeyData);
           const record = new this.recordKlass(merged);
           if (yielder) yielder(record);
-          holder.scope.push(record);
+          holder.proxy.push(record);
           return record;
         });
       } else {
         const merged = Object.assign(params || {}, holder.foreignKeyData);
         const record = new this.recordKlass(merged);
         if (yielder) yielder(record);
-        holder.scope.push(record);
+        holder.proxy.push(record);
         return record;
       }
     });
@@ -288,9 +375,9 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * The return value type is different from that of rails.
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-delete
    */
-  delete(...recordsOrIds: T[] | rt.Record$PrimaryKey[]): Promise<T[]> {
+  delete(...recordsOrIds: T[] | it.Record$PrimaryKey[]): Promise<T[]> {
     return this.scoping<T[]>((holder) => {
-      let recordIds: rt.Record$PrimaryKey[] = [];
+      let recordIds: it.Record$PrimaryKey[] = [];
 
       recordsOrIds.forEach((recordOrId) => {
         if (recordOrId instanceof ActiveRecord$Base) {
@@ -314,9 +401,9 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-destroy
    */
-  destroy(...recordsOrIds: T[] | rt.Record$PrimaryKey[]): Promise<T[] | null> {
+  destroy(...recordsOrIds: T[] | it.Record$PrimaryKey[]): Promise<T[] | null> {
     return this.scoping((holder) => {
-      let recordIds: rt.Record$PrimaryKey[] = [];
+      let recordIds: it.Record$PrimaryKey[] = [];
 
       recordsOrIds.forEach((recordOrId) => {
         if (recordOrId instanceof ActiveRecord$Base) {
@@ -333,9 +420,18 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         return null;
       } else {
         return this.find<T>(...recordIds).then((records: T[]) => {
-          return records.map((record) => {
+          const destroyedRecords = records.map((record) => {
             return record.destroy();
           });
+          const destroyedIds = destroyedRecords.map((r) => r.id);
+          const newScope = Array.from(holder.scope).reduce((acc, record) => {
+            if (!destroyedIds.includes(record.id)) {
+              acc.push(record);
+            }
+            return acc;
+          }, []);
+          holder.scope = newScope;
+          return destroyedRecords;
         });
       }
     });
@@ -344,7 +440,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-pluck
    */
-  pluck<U extends rt.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
+  pluck<U extends it.Record$Params>(...propNames: Array<keyof U>): Promise<Array<ct.valueOf<U>>> {
     return this.scoping<Array<ct.valueOf<U>>>((holder) => {
       const plucked = holder.scope.map((record) => {
         let result;
@@ -380,7 +476,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-count
    */
-  count<U extends rt.Record$Params>(
+  count<U extends it.Record$Params>(
     propName?: keyof U,
     filter?: (self: T) => boolean
   ): Promise<number | { [key: string]: number }> {
@@ -411,6 +507,33 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
           return result.length;
         }
       });
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
+   */
+  toA(): Promise<T[]> {
+    return this.scoping((holder) => {
+      return holder.scope;
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
+   */
+  toArray(): Promise<T[]> {
+    return this.toA();
+  }
+
+  _mergeProxy(): Promise<T[]> {
+    return this.scoping((holder) => {
+      if (holder.flags.useProxy) {
+        holder.flags.useProxy = false;
+        return [...holder.scope, ...holder.proxy];
+      } else {
+        return holder.scope;
+      }
     });
   }
 }
