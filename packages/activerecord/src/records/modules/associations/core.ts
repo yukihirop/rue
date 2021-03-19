@@ -137,6 +137,14 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
               r.update({ [opts.foreignKey]: undefined });
               return r;
             });
+          } else {
+            throw errObj({
+              code: ErrCodes.FOREIGN_KEY_CONSTRAIT_FAILS,
+              params: {
+                resource: self.constructor.name,
+                foreignKey: opts.foreignKey,
+              },
+            });
           }
         });
     };

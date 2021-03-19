@@ -13,9 +13,26 @@ import dayjs from 'dayjs';
 // types
 import type * as t from '@/index';
 
-describe('Record(Persistence)', () => {
+type PersistenceRecordParams = {
+  id: t.Record$ForeignKey;
+  profile: {
+    name: string;
+    age: number;
+  };
+};
+
+type PersistenceChildRecordParams = {
+  id: t.Record$PrimaryKey;
+  parentId: t.Record$ForeignKey;
+  profile: {
+    childName: string;
+    childAge: number;
+  };
+};
+
+describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
-  beforeEach(() => {
+  beforeEach(async () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
   });
 
@@ -338,6 +355,208 @@ describe('Record(Persistence)', () => {
   }
 } is invalid.`
         );
+      });
+    });
+  });
+
+  describe('#destroy', () => {
+    describe("when 'dependent === undefined' (default)", () => {
+      class DependentUndefinnedRecord extends Record<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public profile: PersistenceRecordParams['profile'];
+        public dependentUndefined: t.Record$HasMany<DependentUndefinnedChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, profile: { name: 'name_1', age: 1 } },
+            { id: 2, profile: { name: 'name_2', age: 2 } },
+            { id: 3, profile: { name: 'name_3', age: 3 } },
+            { id: 4, profile: { name: 'name_4', age: 4 } },
+          ]);
+        }
+      }
+
+      class DependentUndefinnedChildRecord extends Record<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public profile: PersistenceChildRecordParams['profile'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, profile: { childName: 'child_name_1', childAge: 1 } },
+            { id: 2, parentId: 1, profile: { childName: 'child_name_2', childAge: 2 } },
+            { id: 3, parentId: 1, profile: { childName: 'child_name_3', childAge: 3 } },
+            { id: 4, parentId: 2, profile: { childName: 'child_name_4', childAge: 4 } },
+          ]);
+        }
+      }
+
+      DependentUndefinnedRecord.hasMany('dependentUndefined', {
+        klass: DependentUndefinnedChildRecord,
+        foreignKey: 'parentId',
+      });
+
+      it('should throw error', async () => {
+        try {
+          const record = (await DependentUndefinnedRecord.first<DependentUndefinnedRecord>()) as DependentUndefinnedRecord;
+          await record.destroy();
+        } catch (err) {
+          expect(err.toString()).toEqual(
+            "Error: Cannot delete or update a 'DependentUndefinnedRecord' record: a foreign key (parentId) constraint fails"
+          );
+        }
+      });
+    });
+
+    describe("when 'dependent === nullify'", () => {
+      class DependentNullifyRecord extends Record<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public profile: PersistenceRecordParams['profile'];
+        public dependentNullify: t.Record$HasMany<DependentNullifyChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, profile: { name: 'name_1', age: 1 } },
+            { id: 2, profile: { name: 'name_2', age: 2 } },
+            { id: 3, profile: { name: 'name_3', age: 3 } },
+            { id: 4, profile: { name: 'name_4', age: 4 } },
+          ]);
+        }
+      }
+
+      class DependentNullifyChildRecord extends Record<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public profile: PersistenceChildRecordParams['profile'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, profile: { childName: 'child_name_1', childAge: 1 } },
+            { id: 2, parentId: 1, profile: { childName: 'child_name_2', childAge: 2 } },
+            { id: 3, parentId: 1, profile: { childName: 'child_name_3', childAge: 3 } },
+            { id: 4, parentId: 2, profile: { childName: 'child_name_4', childAge: 4 } },
+          ]);
+        }
+      }
+
+      DependentNullifyRecord.hasMany('dependentNullify', {
+        klass: DependentNullifyChildRecord,
+        foreignKey: 'parentId',
+        dependent: 'nullify',
+      });
+
+      it('should correctly', async () => {
+        const record = (await DependentNullifyRecord.first<DependentNullifyRecord>()) as DependentNullifyRecord;
+        await record.destroy();
+        expect(await record.dependentNullify()).toEqual([]);
+        expect(await DependentNullifyChildRecord.all()).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 1,
+            parentId: undefined,
+            profile: { childAge: 1, childName: 'child_name_1' },
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 2,
+            parentId: undefined,
+            profile: { childAge: 2, childName: 'child_name_2' },
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 3,
+            parentId: undefined,
+            profile: { childAge: 3, childName: 'child_name_3' },
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 4,
+            parentId: 2,
+            profile: { childAge: 4, childName: 'child_name_4' },
+          },
+        ]);
+      });
+    });
+
+    describe("when 'dependent === destroy'", () => {
+      class DependentDestroyRecord extends Record<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public profile: PersistenceRecordParams['profile'];
+        public dependentDestroy: t.Record$HasMany<DependentDestroyChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, profile: { name: 'name_1', age: 1 } },
+            { id: 2, profile: { name: 'name_2', age: 2 } },
+            { id: 3, profile: { name: 'name_3', age: 3 } },
+            { id: 4, profile: { name: 'name_4', age: 4 } },
+          ]);
+        }
+      }
+
+      class DependentDestroyChildRecord extends Record<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public profile: PersistenceChildRecordParams['profile'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, profile: { childName: 'child_name_1', childAge: 1 } },
+            { id: 2, parentId: 1, profile: { childName: 'child_name_2', childAge: 2 } },
+            { id: 3, parentId: 1, profile: { childName: 'child_name_3', childAge: 3 } },
+            { id: 4, parentId: 2, profile: { childName: 'child_name_4', childAge: 4 } },
+          ]);
+        }
+      }
+
+      DependentDestroyRecord.hasMany('dependentDestroy', {
+        klass: DependentDestroyChildRecord,
+        foreignKey: 'parentId',
+        dependent: 'destroy',
+      });
+
+      it('should correctly', async () => {
+        const record = (await DependentDestroyRecord.first<DependentDestroyRecord>()) as DependentDestroyRecord;
+        await record.destroy();
+        expect(await record.dependentDestroy()).toEqual([]);
+        expect(await DependentDestroyChildRecord.all()).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 4,
+            parentId: 2,
+            profile: { childAge: 4, childName: 'child_name_4' },
+          },
+        ]);
       });
     });
   });
