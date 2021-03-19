@@ -47,11 +47,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
             if (Object.keys(holder.groupedRecords).length > 0) {
               return onFulfilled(holder.groupedRecords);
             } else {
-              if (holder.flags.useProxy) {
-                return onFulfilled([...holder.scope, ...holder.proxy]);
-              } else {
-                return onFulfilled(holder.scope);
-              }
+              return onFulfilled(holder.scope);
             }
           });
         } else {
@@ -62,11 +58,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
           if (Object.keys(holder.groupedRecords).length > 0) {
             return onFulfilled(holder.groupedRecords);
           } else {
-            if (holder.flags.useProxy) {
-              return onFulfilled([...holder.scope, ...holder.proxy]);
-            } else {
-              return onFulfilled(holder.scope);
-            }
+            return onFulfilled(holder.scope);
           }
         }
       } else {
@@ -95,7 +87,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
-   * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-scoping
+   * @see https://github.com/rails/rails/blob/5aaaa1630ae9a71b3c3ecc4dc46074d678c08d67/activerecord/lib/active_record/associations/collection_proxy.rb#L1100-L1109
    */
   scoping<U>(
     callback: (holder: ActiveRecord$Associations$CollectionProxy$Holder<T>) => U | Promise<U>
@@ -104,13 +96,13 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
       if (scope instanceof Promise) {
         return scope.then((records) => {
           holder.scope = records as T[];
-          if (!holder.proxy) holder.proxy = records as T[];
+          if (Object.keys(holder.proxy).length === 0) holder.proxy = records as T[];
           Evaluator.all(holder);
           return callback(holder);
         });
       } else {
         holder.scope = scope as T[];
-        if (!holder.proxy) holder.proxy = scope;
+        if (Object.keys(holder.proxy).length === 0) holder.proxy = scope;
         Evaluator.all(holder);
         return callback(holder);
       }
@@ -511,6 +503,46 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   }
 
   /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-first
+   */
+  // @ts-expect-error
+  first(limit?: number): Promise<T | T[]> {
+    if (!limit) limit = 1;
+    return this.scoping((holder) => {
+      holder.flags.useProxy = true;
+      const records = holder.proxy;
+      if (records.length === 0) {
+        return null;
+      } else {
+        const slicedRecords = records.slice(0, limit);
+
+        if (limit === 1) return slicedRecords[0];
+        return slicedRecords;
+      }
+    });
+  }
+
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-last
+   */
+  // @ts-expect-error
+  last(limit?: number): Promise<T | T[]> {
+    if (!limit) limit = 1;
+    return this.scoping((holder) => {
+      holder.flags.useProxy = true;
+      const records = holder.proxy;
+      if (records.length === 0) {
+        return null;
+      } else {
+        const slicedRecords = records.reverse().slice(0, limit).reverse();
+
+        if (limit === 1) return slicedRecords[0];
+        return slicedRecords;
+      }
+    });
+  }
+
+  /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-to_a
    */
   toA(): Promise<T[]> {
@@ -529,8 +561,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   _mergeProxy(): Promise<T[]> {
     return this.scoping((holder) => {
       if (holder.flags.useProxy) {
-        holder.flags.useProxy = false;
-        return [...holder.scope, ...holder.proxy];
+        return holder.proxy;
       } else {
         return holder.scope;
       }

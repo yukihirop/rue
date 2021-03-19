@@ -52,6 +52,10 @@ class ValidationsChildRecord extends ActiveRecord$Base<ValidationsChildRecordPar
       { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
     ]);
   }
+
+  static translate(key: string, opts?: any): string {
+    return key;
+  }
 }
 
 ValidationsChildRecord.validates('childName', { length: { is: 12 } });
@@ -68,6 +72,8 @@ ValidationsRecord.hasMany<ValidationsChildRecord>('children', {
 
 describe('ActiveRecord$Base (ActiveRecord$Validations)', () => {
   beforeEach(() => {
+    ValidationsRecord.resetRecordCache();
+    ValidationsChildRecord.resetRecordCache();
     MockDate.set('2021-03-05T23:03:21+09:00');
   });
 
@@ -136,6 +142,79 @@ describe('ActiveRecord$Base (ActiveRecord$Validations)', () => {
             parentId: 1,
           },
         ]);
+      });
+    });
+
+    describe('when failed save', () => {
+      it('should correctly', async () => {
+        const record = (await ValidationsRecord.first<ValidationsRecord>()) as ValidationsRecord;
+        const err = new Error(
+          "'rue.records.ValidationsChildRecord.childName' is not equal length ('12' characters)."
+        );
+        await record.children().build();
+        expect(await record.save()).toEqual(false);
+        expect(await record.children().size()).toEqual(4);
+        expect(await record.children().last()).toEqual({
+          __rue_record_id__: undefined,
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: true,
+          errors: {
+            childAge: [],
+            childName: [err],
+          },
+          parentId: 1,
+        });
+      });
+    });
+  });
+
+  describe('#saveOrThrow', () => {
+    describe('when success save', () => {
+      it('should correctly', async () => {
+        const record = (await ValidationsRecord.first<ValidationsRecord>()) as ValidationsRecord;
+        await record
+          .children()
+          .build<ValidationsChildRecordParams>({ id: 5, childName: 'child_name_5' });
+        expect(await record.save()).toEqual(true);
+      });
+    });
+
+    describe('when throw error', () => {
+      it('should correctly', async () => {
+        const record = (await ValidationsRecord.first<ValidationsRecord>()) as ValidationsRecord;
+        const err = new Error(
+          "'rue.records.ValidationsChildRecord.childName' is not equal length ('12' characters)."
+        );
+        await record.children().build<ValidationsChildRecordParams>();
+        try {
+          await record.saveOrThrow();
+        } catch (err) {
+          expect(err.toString()).toEqual(`Error: ValidationsChildRecord {
+  "_associationCache": {},
+  "_destroyed": false,
+  "_newRecord": true,
+  "errors": {
+    "childName": [
+      {
+        "_namespace": "@rue/activemodel",
+        "_code": "PROPERTY IS NOT EQUAL LENGTH"
+      }
+    ],
+    "childAge": []
+  },
+  "parentId": 1
+} is invalid.`);
+        }
+        expect(await record.children().size()).toEqual(4);
+        expect(await record.children().last()).toEqual({
+          __rue_record_id__: undefined,
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: true,
+          errors: { childAge: [], childName: [err] },
+          parentId: 1,
+        });
       });
     });
   });

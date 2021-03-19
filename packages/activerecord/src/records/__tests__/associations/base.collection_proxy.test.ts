@@ -1894,7 +1894,7 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     });
   });
 
-  describe('#first (inherited)', () => {
+  describe('#first', () => {
     describe('when default', () => {
       it('should return first record', async () => {
         const result = await record.children().first();
@@ -1999,6 +1999,61 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
       it('should return null', async () => {
         const result = await record.children().limit(0).first();
         expect(result).toEqual(null);
+      });
+    });
+
+    describe('when after build', () => {
+      it('should return include build result', async () => {
+        await record.children().build();
+        expect(await record.children().first(100)).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_record_id__: undefined,
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: true,
+            errors: {},
+            parentId: 1,
+          },
+        ]);
       });
     });
   });
@@ -2183,6 +2238,20 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
       it('should return null', async () => {
         const result = await record.children().limit(0).last();
         expect(result).toEqual(null);
+      });
+    });
+
+    describe('when after build', () => {
+      it('should return build record', async () => {
+        await record.children().build();
+        expect(await record.children().last()).toEqual({
+          __rue_record_id__: undefined,
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: true,
+          errors: {},
+          parentId: 1,
+        });
       });
     });
   });

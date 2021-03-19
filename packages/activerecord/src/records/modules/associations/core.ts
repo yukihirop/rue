@@ -72,11 +72,15 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       }
 
       let useScope;
-      if (scope) {
-        useScope = scope(opts.klass).toA();
+      if (holder.flags.useProxy) {
+        useScope = holder.proxy;
       } else {
-        // @ts-expect-error
-        useScope = opts.klass.where<T>(foreignKeyData).toA();
+        if (scope) {
+          useScope = scope(opts.klass).toA();
+        } else {
+          // @ts-expect-error
+          useScope = opts.klass.where<T>(foreignKeyData).toA();
+        }
       }
 
       const runtimeScope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
@@ -94,7 +98,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       return collectionProxy;
     };
 
-    if (!opts.validate) opts.validate = true;
+    if (opts.validate === undefined) opts.validate = true;
     const saveStrategy = (self: T): Promise<boolean> => {
       return self[relationName]()
         ._mergeProxy()

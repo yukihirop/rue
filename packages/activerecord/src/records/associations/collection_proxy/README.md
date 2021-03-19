@@ -21,11 +21,11 @@
 - [x] isEmpty (i)
 - [-] fifth
 - [x] find (after implement `scope`)
-- [x] first (i)
+- [x] first
 - [-] fortyTwo
 - [-] fourth
 - [x] isInclude (i)
-- [x] last (i)
+- [x] last
 - [-] length
 - [-] loadTarget
 - [-] loaded
@@ -46,7 +46,12 @@
 - [-] target
 - [-] third
 - [-] thirdToLast
-- [x] scoping (i)
+- [x] scoping
+
+## Original Methods
+
+- [x]toA
+- [x]toArray
 
 ## Methods (Delegate to `scope`)
 
