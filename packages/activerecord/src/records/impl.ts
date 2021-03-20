@@ -27,6 +27,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
 
   // Instance vairalbes
+  public errors: t.Validations$Errors;
   protected _destroyed: boolean;
   protected _newRecord: boolean;
   _associationCache: act.AssociationCache;
@@ -199,7 +200,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   public updateProp: (name: string, value: any) => boolean;
 
   // ActiveRecord$Associations$Persistence
-  public destroy: () => Promise<this>;
+  public destroy: () => Promise<this | boolean>;
   protected _destroyAssociations: () => Promise<this[]>;
   public save: (opts?: { validate: boolean }) => Promise<boolean>;
   public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;

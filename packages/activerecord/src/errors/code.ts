@@ -7,6 +7,7 @@ export const enum ErrCodes {
   DIRECTION_IS_INVALID = 'DIRECTION IS INVALID',
   ARGUMENT_IS_INVALID = 'ARGUMENT_IS_INVALID',
   FOREIGN_KEY_CONSTRAIT_FAILS = 'FOREIGN_KEY_CONSTRAIT_FAILS',
+  DELETE_RESTRICTION_ERROR = 'DELETE_RESTRICTION_ERROR',
 }
 
 export const ErrMessages: { [code: string]: t.ErrMessage } = {
@@ -31,5 +32,9 @@ export const ErrMessages: { [code: string]: t.ErrMessage } = {
   [ErrCodes.FOREIGN_KEY_CONSTRAIT_FAILS]: {
     message: (params = {} as any) =>
       `Cannot delete or update a '${params['resource']}' record: a foreign key (${params['foreignKey']}) constraint fails`,
+  },
+  [ErrCodes.DELETE_RESTRICTION_ERROR]: {
+    message: (params = {} as any) =>
+      `Cannot delete record because of dependent '${params['associatedResource']}' records`,
   },
 };

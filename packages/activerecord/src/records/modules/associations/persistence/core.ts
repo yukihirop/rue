@@ -15,16 +15,22 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
    */
-  destroy<T extends ActiveRecord$Base>(): Promise<T> {
+  destroy<T extends ActiveRecord$Base>(): Promise<T | boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     // @ts-expect-error
     return _this._destroyAssociations<T>().then(() => {
-      return _this.destroySync();
+      if (Object.values(_this.errors['hasMany'] || {}).length > 0) {
+        return false;
+      } else {
+        return _this.destroySync();
+      }
     });
   }
 
-  protected _destroyAssociations<T extends ActiveRecord$Base>(): Promise<T[]> {
+  protected _destroyAssociations<T extends ActiveRecord$Base>(): Promise<
+    Array<T[] | boolean | number>
+  > {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     // save hasMany association records
@@ -40,7 +46,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
             'destroyStrategy'
           ] as rt.AssociationsHasManyValue['destroyStrategy'];
           // @ts-expect-error
-          return destroyStrategy(_this) as Promise<T>;
+          return destroyStrategy<T>(_this);
         }
       })
     ).then((associationDestroyResult) => {

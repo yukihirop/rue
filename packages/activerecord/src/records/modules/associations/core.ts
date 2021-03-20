@@ -126,7 +126,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         });
     };
 
-    const destroyStrategy = (self: T): Promise<T[]> => {
+    const destroyStrategy = (self: T): Promise<T[] | boolean | number> => {
       return self[relationName]()
         .toA()
         .then((records: T[]) => {
@@ -137,6 +137,33 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
               r.update({ [opts.foreignKey]: undefined });
               return r;
             });
+          } else if (opts.dependent === DependentList.deleteAll) {
+            const recordIds = records.map((r) => r.id);
+            const hasManyKlass = opts.klass;
+            // @ts-expect-error
+            hasManyKlass.delete(recordIds);
+          } else if (opts.dependent === DependentList.restrictWithException) {
+            if (records.length > 0) {
+              throw errObj({
+                code: ErrCodes.DELETE_RESTRICTION_ERROR,
+                params: {
+                  associatedResource: opts.klass.name,
+                },
+              });
+            }
+          } else if (opts.dependent === DependentList.restrictWithError) {
+            if (records.length > 0) {
+              if (!self.errors['hasMany']) self.errors['hasMany'] = {};
+              self.errors['hasMany'][relationName] = [
+                errObj({
+                  code: ErrCodes.DELETE_RESTRICTION_ERROR,
+                  params: {
+                    associatedResource: opts.klass.name,
+                  },
+                }),
+              ];
+              return false;
+            }
           } else {
             throw errObj({
               code: ErrCodes.FOREIGN_KEY_CONSTRAIT_FAILS,

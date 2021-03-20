@@ -430,5 +430,166 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       });
     });
+
+    describe("when 'dependent === deleteAll'", () => {
+      class DependentDeleteAllRecord extends ActiveRecord$Base<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public name: PersistenceRecordParams['name'];
+        public age: PersistenceRecordParams['age'];
+        public dependentDeleteAll: t.Record$HasMany<DependentDeleteAllChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+            { id: 3, name: 'name_3', age: 3 },
+            { id: 4, name: 'name_4', age: 4 },
+          ]);
+        }
+      }
+
+      class DependentDeleteAllChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public childName: PersistenceChildRecordParams['childName'];
+        public childAge: PersistenceChildRecordParams['childAge'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, childName: 'child_name_1', childAge: 1 },
+            { id: 2, parentId: 1, childName: 'child_name_2', childAge: 2 },
+            { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
+            { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
+          ]);
+        }
+      }
+
+      DependentDeleteAllRecord.hasMany('dependentDeleteAll', {
+        klass: DependentDeleteAllChildRecord,
+        foreignKey: 'parentId',
+        dependent: 'deleteAll',
+      });
+
+      it('should correctly', async () => {
+        const record = (await DependentDeleteAllRecord.first<DependentDeleteAllRecord>()) as DependentDeleteAllRecord;
+        await record.destroy();
+        expect(await record.dependentDeleteAll()).toEqual([]);
+        expect(await DependentDeleteAllChildRecord.all()).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 4,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            errors: {},
+            id: 4,
+            parentId: 2,
+            childAge: 4,
+            childName: 'child_name_4',
+          },
+        ]);
+      });
+    });
+
+    describe("when 'dependent === restrictWithException'", () => {
+      class DependentRestrictWithExceptionRecord extends ActiveRecord$Base<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public name: PersistenceRecordParams['name'];
+        public age: PersistenceRecordParams['age'];
+        public dependentDeleteAll: t.Record$HasMany<DependentRestrictWithExceptionChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+            { id: 3, name: 'name_3', age: 3 },
+            { id: 4, name: 'name_4', age: 4 },
+          ]);
+        }
+      }
+
+      class DependentRestrictWithExceptionChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public childName: PersistenceChildRecordParams['childName'];
+        public childAge: PersistenceChildRecordParams['childAge'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, childName: 'child_name_1', childAge: 1 },
+            { id: 2, parentId: 1, childName: 'child_name_2', childAge: 2 },
+            { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
+            { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
+          ]);
+        }
+      }
+
+      DependentRestrictWithExceptionRecord.hasMany('dependentDeleteAll', {
+        klass: DependentRestrictWithExceptionChildRecord,
+        foreignKey: 'parentId',
+        dependent: 'restrictWithException',
+      });
+
+      it('should correctly', async () => {
+        const record = (await DependentRestrictWithExceptionRecord.first<DependentRestrictWithExceptionRecord>()) as DependentRestrictWithExceptionRecord;
+        try {
+          await record.destroy();
+        } catch (err) {
+          expect(err.toString()).toEqual(
+            "Error: Cannot delete record because of dependent 'DependentRestrictWithExceptionChildRecord' records"
+          );
+        }
+      });
+    });
+
+    describe("when 'dependent === restrictWithError'", () => {
+      class DependentRestrictWithErrorRecord extends ActiveRecord$Base<PersistenceRecordParams> {
+        public id: PersistenceRecordParams['id'];
+        public name: PersistenceRecordParams['name'];
+        public age: PersistenceRecordParams['age'];
+        public dependentDeleteAll: t.Record$HasMany<DependentRestrictWithErrorChildRecord>;
+
+        protected fetchAll(): Promise<PersistenceRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+            { id: 3, name: 'name_3', age: 3 },
+            { id: 4, name: 'name_4', age: 4 },
+          ]);
+        }
+      }
+
+      class DependentRestrictWithErrorChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
+        public id: PersistenceChildRecordParams['id'];
+        public parentId: PersistenceChildRecordParams['parentId'];
+        public childName: PersistenceChildRecordParams['childName'];
+        public childAge: PersistenceChildRecordParams['childAge'];
+
+        protected fetchAll(): Promise<PersistenceChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, childName: 'child_name_1', childAge: 1 },
+            { id: 2, parentId: 1, childName: 'child_name_2', childAge: 2 },
+            { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
+            { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
+          ]);
+        }
+      }
+
+      DependentRestrictWithErrorRecord.hasMany('dependentDeleteAll', {
+        klass: DependentRestrictWithErrorChildRecord,
+        foreignKey: 'parentId',
+        dependent: 'restrictWithError',
+      });
+
+      it('should correctly', async () => {
+        const err = new Error(
+          "Cannot delete record because of dependent 'DependentRestrictWithErrorChildRecord' records"
+        );
+        const record = (await DependentRestrictWithErrorRecord.first<DependentRestrictWithErrorRecord>()) as DependentRestrictWithErrorRecord;
+        expect(await record.destroy()).toEqual(false);
+        expect(record.errors).toEqual({ hasMany: { dependentDeleteAll: [err] } });
+      });
+    });
   });
 });

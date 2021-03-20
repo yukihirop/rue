@@ -13,7 +13,7 @@ export type AssociationsHasManyValue = {
   relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
   saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
   saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
-  destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
+  destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T[] | boolean | number>;
 };
 export type AssociationsHasAndBelongsToManyValue = {
   relationFn: <T extends ActiveRecord$Base>(self: ActiveRecord$Base) => Promise<T[]>;
