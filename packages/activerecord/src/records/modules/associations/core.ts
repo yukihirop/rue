@@ -1,11 +1,7 @@
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Associations$Impl } from './impl';
-import {
-  registryForAssociations as AssociationRegistry,
-  cacheForIntermeditateTables as IntermediateTable,
-} from '@/registries';
-import { errObj, ErrCodes } from '@/errors';
+import { registryForAssociations as AssociationRegistry } from '@/registries';
 import { ActiveRecord$Associations$PersistenceStrategy as PersistenceStrategy } from './persistence_strategy';
 import { isPresent } from '@/utils';
 
@@ -166,98 +162,6 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         destroyStrategy: PersistenceStrategy.destroyStrategyFn(relationName, opts),
       },
     });
-  }
-
-  /**
-   * @todo use scope
-   * @todo change return value CollectionProxy runtime instance
-   */
-  static hasAndBelongsToMany<T extends ActiveRecord$Base>(
-    relationName: string,
-    opts: t.HasAndBelongsToManyOptions<T>,
-    _scope?: t.HasAndBelongsToManyOptions<T>
-  ) {
-    const klass = opts.klass;
-    const foreignKeysFn = (self: T) => {
-      const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-        this.name,
-        klass.name,
-        'array'
-      );
-      return tables.reduce((acc, pair) => {
-        if (pair[0] == self.id) {
-          acc.push(pair[1]);
-        }
-        return acc;
-      }, []);
-    };
-
-    IntermediateTable.create(this.name, klass.name, []);
-    AssociationRegistry.create(this.name, AssociationList.hasAndBelongsToMany, {
-      [relationName]: {
-        relationFn: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
-      },
-    });
-  }
-
-  hasAndBelongsToMany<T extends ActiveRecord$Base = any>(
-    record: T
-  ): { [key: string]: t.ForeignKey } {
-    const klassNameLeft = this.constructor.name;
-    const klassNameRight = record.constructor.name;
-
-    const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-      klassNameLeft,
-      klassNameLeft,
-      'array'
-    );
-
-    if (Array.isArray(tables)) {
-      IntermediateTable.create(klassNameLeft, klassNameRight, [[this.id, record.id]]);
-      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
-    } else {
-      throw errObj({
-        code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,
-        params: {
-          klassNameLeft,
-          klassNameRight,
-        },
-      });
-    }
-  }
-
-  releaseAndBelongsToMany<T extends ActiveRecord$Base = any>(
-    record: T
-  ): { [key: string]: t.ForeignKey } {
-    const klassNameLeft = this.constructor.name;
-    const klassNameRight = record.constructor.name;
-
-    const beforeIntermediateTable = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-      klassNameLeft,
-      klassNameRight
-    );
-
-    if (Array.isArray(beforeIntermediateTable)) {
-      let leavedData = [];
-      let deleteData = [];
-      beforeIntermediateTable.forEach((pair) => {
-        if (this.id == pair[0] && record.id == pair[1]) {
-          deleteData.push(pair);
-        } else {
-          leavedData.push(pair);
-        }
-      });
-      IntermediateTable.update(klassNameLeft, klassNameRight, leavedData);
-      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
-    } else {
-      throw errObj({
-        code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,
-        params: {
-          klassNameLeft,
-          klassNameRight,
-        },
-      });
-    }
   }
 
   static _defineAssociations<T extends ActiveRecord$Base>(self: T) {

@@ -27,6 +27,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
 
   // Instance vairalbes
+  public id: at.Associations$PrimaryKey;
   public errors: t.Validations$Errors;
   protected _destroyed: boolean;
   protected _newRecord: boolean;
@@ -65,11 +66,6 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     relationName: string,
     opts: at.Associations$HasManyOptions<T, U>,
     scope?: at.Associations$HasManyScope<T>
-  ) => void;
-  static hasAndBelongsToMany: <T extends ActiveRecord$Base>(
-    relationName: string,
-    opts: at.Associations$HasAndBelongsToManyOptions<T>,
-    scope?: at.Associations$HasAndBelongsToMany<T>
   ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations._defineAssociations(self);
@@ -204,15 +200,6 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   protected _destroyAssociations: () => Promise<this[]>;
   public save: (opts?: { validate: boolean }) => Promise<boolean>;
   public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
-
-  // ActiveRecord$Associations
-  public id: at.Associations$PrimaryKey;
-  public hasAndBelongsToMany: <T extends ActiveRecord$Base<P>>(
-    record: T
-  ) => { [key: string]: at.Associations$ForeignKey };
-  public releaseAndBelongsToMany: <T extends ActiveRecord$Base<P>>(
-    record: T
-  ) => { [key: string]: at.Associations$ForeignKey };
 }
 
 // includes module
@@ -237,10 +224,6 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
   ],
 });
 
-ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['hasAndBelongsToMany', 'releaseAndBelongsToMany'],
-});
-
 // extend module
 ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: [
@@ -255,7 +238,7 @@ ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
   ],
 });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {
-  only: ['belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'],
+  only: ['belongsTo', 'hasOne', 'hasMany'],
 });
 
 ActiveRecord$Core.rueModuleExtendedFrom(ActiveRecord$Impl, { only: ['find'] });

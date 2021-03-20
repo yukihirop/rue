@@ -10,19 +10,16 @@ import type * as ct from '@/types';
  */
 export type PrimaryKey = string | number;
 export type ForeignKey = string | number;
-export type IntermediateTable = Array<[ForeignKey, ForeignKey]>;
 export type BelongsTo<T extends ActiveRecord$Base> = () => Promise<T>;
 export type HasOne<T extends ActiveRecord$Base> = () => Promise<T>;
 export type HasMany<
   T extends ActiveRecord$Base
 > = () => ActiveRecord$Associations$CollectionProxy<T>;
-export type HasAndBelongsToMany<T extends ActiveRecord$Base> = () => ActiveRecord$Relation<T>;
 
 export const enum AssociationList {
   belongsTo = 'belongsTo',
   hasOne = 'hasOne',
   hasMany = 'hasMany',
-  hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
 /**
@@ -54,18 +51,7 @@ export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$B
   through?: HasManyThroughOptions<U>;
   autosave?: boolean;
 };
-/**
- * @todo remove ? from foreignKey, associationKlass, associationForeignKey
- */
-export type HasAndBelongsToManyOptions<T extends ActiveRecord$Base> = {
-  klass: ct.Constructor<T>;
-  foreignKey?: ForeignKey;
-  associationKlass?: ct.Constructor<T>;
-  associationForeignKey?: ForeignKey;
-  validate?: boolean;
-};
 
 export type HasManyScope<T extends ActiveRecord$Base> = (
   self: ct.Constructor<T>
 ) => ActiveRecord$Relation<T>;
-export type HasAndBelongsToManyScope<T extends ActiveRecord$Base> = HasManyScope<T>;
