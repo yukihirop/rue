@@ -11,7 +11,43 @@ import { AssociationList } from '@/records/modules/associations';
 // types
 import * as rt from '@/registries/types';
 
-export class ActiveRecord$Validations extends RueModule {
+export class ActiveRecord$Associations$Persistence extends RueModule {
+  /**
+   * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
+   */
+  destroy<T extends ActiveRecord$Base>(): Promise<T> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    // @ts-expect-error
+    return _this._destroyAssociations<T>().then(() => {
+      return _this.destroySync();
+    });
+  }
+
+  protected _destroyAssociations<T extends ActiveRecord$Base>(): Promise<T[]> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    // save hasMany association records
+    const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
+      _this.constructor.name,
+      AssociationList.hasMany,
+      'object'
+    );
+    return Promise.all(
+      Object.keys(hasManyStrategies).map((relationName: string) => {
+        if (hasManyStrategies[relationName]['destroyStrategy']) {
+          const destroyStrategy = hasManyStrategies[relationName][
+            'destroyStrategy'
+          ] as rt.AssociationsHasManyValue['destroyStrategy'];
+          // @ts-expect-error
+          return destroyStrategy(_this) as Promise<T>;
+        }
+      })
+    ).then((associationDestroyResult) => {
+      return associationDestroyResult;
+    });
+  }
+
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save
    */

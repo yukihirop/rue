@@ -25,6 +25,9 @@ export const enum AssociationList {
   hasAndBelongsToMany = 'hasAndBelongsToMany',
 }
 
+/**
+ * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
+ */
 export const enum DependentList {
   destroy = 'destroy',
   deleteAll = 'deleteAll',

@@ -1,5 +1,6 @@
 // classes
 export { ActiveRecord$Associations } from './core';
+export { ActiveRecord$Associations$Persistence } from './persistence';
 
 // enums
 export { AssociationList } from './types';

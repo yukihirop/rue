@@ -5,10 +5,6 @@ import { RueModule } from '@rue/activesupport';
 import { errObj, ErrCodes } from '@/errors';
 import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base } from '@/records';
-import { registryForAssociations as AssociationRegistry } from '@/registries';
-
-// enums
-import { AssociationList } from '@/records/modules/associations';
 
 // third party
 import dayjs from 'dayjs';
@@ -16,7 +12,6 @@ import dayjs from 'dayjs';
 // types
 import type * as ct from '@/types';
 import type * as at from '@/records/modules/associations';
-import * as rt from '@/registries/types';
 
 // this is bound to an instance(class) of ActiveRecord$Base
 export class ActiveRecord$Persistence extends RueModule {
@@ -128,18 +123,6 @@ export class ActiveRecord$Persistence extends RueModule {
     }
   }
 
-  /**
-   * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
-   */
-  destroy<T extends ActiveRecord$Base>(): Promise<T> {
-    // @ts-expect-error
-    const _this = this as ActiveRecord$Base;
-    // @ts-expect-error
-    return _this._destroyAssociations<T>().then(() => {
-      return _this.destroySync();
-    });
-  }
-
   destroySync<T extends ActiveRecord$Base>(): T {
     // @ts-ignore
     const _this = this as ActiveRecord$Base;
@@ -160,30 +143,6 @@ export class ActiveRecord$Persistence extends RueModule {
     _this._destroyed = true;
     Object.freeze(_this);
     return _this as T;
-  }
-
-  protected _destroyAssociations<T extends ActiveRecord$Base>(): Promise<T[]> {
-    // @ts-expect-error
-    const _this = this as ActiveRecord$Base;
-    // save hasMany association records
-    const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
-      _this.constructor.name,
-      AssociationList.hasMany,
-      'object'
-    );
-    return Promise.all(
-      Object.keys(hasManyStrategies).map((relationName: string) => {
-        if (hasManyStrategies[relationName]['destroyStrategy']) {
-          const destroyStrategy = hasManyStrategies[relationName][
-            'destroyStrategy'
-          ] as rt.AssociationsHasManyValue['destroyStrategy'];
-          // @ts-expect-error
-          return destroyStrategy(_this) as Promise<T>;
-        }
-      })
-    ).then((associationDestroyResult) => {
-      return associationDestroyResult;
-    });
   }
 
   /**

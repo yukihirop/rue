@@ -8,10 +8,10 @@ import { ActiveRecord$Relation } from '@/records/relations';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$Associations,
+  ActiveRecord$Associations$Persistence,
   ActiveRecord$Scoping,
   ActiveRecord$Querying,
   ActiveRecord$Core,
-  ActiveRecord$Validations,
 } from '@/records/modules';
 
 // types
@@ -178,18 +178,12 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    * prototype
    */
 
-  // AcitveRecord$Validations
-  public save: (opts?: { validate: boolean }) => Promise<boolean>;
-  public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
-
   // ActiveRecord$Persistence
   public isNewRecord: () => boolean;
   public isPersisted: () => boolean;
   public saveSync: (opts?: { validate: boolean }) => boolean;
   public saveSyncOrThrow: () => void | boolean;
-  public destroy: () => Promise<this>;
   public destroySync: () => this;
-  protected _destroyAssociations: () => Promise<this[]>;
   public isDestroyed: () => boolean;
   public touch: (opts?: { withCreatedAt?: boolean; time?: string }) => boolean;
   public update: (params?: Partial<P>) => boolean;
@@ -204,6 +198,12 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    */
   public updateProp: (name: string, value: any) => boolean;
 
+  // ActiveRecord$Associations$Persistence
+  public destroy: () => Promise<this>;
+  protected _destroyAssociations: () => Promise<this[]>;
+  public save: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
+
   // ActiveRecord$Associations
   public id: at.Associations$PrimaryKey;
   public hasAndBelongsToMany: <T extends ActiveRecord$Base<P>>(
@@ -215,8 +215,8 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
 }
 
 // includes module
-ActiveRecord$Validations.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['save', 'saveOrThrow'],
+ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
+  only: ['save', 'saveOrThrow', 'destroy', '_destroyAssociations'],
 });
 
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
@@ -225,9 +225,7 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'isPersisted',
     'saveSync',
     'saveSyncOrThrow',
-    'destroy',
     'destroySync',
-    '_destroyAssociations',
     'isDestroyed',
     'touch',
     'update',
