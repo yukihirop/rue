@@ -25,6 +25,7 @@
     "fmt": "prettier --write **/src/**/*.ts",
     "test": "jest --config ./jest.config.js",
     "test:debug": "node --inspect -r ts-node/register ./node_modules/jest/bin/jest.js --silent=false --verbose --runInBand",
+    "test:heap": "node --expose-gc -r ts-node/register ./node_modules/jest/bin/jest.js --silent=true --runInBand --logHeapUsage",
     "gen:definition": "node ./devscripts/generate_definition.js"
   },
   "bugs": {

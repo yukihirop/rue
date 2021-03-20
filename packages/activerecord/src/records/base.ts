@@ -29,6 +29,7 @@ export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveReco
 
     this._newRecord = true;
     this._destroyed = false;
+    this._associationCache = {};
 
     ActiveRecord$Impl.defineAssociations(this);
   }

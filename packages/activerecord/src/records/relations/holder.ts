@@ -23,7 +23,7 @@ export class ActiveRecord$Relation$Holder<T extends ActiveRecord$Base> {
 
   constructor(recordKlass: ct.Constructor<T>, records: T[]) {
     this.recordKlass = recordKlass;
-    this.scope = records || [];
+    this.scope = Array.from(records || []);
     this._defaultScopeParams = {
       where: {},
       order: {},

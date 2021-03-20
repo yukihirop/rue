@@ -23,10 +23,10 @@
 
 ### ActiveRecord$Persistence
 
-- [x] destroy
+- [x] destroySync
 - [x] [static]destroyAll
-- [x] save
-- [x] saveOrThrow
+- [x] saveSync
+- [x] saveSyncOrThrow
 
 ## Modules
 

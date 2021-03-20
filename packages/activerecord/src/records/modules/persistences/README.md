@@ -5,16 +5,15 @@
 ## Methods
 
 - [x] delete
-- [x] destroy
-- [-] destroyOrThrow
+- [x] destroy (named ActiveRecord$Associations$Persistence.prototype.destroy)
 - [x] isDestroyed
 - [-] increment
 - [-] incrementOrThrow
 - [x] isNewRecord
 - [x] isPersisted
 - [-] isPreviouslyNewRecord
-- [x] save
-- [x] saveOrThrow
+- [-] save (nanmed AciveRecord$Associations$Persistence.prototype.save)
+- [-] saveOrThrow (named ActiveRecord$Associations$Persistence.prototype.saveOrThrow)
 - [-] toggle
 - [-] toggleOrThrow
 - [x] touch
@@ -23,6 +22,13 @@
 - [x] updateAttribute
 - [x] updateProperty (alias to updateAttribute)
 - [x] updateProp (alias to updateAttribute)
+
+## Orignal Methods
+
+- [x] saveSync
+- [x] saveSyncOrThrow
+- [x] destroySync
+- [-] destroySyncOrThrow
 
 ## Static Methods
 

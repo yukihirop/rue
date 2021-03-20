@@ -5,10 +5,32 @@ import { AssociationList } from '@/records/modules/associations';
 // types
 import * as at from '@/records/modules/associations';
 
+export type AssociationsBelongsToValue = {
+  relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
+};
+export type AssociationsHasOneValue = AssociationsBelongsToValue;
+export type AssociationsHasManyValue = {
+  relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
+  saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T[] | boolean | number>;
+};
+export type AssociationsHasAndBelongsToManyValue = {
+  relationFn: <T extends ActiveRecord$Base>(self: ActiveRecord$Base) => Promise<T[]>;
+  saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+};
+
+export type AssociationsData = {
+  [uniqueRelationName: string]:
+    | AssociationsBelongsToValue
+    | AssociationsHasOneValue
+    | AssociationsHasManyValue
+    | AssociationsHasAndBelongsToManyValue;
+};
+
 export type Associations = {
-  [associationName in AssociationList]: {
-    [uniqueRelationName: string]: (self: any) => Promise<ActiveRecord$Base[]>;
-  };
+  [associationName in AssociationList]: AssociationsData;
 };
 
 export type Scopes = {

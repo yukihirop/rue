@@ -4,20 +4,34 @@ import { ActiveRecord$Relation$Holder } from '@/records/relations';
 
 // types
 import type * as ct from '@/types';
-import type * as t from '@/index';
+import type * as t from './types';
 
 export class ActiveRecord$Associations$CollectionProxy$Holder<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Relation$Holder<T> {
-  public foreignKeyData: { [key: string]: t.Record$ForeignKey };
+  public associationData: t.HolderAssociationData;
+  public foreignKeyData: t.HolderAssociationData['foreignKeyData'];
+  public proxy: T[];
+  public flags: {
+    useProxy: boolean;
+  };
 
   constructor(
     recordKlass: ct.Constructor<T>,
     records: T[],
-    foreignKeyData: { [key: string]: t.Record$ForeignKey }
+    associationData: t.HolderAssociationData
   ) {
     super(recordKlass, records);
-    this.foreignKeyData = foreignKeyData;
-    Object.assign(this.scopeParams.where, foreignKeyData);
+    /**
+     * @description Pass by value so that 「proxy === record」 does not occur
+     */
+    this.proxy = Array.from(records || []);
+    this.flags = {
+      useProxy: false,
+    };
+    this.associationData = associationData;
+    // use it a lot so I have it as a member
+    this.foreignKeyData = associationData.foreignKeyData;
+    Object.assign(this.scopeParams.where, this.foreignKeyData);
   }
 }

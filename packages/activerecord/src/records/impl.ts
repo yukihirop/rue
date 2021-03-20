@@ -8,6 +8,7 @@ import { ActiveRecord$Relation } from '@/records/relations';
 import {
   ActiveRecord$Persistence,
   ActiveRecord$Associations,
+  ActiveRecord$Associations$Persistence,
   ActiveRecord$Scoping,
   ActiveRecord$Querying,
   ActiveRecord$Core,
@@ -15,10 +16,10 @@ import {
 
 // types
 import type * as t from './types';
-import type * as ct from '@/types';
 import type * as mt from '@/records/modules';
 import type * as at from '@/records/modules/associations';
 import type * as rmt from '@/records/relations/modules';
+import type * as act from '@/records/associations/collection_proxy/types';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveModel$Base {
@@ -26,8 +27,10 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
 
   // Instance vairalbes
+  public errors: t.Validations$Errors;
   protected _destroyed: boolean;
   protected _newRecord: boolean;
+  _associationCache: act.AssociationCache;
 
   // ActiveRecord$Persistence
   static RUE_RECORD_ID = ActiveRecord$Persistence.RUE_RECORD_ID;
@@ -58,12 +61,16 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     klass: Function,
     foreignKey: at.Associations$ForeignKey
   ) => void;
-  static hasMany: (
+  static hasMany: <T extends ActiveRecord$Base>(
     relationName: string,
-    klass: Function,
-    foreignKey: at.Associations$ForeignKey
+    opts: at.Associations$HasManyOptions<T>,
+    scope?: at.Associations$HasManyScope<T>
   ) => void;
-  static hasAndBelongsToMany: (relationName, klass: Function) => void;
+  static hasAndBelongsToMany: <T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: at.Associations$HasAndBelongsToManyOptions<T>,
+    scope?: at.Associations$HasAndBelongsToMany<T>
+  ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations._defineAssociations(self);
   }
@@ -175,9 +182,9 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   // ActiveRecord$Persistence
   public isNewRecord: () => boolean;
   public isPersisted: () => boolean;
-  public save: (opts?: { validate: boolean }) => boolean;
-  public saveOrThrow: () => void | boolean;
-  public destroy: () => this;
+  public saveSync: (opts?: { validate: boolean }) => boolean;
+  public saveSyncOrThrow: () => void | boolean;
+  public destroySync: () => this;
   public isDestroyed: () => boolean;
   public touch: (opts?: { withCreatedAt?: boolean; time?: string }) => boolean;
   public update: (params?: Partial<P>) => boolean;
@@ -191,6 +198,13 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    * @alias updateAttribute
    */
   public updateProp: (name: string, value: any) => boolean;
+
+  // ActiveRecord$Associations$Persistence
+  public destroy: () => Promise<this | boolean>;
+  protected _destroyAssociations: () => Promise<this[]>;
+  public save: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
+
   // ActiveRecord$Associations
   public id: at.Associations$PrimaryKey;
   public hasAndBelongsToMany: <T extends ActiveRecord$Base<P>>(
@@ -202,13 +216,17 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
 }
 
 // includes module
+ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
+  only: ['save', 'saveOrThrow', 'destroy', '_destroyAssociations'],
+});
+
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: [
     'isNewRecord',
     'isPersisted',
-    'save',
-    'saveOrThrow',
-    'destroy',
+    'saveSync',
+    'saveSyncOrThrow',
+    'destroySync',
     'isDestroyed',
     'touch',
     'update',
