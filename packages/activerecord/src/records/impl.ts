@@ -61,9 +61,9 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     klass: Function,
     foreignKey: at.Associations$ForeignKey
   ) => void;
-  static hasMany: <T extends ActiveRecord$Base>(
+  static hasMany: <T extends ActiveRecord$Base, U extends ActiveRecord$Base = any>(
     relationName: string,
-    opts: at.Associations$HasManyOptions<T>,
+    opts: at.Associations$HasManyOptions<T, U>,
     scope?: at.Associations$HasManyScope<T>
   ) => void;
   static hasAndBelongsToMany: <T extends ActiveRecord$Base>(

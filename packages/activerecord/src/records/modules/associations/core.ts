@@ -7,6 +7,7 @@ import {
 } from '@/registries';
 import { errObj, ErrCodes } from '@/errors';
 import { ActiveRecord$Associations$PersistenceStrategy as PersistenceStrategy } from './persistence_strategy';
+import { isPresent } from '@/utils';
 
 // enums
 import { AssociationList } from './types';
@@ -56,7 +57,16 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         ActiveRecord$Associations$CollectionProxy$Holder: Holder,
       } = require('../../associations/collection_proxy');
 
-      const foreignKeyData = { [opts.foreignKey]: self.id };
+      /**
+       * @description If you specify `through`, the `foreignKey` option is ignored.
+       */
+      let foreignKeyData;
+      if (isPresent(opts.through)) {
+        foreignKeyData = { [opts.through.foreignKey]: self.id };
+      } else {
+        foreignKeyData = { [opts.foreignKey]: self.id };
+      }
+
       const associationData = {
         dependent: opts.dependent,
         validate: opts.validate,
@@ -64,6 +74,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       };
       const holder = new Holder(opts.klass, [], associationData);
 
+      /**
+       * @description Update _associationCache.
+       */
       if (self._associationCache[relationName]) {
         const oldHolder = self._associationCache[relationName].associationHolder;
         holder.proxy = Array.from(oldHolder.proxy);
@@ -74,18 +87,52 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         self._associationCache[relationName].associationHolder = holder;
       }
 
-      let useScope;
-      if (holder.flags.useProxy) {
-        /**
-         * @description Pass by value so that 「proxy === record」 does not occur
-         */
-        useScope = Array.from(holder.proxy);
-      } else {
-        if (scope) {
-          useScope = scope(opts.klass).toA();
+      let useScope: T[] | Promise<T[]>;
+
+      /**
+       * @description Decide which scope to use.
+       * @description If you specify `through`, the `foreignKey` option and `scope` is ignored.
+       */
+      if (isPresent(opts.through)) {
+        const {
+          klass: throughKlass,
+          foreignKey: foreignKeyName,
+          associationForeignKey: associationForeignKeyName,
+        } = opts.through;
+
+        if (holder.flags.useProxy) {
+          /**
+           * @description Pass by value so that 「proxy === record」 does not occur
+           */
+          useScope = Array.from(holder.proxy);
         } else {
-          // @ts-expect-error
-          useScope = opts.klass.where<T>(foreignKeyData).toA();
+          useScope = throughKlass
+            // @ts-expect-error
+            .where<T>({ [foreignKeyName]: self.id })
+            .toA((throughRecords) => {
+              const associationIds = throughRecords.map((r) => r[associationForeignKeyName]);
+
+              return (
+                opts.klass
+                  // @ts-expect-error
+                  .where<T>({ id: associationIds })
+                  .toA()
+              );
+            });
+        }
+      } else {
+        if (holder.flags.useProxy) {
+          /**
+           * @description Pass by value so that 「proxy === record」 does not occur
+           */
+          useScope = Array.from(holder.proxy);
+        } else {
+          if (scope) {
+            useScope = scope(opts.klass).toA();
+          } else {
+            // @ts-expect-error
+            useScope = opts.klass.where<T>(foreignKeyData).toA();
+          }
         }
       }
 

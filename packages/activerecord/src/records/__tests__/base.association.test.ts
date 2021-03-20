@@ -1,9 +1,21 @@
+// locals
 import { ActiveRecord$Base as Record } from '../base';
+
+// thrid party
+import MockDate from 'mockdate';
 
 // types
 import type * as t from '@/index';
 
 describe('Record(Association)', () => {
+  beforeEach(async () => {
+    MockDate.set('2021-03-05T23:03:21+09:00');
+  });
+
+  afterEach(() => {
+    MockDate.reset();
+  });
+
   describe('[static] belongsTo', () => {
     type TestAssociationBelongsToParams = {
       id: t.Record$PrimaryKey;
@@ -136,7 +148,7 @@ describe('Record(Association)', () => {
     });
   });
 
-  describe('[static] hasMany', () => {
+  describe('[static] hasMany (default)', () => {
     type TestAssociationHasManyParams = {
       id: t.Record$PrimaryKey;
       name: String;
@@ -185,26 +197,162 @@ describe('Record(Association)', () => {
       foreignKey: 'foreignKey',
     });
 
-    it('should correctly', (done) => {
-      TestAssociationHasManyRecord.all<TestAssociationHasManyRecord>().then((records) => {
-        const record = records[0];
-        expect(record.id).toEqual(1);
-        expect(record.name).toEqual('name_1');
-        expect(record.age).toEqual(1);
+    it('should correctly', async () => {
+      const record = (await TestAssociationHasManyRecord.first<TestAssociationHasManyRecord>()) as TestAssociationHasManyRecord;
+      const result = (await record.children()) as TestAssociationHasManyChildRecord[];
+      expect(result.length).toEqual(2);
+      expect(result).toEqual([
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childAge: 11,
+          childName: 'child_name_11',
+          errors: {},
+          foreignKey: 1,
+          id: 1,
+        },
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 2,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childAge: 21,
+          childName: 'child_name_21',
+          errors: {},
+          foreignKey: 1,
+          id: 2,
+        },
+      ]);
+    });
+  });
 
-        record.children().then((records) => {
-          expect(records.length).toEqual(2);
-          expect(records[0].id).toEqual(1);
-          expect(records[0].foreignKey).toEqual(1);
-          expect(records[0].childName).toEqual('child_name_11');
-          expect(records[0].childAge).toEqual(11);
-          expect(records[1].id).toEqual(2);
-          expect(records[1].foreignKey).toEqual(1);
-          expect(records[1].childName).toEqual('child_name_21');
-          expect(records[1].childAge).toEqual(21);
-          done();
-        });
-      });
+  describe("[static] hasMany (specify 'through')", () => {
+    type TestAssociationHasManyThroughParams = {
+      id: t.Record$PrimaryKey;
+      name: String;
+      age: number;
+    };
+
+    type TestAssociationHasManyThroughThroughParams = {
+      id: t.Record$PrimaryKey;
+      parentId: t.Record$ForeignKey;
+      childId: t.Record$ForeignKey;
+    };
+
+    type TestAssociationHasManyThroughChildParams = {
+      id: t.Record$PrimaryKey;
+      childName: String;
+      childAge: number;
+    };
+
+    class TestAssociationHasManyThroughRecord extends Record<TestAssociationHasManyThroughParams> {
+      public id: TestAssociationHasManyThroughParams['id'];
+      public name: TestAssociationHasManyThroughParams['name'];
+      public age: TestAssociationHasManyThroughParams['age'];
+      public children: t.Record$HasMany<TestAssociationHasManyThroughChildRecord>;
+
+      protected fetchAll(): Promise<TestAssociationHasManyThroughParams[]> {
+        return Promise.resolve([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
+        ]);
+      }
+    }
+
+    class TestAssociationHasManyThroughThroughRecord extends Record<TestAssociationHasManyThroughThroughParams> {
+      public id: TestAssociationHasManyThroughThroughParams['id'];
+      public parentId: TestAssociationHasManyThroughThroughParams['parentId'];
+      public childId: TestAssociationHasManyThroughThroughParams['childId'];
+
+      protected fetchAll(): Promise<TestAssociationHasManyThroughThroughParams[]> {
+        return Promise.resolve([
+          { id: 1, parentId: 1, childId: 1 },
+          { id: 2, parentId: 1, childId: 2 },
+          { id: 3, parentId: 1, childId: 3 },
+          { id: 4, parentId: 2, childId: 4 },
+        ]);
+      }
+    }
+
+    class TestAssociationHasManyThroughChildRecord extends Record<TestAssociationHasManyThroughChildParams> {
+      public id: TestAssociationHasManyThroughChildParams['id'];
+      public childName: TestAssociationHasManyThroughChildParams['childName'];
+      public childAge: TestAssociationHasManyThroughChildParams['childAge'];
+
+      protected fetchAll(): Promise<TestAssociationHasManyThroughChildParams[]> {
+        return Promise.resolve([
+          { id: 1, childName: 'child_name_11', childAge: 11 },
+          { id: 2, childName: 'child_name_21', childAge: 21 },
+          { id: 3, childName: 'child_name_22', childAge: 22 },
+          { id: 4, childName: 'child_name_42', childAge: 42 },
+        ]);
+      }
+    }
+
+    // register relations
+    TestAssociationHasManyThroughRecord.hasMany<
+      TestAssociationHasManyThroughChildRecord,
+      TestAssociationHasManyThroughThroughRecord
+    >('children', {
+      klass: TestAssociationHasManyThroughChildRecord,
+      /**
+       * @description If you specify `through`, the `foreignKey` option is ignored.
+       */
+      foreignKey: 'ignoredId',
+      through: {
+        klass: TestAssociationHasManyThroughThroughRecord,
+        foreignKey: 'parentId',
+        associationForeignKey: 'childId',
+      },
+    });
+
+    it('should correctly', async () => {
+      const record = (await TestAssociationHasManyThroughRecord.first<TestAssociationHasManyThroughRecord>()) as TestAssociationHasManyThroughRecord;
+      const result = await record.children();
+      expect(result).toEqual([
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childId: 1,
+          errors: {},
+          id: 1,
+          parentId: 1,
+        },
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 2,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childId: 2,
+          errors: {},
+          id: 2,
+          parentId: 1,
+        },
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 3,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childId: 3,
+          errors: {},
+          id: 3,
+          parentId: 1,
+        },
+      ]);
     });
   });
 

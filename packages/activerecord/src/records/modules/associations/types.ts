@@ -36,14 +36,22 @@ export const enum DependentList {
   restrictWithError = 'restrictWithError',
 }
 
+export type HasManyThroughOptions<T extends ActiveRecord$Base> = {
+  klass: ct.Constructor<T>;
+  foreignKey: ForeignKey;
+  associationForeignKey?: ForeignKey;
+};
+
 /**
  * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
+ * @description If you specify `through`, the `foreignKey` option and `scope` is ignored.
  */
-export type HasManyOptions<T extends ActiveRecord$Base> = {
+export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
   klass: ct.Constructor<T>;
   foreignKey: ForeignKey;
   dependent?: ct.valueOf<DependentList>;
   validate?: boolean;
+  through?: HasManyThroughOptions<U>;
 };
 /**
  * @todo remove ? from foreignKey, associationKlass, associationForeignKey
