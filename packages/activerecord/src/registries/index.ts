@@ -1,5 +1,1 @@
-export {
-  registryForAssociations,
-  registryForScopes,
-  cacheForRecords,
-} from './base';
+export { registryForAssociations, registryForScopes, cacheForRecords } from './base';

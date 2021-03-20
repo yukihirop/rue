@@ -355,4 +355,93 @@ describe('Record(Association)', () => {
       ]);
     });
   });
+
+  describe("when hasMany (specify 'scope'", () => {
+    type TestAssociationHasManyScopeParams = {
+      id: t.Record$PrimaryKey;
+      name: String;
+      age: number;
+    };
+
+    type TestAssociationHasManyScopeChildParams = {
+      id: t.Record$PrimaryKey;
+      parentId: t.Record$ForeignKey;
+      childName: String;
+      childAge: number;
+    };
+
+    class TestAssociationHasManyScopeRecord extends Record {
+      public id: TestAssociationHasManyScopeParams['id'];
+      public name: TestAssociationHasManyScopeParams['name'];
+      public age: TestAssociationHasManyScopeParams['age'];
+      public children: t.Record$HasMany<TestAssociationHasManyScopeChildRecord>;
+
+      protected fetchAll(): Promise<TestAssociationHasManyScopeParams[]> {
+        return Promise.resolve([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
+        ]);
+      }
+    }
+    class TestAssociationHasManyScopeChildRecord extends Record {
+      public id: TestAssociationHasManyScopeChildParams['id'];
+      public parentId: TestAssociationHasManyScopeChildParams['parentId'];
+      public childName: TestAssociationHasManyScopeChildParams['childName'];
+      public childAge: TestAssociationHasManyScopeChildParams['childAge'];
+
+      protected fetchAll(): Promise<TestAssociationHasManyScopeChildParams[]> {
+        return Promise.resolve([
+          { id: 1, parentId: 1, childName: 'child_name_11', childAge: 11 },
+          { id: 2, parentId: 1, childName: 'child_name_21', childAge: 21 },
+          { id: 3, parentId: 2, childName: 'child_name_22', childAge: 22 },
+          { id: 4, parentId: 2, childName: 'child_name_42', childAge: 42 },
+        ]);
+      }
+    }
+
+    // register relations
+    TestAssociationHasManyScopeRecord.hasMany<TestAssociationHasManyScopeChildRecord>(
+      'children',
+      {
+        klass: TestAssociationHasManyScopeChildRecord,
+        foreignKey: 'parentId',
+      },
+      /**
+       * @description Limits of type specification in typescript
+       */
+      (self: any) => self.where({ id: [1, 2] as any })
+    );
+
+    it('should correctly', async () => {
+      const record = (await TestAssociationHasManyScopeRecord.first<TestAssociationHasManyScopeRecord>()) as TestAssociationHasManyScopeRecord;
+      expect(await record.children()).toEqual([
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childAge: 11,
+          childName: 'child_name_11',
+          errors: {},
+          id: 1,
+          parentId: 1,
+        },
+        {
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 2,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          childAge: 21,
+          childName: 'child_name_21',
+          errors: {},
+          id: 2,
+          parentId: 1,
+        },
+      ]);
+    });
+  });
 });

@@ -1,4 +1,3 @@
-import { ActiveRecord$Relation } from '@/records/relations';
 import { ActiveRecord$Associations$CollectionProxy } from '@/records/associations';
 import { ActiveRecord$Base } from '@/records';
 
@@ -54,4 +53,4 @@ export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$B
 
 export type HasManyScope<T extends ActiveRecord$Base> = (
   self: ct.Constructor<T>
-) => ActiveRecord$Relation<T>;
+) => ActiveRecord$Associations$CollectionProxy<T>;
