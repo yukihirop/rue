@@ -6,7 +6,10 @@ import {
   cacheForIntermeditateTables as IntermediateTable,
 } from '@/registries';
 import { errObj, ErrCodes } from '@/errors';
-import { DependentList, AssociationList } from './types';
+import { ActiveRecord$Associations$PersistenceStrategy as PersistenceStrategy } from './persistence_strategy';
+
+// enums
+import { AssociationList } from './types';
 
 // types
 import type * as ct from '@/types';
@@ -101,80 +104,8 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       return collectionProxy;
     };
 
+    // default
     if (opts.validate === undefined) opts.validate = true;
-    const saveStrategy = (self: T): Promise<boolean> => {
-      return self[relationName]()
-        ._currentScope()
-        .then((childrens: T[]) => {
-          return childrens
-            .map((c) => {
-              return c.saveSync({ validate: opts.validate });
-            })
-            .every(Boolean);
-        });
-    };
-
-    const saveOrThrowStrategy = (self: T): Promise<boolean> => {
-      return self[relationName]()
-        ._currentScope()
-        .then((childrens: T[]) => {
-          return childrens
-            .map((c) => {
-              return c.saveSyncOrThrow();
-            })
-            .every(Boolean);
-        });
-    };
-
-    const destroyStrategy = (self: T): Promise<T[] | boolean | number> => {
-      return self[relationName]()
-        .toA()
-        .then((records: T[]) => {
-          if (opts.dependent === DependentList.destroy) {
-            return records.map((r) => r.destroySync());
-          } else if (opts.dependent === DependentList.nullify) {
-            return records.map((r) => {
-              r.update({ [opts.foreignKey]: undefined });
-              return r;
-            });
-          } else if (opts.dependent === DependentList.deleteAll) {
-            const recordIds = records.map((r) => r.id);
-            const hasManyKlass = opts.klass;
-            // @ts-expect-error
-            hasManyKlass.delete(recordIds);
-          } else if (opts.dependent === DependentList.restrictWithException) {
-            if (records.length > 0) {
-              throw errObj({
-                code: ErrCodes.DELETE_RESTRICTION_ERROR,
-                params: {
-                  associatedResource: opts.klass.name,
-                },
-              });
-            }
-          } else if (opts.dependent === DependentList.restrictWithError) {
-            if (records.length > 0) {
-              if (!self.errors['hasMany']) self.errors['hasMany'] = {};
-              self.errors['hasMany'][relationName] = [
-                errObj({
-                  code: ErrCodes.DELETE_RESTRICTION_ERROR,
-                  params: {
-                    associatedResource: opts.klass.name,
-                  },
-                }),
-              ];
-              return false;
-            }
-          } else {
-            throw errObj({
-              code: ErrCodes.FOREIGN_KEY_CONSTRAIT_FAILS,
-              params: {
-                resource: self.constructor.name,
-                foreignKey: opts.foreignKey,
-              },
-            });
-          }
-        });
-    };
 
     /**
      * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
@@ -182,9 +113,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     AssociationRegistry.create(this.name, AssociationList.hasMany, {
       [relationName]: {
         relationFn,
-        saveStrategy,
-        saveOrThrowStrategy,
-        destroyStrategy,
+        saveStrategy: PersistenceStrategy.saveStrategyFn(relationName, opts.validate),
+        saveOrThrowStrategy: PersistenceStrategy.saveOrThrowStrategyFn(relationName, opts.validate),
+        destroyStrategy: PersistenceStrategy.destroyStrategyFn(relationName, opts),
       },
     });
   }
