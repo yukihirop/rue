@@ -5,16 +5,15 @@
 ## Methods
 
 - [x] delete
-- [x] destroySync
-- [-] destroySyncOrThrow
+- [x] destroy (named ActiveRecord$Associations$Persistence.prototype.destroy)
 - [x] isDestroyed
 - [-] increment
 - [-] incrementOrThrow
 - [x] isNewRecord
 - [x] isPersisted
 - [-] isPreviouslyNewRecord
-- [-] save (nanmed AciveRecord$Validations.prototype.save)
-- [-] saveOrThrow (named ActiveRecord$Validations.prototype.saveOrThrow)
+- [-] save (nanmed AciveRecord$Associations$Persistence.prototype.save)
+- [-] saveOrThrow (named ActiveRecord$Associations$Persistence.prototype.saveOrThrow)
 - [-] toggle
 - [-] toggleOrThrow
 - [x] touch
@@ -28,6 +27,8 @@
 
 - [x] saveSync
 - [x] saveSyncOrThrow
+- [x] destroySync
+- [-] destroySyncOrThrow
 
 ## Static Methods
 
