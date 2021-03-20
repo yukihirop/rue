@@ -6,34 +6,70 @@ import { DependentList, AssociationList, HasManyOptions } from '../types';
 export class ActiveRecord$Associations$PersistenceStrategy {
   static saveStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    validate: boolean
+    opts: HasManyOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]()
         ._currentScope()
         .then((childrens: T[]) => {
-          return childrens
-            .map((c) => {
-              return c.saveSync({ validate });
-            })
-            .every(Boolean);
+          if (opts.autosave) {
+            return childrens
+              .map((c) => {
+                return c.saveSync({ validate: opts.validate });
+              })
+              .every(Boolean);
+          } else {
+            if (opts.validate) {
+              const childrenResult = childrens
+                .map((c) => {
+                  return c.isValid();
+                })
+                .every(Boolean);
+
+              if (!childrenResult) {
+                if (!self.errors[AssociationList.hasMany])
+                  self.errors[AssociationList.hasMany] = {};
+                self.errors[AssociationList.hasMany][relationName] = [
+                  errObj({
+                    code: ErrCodes.RECORD_IS_INVALID,
+                    params: {
+                      inspect: opts.klass.name,
+                    },
+                  }),
+                ];
+              }
+              return childrenResult;
+            } else {
+              /**
+               * @description Skip saving associated records
+               */
+              return true;
+            }
+          }
         });
     };
   }
 
   static saveOrThrowStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    validate?: boolean
+    opts: HasManyOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]()
         ._currentScope()
         .then((childrens: T[]) => {
-          return childrens
-            .map((c) => {
-              return c.saveSyncOrThrow();
-            })
-            .every(Boolean);
+          if (opts.autosave) {
+            return childrens
+              .map((c) => {
+                return c.saveSyncOrThrow();
+              })
+              .every(Boolean);
+          } else {
+            /**
+             * @description Skip saving associated records
+             */
+            return true;
+          }
         });
     };
   }

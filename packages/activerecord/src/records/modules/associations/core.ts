@@ -153,6 +153,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
     // default
     if (opts.validate === undefined) opts.validate = true;
+    if (opts.autosave === undefined) opts.autosave = true;
 
     /**
      * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
@@ -160,8 +161,8 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     AssociationRegistry.create(this.name, AssociationList.hasMany, {
       [relationName]: {
         relationFn,
-        saveStrategy: PersistenceStrategy.saveStrategyFn(relationName, opts.validate),
-        saveOrThrowStrategy: PersistenceStrategy.saveOrThrowStrategyFn(relationName, opts.validate),
+        saveStrategy: PersistenceStrategy.saveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.saveOrThrowStrategyFn(relationName, opts),
         destroyStrategy: PersistenceStrategy.destroyStrategyFn(relationName, opts),
       },
     });

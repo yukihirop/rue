@@ -52,6 +52,7 @@ export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$B
   dependent?: ct.valueOf<DependentList>;
   validate?: boolean;
   through?: HasManyThroughOptions<U>;
+  autosave?: boolean;
 };
 /**
  * @todo remove ? from foreignKey, associationKlass, associationForeignKey
