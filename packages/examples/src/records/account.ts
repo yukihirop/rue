@@ -2,7 +2,7 @@
 import { ActiveRecord } from '../lib';
 import type * as t from '@rue/activerecord';
 
-import { Task } from '@/records';
+import { Task, Profile } from '@/records';
 
 type AccountParams = {
   id: t.Record$ForeignKey;
@@ -14,6 +14,7 @@ export class Account extends ActiveRecord<AccountParams> {
   public name: AccountParams['name'];
   public email: AccountParams['email'];
   public tasks: t.Record$HasMany<Task>;
+  public profile: t.Record$HasOne<Profile>;
   public fromName: t.Record$Scope<Account>;
 
   protected fetchAll(): Promise<AccountParams[]> {
@@ -27,6 +28,10 @@ export class Account extends ActiveRecord<AccountParams> {
       { id: 7, name: 'name_7', email: 'name_7@example.com' },
     ]);
   }
+
+  buildProfile(params?: t.Record$Params): Promise<Profile> {
+    return this.buildHasOneRecord('profile', params);
+  }
 }
 
 // Register Validations
@@ -36,7 +41,8 @@ Account.validates('email', {
 });
 
 // Register Relashionships
-Account.hasMany('tasks', { klass: Task, foreignKey: 'accountId' });
+Account.hasMany<Task>('tasks', { klass: Task, foreignKey: 'accountId' });
+Account.hasOne<Profile>('profile', { klass: Profile, foreignKey: 'accountId' });
 
 // Register Scopes
 Account.scope('fromName', (name) => Account.where({ name }));
