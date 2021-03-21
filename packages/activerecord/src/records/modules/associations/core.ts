@@ -68,17 +68,44 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       }
 
       let useScope: Promise<T>;
-      if (scope) {
-        useScope = scope(opts.klass).first() as Promise<T>;
-      } else {
-        if (self._associationCache[relationName].associationScope as T[]) {
-          useScope = Promise.resolve(self._associationCache[relationName].associationScope[0]);
-        } else {
+
+      /**
+       * @description Decide which scope to use.
+       * @description If you specify `through`, the `foreignKey` option and `scope` is ignored.
+       */
+      if (isPresent(opts.through)) {
+        const {
+          klass: throughKlass,
+          foreignKey: foreignKeyName,
+          associationForeignKey: associationForeignKeyName,
+        } = opts.through;
+
+        useScope = throughKlass
           // @ts-expect-error
-          useScope = opts.klass.findBy(foreignKeyData).then((oneRecord) => {
-            self._associationCache[relationName].associationScope = [oneRecord];
-            return oneRecord;
+          .where<T>({ [foreignKeyName]: self.id })
+          .toA()
+          .then((throughRecords) => {
+            const associationIds = throughRecords.map((r) => r[associationForeignKeyName]);
+            return (
+              opts.klass
+                // @ts-expect-error
+                .where<T>({ id: associationIds })
+                .first()
+            );
           });
+      } else {
+        if (scope) {
+          useScope = scope(opts.klass).first() as Promise<T>;
+        } else {
+          if (self._associationCache[relationName].associationScope as T[]) {
+            useScope = Promise.resolve(self._associationCache[relationName].associationScope[0]);
+          } else {
+            // @ts-expect-error
+            useScope = opts.klass.findBy(foreignKeyData).then((oneRecord) => {
+              self._associationCache[relationName].associationScope = [oneRecord];
+              return oneRecord;
+            });
+          }
         }
       }
 
@@ -125,7 +152,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
       const associationData = {
         dependent: opts.dependent,
         validate: opts.validate,
-        foreignKeyData,
+        foreignKeyData: isPresent(opts.through) ? {} : foreignKeyData,
       };
       const holder = new Holder(opts.klass, [], associationData);
 
@@ -164,9 +191,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
           useScope = throughKlass
             // @ts-expect-error
             .where<T>({ [foreignKeyName]: self.id })
-            .toA((throughRecords) => {
+            .toA()
+            .then((throughRecords) => {
               const associationIds = throughRecords.map((r) => r[associationForeignKeyName]);
-
               return (
                 opts.klass
                   // @ts-expect-error
@@ -193,15 +220,17 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
       const runtimeScope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
         resolve({ holder, scope: useScope });
-      }, opts.klass)
-        .where(foreignKeyData)
-        .toA();
+      }, opts.klass);
 
       /**
        * @description Since it is a runtime specification, only any type can be given.
        */
       const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
-        resolve({ holder, scope: runtimeScope });
+        if (isPresent(opts.through)) {
+          resolve({ holder, scope: runtimeScope });
+        } else {
+          resolve({ holder, scope: runtimeScope.where(foreignKeyData).toA() });
+        }
       }, opts.klass);
       return collectionProxy;
     };

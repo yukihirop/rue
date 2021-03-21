@@ -496,10 +496,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           _associationCache: {},
           _destroyed: false,
           _newRecord: false,
-          childId: 1,
+          childAge: 11,
+          childName: 'child_name_11',
           errors: {},
           id: 1,
-          parentId: 1,
         },
         {
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -508,10 +508,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           _associationCache: {},
           _destroyed: false,
           _newRecord: false,
-          childId: 2,
+          childAge: 21,
+          childName: 'child_name_21',
           errors: {},
           id: 2,
-          parentId: 1,
         },
         {
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -520,10 +520,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           _associationCache: {},
           _destroyed: false,
           _newRecord: false,
-          childId: 3,
+          childAge: 22,
+          childName: 'child_name_22',
           errors: {},
           id: 3,
-          parentId: 1,
         },
       ]);
     });
