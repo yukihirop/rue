@@ -150,6 +150,102 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
       });
     });
 
+    describe("[static] hasOne (specify 'through')", () => {
+      type TestAssociationHasOneThroughParams = {
+        id: t.Record$PrimaryKey;
+        name: String;
+        age: number;
+      };
+
+      type TestAssociationHasOneThroughThroughParams = {
+        id: t.Record$PrimaryKey;
+        parentId: t.Record$ForeignKey;
+        oneId: t.Record$ForeignKey;
+      };
+
+      type TestAssociationHasOneThroughOneParams = {
+        id: t.Record$PrimaryKey;
+        oneName: String;
+        oneAge: number;
+      };
+
+      class TestAssociationHasOneThroughRecord extends Record<TestAssociationHasOneThroughParams> {
+        public id: TestAssociationHasOneThroughParams['id'];
+        public name: TestAssociationHasOneThroughParams['name'];
+        public age: TestAssociationHasOneThroughParams['age'];
+        public one: t.Record$HasOne<TestAssociationHasOneThroughOneRecord>;
+
+        protected fetchAll(): Promise<TestAssociationHasOneThroughParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+          ]);
+        }
+      }
+
+      class TestAssociationHasOneThroughThroughRecord extends Record<TestAssociationHasOneThroughThroughParams> {
+        public id: TestAssociationHasOneThroughThroughParams['id'];
+        public parentId: TestAssociationHasOneThroughThroughParams['parentId'];
+        public oneId: TestAssociationHasOneThroughThroughParams['oneId'];
+
+        protected fetchAll(): Promise<TestAssociationHasOneThroughThroughParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, oneId: 1 },
+            { id: 2, parentId: 1, oneId: 2 },
+          ]);
+        }
+      }
+
+      class TestAssociationHasOneThroughOneRecord extends Record<TestAssociationHasOneThroughOneParams> {
+        public id: TestAssociationHasOneThroughOneParams['id'];
+        public oneName: TestAssociationHasOneThroughOneParams['oneName'];
+        public oneAge: TestAssociationHasOneThroughOneParams['oneAge'];
+
+        protected fetchAll(): Promise<TestAssociationHasOneThroughOneParams[]> {
+          return Promise.resolve([
+            { id: 1, oneName: 'one_name_11', oneAge: 11 },
+            { id: 2, oneName: 'one_name_21', oneAge: 21 },
+            { id: 3, oneName: 'one_name_22', oneAge: 22 },
+            { id: 4, oneName: 'one_name_42', oneAge: 42 },
+          ]);
+        }
+      }
+
+      // register relations
+      TestAssociationHasOneThroughRecord.hasOne<
+        TestAssociationHasOneThroughOneRecord,
+        TestAssociationHasOneThroughThroughRecord
+      >('one', {
+        klass: TestAssociationHasOneThroughOneRecord,
+        /**
+         * @description If you specify `through`, the `foreignKey` option is ignored.
+         */
+        foreignKey: 'ignoredId',
+        through: {
+          klass: TestAssociationHasOneThroughThroughRecord,
+          foreignKey: 'parentId',
+          associationForeignKey: 'oneId',
+        },
+      });
+
+      it('should correctly', async () => {
+        const record = (await TestAssociationHasOneThroughRecord.first<TestAssociationHasOneThroughRecord>()) as TestAssociationHasOneThroughRecord;
+        const result = await record.one();
+        expect(result).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 1,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          errors: {},
+          id: 1,
+          oneAge: 11,
+          oneName: 'one_name_11',
+        });
+      });
+    });
+
     describe("when hasOne (specify 'scope')", () => {
       type TestAssociationHasOneScopeParams = {
         id: t.Record$PrimaryKey;
