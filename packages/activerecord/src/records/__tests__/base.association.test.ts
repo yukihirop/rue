@@ -149,6 +149,80 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
         });
       });
     });
+
+    describe("when hasOne (specify 'scope')", () => {
+      type TestAssociationHasOneScopeParams = {
+        id: t.Record$PrimaryKey;
+        name: String;
+        age: number;
+      };
+
+      type TestAssociationHasOneScopeChildParams = {
+        id: t.Record$PrimaryKey;
+        parentId: t.Record$ForeignKey;
+        oneName: String;
+        oneAge: number;
+      };
+
+      class TestAssociationHasOneScopeRecord extends Record {
+        public id: TestAssociationHasOneScopeParams['id'];
+        public name: TestAssociationHasOneScopeParams['name'];
+        public age: TestAssociationHasOneScopeParams['age'];
+        public one: t.Record$HasOne<TestAssociationHasOneScopeChildRecord>;
+
+        protected fetchAll(): Promise<TestAssociationHasOneScopeParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+          ]);
+        }
+      }
+      class TestAssociationHasOneScopeChildRecord extends Record {
+        public id: TestAssociationHasOneScopeChildParams['id'];
+        public parentId: TestAssociationHasOneScopeChildParams['parentId'];
+        public oneName: TestAssociationHasOneScopeChildParams['oneName'];
+        public oneAge: TestAssociationHasOneScopeChildParams['oneAge'];
+
+        protected fetchAll(): Promise<TestAssociationHasOneScopeChildParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, oneName: 'onne_name_11', oneAge: 11 },
+            { id: 2, parentId: 1, oneName: 'onne_name_21', oneAge: 21 },
+            { id: 3, parentId: 2, oneName: 'onne_name_22', oneAge: 22 },
+            { id: 4, parentId: 2, oneName: 'onne_name_42', oneAge: 42 },
+          ]);
+        }
+      }
+
+      // register relations
+      TestAssociationHasOneScopeRecord.hasOne<TestAssociationHasOneScopeChildRecord>(
+        'one',
+        {
+          klass: TestAssociationHasOneScopeChildRecord,
+          foreignKey: 'parentId',
+        },
+        /**
+         * @description Limits of type specification in typescript
+         */
+        (self: any) => self.where({ id: 2 })
+      );
+
+      it('should correctly', async () => {
+        const record = (await TestAssociationHasOneScopeRecord.first<TestAssociationHasOneScopeRecord>()) as TestAssociationHasOneScopeRecord;
+        expect(await record.one()).toEqual({
+          __rue_created_at__: '2021-03-05T23:03:21+09:00',
+          __rue_record_id__: 2,
+          __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: false,
+          errors: {},
+          id: 2,
+          oneAge: 21,
+          oneName: 'onne_name_21',
+          parentId: 1,
+        });
+      });
+    });
   });
 
   describe('[static] hasMany (default)', () => {
