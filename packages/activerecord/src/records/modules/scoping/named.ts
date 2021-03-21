@@ -3,7 +3,7 @@ import { RueModule } from '@rue/activesupport';
 
 // local
 import { cacheForRecords as RecordCache } from '@/registries';
-import { ActiveRecord$Base, RECORD_ALL } from '@/records/base';
+import { ActiveRecord$Base, RECORD_ALL, RUE_AUTO_INCREMENT_RECORD_ID } from '@/records/base';
 import { ActiveRecord$Relation, ActiveRecord$Relation$Holder as Holder } from '@/records/relations';
 import { registryForScopes as ScopeRegistry } from '@/registries';
 
@@ -22,7 +22,8 @@ export class ActiveRecord$Scoping$Named extends RueModule {
     const _this = this as ct.Constructor<T>;
     const klassName = _this.name;
 
-    if (RecordCache.read<T[]>(klassName, RECORD_ALL, 'array').length > 0) {
+    const aid = RecordCache.read<number>(klassName, RUE_AUTO_INCREMENT_RECORD_ID, 'value');
+    if (aid != 1 && aid != undefined) {
       const scope = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
       // Must pass a copy
       const holder = new Holder<T>(_this, Array.from(scope));

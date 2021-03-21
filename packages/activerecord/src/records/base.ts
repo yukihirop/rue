@@ -16,7 +16,7 @@ export const RUE_RECORD_ID = ActiveRecord$Impl['RUE_RECORD_ID'] as string;
 export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveRecord$Impl<P> {
   public errors: t.Validations$Errors;
 
-  constructor(data?: P) {
+  constructor(data?: Partial<P>) {
     super();
 
     (this as any)[RUE_RECORD_ID] = undefined;
@@ -39,7 +39,7 @@ export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveReco
     return 'record';
   }
 
-  protected fetchAll(): Promise<Array<P>> {
+  protected fetchAll(): Promise<Array<P> | []> {
     throw "Please implement 'fetchAll' in Inherited Class";
   }
 

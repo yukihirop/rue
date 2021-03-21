@@ -17,7 +17,6 @@ export type {
   Associations$BelongsTo as Record$BelongsTo,
   Associations$HasOne as Record$HasOne,
   Associations$HasMany as Record$HasMany,
-  Associations$HasAndBelongsToMany as Record$HasAndBelongsToMany,
 } from './records/modules/associations';
 
 // prettier-ignore

@@ -1,4 +1,3 @@
-import { HasAndBelongsToMany } from './modules/associations/types';
 import * as amt from '@rue/activemodel';
 import * as mat from '@/records/modules/associations';
 
@@ -12,9 +11,6 @@ export type Validations$Errors = amt.Model$Validations$Errors & {
     [relationName: string]: ErrObj[];
   };
   hasMany?: {
-    [relationName: string]: ErrObj[];
-  };
-  HasAndBelongsToMany?: {
     [relationName: string]: ErrObj[];
   };
 };

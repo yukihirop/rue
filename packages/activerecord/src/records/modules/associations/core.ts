@@ -1,18 +1,17 @@
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Associations$Impl } from './impl';
-import {
-  registryForAssociations as AssociationRegistry,
-  cacheForIntermeditateTables as IntermediateTable,
-} from '@/registries';
-import { errObj, ErrCodes } from '@/errors';
+import { registryForAssociations as AssociationRegistry } from '@/registries';
 import { ActiveRecord$Associations$PersistenceStrategy as PersistenceStrategy } from './persistence_strategy';
+import { isPresent } from '@/utils';
+import { errObj, ErrCodes } from '@/errors';
 
 // enums
-import { AssociationList } from './types';
+import { AssociationList, DependentList } from './types';
 
 // types
 import type * as ct from '@/types';
+import type * as rt from '@/index';
 import type * as t from './types';
 import type * as art from '@/records/relations/types';
 
@@ -33,12 +32,107 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
   static hasOne<T extends ActiveRecord$Base = any>(
     relationName: string,
-    klass: Function,
-    foreignKey: t.ForeignKey
+    opts: t.HasOneOptions<T>,
+    scope?: t.HasOneScope<T>
   ) {
+    const validDependentList = Object.values(DependentList).filter((d) => d != 'deleteAll');
+    if (opts.dependent && !validDependentList.includes(opts.dependent)) {
+      throw errObj({
+        code: ErrCodes.ARGUMENT_IS_INVALID,
+        message: `The 'dependent' option must be one of [${validDependentList.join(
+          ', '
+        )}], but is '${opts.dependent}'`,
+      });
+    }
+
+    const relationFn = (self: T): Promise<T> => {
+      /**
+       * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+       */
+      const { ActiveRecord$Associations$Holder: Holder } = require('../../associations');
+
+      /**
+       * @description If you specify `through`, the `foreignKey` option is ignored.
+       */
+      let foreignKeyData;
+      if (isPresent(opts.through)) {
+        foreignKeyData = { [opts.through.foreignKey]: self.id };
+      } else {
+        foreignKeyData = { [opts.foreignKey]: self.id };
+      }
+
+      const associationData = {
+        dependent: opts.dependent,
+        validate: opts.validate,
+        foreignKeyData,
+      };
+      const holder = new Holder(opts.klass, [], associationData);
+
+      /**
+       * @description Update _associationCache.
+       */
+      if (self._associationCache[relationName]) {
+        self._associationCache[relationName].associationHolder = holder;
+      } else {
+        self._associationCache[relationName] = {};
+        self._associationCache[relationName].associationHolder = holder;
+      }
+
+      let useScope: Promise<T>;
+
+      /**
+       * @description Decide which scope to use.
+       * @description If you specify `through`, the `foreignKey` option and `scope` is ignored.
+       */
+      if (isPresent(opts.through)) {
+        const {
+          klass: throughKlass,
+          foreignKey: foreignKeyName,
+          associationForeignKey: associationForeignKeyName,
+        } = opts.through;
+
+        useScope = throughKlass
+          // @ts-expect-error
+          .where<T>({ [foreignKeyName]: self.id })
+          .toA()
+          .then((throughRecords) => {
+            const associationIds = throughRecords.map((r) => r[associationForeignKeyName]);
+            return (
+              opts.klass
+                // @ts-expect-error
+                .where<T>({ id: associationIds })
+                .first()
+            );
+          });
+      } else {
+        if (scope) {
+          useScope = scope(opts.klass).first() as Promise<T>;
+        } else {
+          if (self._associationCache[relationName].associationScope as T[]) {
+            useScope = Promise.resolve(self._associationCache[relationName].associationScope[0]);
+          } else {
+            // @ts-expect-error
+            useScope = opts.klass.findBy(foreignKeyData).then((oneRecord) => {
+              self._associationCache[relationName].associationScope = [oneRecord];
+              return oneRecord;
+            });
+          }
+        }
+      }
+
+      return useScope;
+    };
+
+    // default
+    if (opts.validate === undefined) opts.validate = true;
+    if (opts.autosave === undefined) opts.autosave = true;
+
     AssociationRegistry.create(this.name, AssociationList.hasOne, {
       [relationName]: {
-        relationFn: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
+        relationFn,
+        saveStrategy: PersistenceStrategy.hasOneSaveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.hasOneSaveOrThrowStrategyFn(relationName, opts),
+        destroyStrategy: PersistenceStrategy.hasOneDestroyStrategyFn(relationName, opts),
       },
     });
   }
@@ -48,6 +142,16 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     opts: t.HasManyOptions<T>,
     scope?: t.HasManyScope<T>
   ) {
+    const validDependentList = Object.values(DependentList).filter((d) => d != 'delete');
+    if (opts.dependent && !validDependentList.includes(opts.dependent)) {
+      throw errObj({
+        code: ErrCodes.ARGUMENT_IS_INVALID,
+        message: `The 'dependent' option must be one of [${validDependentList.join(
+          ', '
+        )}], but is '${opts.dependent}'`,
+      });
+    }
+
     const relationFn = (self: T) => {
       /**
        * @description I'm worried about the overhead, but load it dynamically to avoid circular references
@@ -56,16 +160,28 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         ActiveRecord$Associations$CollectionProxy$Holder: Holder,
       } = require('../../associations/collection_proxy');
 
-      const foreignKeyData = { [opts.foreignKey]: self.id };
+      /**
+       * @description If you specify `through`, the `foreignKey` option is ignored.
+       */
+      let foreignKeyData;
+      if (isPresent(opts.through)) {
+        foreignKeyData = { [opts.through.foreignKey]: self.id };
+      } else {
+        foreignKeyData = { [opts.foreignKey]: self.id };
+      }
+
       const associationData = {
         dependent: opts.dependent,
         validate: opts.validate,
-        foreignKeyData,
+        foreignKeyData: isPresent(opts.through) ? {} : foreignKeyData,
       };
       const holder = new Holder(opts.klass, [], associationData);
 
+      /**
+       * @description Update _associationCache.
+       */
       if (self._associationCache[relationName]) {
-        const oldHolder = self._associationCache[relationName].associationHolder;
+        const oldHolder = self._associationCache[relationName].associationHolder as any;
         holder.proxy = Array.from(oldHolder.proxy);
         holder.flags = oldHolder.flags;
         self._associationCache[relationName].associationHolder = holder;
@@ -74,38 +190,75 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
         self._associationCache[relationName].associationHolder = holder;
       }
 
-      let useScope;
-      if (holder.flags.useProxy) {
-        /**
-         * @description Pass by value so that 「proxy === record」 does not occur
-         */
-        useScope = Array.from(holder.proxy);
-      } else {
-        if (scope) {
-          useScope = scope(opts.klass).toA();
+      let useScope: T[] | Promise<T[]>;
+
+      /**
+       * @description Decide which scope to use.
+       * @description If you specify `through`, the `foreignKey` option and `scope` is ignored.
+       */
+      if (isPresent(opts.through)) {
+        const {
+          klass: throughKlass,
+          foreignKey: foreignKeyName,
+          associationForeignKey: associationForeignKeyName,
+        } = opts.through;
+
+        if (holder.flags.useProxy) {
+          /**
+           * @description Pass by value so that 「proxy === record」 does not occur
+           */
+          useScope = Array.from(holder.proxy);
         } else {
-          // @ts-expect-error
-          useScope = opts.klass.where<T>(foreignKeyData).toA();
+          useScope = throughKlass
+            // @ts-expect-error
+            .where<T>({ [foreignKeyName]: self.id })
+            .toA()
+            .then((throughRecords) => {
+              const associationIds = throughRecords.map((r) => r[associationForeignKeyName]);
+              return (
+                opts.klass
+                  // @ts-expect-error
+                  .where<T>({ id: associationIds })
+                  .toA()
+              );
+            });
+        }
+      } else {
+        if (holder.flags.useProxy) {
+          /**
+           * @description Pass by value so that 「proxy === record」 does not occur
+           */
+          useScope = Array.from(holder.proxy);
+        } else {
+          if (scope) {
+            useScope = scope(opts.klass).toA();
+          } else {
+            // @ts-expect-error
+            useScope = opts.klass.where<T>(foreignKeyData).toA();
+          }
         }
       }
 
       const runtimeScope = createRuntimeAssociationRelation<T, any>((resolve, _reject) => {
         resolve({ holder, scope: useScope });
-      }, opts.klass)
-        .where(foreignKeyData)
-        .toA();
+      }, opts.klass);
 
       /**
        * @description Since it is a runtime specification, only any type can be given.
        */
       const collectionProxy = createRuntimeCollectionProxy<T, any>((resolve, _reject) => {
-        resolve({ holder, scope: runtimeScope });
+        if (isPresent(opts.through)) {
+          resolve({ holder, scope: runtimeScope });
+        } else {
+          resolve({ holder, scope: runtimeScope.where(foreignKeyData).toA() });
+        }
       }, opts.klass);
       return collectionProxy;
     };
 
     // default
     if (opts.validate === undefined) opts.validate = true;
+    if (opts.autosave === undefined) opts.autosave = true;
 
     /**
      * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
@@ -113,103 +266,11 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     AssociationRegistry.create(this.name, AssociationList.hasMany, {
       [relationName]: {
         relationFn,
-        saveStrategy: PersistenceStrategy.saveStrategyFn(relationName, opts.validate),
-        saveOrThrowStrategy: PersistenceStrategy.saveOrThrowStrategyFn(relationName, opts.validate),
-        destroyStrategy: PersistenceStrategy.destroyStrategyFn(relationName, opts),
+        saveStrategy: PersistenceStrategy.hasManySaveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.hasManySaveOrThrowStrategyFn(relationName, opts),
+        destroyStrategy: PersistenceStrategy.hasManyDestroyStrategyFn(relationName, opts),
       },
     });
-  }
-
-  /**
-   * @todo use scope
-   * @todo change return value CollectionProxy runtime instance
-   */
-  static hasAndBelongsToMany<T extends ActiveRecord$Base>(
-    relationName: string,
-    opts: t.HasAndBelongsToManyOptions<T>,
-    _scope?: t.HasAndBelongsToManyOptions<T>
-  ) {
-    const klass = opts.klass;
-    const foreignKeysFn = (self: T) => {
-      const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-        this.name,
-        klass.name,
-        'array'
-      );
-      return tables.reduce((acc, pair) => {
-        if (pair[0] == self.id) {
-          acc.push(pair[1]);
-        }
-        return acc;
-      }, []);
-    };
-
-    IntermediateTable.create(this.name, klass.name, []);
-    AssociationRegistry.create(this.name, AssociationList.hasAndBelongsToMany, {
-      [relationName]: {
-        relationFn: (self: T) => (klass as any).where({ id: foreignKeysFn(self) }),
-      },
-    });
-  }
-
-  hasAndBelongsToMany<T extends ActiveRecord$Base = any>(
-    record: T
-  ): { [key: string]: t.ForeignKey } {
-    const klassNameLeft = this.constructor.name;
-    const klassNameRight = record.constructor.name;
-
-    const tables = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-      klassNameLeft,
-      klassNameLeft,
-      'array'
-    );
-
-    if (Array.isArray(tables)) {
-      IntermediateTable.create(klassNameLeft, klassNameRight, [[this.id, record.id]]);
-      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
-    } else {
-      throw errObj({
-        code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,
-        params: {
-          klassNameLeft,
-          klassNameRight,
-        },
-      });
-    }
-  }
-
-  releaseAndBelongsToMany<T extends ActiveRecord$Base = any>(
-    record: T
-  ): { [key: string]: t.ForeignKey } {
-    const klassNameLeft = this.constructor.name;
-    const klassNameRight = record.constructor.name;
-
-    const beforeIntermediateTable = IntermediateTable.read<[t.ForeignKey, t.ForeignKey][]>(
-      klassNameLeft,
-      klassNameRight
-    );
-
-    if (Array.isArray(beforeIntermediateTable)) {
-      let leavedData = [];
-      let deleteData = [];
-      beforeIntermediateTable.forEach((pair) => {
-        if (this.id == pair[0] && record.id == pair[1]) {
-          deleteData.push(pair);
-        } else {
-          leavedData.push(pair);
-        }
-      });
-      IntermediateTable.update(klassNameLeft, klassNameRight, leavedData);
-      return { [klassNameLeft]: this.id, [klassNameRight]: record.id };
-    } else {
-      throw errObj({
-        code: ErrCodes.RECORD_DO_NOT_HAVE_HAS_AND_BELONGS_TO_MANY,
-        params: {
-          klassNameLeft,
-          klassNameRight,
-        },
-      });
-    }
   }
 
   static _defineAssociations<T extends ActiveRecord$Base>(self: T) {
@@ -228,6 +289,26 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
           value: () => relationFn<T>(self),
         });
       });
+    });
+  }
+
+  buildHasOneRecord<T extends ActiveRecord$Base, U extends rt.Record$Params>(
+    relationName: string,
+    params?: Partial<U>
+  ): Promise<T> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    /**
+     * @description need to call hasOne relation once to set _associationCache
+     */
+    return _this[relationName]().then((existOneRecord) => {
+      if (existOneRecord) existOneRecord.destroySync();
+      const holder = _this._associationCache[relationName].associationHolder;
+      const { recordKlass, foreignKeyData } = holder;
+      const merged = Object.assign(params || {}, foreignKeyData);
+      const record = new recordKlass(merged) as T;
+      _this._associationCache[relationName].associationScope = [record];
+      return record;
     });
   }
 }

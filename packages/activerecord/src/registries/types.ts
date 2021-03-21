@@ -2,31 +2,27 @@
 import { ActiveRecord$Base } from '@/records';
 import { AssociationList } from '@/records/modules/associations';
 
-// types
-import * as at from '@/records/modules/associations';
-
 export type AssociationsBelongsToValue = {
   relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
 };
-export type AssociationsHasOneValue = AssociationsBelongsToValue;
+export type AssociationsHasOneValue = {
+  relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T>;
+  saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T | boolean | number>;
+};
 export type AssociationsHasManyValue = {
   relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
   saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
   saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
   destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T[] | boolean | number>;
 };
-export type AssociationsHasAndBelongsToManyValue = {
-  relationFn: <T extends ActiveRecord$Base>(self: ActiveRecord$Base) => Promise<T[]>;
-  saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
-  saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
-};
 
 export type AssociationsData = {
   [uniqueRelationName: string]:
     | AssociationsBelongsToValue
     | AssociationsHasOneValue
-    | AssociationsHasManyValue
-    | AssociationsHasAndBelongsToManyValue;
+    | AssociationsHasManyValue;
 };
 
 export type Associations = {
@@ -40,10 +36,6 @@ export type Scopes = {
       ...args
     ) => Promise<ActiveRecord$Base[]>;
   };
-};
-
-export type IntermediateTables = {
-  [klassName: string]: Array<[at.Associations$ForeignKey, at.Associations$ForeignKey]>;
 };
 
 export type Records = {

@@ -7,9 +7,6 @@ The implementation of has_many of [rails](https://github.com/yukihirop/rue/issue
 - [x] [static]belongsTo
 - [x] [static]hasOne
 - [x] [static]hasMany
-- [x] [static]hasAndBelongsToMany
-- [x] hasAndBelongsToMany
-- [x] releaseHasAndBelongsToMany
 
 ## Reference
 

@@ -70,7 +70,7 @@ PersistenceRecord.hasMany<PersistenceChildRecord>('children', {
   validate: true,
 });
 
-describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
+describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
   beforeEach(() => {
     PersistenceRecord.resetRecordCache();
     PersistenceChildRecord.resetRecordCache();
@@ -82,7 +82,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
   });
 
   describe('#save', () => {
-    describe('when success save', () => {
+    describe('when success save (default: autosave === true)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record
@@ -163,6 +163,166 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
             childAge: [],
             childName: [err],
           },
+          parentId: 1,
+        });
+      });
+    });
+
+    describe('when specify autosave === false', () => {
+      type AutosaveFalseRecordParams = {
+        id: t.Record$PrimaryKey;
+        name: string;
+        age: number;
+      };
+
+      class AutosaveFalseRecord extends ActiveRecord$Base<AutosaveFalseRecordParams> {
+        public id: AutosaveFalseRecordParams['id'];
+        public name: AutosaveFalseRecordParams['name'];
+        public age: AutosaveFalseRecordParams['age'];
+        public children: t.Record$HasMany<PersistenceChildRecord>;
+
+        protected fetchAll(): Promise<AutosaveFalseRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+            { id: 3, name: 'name_3', age: 3 },
+            { id: 4, name: 'name_4', age: 4 },
+          ]);
+        }
+      }
+
+      AutosaveFalseRecord.validates('name', { length: { is: 6 } });
+      AutosaveFalseRecord.validates('age', { numericality: { lessThan: 10 } });
+
+      type AutosaveFalseChildRecordParams = {
+        id: t.Record$PrimaryKey;
+        parentId: t.Record$ForeignKey;
+        childName: string;
+        childAge: number;
+      };
+
+      class AutosaveFalseChildRecord extends ActiveRecord$Base<AutosaveFalseChildRecordParams> {
+        public id: AutosaveFalseChildRecordParams['id'];
+        public parentId: AutosaveFalseChildRecordParams['parentId'];
+        public childName: AutosaveFalseChildRecordParams['childName'];
+        public childAge: AutosaveFalseChildRecordParams['childAge'];
+
+        protected fetchAll(): Promise<AutosaveFalseChildRecordParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, childName: 'child_name_1', childAge: 1 },
+            { id: 2, parentId: 1, childName: 'child_name_2', childAge: 2 },
+            { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
+            { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
+          ]);
+        }
+
+        static translate(key: string, opts?: any): string {
+          return key;
+        }
+      }
+
+      AutosaveFalseChildRecord.validates('childName', { length: { is: 12 } });
+      AutosaveFalseChildRecord.validates('childAge', {
+        numericality: { lessThan: 10 },
+        allow_undefined: true,
+      });
+
+      AutosaveFalseRecord.hasMany<AutosaveFalseChildRecord>('children', {
+        klass: AutosaveFalseChildRecord,
+        foreignKey: 'parentId',
+        validate: true,
+        autosave: false,
+      });
+
+      afterEach(() => {
+        AutosaveFalseRecord.resetRecordCache();
+        AutosaveFalseChildRecord.resetRecordCache();
+      });
+
+      it('associated records save is skipped (should return true)', async () => {
+        const record = (await AutosaveFalseRecord.first<AutosaveFalseRecord>()) as AutosaveFalseRecord;
+        await record
+          .children()
+          .build<AutosaveFalseChildRecordParams>({ id: 5, childName: 'child_name_5' });
+        expect(await record.save()).toEqual(true);
+        expect(await record.children()).toEqual([
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 1,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 1,
+            childName: 'child_name_1',
+            errors: { childAge: [], childName: [] },
+            id: 1,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 2,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 2,
+            childName: 'child_name_2',
+            errors: { childAge: [], childName: [] },
+            id: 2,
+            parentId: 1,
+          },
+          {
+            __rue_created_at__: '2021-03-05T23:03:21+09:00',
+            __rue_record_id__: 3,
+            __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: false,
+            childAge: 3,
+            childName: 'child_name_3',
+            errors: { childAge: [], childName: [] },
+            id: 3,
+            parentId: 1,
+          },
+          {
+            __rue_record_id__: undefined,
+            _associationCache: {},
+            _destroyed: false,
+            _newRecord: true,
+            childName: 'child_name_5',
+            errors: { childAge: [], childName: [] },
+            id: 5,
+            parentId: 1,
+          },
+        ]);
+      });
+
+      it('associated records save is skipped (should return false / validation error)', async () => {
+        const errForRecord = new Error('AutosaveFalseChildRecord is invalid.');
+        const errChildNameForChild = new Error(
+          "'rue.records.AutosaveFalseChildRecord.childName' is not equal length ('12' characters)."
+        );
+        const errChildAgeForChild = new Error(
+          "'rue.records.AutosaveFalseChildRecord.childAge' is not less than '10'."
+        );
+        const record = (await AutosaveFalseRecord.first<AutosaveFalseRecord>()) as AutosaveFalseRecord;
+        await record.children().build<AutosaveFalseChildRecordParams>({
+          id: 5,
+          childName: 'invalid_name_5',
+          childAge: 100,
+        });
+        expect(await record.save()).toEqual(false);
+        expect(record.errors['hasMany']['children']).toEqual([errForRecord]);
+        expect(await record.children().last()).toEqual({
+          __rue_record_id__: undefined,
+          _associationCache: {},
+          _destroyed: false,
+          _newRecord: true,
+          childAge: 100,
+          childName: 'invalid_name_5',
+          errors: { childAge: [errChildAgeForChild], childName: [errChildNameForChild] },
+          id: 5,
           parentId: 1,
         });
       });
