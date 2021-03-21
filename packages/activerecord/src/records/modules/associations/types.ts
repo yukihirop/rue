@@ -25,14 +25,14 @@ export const enum AssociationList {
 /**
  * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
  */
-export const enum DependentList {
-  destroy = 'destroy',
-  delete = 'delete',
-  deleteAll = 'deleteAll',
-  nullify = 'nullify',
-  restrictWithException = 'restrictWithException',
-  restrictWithError = 'restrictWithError',
-}
+export const DependentList = {
+  destroy: 'destroy',
+  delete: 'delete',
+  deleteAll: 'deleteAll',
+  nullify: 'nullify',
+  restrictWithException: 'restrictWithException',
+  restrictWithError: 'restrictWithError',
+};
 
 export type ThroughOptions<T extends ActiveRecord$Base> = {
   klass: ct.Constructor<T>;
@@ -54,7 +54,7 @@ export type HasOneScope<T extends ActiveRecord$Base> = (
 export type HasOneOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
   klass: ct.Constructor<T>;
   foreignKey: ForeignKey;
-  dependent?: ct.valueOf<DependentList>;
+  dependent?: typeof DependentList[keyof typeof DependentList];
   validate?: boolean;
   through?: ThroughOptions<U>;
   autosave?: boolean;
@@ -67,7 +67,7 @@ export type HasOneOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Ba
 export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
   klass: ct.Constructor<T>;
   foreignKey: ForeignKey;
-  dependent?: ct.valueOf<DependentList>;
+  dependent?: typeof DependentList[keyof typeof DependentList];
   validate?: boolean;
   through?: ThroughOptions<U>;
   autosave?: boolean;

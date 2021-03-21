@@ -4,9 +4,10 @@ import { ActiveRecord$Associations$Impl } from './impl';
 import { registryForAssociations as AssociationRegistry } from '@/registries';
 import { ActiveRecord$Associations$PersistenceStrategy as PersistenceStrategy } from './persistence_strategy';
 import { isPresent } from '@/utils';
+import { errObj, ErrCodes } from '@/errors';
 
 // enums
-import { AssociationList } from './types';
+import { AssociationList, DependentList } from './types';
 
 // types
 import type * as ct from '@/types';
@@ -34,6 +35,16 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     opts: t.HasOneOptions<T>,
     scope?: t.HasOneScope<T>
   ) {
+    const validDependentList = Object.values(DependentList).filter((d) => d != 'deleteAll');
+    if (opts.dependent && !validDependentList.includes(opts.dependent)) {
+      throw errObj({
+        code: ErrCodes.ARGUMENT_IS_INVALID,
+        message: `The 'dependent' option must be one of [${validDependentList.join(
+          ', '
+        )}], but is '${opts.dependent}'`,
+      });
+    }
+
     const relationFn = (self: T): Promise<T> => {
       /**
        * @description I'm worried about the overhead, but load it dynamically to avoid circular references
@@ -131,6 +142,16 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     opts: t.HasManyOptions<T>,
     scope?: t.HasManyScope<T>
   ) {
+    const validDependentList = Object.values(DependentList).filter((d) => d != 'delete');
+    if (opts.dependent && !validDependentList.includes(opts.dependent)) {
+      throw errObj({
+        code: ErrCodes.ARGUMENT_IS_INVALID,
+        message: `The 'dependent' option must be one of [${validDependentList.join(
+          ', '
+        )}], but is '${opts.dependent}'`,
+      });
+    }
+
     const relationFn = (self: T) => {
       /**
        * @description I'm worried about the overhead, but load it dynamically to avoid circular references

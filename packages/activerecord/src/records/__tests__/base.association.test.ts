@@ -319,6 +319,65 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
         });
       });
     });
+
+    describe('when specify invalid dependent', () => {
+      type TestAssociationHasOneInvalidDependentParams = {
+        id: t.Record$PrimaryKey;
+        name: String;
+        age: number;
+      };
+
+      type TestAssociationHasOneInvalidDependentChildParams = {
+        id: t.Record$PrimaryKey;
+        parentId: t.Record$ForeignKey;
+        oneName: String;
+        oneAge: number;
+      };
+
+      class TestAssociationHasOneInvalidDependentRecord extends Record {
+        public id: TestAssociationHasOneInvalidDependentParams['id'];
+        public name: TestAssociationHasOneInvalidDependentParams['name'];
+        public age: TestAssociationHasOneInvalidDependentParams['age'];
+        public one: t.Record$HasOne<TestAssociationHasOneInvalidDependentChildRecord>;
+
+        protected fetchAll(): Promise<TestAssociationHasOneInvalidDependentParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+          ]);
+        }
+      }
+      class TestAssociationHasOneInvalidDependentChildRecord extends Record {
+        public id: TestAssociationHasOneInvalidDependentChildParams['id'];
+        public parentId: TestAssociationHasOneInvalidDependentChildParams['parentId'];
+        public oneName: TestAssociationHasOneInvalidDependentChildParams['oneName'];
+        public oneAge: TestAssociationHasOneInvalidDependentChildParams['oneAge'];
+
+        protected fetchAll(): Promise<TestAssociationHasOneInvalidDependentChildParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, oneName: 'onne_name_11', oneAge: 11 },
+            { id: 2, parentId: 1, oneName: 'onne_name_21', oneAge: 21 },
+            { id: 3, parentId: 2, oneName: 'onne_name_22', oneAge: 22 },
+            { id: 4, parentId: 2, oneName: 'onne_name_42', oneAge: 42 },
+          ]);
+        }
+      }
+
+      it('should correctly', () => {
+        expect(() => {
+          TestAssociationHasOneInvalidDependentRecord.hasOne<TestAssociationHasOneInvalidDependentChildRecord>(
+            'one',
+            {
+              klass: TestAssociationHasOneInvalidDependentChildRecord,
+              foreignKey: 'parentId',
+              dependent: 'invalid',
+            }
+          );
+        }).toThrowError(
+          "The 'dependent' option must be one of [destroy, delete, nullify, restrictWithException, restrictWithError], but is 'invalid'"
+        );
+      });
+    });
   });
 
   describe('[static] hasMany (default)', () => {
@@ -615,6 +674,65 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           parentId: 1,
         },
       ]);
+    });
+
+    describe('when specify invalid dependent', () => {
+      type TestAssociationHasManyInvalidDependentParams = {
+        id: t.Record$PrimaryKey;
+        name: String;
+        age: number;
+      };
+
+      type TestAssociationHasManyInvalidDependentChildParams = {
+        id: t.Record$PrimaryKey;
+        parentId: t.Record$ForeignKey;
+        childName: String;
+        childAge: number;
+      };
+
+      class TestAssociationHasManyInvalidDependentRecord extends Record {
+        public id: TestAssociationHasManyInvalidDependentParams['id'];
+        public name: TestAssociationHasManyInvalidDependentParams['name'];
+        public age: TestAssociationHasManyInvalidDependentParams['age'];
+        public children: t.Record$HasMany<TestAssociationHasManyInvalidDependentChildRecord>;
+
+        protected fetchAll(): Promise<TestAssociationHasManyInvalidDependentParams[]> {
+          return Promise.resolve([
+            { id: 1, name: 'name_1', age: 1 },
+            { id: 2, name: 'name_2', age: 2 },
+          ]);
+        }
+      }
+      class TestAssociationHasManyInvalidDependentChildRecord extends Record {
+        public id: TestAssociationHasManyInvalidDependentChildParams['id'];
+        public parentId: TestAssociationHasManyInvalidDependentChildParams['parentId'];
+        public childName: TestAssociationHasManyInvalidDependentChildParams['childName'];
+        public childAge: TestAssociationHasManyInvalidDependentChildParams['childAge'];
+
+        protected fetchAll(): Promise<TestAssociationHasManyInvalidDependentChildParams[]> {
+          return Promise.resolve([
+            { id: 1, parentId: 1, childName: 'onne_name_11', childAge: 11 },
+            { id: 2, parentId: 1, childName: 'onne_name_21', childAge: 21 },
+            { id: 3, parentId: 2, childName: 'onne_name_22', childAge: 22 },
+            { id: 4, parentId: 2, childName: 'onne_name_42', childAge: 42 },
+          ]);
+        }
+      }
+
+      it('should correctly', () => {
+        expect(() => {
+          TestAssociationHasManyInvalidDependentRecord.hasMany<TestAssociationHasManyInvalidDependentChildRecord>(
+            'children',
+            {
+              klass: TestAssociationHasManyInvalidDependentChildRecord,
+              foreignKey: 'parentId',
+              dependent: 'invalid',
+            }
+          );
+        }).toThrowError(
+          "The 'dependent' option must be one of [destroy, deleteAll, nullify, restrictWithException, restrictWithError], but is 'invalid'"
+        );
+      });
     });
   });
 
