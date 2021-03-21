@@ -17,9 +17,9 @@ import {
 // types
 import type * as t from './types';
 import type * as mt from '@/records/modules';
-import type * as at from '@/records/modules/associations';
+import type * as mat from '@/records/modules/associations';
 import type * as rmt from '@/records/relations/modules';
-import type * as act from '@/records/associations/collection_proxy/types';
+import type * as rat from '@/records/associations/types';
 
 // https://stackoverflow.com/questions/42999765/add-a-method-to-an-existing-class-in-typescript/43000000#43000000
 abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveModel$Base {
@@ -27,11 +27,11 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
 
   // Instance vairalbes
-  public id: at.Associations$PrimaryKey;
+  public id: mat.Associations$PrimaryKey;
   public errors: t.Validations$Errors;
   protected _destroyed: boolean;
   protected _newRecord: boolean;
-  _associationCache: act.AssociationCache;
+  _associationCache: rat.AssociationCache;
 
   // ActiveRecord$Persistence
   static RUE_RECORD_ID = ActiveRecord$Persistence.RUE_RECORD_ID;
@@ -47,25 +47,25 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ) => T | T[];
-  static delete: (id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]) => number;
+  static delete: (id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]) => number;
   static destroy: <T extends ActiveRecord$Base<t.Params>>(
-    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]
   ) => T | T[];
   static update: <T extends ActiveRecord$Base, U>(
-    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ) => T | T[];
   // ActiveRecord$Associations
   static belongsTo: (relationName: string, klass: Function, foreignKey: string) => void;
-  static hasOne: (
+  static hasOne: <T extends ActiveRecord$Base, U extends ActiveRecord$Base = any>(
     relationName: string,
-    klass: Function,
-    foreignKey: at.Associations$ForeignKey
+    opts: mat.Associations$HasOneOptions<T, U>,
+    scope?: mat.Associations$HasOneScope<T>
   ) => void;
   static hasMany: <T extends ActiveRecord$Base, U extends ActiveRecord$Base = any>(
     relationName: string,
-    opts: at.Associations$HasManyOptions<T, U>,
-    scope?: at.Associations$HasManyScope<T>
+    opts: mat.Associations$HasManyOptions<T, U>,
+    scope?: mat.Associations$HasManyScope<T>
   ) => void;
   protected static defineAssociations<T extends ActiveRecord$Base>(self: T) {
     ActiveRecord$Associations._defineAssociations(self);
@@ -78,11 +78,11 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   ) => void;
   // ActiveRecord$Core
   static find: <T extends ActiveRecord$Base<t.Params>>(
-    ...ids: at.Associations$PrimaryKey[]
+    ...ids: mat.Associations$PrimaryKey[]
   ) => T | T[];
   // ActiveRecord$Querying
   // static find: <T extends ActiveRecord$Base, U = { [key: string]: any }>(
-  //   ...ids: at.Associations$PrimaryKey[]
+  //   ...ids: mat.Associations$PrimaryKey[]
   // ) => Promise<T | T[]>;
   static findBy: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params: Partial<U>
@@ -195,6 +195,12 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    */
   public updateProp: (name: string, value: any) => boolean;
 
+  // ActiveRecord$Associations
+  public buildHasOneRecord: <T extends ActiveRecord$Base>(
+    relationName: string,
+    params?: Partial<P>
+  ) => Promise<T>;
+
   // ActiveRecord$Associations$Persistence
   public destroy: () => Promise<this | boolean>;
   protected _destroyAssociations: () => Promise<this[]>;
@@ -203,6 +209,10 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
 }
 
 // includes module
+ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
+  only: ['buildHasOneRecord'],
+});
+
 ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: ['save', 'saveOrThrow', 'destroy', '_destroyAssociations'],
 });

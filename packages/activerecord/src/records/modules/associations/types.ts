@@ -1,5 +1,6 @@
 import { ActiveRecord$Associations$CollectionProxy } from '@/records/associations';
 import { ActiveRecord$Base } from '@/records';
+import { ActiveRecord$Relation } from '@/records/relations';
 
 // types
 import type * as ct from '@/types';
@@ -26,16 +27,37 @@ export const enum AssociationList {
  */
 export const enum DependentList {
   destroy = 'destroy',
+  delete = 'delete',
   deleteAll = 'deleteAll',
   nullify = 'nullify',
   restrictWithException = 'restrictWithException',
   restrictWithError = 'restrictWithError',
 }
 
-export type HasManyThroughOptions<T extends ActiveRecord$Base> = {
+export type ThroughOptions<T extends ActiveRecord$Base> = {
   klass: ct.Constructor<T>;
   foreignKey: ForeignKey;
   associationForeignKey?: ForeignKey;
+};
+
+export type HasManyScope<T extends ActiveRecord$Base> = (
+  self: ct.Constructor<T>
+) => ActiveRecord$Associations$CollectionProxy<T>;
+
+export type HasOneScope<T extends ActiveRecord$Base> = (
+  self: ct.Constructor<T>
+) => ActiveRecord$Relation<T>;
+
+/**
+ * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one
+ */
+export type HasOneOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
+  klass: ct.Constructor<T>;
+  foreignKey: ForeignKey;
+  dependent?: ct.valueOf<DependentList>;
+  validate?: boolean;
+  through?: ThroughOptions<U>;
+  autosave?: boolean;
 };
 
 /**
@@ -47,10 +69,6 @@ export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$B
   foreignKey: ForeignKey;
   dependent?: ct.valueOf<DependentList>;
   validate?: boolean;
-  through?: HasManyThroughOptions<U>;
+  through?: ThroughOptions<U>;
   autosave?: boolean;
 };
-
-export type HasManyScope<T extends ActiveRecord$Base> = (
-  self: ct.Constructor<T>
-) => ActiveRecord$Associations$CollectionProxy<T>;

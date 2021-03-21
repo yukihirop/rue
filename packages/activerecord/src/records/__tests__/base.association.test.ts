@@ -7,7 +7,7 @@ import MockDate from 'mockdate';
 // types
 import type * as t from '@/index';
 
-describe('Record(Association)', () => {
+describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
   beforeEach(async () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
   });
@@ -128,7 +128,10 @@ describe('Record(Association)', () => {
     }
 
     // register relations
-    TestAssociationHasOneRecord.hasOne('child', TestAssociationHasOneChildRecord, 'foreignKey');
+    TestAssociationHasOneRecord.hasOne('child', {
+      klass: TestAssociationHasOneChildRecord,
+      foreignKey: 'foreignKey',
+    });
 
     it('should correctly', (done) => {
       TestAssociationHasOneRecord.all<TestAssociationHasOneRecord>().then((records) => {
@@ -356,7 +359,7 @@ describe('Record(Association)', () => {
     });
   });
 
-  describe("when hasMany (specify 'scope'", () => {
+  describe("when hasMany (specify 'scope')", () => {
     type TestAssociationHasManyScopeParams = {
       id: t.Record$PrimaryKey;
       name: String;
@@ -442,6 +445,61 @@ describe('Record(Association)', () => {
           parentId: 1,
         },
       ]);
+    });
+  });
+
+  describe('#buildHasOneRecord', () => {
+    type BuildHasOneRecordRecordParams = {
+      id: t.Record$PrimaryKey;
+      name: String;
+      age: number;
+    };
+
+    type BuildHasOneRecordOneRecordParams = {
+      id: t.Record$PrimaryKey;
+      parentId: t.Record$ForeignKey;
+      oneName: String;
+      oneAge: number;
+    };
+
+    class BuildHasOneRecordRecord extends Record<BuildHasOneRecordRecordParams> {
+      public id: BuildHasOneRecordRecordParams['id'];
+      public name: BuildHasOneRecordRecordParams['name'];
+      public age: BuildHasOneRecordRecordParams['age'];
+      public one: t.Record$HasOne<BuildHasOneRecordOneRecord>;
+
+      protected fetchAll(): Promise<BuildHasOneRecordRecordParams[]> {
+        return Promise.resolve([
+          { id: 1, name: 'name_1', age: 1 },
+          { id: 2, name: 'name_2', age: 2 },
+        ]);
+      }
+
+      buildOne(params?: t.Record$Params): Promise<BuildHasOneRecordOneRecord> {
+        return this.buildHasOneRecord('one', params);
+      }
+    }
+    class BuildHasOneRecordOneRecord extends Record {
+      public id: BuildHasOneRecordOneRecordParams['id'];
+      public parentId: BuildHasOneRecordOneRecordParams['parentId'];
+      public oneName: BuildHasOneRecordOneRecordParams['oneName'];
+      public oneAge: BuildHasOneRecordOneRecordParams['oneAge'];
+
+      protected fetchAll(): Promise<[]> {
+        return Promise.resolve([]);
+      }
+    }
+
+    // register relations
+    BuildHasOneRecordRecord.hasMany<BuildHasOneRecordOneRecord>('one', {
+      klass: BuildHasOneRecordOneRecord,
+      foreignKey: 'parentId',
+    });
+
+    describe('when default', () => {
+      it('should correctly', async () => {
+        const record = (await BuildHasOneRecordRecord.first<BuildHasOneRecordRecord>()) as BuildHasOneRecordRecord;
+      });
     });
   });
 });

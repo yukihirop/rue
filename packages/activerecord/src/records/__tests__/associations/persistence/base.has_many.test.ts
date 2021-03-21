@@ -70,7 +70,7 @@ PersistenceRecord.hasMany<PersistenceChildRecord>('children', {
   validate: true,
 });
 
-describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
+describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
   beforeEach(() => {
     PersistenceRecord.resetRecordCache();
     PersistenceChildRecord.resetRecordCache();

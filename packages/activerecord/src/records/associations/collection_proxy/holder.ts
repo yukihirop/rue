@@ -4,13 +4,13 @@ import { ActiveRecord$Relation$Holder } from '@/records/relations';
 
 // types
 import type * as ct from '@/types';
-import type * as t from './types';
+import type * as rat from '@/records/associations/types';
 
 export class ActiveRecord$Associations$CollectionProxy$Holder<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Relation$Holder<T> {
-  public associationData: t.HolderAssociationData;
-  public foreignKeyData: t.HolderAssociationData['foreignKeyData'];
+  public associationData: rat.HolderAssociationData;
+  public foreignKeyData: rat.HolderAssociationData['foreignKeyData'];
   public proxy: T[];
   public flags: {
     useProxy: boolean;
@@ -19,7 +19,7 @@ export class ActiveRecord$Associations$CollectionProxy$Holder<
   constructor(
     recordKlass: ct.Constructor<T>,
     records: T[],
-    associationData: t.HolderAssociationData
+    associationData: rat.HolderAssociationData
   ) {
     super(recordKlass, records);
     /**

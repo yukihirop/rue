@@ -5,7 +5,12 @@ import { AssociationList } from '@/records/modules/associations';
 export type AssociationsBelongsToValue = {
   relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
 };
-export type AssociationsHasOneValue = AssociationsBelongsToValue;
+export type AssociationsHasOneValue = {
+  relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T>;
+  saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  saveOrThrowStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;
+  destroyStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<T | boolean | number>;
+};
 export type AssociationsHasManyValue = {
   relationFn: <T extends ActiveRecord$Base>(self: T) => Promise<T[]>;
   saveStrategy?: <T extends ActiveRecord$Base>(self: T) => Promise<boolean>;

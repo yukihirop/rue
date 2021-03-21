@@ -4,12 +4,10 @@ import { RueModule } from '@rue/activesupport';
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { registryForAssociations as AssociationRegistry } from '@/registries';
+import { isPresent } from '@/utils';
 
 // enums
 import { AssociationList } from '@/records/modules/associations';
-
-// types
-import * as rt from '@/registries/types';
 
 export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
@@ -19,11 +17,15 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     // @ts-expect-error
-    return _this._destroyAssociations<T>().then(() => {
-      if (Object.values(_this.errors['hasMany'] || {}).length > 0) {
+    return _this._destroyAssociations<T>().then((result) => {
+      if (isPresent(_this.errors['hasMany'] || isPresent(_this.errors['hasOne']))) {
         return false;
       } else {
-        return _this.destroySync();
+        if (result.every(Boolean)) {
+          return _this.destroySync();
+        } else {
+          return false;
+        }
       }
     });
   }
@@ -33,22 +35,24 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   > {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-    // save hasMany association records
-    const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
-      _this.constructor.name,
-      AssociationList.hasMany,
-      'object'
-    );
+
+    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
+
     return Promise.all(
-      Object.keys(hasManyStrategies).map((relationName: string) => {
-        if (hasManyStrategies[relationName]['destroyStrategy']) {
-          const destroyStrategy = hasManyStrategies[relationName][
-            'destroyStrategy'
-          ] as rt.AssociationsHasManyValue['destroyStrategy'];
-          // @ts-expect-error
-          return destroyStrategy<T>(_this);
-        }
-      })
+      Object.keys(allAssociationStrategies).reduce((acc, associationName: AssociationList) => {
+        const result = Object.keys(allAssociationStrategies[associationName]).map(
+          (relationName: string) => {
+            const destroyStrategy =
+              allAssociationStrategies[associationName][relationName]['destroyStrategy'];
+            if (destroyStrategy) {
+              return destroyStrategy(_this) as Promise<boolean>;
+            }
+          }
+        );
+        // @ts-expect-error
+        acc.push(...result);
+        return acc;
+      }, [])
     ).then((associationDestroyResult) => {
       return associationDestroyResult;
     });
@@ -63,21 +67,22 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
 
     _this.saveSync(opts);
 
-    // save hasMany association records
-    const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
-      _this.constructor.name,
-      AssociationList.hasMany,
-      'object'
-    );
+    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
+
     return Promise.all(
-      Object.keys(hasManyStrategies).map((relationName: string) => {
-        if (hasManyStrategies[relationName]['saveStrategy']) {
-          const saveStrategy = hasManyStrategies[relationName][
-            'saveStrategy'
-          ] as rt.AssociationsHasManyValue['saveStrategy'];
-          return saveStrategy(_this) as Promise<boolean>;
-        }
-      })
+      Object.keys(allAssociationStrategies)
+        .map((associationName: AssociationList) => {
+          return Object.keys(allAssociationStrategies[associationName]).map(
+            (relationName: string) => {
+              const saveStrategy =
+                allAssociationStrategies[associationName][relationName]['saveStrategy'];
+              if (saveStrategy) {
+                return saveStrategy(_this) as Promise<boolean>;
+              }
+            }
+          );
+        })
+        .flat()
     ).then((associationSaveResult) => {
       return associationSaveResult.every(Boolean);
     });
@@ -92,22 +97,22 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
 
     _this.saveSyncOrThrow();
 
-    // save hasMany association records
-    const hasManyStrategies = AssociationRegistry.read<rt.AssociationsData>(
-      _this.constructor.name,
-      AssociationList.hasMany,
-      'object'
-    );
+    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
 
     return Promise.all(
-      Object.keys(hasManyStrategies).map((relationName: string) => {
-        if (hasManyStrategies[relationName]['saveStrategy']) {
-          const saveOrThrowStrategy = hasManyStrategies[relationName][
-            'saveOrThrowStrategy'
-          ] as rt.AssociationsHasManyValue['saveOrThrowStrategy'];
-          return saveOrThrowStrategy(_this) as Promise<boolean>;
-        }
-      })
+      Object.keys(allAssociationStrategies)
+        .map((associationName: AssociationList) => {
+          return Object.keys(allAssociationStrategies[associationName]).map(
+            (relationName: string) => {
+              const saveStrategy =
+                allAssociationStrategies[associationName][relationName]['saveOrThrowStrategy'];
+              if (saveStrategy) {
+                return saveStrategy(_this) as Promise<boolean>;
+              }
+            }
+          );
+        })
+        .flat()
     ).then((associationSaveResult) => {
       return associationSaveResult.every(Boolean);
     });

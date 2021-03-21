@@ -10,6 +10,7 @@ import { AssociationList } from './types';
 
 // types
 import type * as ct from '@/types';
+import type * as rt from '@/index';
 import type * as t from './types';
 import type * as art from '@/records/relations/types';
 
@@ -30,12 +31,70 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
   static hasOne<T extends ActiveRecord$Base = any>(
     relationName: string,
-    klass: Function,
-    foreignKey: t.ForeignKey
+    opts: t.HasOneOptions<T>,
+    scope?: t.HasOneScope<T>
   ) {
+    const relationFn = (self: T): Promise<T> => {
+      /**
+       * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+       */
+      const { ActiveRecord$Associations$Holder: Holder } = require('../../associations');
+
+      /**
+       * @description If you specify `through`, the `foreignKey` option is ignored.
+       */
+      let foreignKeyData;
+      if (isPresent(opts.through)) {
+        foreignKeyData = { [opts.through.foreignKey]: self.id };
+      } else {
+        foreignKeyData = { [opts.foreignKey]: self.id };
+      }
+
+      const associationData = {
+        dependent: opts.dependent,
+        validate: opts.validate,
+        foreignKeyData,
+      };
+      const holder = new Holder(opts.klass, [], associationData);
+
+      /**
+       * @description Update _associationCache.
+       */
+      if (self._associationCache[relationName]) {
+        self._associationCache[relationName].associationHolder = holder;
+      } else {
+        self._associationCache[relationName] = {};
+        self._associationCache[relationName].associationHolder = holder;
+      }
+
+      let useScope: Promise<T>;
+      if (scope) {
+        useScope = scope(opts.klass).first() as Promise<T>;
+      } else {
+        if (self._associationCache[relationName].associationScope as T[]) {
+          useScope = Promise.resolve(self._associationCache[relationName].associationScope[0]);
+        } else {
+          // @ts-expect-error
+          useScope = opts.klass.findBy(foreignKeyData).then((oneRecord) => {
+            self._associationCache[relationName].associationScope = [oneRecord];
+            return oneRecord;
+          });
+        }
+      }
+
+      return useScope;
+    };
+
+    // default
+    if (opts.validate === undefined) opts.validate = true;
+    if (opts.autosave === undefined) opts.autosave = true;
+
     AssociationRegistry.create(this.name, AssociationList.hasOne, {
       [relationName]: {
-        relationFn: (self: T) => (klass as any).findBy({ [foreignKey]: self.id }),
+        relationFn,
+        saveStrategy: PersistenceStrategy.hasOneSaveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.hasOneSaveOrThrowStrategyFn(relationName, opts),
+        destroyStrategy: PersistenceStrategy.hasOneDestroyStrategyFn(relationName, opts),
       },
     });
   }
@@ -74,7 +133,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
        * @description Update _associationCache.
        */
       if (self._associationCache[relationName]) {
-        const oldHolder = self._associationCache[relationName].associationHolder;
+        const oldHolder = self._associationCache[relationName].associationHolder as any;
         holder.proxy = Array.from(oldHolder.proxy);
         holder.flags = oldHolder.flags;
         self._associationCache[relationName].associationHolder = holder;
@@ -157,9 +216,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     AssociationRegistry.create(this.name, AssociationList.hasMany, {
       [relationName]: {
         relationFn,
-        saveStrategy: PersistenceStrategy.saveStrategyFn(relationName, opts),
-        saveOrThrowStrategy: PersistenceStrategy.saveOrThrowStrategyFn(relationName, opts),
-        destroyStrategy: PersistenceStrategy.destroyStrategyFn(relationName, opts),
+        saveStrategy: PersistenceStrategy.hasManySaveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.hasManySaveOrThrowStrategyFn(relationName, opts),
+        destroyStrategy: PersistenceStrategy.hasManyDestroyStrategyFn(relationName, opts),
       },
     });
   }
@@ -180,6 +239,26 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
           value: () => relationFn<T>(self),
         });
       });
+    });
+  }
+
+  buildHasOneRecord<T extends ActiveRecord$Base, U extends rt.Record$Params>(
+    relationName: string,
+    params?: Partial<U>
+  ): Promise<T> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    /**
+     * @description need to call hasOne relation once to set _associationCache
+     */
+    return _this[relationName]().then((existOneRecord) => {
+      if (existOneRecord) existOneRecord.destroySync();
+      const holder = _this._associationCache[relationName].associationHolder;
+      const { recordKlass, foreignKeyData } = holder;
+      const merged = Object.assign(params || {}, foreignKeyData);
+      const record = new recordKlass(merged) as T;
+      _this._associationCache[relationName].associationScope = [record];
+      return record;
     });
   }
 }
