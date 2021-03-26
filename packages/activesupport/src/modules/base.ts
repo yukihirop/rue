@@ -20,7 +20,15 @@ This is Rue Module(~ abstract class).
 Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
 It has the following as internal static properties.
 
-・__rue_module__ = true (readonly)`;
+・__rue_module__ = true (readonly)
+
+[Features]
+
+・You can include prototype methods in your class and extend static methods.
+・Include or extend does not update the prototype chain. 
+・Information about which class managed internally includes and extends which Rue module is updated.
+
+`;
 
   constructor() {
     // RueModule description for display
@@ -29,7 +37,15 @@ This is Rue Module(~ abstract class).
 Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
 It has the following as internal static properties.
 
-・__rue_module__ = true (readonly)`;
+・__rue_module__ = true (readonly)
+
+[Features]
+
+・You can include prototype methods in your class and extend static methods.
+・Include or extend does not update the prototype chain. 
+・Information about which class managed internally includes and extends which Rue module is updated.
+
+`;
 
     throw `Could not create ${this.constructor.name} instance. Cause: ${this.constructor.name} is RueModule (~ abstract class)`;
   }

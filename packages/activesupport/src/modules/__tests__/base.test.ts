@@ -14,7 +14,15 @@ This is Rue Module(~ abstract class).
 Run 'RueModule.prototype' or 'Object.keys(RueModule)' and so on to see more details.
 It has the following as internal static properties.
 
-・__rue_module__ = true (readonly)`);
+・__rue_module__ = true (readonly)
+
+[Features]
+
+・You can include prototype methods in your class and extend static methods.
+・Include or extend does not update the prototype chain. 
+・Information about which class managed internally includes and extends which Rue module is updated.
+
+`);
       });
     });
   });
