@@ -1,16 +1,5 @@
-// types
-import * as t from '@/modules';
-
 // classes
-export { ActiveSupport$Registry$Base } from './base';
-
-// signleton
-import { ActiveSupport$Registry$Base } from './base';
-export const registryForRueModule = new ActiveSupport$Registry$Base<t.RueModuleAncestors>(
-  'RueModuleAncestors'
-);
-
-// types
+export { ActiveSupport$Registry$Base, registryForRueModule, registryForRueClassName } from './base';
 
 // prettier-ignore
 export type {

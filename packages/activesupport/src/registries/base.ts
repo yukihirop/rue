@@ -69,3 +69,32 @@ export class ActiveSupport$Registry$Base<T> {
     }
   }
 }
+
+/**
+ * define singleton
+ */
+
+// types
+import type * as mt from '@/modules';
+
+export const registryForRueModule = new ActiveSupport$Registry$Base<mt.RueModuleAncestors>(
+  'RueModuleAncestors'
+);
+
+const innerRegistryForRueClassName = new ActiveSupport$Registry$Base<string[]>('RueClassNames');
+export class registryForRueClassName {
+  private static readonly klassName = 'RueClassNames';
+  private static readonly key = 'all';
+
+  static create(val: t.RegistryValue) {
+    innerRegistryForRueClassName.create(this.klassName, this.key, val);
+  }
+
+  static update(val: t.RegistryValue) {
+    innerRegistryForRueClassName.update(this.klassName, this.key, val);
+  }
+
+  static read<T>(ensureType?: t.RegistryType): T {
+    return innerRegistryForRueClassName.read<T>(this.klassName, this.key, ensureType);
+  }
+}
