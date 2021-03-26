@@ -91,14 +91,12 @@ export class ActiveRecord$Persistence extends RueModule {
         RecordCache.create(klassName, RECORD_ALL, [this]);
       } else {
         const allRecords = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
-
-        allRecords.forEach((record) => {
-          if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) {
-            // @ts-expect-error
-            record = this;
-          }
+        const updatedAllRecords = allRecords.map((record) => {
+          // @ts-expect-error
+          if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) record = this;
+          return record;
         });
-        RecordCache.update(klassName, RECORD_ALL, allRecords);
+        RecordCache.update(klassName, RECORD_ALL, updatedAllRecords);
       }
 
       return true;
