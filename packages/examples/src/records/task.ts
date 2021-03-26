@@ -33,7 +33,10 @@ Task.validates('content', { presence: true });
 Task.validates('status', { inclusion: { in: ['success', 'failure', 'wip'] } });
 
 // Register Relashionships
-Task.belongsTo('account', Account, 'accountId');
+Task.belongsTo('account', {
+  klass: Account,
+  foreignKey: 'accountId',
+});
 
 // Register Scopes
 Task.scope('fromStatus', (status) => Task.where({ status }));
