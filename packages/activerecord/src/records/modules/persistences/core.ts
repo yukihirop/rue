@@ -5,6 +5,7 @@ import { RueModule } from '@rue/activesupport';
 import { errObj, ErrCodes } from '@/errors';
 import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base } from '@/records';
+import { clone } from '@/utils';
 
 // third party
 import dayjs from 'dayjs';
@@ -90,14 +91,12 @@ export class ActiveRecord$Persistence extends RueModule {
         RecordCache.create(klassName, RECORD_ALL, [this]);
       } else {
         const allRecords = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
-
-        allRecords.forEach((record) => {
-          if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) {
-            // @ts-expect-error
-            record = this;
-          }
+        const updatedAllRecords = allRecords.map((record) => {
+          // @ts-expect-error
+          if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) record = this;
+          return record;
         });
-        RecordCache.update(klassName, RECORD_ALL, allRecords);
+        RecordCache.update(klassName, RECORD_ALL, updatedAllRecords);
       }
 
       return true;
@@ -112,7 +111,7 @@ export class ActiveRecord$Persistence extends RueModule {
   saveSyncOrThrow(): void | boolean {
     const _this = this as any;
     if (_this.isValid()) {
-      this.saveSync({ validate: false });
+      return this.saveSync({ validate: false });
     } else {
       throw errObj({
         code: ErrCodes.RECORD_IS_INVALID,
@@ -182,7 +181,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-    const oldRecord = _clone(_this);
+    const oldRecord = clone<ActiveRecord$Base>(_this);
     updateProps(oldRecord);
 
     if (oldRecord.isValid()) {
@@ -207,7 +206,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-    const oldRecord = _clone(_this);
+    const oldRecord = clone<ActiveRecord$Base>(_this);
     updateProps(oldRecord);
 
     if (oldRecord.isValid()) {
@@ -361,10 +360,6 @@ export class ActiveRecord$Persistence extends RueModule {
       return updatedRecords;
     }
   }
-}
-
-function _clone(original: ActiveRecord$Base): ActiveRecord$Base {
-  return Object.assign(Object.create(Object.getPrototypeOf(original)), original);
 }
 
 function _ensureRecordCache(klassName: string) {

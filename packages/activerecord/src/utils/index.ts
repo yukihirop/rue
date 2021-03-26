@@ -21,3 +21,7 @@ export function isSuperset(target: string[], other: string[]): boolean {
   }
   return true;
 }
+
+export function clone<T>(original: T): T {
+  return Object.assign(Object.create(Object.getPrototypeOf(original)), original);
+}

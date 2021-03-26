@@ -20,12 +20,72 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
 
   static belongsTo<T extends ActiveRecord$Base = any>(
     relationName: string,
-    klass: Function,
-    foreignKey: string
+    opts: t.BelongsToOptions<T>,
+    scope?: t.BelongsToScope<T>
   ) {
+    const validDependentList = ['delete', 'destroy'];
+    if (opts.dependent && !validDependentList.includes(opts.dependent)) {
+      throw errObj({
+        code: ErrCodes.ARGUMENT_IS_INVALID,
+        message: `The 'dependent' option must be one of [${validDependentList.join(
+          ', '
+        )}], but is '${opts.dependent}'`,
+      });
+    }
+
+    const relationFn = (self: T) => {
+      /**
+       * @description I'm worried about the overhead, but load it dynamically to avoid circular references
+       */
+      const { ActiveRecord$Associations$Holder: Holder } = require('../../associations');
+
+      const foreignKeyData = { [opts.foreignKey]: self.id };
+      const associationData = {
+        dependent: opts.dependent,
+        validate: opts.validate,
+        foreignKeyData,
+      };
+      const holder = new Holder(opts.klass, [], associationData);
+
+      /**
+       * @description Update _associationCache.
+       */
+      if (self._associationCache[relationName]) {
+        self._associationCache[relationName].associationHolder = holder;
+      } else {
+        self._associationCache[relationName] = {};
+        self._associationCache[relationName].associationHolder = holder;
+      }
+
+      let useScope: Promise<T>;
+      if (scope) {
+        useScope = scope(opts.klass).first() as Promise<T>;
+      } else {
+        if (self._associationCache[relationName].associationScope as T[]) {
+          useScope = Promise.resolve(self._associationCache[relationName].associationScope[0]);
+        } else {
+          useScope = (opts.klass as any)
+            .findBy({ id: self[opts.foreignKey] })
+            .then((belongsToRecord) => {
+              self._associationCache[relationName].associationScope = [belongsToRecord];
+              return belongsToRecord;
+            });
+        }
+      }
+
+      return useScope;
+    };
+
+    // default
+    if (opts.validate === undefined) opts.validate = true;
+    if (opts.autosave === undefined) opts.autosave = true;
+
     AssociationRegistry.create(this.name, AssociationList.belongsTo, {
       [relationName]: {
-        relationFn: (self: T) => (klass as any).findBy({ id: self[foreignKey] }),
+        relationFn,
+        saveStrategy: PersistenceStrategy.belongsToSaveStrategyFn(relationName, opts),
+        saveOrThrowStrategy: PersistenceStrategy.belongsToSaveOrThrowStrategyFn(relationName, opts),
+        destroyStrategy: PersistenceStrategy.belongsToDestroyStrategyFn(relationName, opts),
       },
     });
   }
@@ -292,7 +352,27 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     });
   }
 
+  /**
+   * @see buildAssociationRecord
+   */
   buildHasOneRecord<T extends ActiveRecord$Base, U extends rt.Record$Params>(
+    relationName: string,
+    params?: Partial<U>
+  ): Promise<T> {
+    return this.buildAssociationRecord(relationName, params);
+  }
+
+  /**
+   * @alias buildAssociationRecord
+   */
+  buildBelongsToRecord<T extends ActiveRecord$Base, U extends rt.Record$Params>(
+    relationName: string,
+    params?: Partial<U>
+  ): Promise<T> {
+    return this.buildAssociationRecord(relationName, params);
+  }
+
+  buildAssociationRecord<T extends ActiveRecord$Base, U extends rt.Record$Params>(
     relationName: string,
     params?: Partial<U>
   ): Promise<T> {
@@ -301,8 +381,8 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     /**
      * @description need to call hasOne relation once to set _associationCache
      */
-    return _this[relationName]().then((existOneRecord) => {
-      if (existOneRecord) existOneRecord.destroySync();
+    return _this[relationName]().then((existAssociationRecord) => {
+      if (existAssociationRecord) existAssociationRecord.destroySync();
       const holder = _this._associationCache[relationName].associationHolder;
       const { recordKlass, foreignKeyData } = holder;
       const merged = Object.assign(params || {}, foreignKeyData);

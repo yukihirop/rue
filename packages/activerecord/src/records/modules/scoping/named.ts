@@ -6,6 +6,7 @@ import { cacheForRecords as RecordCache } from '@/registries';
 import { ActiveRecord$Base, RECORD_ALL, RUE_AUTO_INCREMENT_RECORD_ID } from '@/records/base';
 import { ActiveRecord$Relation, ActiveRecord$Relation$Holder as Holder } from '@/records/relations';
 import { registryForScopes as ScopeRegistry } from '@/registries';
+import { clone } from '@/utils';
 
 // types
 import type * as t from './types';
@@ -45,7 +46,7 @@ export class ActiveRecord$Scoping$Named extends RueModule {
 
               record.saveSync();
 
-              return record;
+              return clone(record);
             }) as Array<T>;
             return Array.from(records);
           });

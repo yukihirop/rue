@@ -60,11 +60,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
     }
 
     // register relations
-    TestAssociationBelongsToChildRecord.belongsTo(
-      'parent',
-      TestAssociationBelongsToRecord,
-      'foreignKey'
-    );
+    TestAssociationBelongsToChildRecord.belongsTo('parent', {
+      klass: TestAssociationBelongsToRecord,
+      foreignKey: 'foreignKey',
+    });
 
     it('should correctly', (done) => {
       TestAssociationBelongsToChildRecord.all<TestAssociationBelongsToChildRecord>().then(

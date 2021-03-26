@@ -45,7 +45,8 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
             const destroyStrategy =
               allAssociationStrategies[associationName][relationName]['destroyStrategy'];
             if (destroyStrategy) {
-              return destroyStrategy(_this) as Promise<boolean>;
+              // @ts-expect-error
+              return destroyStrategy(_this);
             }
           }
         );
@@ -65,8 +66,6 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 
-    _this.saveSync(opts);
-
     const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
 
     return Promise.all(
@@ -77,7 +76,23 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
               const saveStrategy =
                 allAssociationStrategies[associationName][relationName]['saveStrategy'];
               if (saveStrategy) {
-                return saveStrategy(_this) as Promise<boolean>;
+                if (associationName === AssociationList.belongsTo) {
+                  const saveResultPromise = saveStrategy(_this) as Promise<boolean>;
+                  return saveResultPromise.then((result) => {
+                    if (result) {
+                      if (_this.isNewRecord() || _this.isChanged()) {
+                        return _this.saveSync(opts);
+                      } else {
+                        return _this.isValid();
+                      }
+                    } else {
+                      return false;
+                    }
+                  });
+                } else {
+                  if (_this.isNewRecord() || _this.isChanged()) _this.saveSync(opts);
+                  return saveStrategy(_this) as Promise<boolean>;
+                }
               }
             }
           );
@@ -104,10 +119,30 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
         .map((associationName: AssociationList) => {
           return Object.keys(allAssociationStrategies[associationName]).map(
             (relationName: string) => {
-              const saveStrategy =
+              const saveOrThrowStrategy =
                 allAssociationStrategies[associationName][relationName]['saveOrThrowStrategy'];
-              if (saveStrategy) {
-                return saveStrategy(_this) as Promise<boolean>;
+              if (saveOrThrowStrategy) {
+                if (associationName === AssociationList.belongsTo) {
+                  const saveResultPromise = saveOrThrowStrategy(_this) as Promise<boolean>;
+                  return saveResultPromise
+                    .then((reslult) => {
+                      if (reslult) {
+                        if (_this.isNewRecord() || _this.isChanged()) {
+                          return _this.saveSyncOrThrow();
+                        } else {
+                          return _this.isValid();
+                        }
+                      } else {
+                        return false;
+                      }
+                    })
+                    .catch((err) => {
+                      throw err;
+                    });
+                } else {
+                  if (_this.isNewRecord() || _this.isChanged()) _this.saveSyncOrThrow();
+                  return saveOrThrowStrategy(_this) as Promise<boolean>;
+                }
               }
             }
           );

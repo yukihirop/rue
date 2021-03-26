@@ -36,24 +36,39 @@ export const DependentList = {
 
 export type ThroughOptions<T extends ActiveRecord$Base> = {
   klass: ct.Constructor<T>;
-  foreignKey: ForeignKey;
-  associationForeignKey?: ForeignKey;
+  foreignKey: string;
+  associationForeignKey?: string;
 };
+
+export type BelongsToScope<T extends ActiveRecord$Base> = (
+  self: ct.Constructor<T>
+) => ActiveRecord$Relation<T>;
+
+export type HasOneScope<T extends ActiveRecord$Base> = (
+  self: ct.Constructor<T>
+) => ActiveRecord$Relation<T>;
 
 export type HasManyScope<T extends ActiveRecord$Base> = (
   self: ct.Constructor<T>
 ) => ActiveRecord$Associations$CollectionProxy<T>;
 
-export type HasOneScope<T extends ActiveRecord$Base> = (
-  self: ct.Constructor<T>
-) => ActiveRecord$Relation<T>;
+/**
+ * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-belongs_to
+ */
+export type BelongsToOptions<T extends ActiveRecord$Base> = {
+  klass: ct.Constructor<T>;
+  foreignKey: string;
+  dependent?: 'delete' | 'destroy';
+  validate?: boolean;
+  autosave?: boolean;
+};
 
 /**
  * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one
  */
 export type HasOneOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
   klass: ct.Constructor<T>;
-  foreignKey: ForeignKey;
+  foreignKey: string;
   dependent?: typeof DependentList[keyof typeof DependentList];
   validate?: boolean;
   through?: ThroughOptions<U>;
@@ -66,7 +81,7 @@ export type HasOneOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Ba
  */
 export type HasManyOptions<T extends ActiveRecord$Base, U extends ActiveRecord$Base = any> = {
   klass: ct.Constructor<T>;
-  foreignKey: ForeignKey;
+  foreignKey: string;
   dependent?: typeof DependentList[keyof typeof DependentList];
   validate?: boolean;
   through?: ThroughOptions<U>;

@@ -3,6 +3,8 @@ export { ActiveRecord$Associations, ActiveRecord$Associations$Persistence } from
 export { ActiveRecord$Scoping } from './scoping';
 export { ActiveRecord$Core } from './core';
 export { ActiveRecord$Querying } from './querying';
+export { ActiveRecord$AttributeMethods } from './attribute_methods';
+export { ActiveRecord$Dirty } from './dirty';
 
 // types
 export type {
