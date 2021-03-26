@@ -1,13 +1,131 @@
-import { HasOneOptions } from './../types';
+import { BelongsTo } from './../types';
+// locals
 import { ActiveRecord$Base } from '@/records';
 import { errObj, ErrCodes } from '@/errors';
 
-import { DependentList, AssociationList, HasManyOptions } from '../types';
+// enum
+import { DependentList, AssociationList } from '../types';
+
+import type * as rmat from '@/records/modules/associations/types';
 
 export class ActiveRecord$Associations$PersistenceStrategy {
+  static belongsToSaveStrategyFn<T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: rmat.BelongsToOptions<T>
+  ): (self: T) => Promise<boolean> {
+    return (self: T): Promise<boolean> => {
+      return self[relationName]().then((belongsToRecord) => {
+        if (belongsToRecord === null) return true;
+
+        if (opts.autosave) {
+          belongsToRecord[opts.foreignKey] = self.id;
+          return belongsToRecord.saveSync({ validate: opts.validate });
+        } else {
+          if (opts.validate) {
+            const validResult = belongsToRecord.isValid();
+            if (!validResult) {
+              if (!self.errors[AssociationList.belongsTo]) {
+                self.errors[AssociationList.belongsTo] = {
+                  [relationName]: [
+                    errObj({
+                      code: ErrCodes.RECORD_IS_INVALID,
+                      params: {
+                        inspect: opts.klass.name,
+                      },
+                    }),
+                  ],
+                };
+              }
+            }
+            return validResult;
+          } else {
+            /**
+             * @description Skip saving associated record
+             */
+            return true;
+          }
+        }
+      });
+    };
+  }
+
+  static belongsToSaveOrThrowStrategyFn<T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: rmat.HasOneOptions<T>
+  ): (self: T) => Promise<boolean> {
+    return (self: T): Promise<boolean> => {
+      return self[relationName]().then((belongsToRecord) => {
+        if (belongsToRecord === null) return true;
+
+        if (opts.autosave) {
+          belongsToRecord[opts.foreignKey] = self.id;
+          const saveResult = belongsToRecord.saveSyncOrThrow({ validate: opts.validate });
+          return saveResult;
+        } else {
+          if (opts.validate) {
+            const validResult = belongsToRecord.isValid();
+            if (!validResult) {
+              if (!self.errors[AssociationList.belongsTo]) {
+                const err = errObj({
+                  code: ErrCodes.RECORD_IS_INVALID,
+                  params: {
+                    inspect: opts.klass.name,
+                  },
+                });
+                self.errors[AssociationList.belongsTo] = {
+                  [relationName]: [err],
+                };
+                throw err;
+              }
+            }
+            return validResult;
+          } else {
+            /**
+             * @description Skip saving associated record
+             */
+            return true;
+          }
+        }
+      });
+    };
+  }
+
+  static belongsToDestroyStrategyFn<T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: rmat.BelongsToOptions<T>
+  ): (self: T) => Promise<T | boolean | number> {
+    return (self: T): Promise<T | boolean | number> => {
+      return self[relationName]().then((belongsToRecord) => {
+        if (opts.dependent === DependentList.destroy) {
+          return belongsToRecord.destroySync();
+        } else if (opts.dependent === DependentList.delete) {
+          const belongsToKlass = opts.klass;
+          /**
+           * @description  If set to :delete, the associated object is deleted without calling its destroy method.
+           */
+          // @ts-expect-error
+          const deleteResult = belongsToKlass.delete(belongsToRecord.id);
+          if (deleteResult) {
+            belongsToRecord._destroyed = true;
+            self._associationCache[relationName].associationScope = [belongsToRecord];
+          }
+          return deleteResult;
+        } else {
+          throw errObj({
+            code: ErrCodes.FOREIGN_KEY_CONSTRAIT_FAILS,
+            params: {
+              resource: self.constructor.name,
+              foreignKey: opts.foreignKey,
+            },
+          });
+        }
+      });
+    };
+  }
+
   static hasOneSaveStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasOneOptions<T>
+    opts: rmat.HasOneOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]().then((oneRecord) => {
@@ -46,7 +164,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
   static hasOneSaveOrThrowStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasOneOptions<T>
+    opts: rmat.HasOneOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]().then((oneRecord) => {
@@ -83,7 +201,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
   static hasOneDestroyStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasManyOptions<T>
+    opts: rmat.HasOneOptions<T>
   ): (self: T) => Promise<T | boolean | number> {
     return (self: T): Promise<T | boolean | number> => {
       return self[relationName]().then((oneRecord) => {
@@ -136,7 +254,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
   static hasManySaveStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasManyOptions<T>
+    opts: rmat.HasManyOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]()
@@ -182,7 +300,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
   static hasManySaveOrThrowStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasManyOptions<T>
+    opts: rmat.HasManyOptions<T>
   ): (self: T) => Promise<boolean> {
     return (self: T): Promise<boolean> => {
       return self[relationName]()
@@ -206,7 +324,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
   static hasManyDestroyStrategyFn<T extends ActiveRecord$Base>(
     relationName: string,
-    opts: HasManyOptions<T>
+    opts: rmat.HasManyOptions<T>
   ): (self: T) => Promise<T[] | boolean | number> {
     return (self: T): Promise<T[] | boolean | number> => {
       return self[relationName]()

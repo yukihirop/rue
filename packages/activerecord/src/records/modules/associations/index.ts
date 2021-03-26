@@ -14,6 +14,8 @@ export type {
   HasOne as Associations$HasOne,
   HasMany as Associations$HasMany,
   // Options
+  BelongsToOptions as Associations$BelongsToOptions,
+  BelongsToScope as Associations$BelongsToScope,
   HasOneOptions as Associations$HasOneOptions,
   HasOneScope as Associations$HasOneScope,
   HasManyOptions as Associations$HasManyOptions,

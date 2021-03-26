@@ -12,6 +12,8 @@ import {
   ActiveRecord$Scoping,
   ActiveRecord$Querying,
   ActiveRecord$Core,
+  ActiveRecord$AttributeMethods,
+  ActiveRecord$Dirty,
 } from '@/records/modules';
 
 // types
@@ -56,7 +58,11 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     params: Partial<U> | Array<Partial<U>>
   ) => T | T[];
   // ActiveRecord$Associations
-  static belongsTo: (relationName: string, klass: Function, foreignKey: string) => void;
+  static belongsTo: <T extends ActiveRecord$Base>(
+    relationName: string,
+    opts: mat.Associations$BelongsToOptions<T>,
+    scope?: mat.Associations$BelongsToScope<T>
+  ) => void;
   static hasOne: <T extends ActiveRecord$Base, U extends ActiveRecord$Base = any>(
     relationName: string,
     opts: mat.Associations$HasOneOptions<T, U>,
@@ -200,17 +206,32 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
     relationName: string,
     params?: Partial<P>
   ) => Promise<T>;
+  public buildBelongsToRecord: <T extends ActiveRecord$Base>(
+    relationName: string,
+    params?: Partial<P>
+  ) => Promise<T>;
+  public buildAssociationRecord: <T extends ActiveRecord$Base>(
+    relationName: string,
+    params?: Partial<P>
+  ) => Promise<T>;
 
   // ActiveRecord$Associations$Persistence
   public destroy: () => Promise<this | boolean>;
   protected _destroyAssociations: () => Promise<this[]>;
   public save: (opts?: { validate: boolean }) => Promise<boolean>;
   public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
+
+  // ActiveRecord$AttributeMethods
+  public attributes: () => Partial<P>;
+  public properties: () => Partial<P>;
+
+  // ActiveRecord$Dirty
+  public isChanged: () => boolean;
 }
 
 // includes module
 ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['buildHasOneRecord'],
+  only: ['buildHasOneRecord', 'buildBelongsToRecord', 'buildAssociationRecord'],
 });
 
 ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
@@ -232,6 +253,14 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'updateProperty',
     'updateProp',
   ],
+});
+
+ActiveRecord$AttributeMethods.rueModuleIncludedFrom(ActiveRecord$Impl, {
+  only: ['attributes', 'properties'],
+});
+
+ActiveRecord$Dirty.rueModuleIncludedFrom(ActiveRecord$Impl, {
+  only: ['isChanged'],
 });
 
 // extend module
