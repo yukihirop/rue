@@ -18,6 +18,7 @@ abstract class ActiveModel$Impl {
   static __rue_ancestors__ = [];
   // ActiveModel$Translation
   static translate: (key: string, opts?: any) => string;
+  protected static checkTranslate: () => boolean;
   static __t: (propKey: string) => string;
   // ActiveModel$Validations
   static objType: () => t.Validations$ObjType;
@@ -64,7 +65,7 @@ ActiveModel$MinifyMeasures.rueModuleIncludedFrom(ActiveModel$Impl, {
 });
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['translate', '__t'],
+  only: ['translate', 'checkTranslate', '__t'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['objType', 'validates'],

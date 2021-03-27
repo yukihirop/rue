@@ -7,7 +7,16 @@ import { ActiveModel$Base } from '@/models';
 // this is bound to an instance(class) of ActiveModel$Base
 export class ActiveModel$Translation extends RueModule {
   static translate(key: string, opts?: any): string {
-    throw "Please implement '[static] translate' in Inherited Class.";
+    throw "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.";
+  }
+
+  protected static checkTranslate(): boolean {
+    try {
+      this.translate('__rue_check__');
+      return true;
+    } catch (err) {
+      throw err;
+    }
   }
 
   humanPropertyName(propKey: string): string {

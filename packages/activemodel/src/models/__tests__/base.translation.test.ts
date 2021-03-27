@@ -1,7 +1,57 @@
 // locals
 import { ActiveModel$Base as Model } from '../base';
 
-describe('Model(Translation)', () => {
+describe('ActiveModel$Base (ActiveModel$Translation)', () => {
+  describe('[static] translate', () => {
+    describe('when default (throw error)', () => {
+      class TranslateModel extends Model {}
+      it('should correctly', () => {
+        expect(() => {
+          TranslateModel.translate('test');
+        }).toThrowError(
+          "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class."
+        );
+      });
+    });
+
+    describe('when override', () => {
+      class TranslateModel extends Model {
+        static translate(key: string, opts?: any): string {
+          return key;
+        }
+      }
+      it('should correctly', () => {
+        expect(TranslateModel.translate('test')).toEqual('test');
+      });
+    });
+  });
+
+  describe('[static] checkTranslate', () => {
+    describe('when default (throw error)', () => {
+      class CheckTranslateModel extends Model {}
+      it('should correctly', () => {
+        expect(() => {
+          // @ts-expect-error
+          CheckTranslateModel.checkTranslate();
+        }).toThrowError(
+          "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class."
+        );
+      });
+    });
+
+    describe('when override (return true)', () => {
+      class CheckTranslateModel extends Model {
+        static translate(key: string, opts?: any): string {
+          return key;
+        }
+      }
+      it('should correctly', () => {
+        // @ts-expect-error
+        expect(CheckTranslateModel.checkTranslate()).toEqual(true);
+      });
+    });
+  });
+
   describe('#humanPropertyName(alias to #humanPropName)', () => {
     type TestHumanPropertyNameParams = {
       profile: {
