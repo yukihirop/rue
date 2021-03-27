@@ -1,0 +1,5 @@
+# ActiveModel$MinifyMeasures
+
+## Methods
+
+- [x] 

@@ -2,7 +2,11 @@
 import { ActiveSupport$ImplBase as Support$ImplBase } from '@rue/activesupport';
 
 // locals
-import { ActiveModel$Translation, ActiveModel$Validations } from './modules';
+import {
+  ActiveModel$Translation,
+  ActiveModel$Validations,
+  ActiveModel$MinifyMeasures,
+} from './modules';
 
 // types
 import * as t from './types';
@@ -21,6 +25,22 @@ abstract class ActiveModel$Impl {
     propKey: string,
     opts: t.Validations$Options<T, U>
   ) => void;
+  // ActiveModel$MinifyMeasures
+  protected static checkUniqueKey: () => boolean;
+  static get uniqueKey(): string {
+    // @ts-expect-error
+    return this._uniqueKey();
+  }
+
+  /**
+   * define prototype
+   */
+
+  // ActiveModel$MinifyMeasures
+  get uniqueKey(): string {
+    // @ts-expect-error
+    return this._uniqueKey();
+  }
 }
 
 interface ActiveModel$Impl {
@@ -39,12 +59,18 @@ ActiveModel$Translation.rueModuleIncludedFrom(ActiveModel$Impl, {
 ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, {
   only: ['isInvalid', 'isValid', '_toObj'],
 });
+ActiveModel$MinifyMeasures.rueModuleIncludedFrom(ActiveModel$Impl, {
+  only: ['_uniqueKey'],
+});
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['translate', '__t'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['objType', 'validates'],
+});
+ActiveModel$MinifyMeasures.rueModuleExtendedFrom(ActiveModel$Impl, {
+  only: ['uniqueKey', 'checkUniqueKey', '_uniqueKey'],
 });
 
 export { ActiveModel$Impl };
