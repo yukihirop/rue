@@ -4,4 +4,4 @@ export type RueModuleOptions = {
   only: string[];
 };
 
-export type RueModuleAncestors = RueModule[];
+export type RueModuleAncestors = Array<typeof RueModule>;

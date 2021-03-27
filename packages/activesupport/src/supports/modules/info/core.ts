@@ -2,7 +2,8 @@
 import { RueModule, RueModuleAncestorController } from '@/modules';
 
 // types
-import * as t from './types';
+import type * as t from './types';
+import type * as mt from '@/modules';
 
 const BUILTIN_STATIC_METHODS = ['constructor', 'length', 'name'];
 const BUILTIN_PROTOTYPE_METHODS = ['prototype', 'length', 'name'];
@@ -121,19 +122,19 @@ export class ActiveSupport$Info extends RueModule {
     // RueModule's ancestor chain and JavaScript prototype chain are not related.
     // Therefore you have to reassemble the chain yourself
 
-    const _getAncestors = <T>(f: Function, ancestors: T[]) => {
+    const _getAncestors = (f: Function, ancestors: mt.RueModuleAncestors) => {
       const proto = Object.getPrototypeOf(f);
 
       if (proto == null) return ancestors;
       const fRueModuleAncestors = new RueModuleAncestorController(f);
 
       if (fRueModuleAncestors.data.length > 0) {
-        fRueModuleAncestors.ancestors().forEach((ancestor: T) => {
+        fRueModuleAncestors.ancestors().forEach((ancestor) => {
           const proto = Object.getPrototypeOf(ancestor);
           if (proto.__rue_impl_class__) {
             const controller = new RueModuleAncestorController(proto);
             const willAddAncestors = [ancestor, ...controller.ancestors()];
-            willAddAncestors.forEach((childAncestor: T) => {
+            willAddAncestors.forEach((childAncestor) => {
               if (!ancestors.includes(childAncestor)) ancestors.push(childAncestor);
             });
           } else {

@@ -103,10 +103,10 @@ It has the following as internal static properties.
 }
 
 export class RueModuleAncestorController {
-  public klass: RueModule;
+  public klass: Function;
   public data: t.RueModuleAncestors;
 
-  constructor(klass: RueModule) {
+  constructor(klass: Function) {
     this.klass = klass;
     this.data = Registry.read<t.RueModuleAncestors>(this.klass['name'], RUE_ANCESTORS, 'array');
   }
@@ -123,25 +123,24 @@ export class RueModuleAncestorController {
 
   ancestors(): t.RueModuleAncestors {
     const _getAncestors = (
-      klass: RueModule,
+      klass: Function,
       result: t.RueModuleAncestors[]
     ): t.RueModuleAncestors[] => {
       const controller = new RueModuleAncestorController(klass);
       if (!result.includes(klass as any)) result.push(klass as any);
 
       controller.data.forEach((childKlass) => {
-        if (childKlass != Object) {
-          const childAncestors = _getAncestors(childKlass, result);
-          childAncestors.forEach((ancestor) => {
-            if (!result.includes(ancestor)) result.push(ancestor);
-          });
-        }
+        const childAncestors = _getAncestors(childKlass, result);
+        childAncestors.forEach((ancestor) => {
+          if (!result.includes(ancestor)) result.push(ancestor);
+        });
       });
 
       return result;
     };
 
-    let result = [];
+    let result = [] as t.RueModuleAncestors;
+    // @ts-expect-error
     return _getAncestors(this.klass, result);
   }
 }
