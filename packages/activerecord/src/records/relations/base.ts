@@ -506,7 +506,7 @@ export class ActiveRecord$Relation$Base<
         .superThen(({ holder }) => {
           Evaluator.all(holder);
           return Promise.all(holder.scope.map(touchFn)).then((result) => {
-            holder.scope = RecordCache.read(holder.recordKlass.name, RECORD_ALL, 'array');
+            holder.scope = RecordCache.read(holder.recordKlass.unniqueKey, RECORD_ALL, 'array');
             return result.filter(Boolean).length;
           });
         })

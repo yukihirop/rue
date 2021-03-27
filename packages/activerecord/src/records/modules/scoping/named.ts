@@ -21,11 +21,12 @@ export class ActiveRecord$Scoping$Named extends RueModule {
   static all<T extends ActiveRecord$Base>(): ActiveRecord$Relation<T> {
     // @ts-expect-error
     const _this = this as ct.Constructor<T>;
-    const klassName = _this.name;
+    // @ts-expect-error
+    const cacheKey = _this.uniqueKey;
 
-    const aid = RecordCache.read<number>(klassName, RUE_AUTO_INCREMENT_RECORD_ID, 'value');
+    const aid = RecordCache.read<number>(cacheKey, RUE_AUTO_INCREMENT_RECORD_ID, 'value');
     if (aid != 1 && aid != undefined) {
-      const scope = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
+      const scope = RecordCache.read<T[]>(cacheKey, RECORD_ALL, 'array');
       // Must pass a copy
       const holder = new Holder<T>(_this, Array.from(scope));
       const relation = createRuntimeRelation<T, Holder<T>>((resolve, _reject) => {
@@ -67,11 +68,13 @@ export class ActiveRecord$Scoping$Named extends RueModule {
   ) {
     // @ts-expect-error
     const _this = this as ct.Constructor<T>;
+    // @ts-expect-error
+    const cacheKey = _this.uniqueKey;
 
-    const scopeData = ScopeRegistry.read<rt.Scopes>(_this.name, 'scope', 'object');
+    const scopeData = ScopeRegistry.read<rt.Scopes>(cacheKey, 'scope', 'object');
     if (scopeData[scopeName]) return;
 
-    ScopeRegistry.create(_this.name, 'scope', {
+    ScopeRegistry.create(cacheKey, 'scope', {
       [scopeName]: fn,
     });
 
@@ -83,7 +86,8 @@ function createRuntimeRelation<T extends ActiveRecord$Base, H extends Holder<T>>
   executor: art.PromiseExecutor<T, H>,
   recordKlass: ct.Constructor<T>
 ): ActiveRecord$Relation<T> {
-  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Relation`;
+  // @ts-expect-error
+  const runtimeKlassName = `${recordKlass.uniqueKey}$ActiveRecord_Relation`;
   const runtimeKlass = {
     [runtimeKlassName]: class extends ActiveRecord$Relation<T> {},
   }[runtimeKlassName];
@@ -94,7 +98,7 @@ function createRuntimeRelation<T extends ActiveRecord$Base, H extends Holder<T>>
 
 function defineScope<T extends ActiveRecord$Base>(klass: ct.Constructor<T>, scopeName: string) {
   // @ts-expect-error
-  const scopeFn = ScopeRegistry.data[klass.name]['scope'][scopeName] as (
+  const scopeFn = ScopeRegistry.data[klass.uniqueKey]['scope'][scopeName] as (
     self: ct.Constructor<T>,
     ...args: any[]
   ) => Promise<T[]>;

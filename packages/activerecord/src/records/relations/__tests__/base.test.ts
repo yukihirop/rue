@@ -21,7 +21,11 @@ describe('ActiveRecord$Relation$Base', () => {
   });
 
   describe('costructor', () => {
-    class ConstructorRecord extends ActiveRecord$Base {}
+    class ConstructorRecord extends ActiveRecord$Base {
+      get uniqueKey(): string {
+        return 'ConstructorRecord';
+      }
+    }
 
     const scope = [new ConstructorRecord(), new ConstructorRecord(), new ConstructorRecord()];
     it('should correctly', () => {
@@ -32,8 +36,8 @@ describe('ActiveRecord$Relation$Base', () => {
       )._init(ConstructorRecord);
       // @ts-ignore
       expect(typeof relation.recordKlass === 'function').toEqual(true);
-      // @ts-ignore
-      expect(relation.recordKlass.name).toEqual('ConstructorRecord');
+      // @ts-expect-error
+      expect(relation.recordKlass.uniqueKey).toEqual('ConstructorRecord');
       expect(holder.scope).toEqual([]);
     });
   });
@@ -49,6 +53,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsManyRecordParams['id'];
       public name: IsManyRecordParams['name'];
       public age: IsManyRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsManyRecord';
+      }
     }
 
     let scope: IsManyRecord[];
@@ -115,6 +123,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsNoneRecordParams['id'];
       public name: IsNoneRecordParams['name'];
       public age: IsNoneRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsNoneRecord';
+      }
     }
 
     let scope: IsNoneRecord[];
@@ -183,6 +195,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsOneRecordParams['id'];
       public name: IsOneRecordParams['name'];
       public age: IsOneRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsOneRecord';
+      }
     }
 
     let scope: IsOneRecord[];
@@ -248,6 +264,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: SizeRecordParams['id'];
       public name: SizeRecordParams['name'];
       public age: SizeRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'SizeRecord';
+      }
     }
 
     let scope: SizeRecord[];
@@ -315,6 +335,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsAnyRecordParams['id'];
       public name: IsAnyRecordParams['name'];
       public age: IsAnyRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsAnyRecord';
+      }
     }
 
     let scope: IsAnyRecord[];
@@ -377,6 +401,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsBlankRecordParams['id'];
       public name: IsBlankRecordParams['name'];
       public age: IsBlankRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsBlankRecord';
+      }
     }
 
     let scope: IsBlankRecord[];
@@ -434,6 +462,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: IsEmptyRecordParams['id'];
       public name: IsEmptyRecordParams['name'];
       public age: IsEmptyRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsEmptyRecord';
+      }
     }
 
     let scope: IsEmptyRecord[];
@@ -491,6 +523,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: BuildRecordParams['id'];
       public name: BuildRecordParams['name'];
       public age: BuildRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'BuildRecord';
+      }
     }
 
     let scope: BuildRecord[];
@@ -618,6 +654,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'CreateRecord';
       }
     }
 
@@ -783,6 +823,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'CreateOrThrowRecord';
       }
     }
 
@@ -958,6 +1002,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: CreateOrFindByRecordParams['id'];
       public name: CreateOrFindByRecordParams['name'];
       public age: CreateOrFindByRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'CreateOrFindByRecord';
+      }
     }
 
     let scope: CreateOrFindByRecord[];
@@ -1025,6 +1073,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       static translate(key: string, opts: string): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'CreateOrFindByOrThrowRecord';
       }
     }
 
@@ -1125,6 +1177,10 @@ describe('ActiveRecord$Relation$Base', () => {
       protected fetchAll(): Promise<DeleteByRecordParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'DeleteByRecord';
+      }
     }
 
     let scope: DeleteByRecord[];
@@ -1190,6 +1246,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'DestroyByRecord';
       }
     }
 
@@ -1313,6 +1373,10 @@ describe('ActiveRecord$Relation$Base', () => {
       protected fetchAll(): Promise<DeleteAllRecordParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'DeleteAllRecord';
+      }
     }
 
     let scope: DeleteAllRecord[];
@@ -1367,6 +1431,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       protected fetchAll(): Promise<DestroyAllRecordParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'DestroyAllRecord';
       }
     }
 
@@ -1451,6 +1519,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: FindOrCreateByRecordParams['id'];
       public name: FindOrCreateByRecordParams['name'];
       public age: FindOrCreateByRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'FindOrCreateByRecord';
+      }
     }
 
     let scope: FindOrCreateByRecord[];
@@ -1561,6 +1633,10 @@ describe('ActiveRecord$Relation$Base', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'FindOrCreateByOrThrowRecord';
       }
     }
 
@@ -1699,6 +1775,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: FindOrInitializeByRecordParams['id'];
       public name: FindOrInitializeByRecordParams['name'];
       public age: FindOrInitializeByRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'FindOrInitializeByRecord';
+      }
     }
 
     let scope: FindOrInitializeByRecord[];
@@ -1778,6 +1858,10 @@ describe('ActiveRecord$Relation$Base', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'UpdateAllRecord';
+      }
     }
 
     UpdateAllRecord.validates('name', { length: { is: 6 } });
@@ -1832,6 +1916,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: TouchAllRecordParams['id'];
       public name: TouchAllRecordParams['name'];
       public age: TouchAllRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'TouchAllRecord';
+      }
     }
 
     let scope: TouchAllRecord[];
@@ -1970,6 +2058,10 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: ToARecordParams['id'];
       public name: ToARecordParams['name'];
       public age: ToARecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'ToARecord';
+      }
     }
 
     let scope: ToARecord[];

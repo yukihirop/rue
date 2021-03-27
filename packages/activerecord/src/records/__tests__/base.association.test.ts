@@ -41,6 +41,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationBelongsToRecord';
+      }
     }
     class TestAssociationBelongsToChildRecord extends Record {
       public id: TestAssociationBelongsToChildParams['id'];
@@ -56,6 +60,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
           { id: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'TestAssociationBelongsToChildRecord';
       }
     }
 
@@ -111,6 +119,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasOneRecord';
+      }
     }
     class TestAssociationHasOneChildRecord extends Record {
       public id: TestAssociationHasOneChildParams['id'];
@@ -123,6 +135,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 1, foreignKey: 1, childName: 'child_name_11', childAge: 11 },
           { id: 2, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasOneChildRecord';
       }
     }
 
@@ -180,6 +196,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 2, name: 'name_2', age: 2 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneThroughRecord';
+        }
       }
 
       class TestAssociationHasOneThroughThroughRecord extends Record<TestAssociationHasOneThroughThroughParams> {
@@ -192,6 +212,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 1, parentId: 1, oneId: 1 },
             { id: 2, parentId: 1, oneId: 2 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneThroughThroughRecord';
         }
       }
 
@@ -207,6 +231,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 3, oneName: 'one_name_22', oneAge: 22 },
             { id: 4, oneName: 'one_name_42', oneAge: 42 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneThroughOneRecord';
         }
       }
 
@@ -271,6 +299,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 2, name: 'name_2', age: 2 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneScopeRecord';
+        }
       }
       class TestAssociationHasOneScopeChildRecord extends Record {
         public id: TestAssociationHasOneScopeChildParams['id'];
@@ -285,6 +317,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 3, parentId: 2, oneName: 'onne_name_22', oneAge: 22 },
             { id: 4, parentId: 2, oneName: 'onne_name_42', oneAge: 42 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneScopeChildRecord';
         }
       }
 
@@ -345,6 +381,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 2, name: 'name_2', age: 2 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneInvalidDependentRecord';
+        }
       }
       class TestAssociationHasOneInvalidDependentChildRecord extends Record {
         public id: TestAssociationHasOneInvalidDependentChildParams['id'];
@@ -359,6 +399,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 3, parentId: 2, oneName: 'onne_name_22', oneAge: 22 },
             { id: 4, parentId: 2, oneName: 'onne_name_42', oneAge: 42 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasOneInvalidDependentChildRecord';
         }
       }
 
@@ -405,6 +449,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyRecord';
+      }
     }
     class TestAssociationHasManyChildRecord extends Record {
       public id: TestAssociationHasManyChildParams['id'];
@@ -419,6 +467,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 3, foreignKey: 2, childName: 'child_name_22', childAge: 22 },
           { id: 4, foreignKey: 2, childName: 'child_name_42', childAge: 42 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyChildRecord';
       }
     }
 
@@ -494,6 +546,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyThroughRecord';
+      }
     }
 
     class TestAssociationHasManyThroughThroughRecord extends Record<TestAssociationHasManyThroughThroughParams> {
@@ -509,6 +565,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 4, parentId: 2, childId: 4 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyThroughThroughRecord';
+      }
     }
 
     class TestAssociationHasManyThroughChildRecord extends Record<TestAssociationHasManyThroughChildParams> {
@@ -523,6 +583,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 3, childName: 'child_name_22', childAge: 22 },
           { id: 4, childName: 'child_name_42', childAge: 42 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyThroughChildRecord';
       }
     }
 
@@ -613,6 +677,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyScopeRecord';
+      }
     }
     class TestAssociationHasManyScopeChildRecord extends Record {
       public id: TestAssociationHasManyScopeChildParams['id'];
@@ -627,6 +695,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
           { id: 3, parentId: 2, childName: 'child_name_22', childAge: 22 },
           { id: 4, parentId: 2, childName: 'child_name_42', childAge: 42 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'TestAssociationHasManyScopeChildRecord';
       }
     }
 
@@ -701,6 +773,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 2, name: 'name_2', age: 2 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasManyInvalidDependentRecord';
+        }
       }
       class TestAssociationHasManyInvalidDependentChildRecord extends Record {
         public id: TestAssociationHasManyInvalidDependentChildParams['id'];
@@ -715,6 +791,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
             { id: 3, parentId: 2, childName: 'onne_name_22', childAge: 22 },
             { id: 4, parentId: 2, childName: 'onne_name_42', childAge: 42 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'TestAssociationHasManyInvalidDependentChildRecord';
         }
       }
 
@@ -765,6 +845,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
       buildOne(params?: t.Record$Params): Promise<BuildHasOneRecordOneRecord> {
         return this.buildHasOneRecord('one', params);
       }
+
+      get uniqueKey(): string {
+        return 'BuildHasOneRecordRecord';
+      }
     }
     class BuildHasOneRecordOneRecord extends Record {
       public id: BuildHasOneRecordOneRecordParams['id'];
@@ -774,6 +858,10 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
 
       protected fetchAll(): Promise<[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'BuildHasOneRecordOneRecord';
       }
     }
 

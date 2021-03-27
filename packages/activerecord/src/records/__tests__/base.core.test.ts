@@ -26,6 +26,10 @@ describe('ActiveRecord$Base (Core)', () => {
       public id: FindRecordParams['id'];
       public name: FindRecordParams['name'];
       public age: FindRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'FindRecord';
+      }
     }
 
     beforeEach(() => {

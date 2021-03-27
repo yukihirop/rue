@@ -25,6 +25,10 @@ class DirtyRecord extends Record<DirtyRecordParams> {
       { id: 3, name: 'name_3', age: 3 },
     ]);
   }
+
+  get uniqueKey(): string {
+    return 'DirtyRecord';
+  }
 }
 
 describe('ActiveRecord$Base (ActiveRecord$Dirty)', () => {

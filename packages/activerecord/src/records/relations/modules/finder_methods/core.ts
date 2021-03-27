@@ -49,7 +49,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
         errObj({
           code: ErrCodes.RECORD_NOT_FOUND,
           // @ts-expect-error
-          message: `Could'nt find '${this.recordKlass.name}' without an 'id'`,
+          message: `Could'nt find '${this.recordKlass.uniqueKey}' without an 'id'`,
         })
       );
     } else {
@@ -63,7 +63,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
                 code: ErrCodes.RECORD_NOT_FOUND,
                 params: {
                   // @ts-expect-error
-                  resource: this.recordKlass.name,
+                  resource: this.recordKlass.uniqueKey,
                   id: ids[0],
                 },
               });
@@ -71,7 +71,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
               throw errObj({
                 code: ErrCodes.RECORD_NOT_FOUND,
                 // @ts-expect-error
-                message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
+                message: `Could't find all '${this.recordKlass.uniqueKey}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
               });
             }
           } else if (holder.scope.length === 1) {
@@ -186,7 +186,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
         throw errObj({
           code: ErrCodes.RECORD_NOT_FOUND,
           // @ts-expect-error
-          message: `Couldn't find '${this.recordKlass.name}'`,
+          message: `Couldn't find '${this.recordKlass.uniqueKey}'`,
         });
       } else {
         return record;
@@ -222,7 +222,7 @@ export class ActiveRecord$FinderMethods extends RueModule {
         throw errObj({
           code: ErrCodes.RECORD_NOT_FOUND,
           // @ts-expect-error
-          message: `Couldn't find '${this.recordKlass.name}'`,
+          message: `Couldn't find '${this.recordKlass.uniqueKey}'`,
         });
       } else {
         return record;

@@ -24,6 +24,10 @@ class ScopingRecord extends Record<ScopingRecordParams> {
       { id: 2, name: 'name_2', age: 2 },
     ]);
   }
+
+  get uniqueKey(): string {
+    return 'ScopingRecord';
+  }
 }
 
 describe('Record (Scoping)', () => {
@@ -101,6 +105,10 @@ describe('Record (Scoping)', () => {
     class StaticScopeRecord extends ScopingRecord {
       public static fromName: t.Record$Scope<StaticScopeRecord>;
       public static fromAge: t.Record$Scope<StaticScopeRecord>;
+
+      get uniqueKey(): string {
+        return 'StaticScopeRecord';
+      }
     }
 
     StaticScopeRecord.scope<StaticScopeRecord>('fromName', (self, name) => self.where({ name }));
