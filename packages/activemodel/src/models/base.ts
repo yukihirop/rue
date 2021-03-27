@@ -21,6 +21,7 @@ export class ActiveModel$Base extends ActiveModel$Impl {
   constructor(data: t.Params = {}) {
     super();
     this.errors = {};
+    if (!data) data = {};
     Object.keys(data).forEach((key) => {
       (this as any)[key] = data[key];
     });

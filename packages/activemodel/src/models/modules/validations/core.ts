@@ -24,16 +24,18 @@ export class ActiveModel$Validations extends RueModule {
   }
 
   isValid(): boolean {
-    this.errors = {};
-    const klassName = this.constructor.name;
+    // @ts-expect-error
+    const _this = this as ActiveModel$Base;
+    _this.errors = {};
+    const registryKey = _this.uniqueKey;
 
     // Returns true if validation is not set
-    if (Registry.data[klassName] == undefined || null) return true;
+    if (Registry.data[registryKey] == undefined || null) return true;
 
-    Object.keys(Registry.data[klassName]).forEach((propKey: string) => {
-      this.errors[propKey] = this.errors[propKey] || [];
+    Object.keys(Registry.data[registryKey]).forEach((propKey: string) => {
+      _this.errors[propKey] = this.errors[propKey] || [];
 
-      const fnArray = Registry.read<rt.ValidationFn[]>(klassName, propKey);
+      const fnArray = Registry.read<rt.ValidationFn[]>(registryKey, propKey);
       let propVal = this._toObj({ flat: true })[propKey];
 
       // It may be a reactive object, and if it is destructively changed, it will lead to a problem, so verify it with a copy.
@@ -62,14 +64,14 @@ export class ActiveModel$Validations extends RueModule {
 
       maybeErrors.forEach((maybeError: et.ErrObj) => {
         if (maybeError instanceof Error) {
-          this.errors[propKey].push(maybeError);
+          _this.errors[propKey].push(maybeError);
         }
       });
     });
 
-    const flattenErrors = this.errors;
+    const flattenErrors = _this.errors;
     // unflatten errors
-    this.errors = unflatten(this.errors, '.');
+    _this.errors = unflatten(_this.errors, '.');
 
     return !Object.values(flattenErrors).some((e) => e.length > 0);
   }
@@ -89,12 +91,16 @@ export class ActiveModel$Validations extends RueModule {
     propKey: string,
     opts: t.Options<T, U>
   ) {
-    if (Registry.data[this.name] == undefined) {
-      Registry.data[this.name] = {};
+    // @ts-expect-error
+    const _this = this as typeof ActiveModel$Base;
+    const registryKey = _this.uniqueKey;
+
+    if (Registry.data[registryKey] == undefined) {
+      Registry.data[registryKey] = {};
     }
 
-    if (Registry.read(this.name, propKey) == undefined) {
-      Registry.update(this.name, propKey, []);
+    if (Registry.read(registryKey, propKey) == undefined) {
+      Registry.update(registryKey, propKey, []);
     }
 
     // @ts-ignore
@@ -145,7 +151,7 @@ export class ActiveModel$Validations extends RueModule {
     };
 
     if (opts.presence != undefined) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: T, self: U) =>
           ifEval<T, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validatePresence<T>(
@@ -160,7 +166,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.absence != undefined) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: T, self: U) =>
           ifEval<T, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateAbsence<T>(
@@ -175,7 +181,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.length != undefined && Object.keys(opts.length).length > 0) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: string | any[] | { [key in string | number]: any }, self: U) =>
           ifEval<string | any[] | { [key in string | number]: any }, U>(propVal, self) &&
           !skipValidation(propVal)
@@ -192,7 +198,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.inclusion != undefined && Object.keys(opts.inclusion).length > 0) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: string | number | boolean, self: U) =>
           ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateInclusion(
@@ -207,7 +213,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.exclusion != undefined && Object.keys(opts.exclusion).length > 0) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: string | number | boolean, self: U) =>
           ifEval<string | number | boolean, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateExclusion(
@@ -222,7 +228,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.condition != undefined && opts.condition.length == 2) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: T, self: U) =>
           ifEval<T, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateCondition<T, U>(
@@ -238,7 +244,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.format != undefined && Object.keys(opts.format).length > 0) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: string, self: U) =>
           ifEval<string, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateFormat(
@@ -253,7 +259,7 @@ export class ActiveModel$Validations extends RueModule {
     }
 
     if (opts.numericality != undefined && Object.keys(opts.numericality).length > 0) {
-      Registry.create(this.name, propKey, [
+      Registry.create(registryKey, propKey, [
         (propVal: number, self: U) =>
           ifEval<number, U>(propVal, self) && !skipValidation(propVal)
             ? Validator.validateNumericality(

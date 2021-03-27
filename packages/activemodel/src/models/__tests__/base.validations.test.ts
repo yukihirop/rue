@@ -1,12 +1,13 @@
 import { ActiveModel$Base as Model } from '../base';
 import i18n from '@/locales';
 import { registryForValidations as Registry } from '@/registries';
+import { RueCheck } from '@/decorators';
 
 // types
 import type * as t from '@/models/modules/validations/types';
 import type * as rt from '@/registries';
 
-describe('Model', () => {
+describe('ActiveModel$Base (ActiveModel$Validations)', () => {
   describe('constructor', () => {
     const instance = new Model();
     it('return correctly', () => {
@@ -25,6 +26,10 @@ describe('Model', () => {
       class TestConstructorModel extends Model {
         static objType(): t.ObjType {
           return 'form';
+        }
+
+        get uniqueKey(): string {
+          return 'TestConstructorModel';
         }
       }
 
@@ -48,6 +53,10 @@ describe('Model', () => {
         static translate(key: string, opts?: any): string {
           return `test.${key}`;
         }
+
+        get uniqueKey(): string {
+          return 'TestTranslateModel';
+        }
       }
 
       it('can override', () => {
@@ -59,6 +68,10 @@ describe('Model', () => {
   describe('[static] validates', () => {
     class TestValidatesModel extends Model {
       public name: string;
+
+      get uniqueKey() {
+        return 'TestValidatesModel';
+      }
 
       constructor() {
         super();
@@ -73,7 +86,13 @@ describe('Model', () => {
 
   describe('#isValid', () => {
     describe('when default', () => {
-      const instance = new Model();
+      class IsValidModel extends Model {
+        get uniqueKey(): string {
+          return 'IsValidModel';
+        }
+      }
+
+      const instance = new IsValidModel();
 
       it('return true', () => {
         const result = instance.isValid();
@@ -84,6 +103,7 @@ describe('Model', () => {
 
     describe('when override inherited class', () => {
       describe('when return true', () => {
+        @RueCheck()
         class TestIsValidSkillModel extends Model {
           public name: string;
           public year: number;
@@ -96,8 +116,12 @@ describe('Model', () => {
             return i18n.t(key, opts).toString();
           }
 
-          constructor(data: { name: string; year: number }) {
-            super();
+          get uniqueKey(): string {
+            return 'TestIsValidSkillModel';
+          }
+
+          constructor(data?: { name: string; year: number }) {
+            super(data);
             this.name = data['name'];
             this.year = data['year'];
           }
@@ -110,6 +134,7 @@ describe('Model', () => {
           numericality: { onlyInteger: true },
         });
 
+        @RueCheck()
         class TestIsValidModel extends Model {
           public profile: {
             name: string;
@@ -126,8 +151,13 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
+          }
+
+          get uniqueKey(): string {
+            return 'TestIsValidModel';
           }
 
           constructor() {
@@ -185,6 +215,7 @@ describe('Model', () => {
       });
 
       describe('when return errors', () => {
+        @RueCheck()
         class TestIsValidErrorsSkillModel extends Model {
           public name: string;
           public year: number;
@@ -193,12 +224,17 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
           }
 
-          constructor(data: { name: string; year: number }) {
-            super();
+          get uniqueKey(): string {
+            return 'TestIsValidErrorsSkillModel';
+          }
+
+          constructor(data?: { name: string; year: number }) {
+            super(data);
             this.name = data['name'];
             this.year = data['year'];
           }
@@ -211,6 +247,7 @@ describe('Model', () => {
           numericality: { onlyInteger: true },
         });
 
+        @RueCheck()
         class TestIsValidErrorsModel extends Model {
           public profile: {
             name: string;
@@ -227,8 +264,13 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
+          }
+
+          get uniqueKey(): string {
+            return 'TestIsValidErrorsModel';
           }
 
           constructor() {
@@ -324,6 +366,7 @@ describe('Model', () => {
       });
 
       describe('when skip (using if)', () => {
+        @RueCheck()
         class TestIsValidSkipSkillModel extends Model {
           public name: string;
           public year: number;
@@ -332,12 +375,17 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
           }
 
-          constructor(data: { name: string; year: number }) {
-            super();
+          get uniqueKey(): string {
+            return 'TestIsValidSkipSkillModel';
+          }
+
+          constructor(data?: { name: string; year: number }) {
+            super(data);
             this.name = data['name'];
             this.year = data['year'];
           }
@@ -370,8 +418,13 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
+          }
+
+          get uniqueKey(): string {
+            return 'TestIsValidSkipModel';
           }
 
           constructor() {
@@ -456,12 +509,17 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
           }
 
-          constructor(data: { name: string; year: number }) {
-            super();
+          get uniqueKey(): string {
+            return 'TestIsValidAllowSkillModel';
+          }
+
+          constructor(data?: { name: string; year: number }) {
+            super(data);
             this.name = data['name'];
             this.year = data['year'];
           }
@@ -495,8 +553,13 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
+          }
+
+          get uniqueKey(): string {
+            return 'TestIsValidAllowModel';
           }
 
           constructor() {
@@ -582,12 +645,17 @@ describe('Model', () => {
           static objType(): t.ObjType {
             return 'model';
           }
+
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
           }
 
-          constructor(data: { name: string; year: number }) {
-            super();
+          get uniqueKey(): string {
+            return 'TestIsValidOverrideMsgSkillModel';
+          }
+
+          constructor(data?: { name: string; year: number }) {
+            super(data);
             this.name = data['name'];
             this.year = data['year'];
           }
@@ -622,6 +690,10 @@ describe('Model', () => {
           }
           static translate(key: string, opts?: any): string {
             return i18n.t(key, opts).toString();
+          }
+
+          get uniqueKey(): string {
+            return 'TestIsValidOverrideMsgModel';
           }
 
           constructor() {

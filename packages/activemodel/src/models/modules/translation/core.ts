@@ -31,6 +31,6 @@ export class ActiveModel$Translation extends RueModule {
   static __t(propKey: string): string {
     // @ts-ignore
     const _this = this as typeof ActiveModel$Base;
-    return _this.translate(`rue.${_this.objType()}s.${_this.name}.${propKey}`).toString();
+    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();
   }
 }

@@ -21,7 +21,7 @@ export class ActiveModel$MinifyMeasures extends RueModule {
     } else {
       // @ts-expect-error
       const _this = this as typeof ActiveModel$Base;
-      const instance = new _this();
+      const instance = new _this({});
       const result = instance.uniqueKey;
       this.prototype.__rue_uniqueKey__ = result;
       return result;

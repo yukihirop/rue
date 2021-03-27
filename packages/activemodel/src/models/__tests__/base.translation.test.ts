@@ -4,7 +4,12 @@ import { ActiveModel$Base as Model } from '../base';
 describe('ActiveModel$Base (ActiveModel$Translation)', () => {
   describe('[static] translate', () => {
     describe('when default (throw error)', () => {
-      class TranslateModel extends Model {}
+      class TranslateModel extends Model {
+        get uniqueKey(): string {
+          return 'TranslateModel';
+        }
+      }
+
       it('should correctly', () => {
         expect(() => {
           TranslateModel.translate('test');
@@ -19,6 +24,10 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
         static translate(key: string, opts?: any): string {
           return key;
         }
+
+        get uniqueKey(): string {
+          return 'TranslateModel';
+        }
       }
       it('should correctly', () => {
         expect(TranslateModel.translate('test')).toEqual('test');
@@ -28,7 +37,12 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
 
   describe('[static] checkTranslate', () => {
     describe('when default (throw error)', () => {
-      class CheckTranslateModel extends Model {}
+      class CheckTranslateModel extends Model {
+        get uniqueKey(): string {
+          return 'CheckTranslateModel';
+        }
+      }
+
       it('should correctly', () => {
         expect(() => {
           // @ts-expect-error
@@ -43,6 +57,10 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
       class CheckTranslateModel extends Model {
         static translate(key: string, opts?: any): string {
           return key;
+        }
+
+        get uniqueKey(): string {
+          return 'CheckTranslateModel';
         }
       }
       it('should correctly', () => {
@@ -64,6 +82,10 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
 
       static translate(key: string, opts?: any): string {
         return `test.${key}`;
+      }
+
+      get uniqueKey(): string {
+        return 'TestHumanPropertyNameModel';
       }
     }
 
