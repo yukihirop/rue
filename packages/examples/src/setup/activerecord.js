@@ -1,5 +1,7 @@
-const { ActiveRecord$Base } = require('@rue/activerecord');
+const { ActiveRecord$Base, RueClassName } = require('@rue/activerecord');
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveRecord')
 class ActiveRecord extends ActiveRecord$Base {
   /**
    * @param {strinng} key

@@ -1,3 +1,6 @@
+// rue packages
+import { RueClassName } from '@rue/activerecord';
+
 // locals
 import { ActiveRecord } from '../../lib/activerecord';
 
@@ -13,6 +16,8 @@ export type UserParams = {
   age: number;
 };
 
+// Prevent destroying class names by minify
+@RueClassName('User')
 export class User extends ActiveRecord<UserParams> {
   // Please do not change the name 'id' arbitrarily.
   public id: UserParams['id'];

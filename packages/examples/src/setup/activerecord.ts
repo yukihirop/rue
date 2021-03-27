@@ -1,6 +1,8 @@
-import { ActiveRecord$Base } from '@rue/activerecord';
+import { ActiveRecord$Base, RueClassName } from '@rue/activerecord';
 import type * as t from '@rue/activerecord';
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveRecord')
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
   static translate(key: string, opts?: any): string {
     /**

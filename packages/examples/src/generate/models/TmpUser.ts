@@ -1,3 +1,6 @@
+// rue packages
+import { RueClassName } from '@rue/activerecord';
+
 // locals
 import { ActiveModel } from '../../lib/activemodel';
 
@@ -11,6 +14,8 @@ export type TmpUserParams = {
   age: number;
 };
 
+// Prevent destroying class names by minify
+@RueClassName('TmpUser')
 export class TmpUser extends ActiveModel {
   // Please do not change the name 'errors' arbitrarily.
   public errors: TmpUserParams['errors'];

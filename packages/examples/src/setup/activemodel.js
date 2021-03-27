@@ -1,5 +1,7 @@
-const { ActiveModel$Base } = require('@rue/activemodel');
+const { ActiveModel$Base, RueClassName } = require('@rue/activemodel');
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveModel')
 class ActiveModel extends ActiveModel$Base {
   /**
    * @param {strinng} key

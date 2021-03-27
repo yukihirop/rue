@@ -1,3 +1,6 @@
+// rue packages
+import { RueClassName } from '@rue/activemodel';
+
 // locals
 import { ActiveForm } from '../../lib/activeform';
 
@@ -15,6 +18,8 @@ export type ContactFormParams = {
   email: string;
 };
 
+// Prevent destroying class names by minify
+@RueClassName('ContactForm')
 export class ContactForm extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: ContactFormParams['errors'];

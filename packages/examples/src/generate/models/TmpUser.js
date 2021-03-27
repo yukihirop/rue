@@ -1,3 +1,6 @@
+// rue packages
+const { RueClassName } = require('@rue/activemodel');
+
 // locals
 const { ActiveModel } = require('../../lib/activemodel');
 
@@ -6,5 +9,8 @@ const { ActiveModel } = require('../../lib/activemodel');
  * @property {string} name
  * @property {number} age
  */
+
+// Prevent destroying class names by minify
+@RueClassName('TmpUser')
 export class TmpUser extends ActiveModel {
 }

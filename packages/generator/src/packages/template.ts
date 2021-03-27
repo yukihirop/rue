@@ -1,9 +1,11 @@
 const template = Object.create({ activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
 
-template.activerecord.defaultTS = `import { ActiveRecord$Base } from '@rue/activerecord';
+template.activerecord.defaultTS = `import { ActiveRecord$Base, RueClassName } from '@rue/activerecord';
 import type * as t from '@rue/activerecord';
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveRecord')
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
   static translate(key: string, opts?: any): string {
     /**
@@ -18,8 +20,10 @@ export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T
 }
 `;
 
-template.activerecord.defaultJS = `const { ActiveRecord$Base } = require('@rue/activerecord');
+template.activerecord.defaultJS = `const { ActiveRecord$Base, RueClassName } = require('@rue/activerecord');
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveRecord')
 class ActiveRecord extends ActiveRecord$Base {
   /**
    * @param {strinng} key
@@ -45,8 +49,10 @@ class ActiveRecord extends ActiveRecord$Base {
 exports.ActiveRecord = ActiveRecord;
 `;
 
-template.activemodel.defaultTS = `import { ActiveModel$Base } from '@rue/activemodel';
+template.activemodel.defaultTS = `import { ActiveModel$Base, RueClassName } from '@rue/activemodel';
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveModel')
 export class ActiveModel extends ActiveModel$Base {
   static translate(key: string, opts?: any): string {
     /**
@@ -57,8 +63,10 @@ export class ActiveModel extends ActiveModel$Base {
 }
 `;
 
-template.activemodel.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
+template.activemodel.defaultJS = `const { ActiveModel$Base, RueClassName } = require('@rue/activemodel');
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveModel')
 class ActiveModel extends ActiveModel$Base {
   /**
    * @param {strinng} key
@@ -76,9 +84,11 @@ class ActiveModel extends ActiveModel$Base {
 exports.ActiveModel = ActiveModel;
 `;
 
-template.activeform.defaultTS = `import { ActiveModel$Base } from '@rue/activemodel';
+template.activeform.defaultTS = `import { ActiveModel$Base, RueClassName } from '@rue/activemodel';
 import * as t from '@rue/activemodel';
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveForm')
 export class ActiveForm extends ActiveModel$Base {
   static objType(): t.Model$ObjType {
     return 'form';
@@ -93,8 +103,10 @@ export class ActiveForm extends ActiveModel$Base {
 }
 `;
 
-template.activeform.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
+template.activeform.defaultJS = `const { ActiveModel$Base, RueClassName } = require('@rue/activemodel');
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveForm')
 class ActiveForm extends ActiveModel$Base {
   /**
    * @return {'model'|'form'|'record'}

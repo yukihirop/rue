@@ -17,7 +17,10 @@ export default template;
  * - params
  * - libPath
  */
-template.record.defaultTS = helper`// locals
+template.record.defaultTS = helper`// rue packages
+import { RueClassName } from '@rue/activerecord';
+
+// locals
 import { ActiveRecord } from '<%- libPath %>';
 
 // types
@@ -33,6 +36,8 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   // Please do not change the name 'id' arbitrarily.
   public id: <%- className %>Params['id'];
@@ -54,7 +59,10 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
  * - params
  * - libPath
  */
-template.record.defaultJS = helper`// locals
+template.record.defaultJS = helper`// rue packages
+const { RueClassName } = require('@rue/activerecord');
+
+// locals
 const { ActiveRecord } = require('<%- libPath %>');
 
 /**
@@ -64,6 +72,9 @@ const { ActiveRecord } = require('<%- libPath %>');
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
+
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveRecord {
   /**
    * @protected
@@ -82,7 +93,10 @@ export class <%- className %> extends ActiveRecord {
  * - params
  * - libPath
  */
-template.model.defaultTS = helper`// locals
+template.model.defaultTS = helper`// rue packages
+import { RueClassName } from '@rue/activerecord';
+
+// locals
 import { ActiveModel } from '<%- libPath %>';
 
 // types
@@ -96,6 +110,8 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveModel {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
@@ -112,7 +128,10 @@ export class <%- className %> extends ActiveModel {
  * - params
  * - libPath
  */
-template.model.defaultJS = helper`// locals
+template.model.defaultJS = helper`// rue packages
+const { RueClassName } = require('@rue/activemodel');
+
+// locals
 const { ActiveModel } = require('<%- libPath %>');
 
 /**
@@ -121,6 +140,9 @@ const { ActiveModel } = require('<%- libPath %>');
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
+
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveModel {
 }
 `;
@@ -132,7 +154,10 @@ export class <%- className %> extends ActiveModel {
  * - params
  * - libPath
  */
-template.form.defaultTS = helper`// locals
+template.form.defaultTS = helper`// rue packages
+import { RueClassName } from '@rue/activemodel';
+
+// locals
 import { ActiveForm } from '<%- libPath %>';
 
 // types
@@ -150,6 +175,8 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
@@ -177,7 +204,10 @@ export class <%- className %> extends ActiveForm {
  * - params
  * - libPath
  */
-template.form.defaultJS = helper`// locals
+template.form.defaultJS = helper`// rue packages
+const { RueClassName } = require('@rue/activemodel');
+
+// locals
 const { ActiveForm } = require('<%- libPath %>')
 
 /**
@@ -186,6 +216,9 @@ const { ActiveForm } = require('<%- libPath %>')
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
+
+// Prevent destroying class names by minify
+@RueClassName('<%- className %>')
 export class <%- className %> extends ActiveForm {
   /**
    * @property {object} _state

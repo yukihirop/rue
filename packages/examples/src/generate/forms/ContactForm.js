@@ -1,3 +1,6 @@
+// rue packages
+const { RueClassName } = require('@rue/activemodel');
+
 // locals
 const { ActiveForm } = require('../../lib/activeform')
 
@@ -6,6 +9,9 @@ const { ActiveForm } = require('../../lib/activeform')
  * @property {string} name
  * @property {string} email
  */
+
+// Prevent destroying class names by minify
+@RueClassName('ContactForm')
 export class ContactForm extends ActiveForm {
   /**
    * @property {object} _state

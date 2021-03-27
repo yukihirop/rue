@@ -1,6 +1,8 @@
-import { ActiveModel$Base } from '@rue/activemodel';
+import { ActiveModel$Base, RueClassName } from '@rue/activemodel';
 import * as t from '@rue/activemodel';
 
+// Prevent destroying class names by minify
+@RueClassName('ActiveForm')
 export class ActiveForm extends ActiveModel$Base {
   static objType(): t.Model$ObjType {
     return 'form';

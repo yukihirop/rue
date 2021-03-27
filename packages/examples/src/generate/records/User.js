@@ -1,3 +1,6 @@
+// rue packages
+const { RueClassName } = require('@rue/activerecord');
+
 // locals
 const { ActiveRecord } = require('../../lib/activerecord');
 
@@ -7,6 +10,9 @@ const { ActiveRecord } = require('../../lib/activerecord');
  * @property {string} name
  * @property {number} age
  */
+
+// Prevent destroying class names by minify
+@RueClassName('User')
 export class User extends ActiveRecord {
   /**
    * @protected
