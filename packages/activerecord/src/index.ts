@@ -1,3 +1,6 @@
+// rue/packages
+export { RueClassName } from '@rue/activesupport';
+
 // classes
 export { ActiveRecord$Base } from './records';
 export { ActiveRecord$Error } from './errors';

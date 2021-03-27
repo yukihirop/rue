@@ -1,3 +1,6 @@
+// rue/packages
+export { RueClassName } from '@rue/activesupport';
+
 // classes
 export { ActiveModel$Validations } from './models/modules';
 export { ActiveModel$Base } from './models';
