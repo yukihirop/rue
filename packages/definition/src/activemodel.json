@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/03/28 14:39:43 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/03/28 14:39:43 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -34,7 +34,7 @@
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/03/28 14:39:43 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -92,7 +92,7 @@
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/03/28 14:39:44 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -165,15 +165,15 @@
       }
     }
   },
-  "registryForUninqueKeys": {
+  "registryForUniqueKeys": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/03/28 14:39:44 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
-        "text": "class registryForUninqueKeys {\n  private static readonly klassName = 'RueUniqueKey';\n  private static readonly key = 'all';\n\n  static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }\n\n  static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }\n\n  static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mregistryForUninqueKeys\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'RueUniqueKey'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m key \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'all'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "class registryForUniqueKeys {\n  private static readonly klassName = 'RueUniqueKey';\n  private static readonly key = 'all';\n\n  static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }\n\n  static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }\n\n  static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mregistryForUniqueKeys\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'RueUniqueKey'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m key \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'all'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           12,
           27
@@ -216,7 +216,7 @@
   "ActiveModel$MinifyMeasures": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/minify_measures/core.ts",
-      "updatedAt": "2021/03/28 14:39:44 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -266,7 +266,7 @@
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/03/28 14:39:44 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {
@@ -336,7 +336,7 @@
   "ActiveModel$Translation": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/03/28 14:39:44 +09:00"
+      "updatedAt": "2021/03/28 14:45:45 +09:00"
     },
     "class": [
       {

@@ -9,7 +9,7 @@ import type * as t from './types';
 const registryForValidations = new Registry<t.Validations>('Validations');
 
 const innerRegistryForUniqueKeys = new Registry<string[]>('RueClassNames');
-class registryForUninqueKeys {
+class registryForUniqueKeys {
   private static readonly klassName = 'RueUniqueKey';
   private static readonly key = 'all';
 
@@ -27,4 +27,4 @@ class registryForUninqueKeys {
 }
 
 // prettier-ignore
-export { registryForValidations, registryForUninqueKeys };
+export { registryForValidations, registryForUniqueKeys };

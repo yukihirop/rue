@@ -48,7 +48,7 @@ describe('ActiveModel$Base (ActiveModel$MinifyMeasures)', () => {
       });
     });
 
-    describe('when duplicated uninqueKey (throw error)', () => {
+    describe('when duplicated uniqueKey (throw error)', () => {
       class MinifyMeasuresModdel extends Model {
         get uniqueKey(): string {
           return `MinifyMeasuresModdel`;

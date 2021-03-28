@@ -3,7 +3,7 @@ import { RueModule } from '@rue/activesupport';
 
 // locals
 import { ActiveModel$Base } from '@/models';
-import { registryForUninqueKeys as RegistryUniqueKeys } from '@/registries';
+import { registryForUniqueKeys as RegistryUniqueKeys } from '@/registries';
 
 /**
  * Methods are defined to prevent corruption of class name by minification
