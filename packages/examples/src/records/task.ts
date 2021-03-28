@@ -1,8 +1,12 @@
 // third party
-import { ActiveRecord } from '../lib';
-import type * as t from '@rue/activerecord';
+import { RueCheck } from '@rue/activerecord';
 
+// locals
+import { ActiveRecord } from '../lib';
 import { Account } from '@/records';
+
+// types
+import type * as t from '@rue/activerecord';
 
 type TaskParams = {
   id: t.Record$ForeignKey;
@@ -11,12 +15,17 @@ type TaskParams = {
   accountId: t.Record$ForeignKey;
 };
 
+@RueCheck()
 export class Task extends ActiveRecord<TaskParams> {
   public content: TaskParams['content'];
   public status: TaskParams['status'];
   public accountId: TaskParams['accountId'];
   public account: t.Record$BelongsTo<Account>;
   public fromStatus: t.Record$Scope<Task>;
+
+  get uniqueKey(): string {
+    return 'Task';
+  }
 
   protected static fetchAll(): Promise<TaskParams[]> {
     return Promise.resolve([

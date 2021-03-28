@@ -1,3 +1,6 @@
+// rue packages
+import { RueCheck } from '@rue/activerecord';
+
 // locals
 import { ActiveRecord } from '../../lib/activerecord';
 
@@ -13,6 +16,7 @@ export type UserParams = {
   age: number;
 };
 
+@RueCheck()
 export class User extends ActiveRecord<UserParams> {
   // Please do not change the name 'id' arbitrarily.
   public id: UserParams['id'];
@@ -20,7 +24,16 @@ export class User extends ActiveRecord<UserParams> {
   public name: UserParams['name'];
   public age: UserParams['age'];
 
+  // Used for recording records, etc.
+  get uniqueKey(): string {
+    return User;
+  }
+
   protected fetchAll(): Promise<UserParams[]> {
     throw 'Please override';
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */

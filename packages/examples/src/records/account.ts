@@ -1,8 +1,12 @@
 // third party
-import { ActiveRecord } from '../lib';
-import type * as t from '@rue/activerecord';
+import { RueCheck } from '@rue/activerecord';
 
+// locals
+import { ActiveRecord } from '../lib';
 import { Task, Profile } from '@/records';
+
+// types
+import type * as t from '@rue/activerecord';
 
 type AccountParams = {
   id: t.Record$ForeignKey;
@@ -10,12 +14,17 @@ type AccountParams = {
   email: string;
 };
 
+@RueCheck()
 export class Account extends ActiveRecord<AccountParams> {
   public name: AccountParams['name'];
   public email: AccountParams['email'];
   public tasks: t.Record$HasMany<Task>;
   public profile: t.Record$HasOne<Profile>;
   public fromName: t.Record$Scope<Account>;
+
+  get uniqueKey(): string {
+    return 'Account';
+  }
 
   protected fetchAll(): Promise<AccountParams[]> {
     return Promise.resolve([

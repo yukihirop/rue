@@ -1,3 +1,6 @@
+// rue packages
+const { RueCheck } = require('@rue/activerecord');
+
 // locals
 const { ActiveRecord } = require('../../lib/activerecord');
 
@@ -7,7 +10,21 @@ const { ActiveRecord } = require('../../lib/activerecord');
  * @property {string} name
  * @property {number} age
  */
+
+@RueCheck()
 export class User extends ActiveRecord {
+  /**
+   * Used for recording records, etc.
+   * 
+   * @getter
+   * @return {string}
+   * 
+   */
+  get uniqueKey() {
+    return User;
+  }
+
+
   /**
    * @protected
    * @return {Promise<Array<property>>}
@@ -16,3 +33,7 @@ export class User extends ActiveRecord {
     throw 'Please override';
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
