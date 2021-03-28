@@ -1,15 +1,19 @@
 const template = Object.create({ activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
 
-template.activerecord.defaultTS = `import { ActiveRecord$Base } from '@rue/activerecord';
+template.activerecord.defaultTS = `import { ActiveRecord$Base, RueCheck } from '@rue/activerecord';
 import type * as t from '@rue/activerecord';
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
   static translate(key: string, opts?: any): string {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 
   protected fetchAll(): Promise<T[]> {
@@ -18,8 +22,12 @@ export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T
 }
 `;
 
-template.activerecord.defaultJS = `const { ActiveRecord$Base } = require('@rue/activerecord');
+template.activerecord.defaultJS = `const { ActiveRecord$Base, RueCheck } = require('@rue/activerecord');
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 class ActiveRecord extends ActiveRecord$Base {
   /**
    * @param {strinng} key
@@ -30,7 +38,7 @@ class ActiveRecord extends ActiveRecord$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 
   /**
@@ -45,20 +53,28 @@ class ActiveRecord extends ActiveRecord$Base {
 exports.ActiveRecord = ActiveRecord;
 `;
 
-template.activemodel.defaultTS = `import { ActiveModel$Base } from '@rue/activemodel';
+template.activemodel.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/activemodel';
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 export class ActiveModel extends ActiveModel$Base {
   static translate(key: string, opts?: any): string {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 }
 `;
 
-template.activemodel.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
+template.activemodel.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 class ActiveModel extends ActiveModel$Base {
   /**
    * @param {strinng} key
@@ -69,16 +85,20 @@ class ActiveModel extends ActiveModel$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 }
 
 exports.ActiveModel = ActiveModel;
 `;
 
-template.activeform.defaultTS = `import { ActiveModel$Base } from '@rue/activemodel';
+template.activeform.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/activemodel';
 import * as t from '@rue/activemodel';
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 export class ActiveForm extends ActiveModel$Base {
   static objType(): t.Model$ObjType {
     return 'form';
@@ -88,13 +108,17 @@ export class ActiveForm extends ActiveModel$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 }
 `;
 
-template.activeform.defaultJS = `const { ActiveModel$Base } = require('@rue/activemodel');
+template.activeform.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 class ActiveForm extends ActiveModel$Base {
   /**
    * @return {'model'|'form'|'record'}
@@ -112,7 +136,7 @@ class ActiveForm extends ActiveModel$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 }
 

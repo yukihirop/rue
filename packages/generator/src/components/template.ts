@@ -36,7 +36,10 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   // Please do not change the name 'id' arbitrarily.
   public id: <%- className %>Params['id'];
@@ -47,11 +50,11 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return <%- className %>;
+    return '<%- className %>';
   }
 
   protected fetchAll(): Promise<<%- className %>Params[]> {
-    throw 'Please override';
+    throw "Please override 'fetchAll()'";
   }
 }
 
@@ -74,14 +77,16 @@ const { RueCheck } = require('@rue/activerecord');
 const { ActiveRecord } = require('<%- libPath %>');
 
 /**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
+/**
  * @property {number|string} id - Please do not change the name 'id' arbitrarily.
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
-
-@RueCheck()
 export class <%- className %> extends ActiveRecord {
   /**
    * Used for recording records, etc.
@@ -91,7 +96,7 @@ export class <%- className %> extends ActiveRecord {
    * 
    */
   get uniqueKey() {
-    return <%- className %>;
+    return '<%- className %>';
   }
 
 
@@ -100,7 +105,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<Array<property>>}
    */
   fetchAll() {
-    throw 'Please override';
+    throw "Please override 'fetchAll()'";
   }
 }
 
@@ -133,7 +138,10 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveModel {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
@@ -143,7 +151,7 @@ export class <%- className %> extends ActiveModel {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return <%- className %>;
+    return '<%- className %>';
   }
 }
 
@@ -166,13 +174,15 @@ const { RueCheck } = require('@rue/activemodel');
 const { ActiveModel } = require('<%- libPath %>');
 
 /**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
+/**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
-
-@RueCheck();
 export class <%- className %> extends ActiveModel {
   /**
    * Used for recording records, etc.
@@ -182,7 +192,7 @@ export class <%- className %> extends ActiveModel {
    * 
    */
   get uniqueKey() {
-    return <%- className %>;
+    return '<%- className %>';
   }
 }
 
@@ -219,7 +229,10 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
@@ -236,7 +249,7 @@ export class <%- className %> extends ActiveForm {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return <%- className %>;
+    return '<%- className %>';
   }
 
   submit(): Promise<boolean> {
@@ -263,13 +276,15 @@ const { RueCheck } = require('@rue/activemodel');
 const { ActiveForm } = require('<%- libPath %>')
 
 /**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
+/**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
  * @property {<%- params[key] %>} <%- key %>
 <% }) -%>
  */
-
-@RueCheck()
 export class <%- className %> extends ActiveForm {
   /**
    * @property {object} _state
@@ -291,7 +306,7 @@ export class <%- className %> extends ActiveForm {
    * 
    */
   get uniqueKey() {
-    return <%- className %>;
+    return '<%- className %>';
   }
 
   submit() {
