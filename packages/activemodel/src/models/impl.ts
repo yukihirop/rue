@@ -22,7 +22,7 @@ abstract class ActiveModel$Impl {
     propKey: string,
     opts: t.Validations$Options<T, U>
   ) => void;
-  // ActiveModel$MinifyMeasures
+  // ActiveModel$Cachable
   protected static checkUniqueKey: () => boolean;
   static get uniqueKey(): string {
     // @ts-expect-error
@@ -33,7 +33,7 @@ abstract class ActiveModel$Impl {
    * define prototype
    */
 
-  // ActiveModel$MinifyMeasures
+  // ActiveModel$Cachable
   get uniqueKey(): string {
     // @ts-expect-error
     return this._uniqueKey();
