@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
@@ -31,10 +31,58 @@
       }
     ]
   },
+  "registryForUniqueKeys": {
+    "metadata": {
+      "filepath": "@rue/packages/activemodel/src/registries/base.ts",
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
+    },
+    "class": [
+      {
+        "text": "class registryForUniqueKeys {\n  private static readonly klassName = 'RueUniqueKey';\n  private static readonly key = 'all';\n\n  static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }\n\n  static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }\n\n  static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mregistryForUniqueKeys\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'RueUniqueKey'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m key \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'all'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          12,
+          27
+        ]
+      }
+    ],
+    "static": {
+      "create": {
+        "text": "static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          16,
+          18
+        ]
+      },
+      "update": {
+        "text": "static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          20,
+          22
+        ]
+      },
+      "read": {
+        "text": "static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          24,
+          26
+        ]
+      }
+    }
+  },
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
@@ -92,7 +140,7 @@
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
@@ -165,66 +213,18 @@
       }
     }
   },
-  "registryForUniqueKeys": {
+  "ActiveModel$Cachable": {
     "metadata": {
-      "filepath": "@rue/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "filepath": "@rue/packages/activemodel/src/models/modules/cachable/core.ts",
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
-        "text": "class registryForUniqueKeys {\n  private static readonly klassName = 'RueUniqueKey';\n  private static readonly key = 'all';\n\n  static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }\n\n  static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }\n\n  static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mregistryForUniqueKeys\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m klassName \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'RueUniqueKey'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprivate\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mreadonly\u001b[39m key \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46m'all'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "export class ActiveModel$Cachable extends RueModule {\n  protected __rue_uniqueKey__: string;\n\n  _uniqueKey(): string {\n    throw \"Please implement '[static] uniqueKey(): string' in Inherited Class.\";\n  }\n\n  static _uniqueKey(): string {\n    if (this.prototype.__rue_uniqueKey__) {\n      return this.prototype.__rue_uniqueKey__;\n    } else {\n      // @ts-expect-error\n      const _this = this as typeof ActiveModel$Base;\n      const instance = new _this({});\n      const result = instance.uniqueKey;\n      this.prototype.__rue_uniqueKey__ = result;\n      return result;\n    }\n  }\n\n  protected static checkUniqueKey(): boolean {\n    const registeredUniqueKeys = RegistryUniqueKeys.read<string[]>('array');\n    try {\n      // @ts-expect-error\n      const _this = this as typeof ActiveModel$Base;\n      const uniqueKey = _this.uniqueKey;\n\n      if (registeredUniqueKeys.includes(uniqueKey)) {\n        throw `'${uniqueKey}' is a uniqueKey that is already in use. Please use another name`;\n      } else {\n        RegistryUniqueKeys.create([uniqueKey]);\n        return true;\n      }\n    } catch (err) {\n      throw err;\n    }\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Cachable\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m __rue_uniqueKey__\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] uniqueKey(): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mnew\u001b[39m \u001b[38;2;230;219;116m_this\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m result \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__ \u001b[38;2;248;248;242m=\u001b[39m result\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m result\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckUniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m registeredUniqueKeys \u001b[38;2;248;248;242m=\u001b[39m RegistryUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m uniqueKey \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m;\u001b[39m\n\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mregisteredUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39muniqueKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46m'\u001b[39m\u001b[38;2;248;248;242m${\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' is a uniqueKey that is already in use. Please use another name\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        RegistryUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39muniqueKey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           12,
-          27
-        ]
-      }
-    ],
-    "static": {
-      "create": {
-        "text": "static create(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.create(this.klassName, this.key, val);\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          16,
-          18
-        ]
-      },
-      "update": {
-        "text": "static update(val: st.Registry$Value) {\n    innerRegistryForUniqueKeys.update(this.klassName, this.key, val);\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mval\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Value\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mupdate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m val\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          20,
-          22
-        ]
-      },
-      "read": {
-        "text": "static read<T>(ensureType?: st.Registry$Type): T {\n    return innerRegistryForUniqueKeys.read<T>(this.klassName, this.key, ensureType);\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mensureType\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m st\u001b[38;2;248;248;242m.\u001b[39mRegistry$Type\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m innerRegistryForUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mklassName\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m ensureType\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          24,
-          26
-        ]
-      }
-    }
-  },
-  "ActiveModel$MinifyMeasures": {
-    "metadata": {
-      "filepath": "@rue/packages/activemodel/src/models/modules/minify_measures/core.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveModel$MinifyMeasures extends RueModule {\n  protected __rue_uniqueKey__: string;\n\n  _uniqueKey(): string {\n    throw \"Please implement '[static] uniqueKey(): string' in Inherited Class.\";\n  }\n\n  static _uniqueKey(): string {\n    if (this.prototype.__rue_uniqueKey__) {\n      return this.prototype.__rue_uniqueKey__;\n    } else {\n      // @ts-expect-error\n      const _this = this as typeof ActiveModel$Base;\n      const instance = new _this({});\n      const result = instance.uniqueKey;\n      this.prototype.__rue_uniqueKey__ = result;\n      return result;\n    }\n  }\n\n  protected static checkUniqueKey(): boolean {\n    const registeredUniqueKeys = RegistryUniqueKeys.read<string[]>('array');\n    try {\n      // @ts-expect-error\n      const _this = this as typeof ActiveModel$Base;\n      const uniqueKey = _this.uniqueKey;\n\n      if (registeredUniqueKeys.includes(uniqueKey)) {\n        throw `'${uniqueKey}' is a uniqueKey that is already in use. Please use another name`;\n      } else {\n        RegistryUniqueKeys.create([uniqueKey]);\n        return true;\n      }\n    } catch (err) {\n      throw err;\n    }\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$MinifyMeasures\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m __rue_uniqueKey__\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] uniqueKey(): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mnew\u001b[39m \u001b[38;2;230;219;116m_this\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m result \u001b[38;2;248;248;242m=\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39mprototype\u001b[38;2;248;248;242m.\u001b[39m__rue_uniqueKey__ \u001b[38;2;248;248;242m=\u001b[39m result\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m result\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckUniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m registeredUniqueKeys \u001b[38;2;248;248;242m=\u001b[39m RegistryUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mread\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'array'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mconst\u001b[39m uniqueKey \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m;\u001b[39m\n\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mregisteredUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39muniqueKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46m'\u001b[39m\u001b[38;2;248;248;242m${\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m' is a uniqueKey that is already in use. Please use another name\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        RegistryUniqueKeys\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m[\u001b[39muniqueKey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n        \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          11,
-          48
+          49
         ]
       }
     ],
@@ -235,8 +235,8 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          14,
-          16
+          15,
+          17
         ]
       }
     },
@@ -247,8 +247,8 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          18,
-          29
+          19,
+          30
         ]
       },
       "checkUniqueKey": {
@@ -257,8 +257,8 @@
         "isAsync": false,
         "visibility": "protected",
         "line": [
-          31,
-          47
+          32,
+          48
         ]
       }
     }
@@ -266,7 +266,7 @@
   "ActiveModel$Translation": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {
@@ -336,7 +336,7 @@
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/03/28 15:19:08 +09:00"
+      "updatedAt": "2021/03/28 15:28:11 +09:00"
     },
     "class": [
       {

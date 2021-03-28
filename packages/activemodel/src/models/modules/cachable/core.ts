@@ -6,9 +6,10 @@ import { ActiveModel$Base } from '@/models';
 import { registryForUniqueKeys as RegistryUniqueKeys } from '@/registries';
 
 /**
- * Methods are defined to prevent corruption of class name by minification
+ * At first I thought that the class name was a cache key, so I thought it was unnecessary,
+ * but since the class name is destroyed by minify, use uniqueKey.
  */
-export class ActiveModel$MinifyMeasures extends RueModule {
+export class ActiveModel$Cachable extends RueModule {
   protected __rue_uniqueKey__: string;
 
   _uniqueKey(): string {

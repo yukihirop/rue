@@ -2,11 +2,7 @@
 import { ActiveSupport$ImplBase as Support$ImplBase } from '@rue/activesupport';
 
 // locals
-import {
-  ActiveModel$Translation,
-  ActiveModel$Validations,
-  ActiveModel$MinifyMeasures,
-} from './modules';
+import { ActiveModel$Translation, ActiveModel$Validations, ActiveModel$Cachable } from './modules';
 
 // types
 import * as t from './types';
@@ -60,7 +56,7 @@ ActiveModel$Translation.rueModuleIncludedFrom(ActiveModel$Impl, {
 ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, {
   only: ['isInvalid', 'isValid', '_toObj'],
 });
-ActiveModel$MinifyMeasures.rueModuleIncludedFrom(ActiveModel$Impl, {
+ActiveModel$Cachable.rueModuleIncludedFrom(ActiveModel$Impl, {
   only: ['_uniqueKey'],
 });
 
@@ -70,7 +66,7 @@ ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['objType', 'validates'],
 });
-ActiveModel$MinifyMeasures.rueModuleExtendedFrom(ActiveModel$Impl, {
+ActiveModel$Cachable.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['uniqueKey', 'checkUniqueKey', '_uniqueKey'],
 });
 

@@ -1,73 +1,73 @@
 // locals
 import { ActiveModel$Base as Model } from '../base';
 
-describe('ActiveModel$Base (ActiveModel$MinifyMeasures)', () => {
+describe('ActiveModel$Base (ActiveModel$Cachable)', () => {
   describe('[getter] uniqueKey', () => {
     describe('when default (throw error)', () => {
-      class MinifyMeasuresModdel extends Model {}
+      class CachableModdel extends Model {}
       it('should correctly', () => {
         expect(() => {
-          MinifyMeasuresModdel.uniqueKey;
+          CachableModdel.uniqueKey;
         }).toThrowError("Please implement '[static] uniqueKey(): string' in Inherited Class.");
       });
     });
 
     describe('when override', () => {
-      class MinifyMeasuresModdel extends Model {
+      class CachableModdel extends Model {
         get uniqueKey(): string {
-          return 'MinifyMeasuresModdel';
+          return 'CachableModdel';
         }
       }
       it('should correctly', () => {
-        expect(MinifyMeasuresModdel.uniqueKey).toEqual('MinifyMeasuresModdel');
-        expect(new MinifyMeasuresModdel().uniqueKey).toEqual('MinifyMeasuresModdel');
+        expect(CachableModdel.uniqueKey).toEqual('CachableModdel');
+        expect(new CachableModdel().uniqueKey).toEqual('CachableModdel');
       });
     });
   });
 
   describe('[static] checkUniqueKey', () => {
     describe('when default (throw error)', () => {
-      class MinifyMeasuresModdel extends Model {}
+      class CachableModdel extends Model {}
       it('should correctly', () => {
         expect(() => {
           // @ts-expect-error
-          MinifyMeasuresModdel.checkUniqueKey();
+          CachableModdel.checkUniqueKey();
         }).toThrowError("Please implement '[static] uniqueKey(): string' in Inherited Class.");
       });
     });
 
     describe('when override (return true)', () => {
-      class MinifyMeasuresModdel extends Model {
+      class CachableModdel extends Model {
         get uniqueKey(): string {
-          return `MinifyMeasuresModdel`;
+          return `CachableModdel`;
         }
       }
       it('should correctly', () => {
         // @ts-expect-error
-        expect(MinifyMeasuresModdel.checkUniqueKey()).toEqual(true);
+        expect(CachableModdel.checkUniqueKey()).toEqual(true);
       });
     });
 
     describe('when duplicated uniqueKey (throw error)', () => {
-      class MinifyMeasuresModdel extends Model {
+      class CachableModdel extends Model {
         get uniqueKey(): string {
-          return `MinifyMeasuresModdel`;
+          return `CachableModdel`;
         }
       }
-      class MinifyMeasuresChildModdel extends Model {
+      class CachableChildModdel extends Model {
         get uniqueKey(): string {
-          return `MinifyMeasuresModdel`;
+          return `CachableModdel`;
         }
       }
       it('should correctly', () => {
         try {
           // @ts-expect-error
-          MinifyMeasuresModdel.checkUniqueKey();
+          CachableModdel.checkUniqueKey();
           // @ts-expect-error
-          MinifyMeasuresChildModdel.checkUniqueKey();
+          CachableChildModdel.checkUniqueKey();
         } catch (err) {
           expect(err.toString()).toEqual(
-            "'MinifyMeasuresModdel' is a uniqueKey that is already in use. Please use another name"
+            "'CachableModdel' is a uniqueKey that is already in use. Please use another name"
           );
         }
       });
