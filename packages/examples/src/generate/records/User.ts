@@ -16,7 +16,10 @@ export type UserParams = {
   age: number;
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class User extends ActiveRecord<UserParams> {
   // Please do not change the name 'id' arbitrarily.
   public id: UserParams['id'];
@@ -26,11 +29,11 @@ export class User extends ActiveRecord<UserParams> {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return User;
+    return 'User';
   }
 
   protected fetchAll(): Promise<UserParams[]> {
-    throw 'Please override';
+    throw "Please override 'fetchAll()'";
   }
 }
 

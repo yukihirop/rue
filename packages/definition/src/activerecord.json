@@ -2,7 +2,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/03/28 14:45:51 +09:00"
+      "updatedAt": "2021/03/28 15:19:16 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/03/28 14:45:51 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -86,7 +86,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -114,7 +114,7 @@
   "ActiveRecord$Associations$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/holder.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -138,7 +138,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -464,7 +464,7 @@
   "ActiveRecord$Relation$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/holder.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -488,7 +488,7 @@
   "ActiveRecord$Relation$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/impl.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -504,7 +504,7 @@
   "ActiveRecord$Associations$CollectionProxy$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/base.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:17 +09:00"
     },
     "class": [
       {
@@ -822,7 +822,7 @@
   "ActiveRecord$Associations$CollectionProxy$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/holder.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -846,7 +846,7 @@
   "ActiveRecord$Associations$CollectionProxy$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/impl.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -870,7 +870,7 @@
   "ActiveRecord$Associations$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/relation/base.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -883,48 +883,10 @@
       }
     ]
   },
-  "ActiveRecord$AttributeMethods": {
-    "metadata": {
-      "filepath": "@rue/packages/activerecord/src/records/modules/attribute_methods/core.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveRecord$AttributeMethods extends RueModule {\n  /**\n   * @see https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributeshttps://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributes\n   */\n  attributes(): Partial<it.Record$Params> {\n    // @ts-expect-error\n    const _this = this as ActiveRecord$Base;\n    return Object.keys(_this).reduce((acc, key) => {\n      if (!IGNORE_PROPERTIES.includes(key) && typeof _this[key] != 'function') {\n        acc[key] = _this[key];\n      }\n      return acc;\n    }, {} as it.Record$Params);\n  }\n\n  /**\n   * @alias attributes\n   */\n  properties(): Partial<it.Record$Params> {\n    return this.attributes();\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$AttributeMethods\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributeshttps://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributes\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m_this\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mreduce\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39macc\u001b[38;2;248;248;242m,\u001b[39m key\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39m\u001b[38;2;249;38;114mIGNORE_PROPERTIES\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m&&\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m!=\u001b[39m \u001b[38;2;166;226;46m'function'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        acc\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m acc\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m it\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias attributes\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mproperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          12,
-          33
-        ]
-      }
-    ],
-    "instance": {
-      "attributes": {
-        "text": "attributes(): Partial<it.Record$Params> {\n    // @ts-expect-error\n    const _this = this as ActiveRecord$Base;\n    return Object.keys(_this).reduce((acc, key) => {\n      if (!IGNORE_PROPERTIES.includes(key) && typeof _this[key] != 'function') {\n        acc[key] = _this[key];\n      }\n      return acc;\n    }, {} as it.Record$Params);\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m_this\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mreduce\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39macc\u001b[38;2;248;248;242m,\u001b[39m key\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39m\u001b[38;2;249;38;114mIGNORE_PROPERTIES\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m&&\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m!=\u001b[39m \u001b[38;2;166;226;46m'function'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        acc\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m acc\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m it\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          16,
-          25
-        ]
-      },
-      "properties": {
-        "text": "properties(): Partial<it.Record$Params> {\n    return this.attributes();\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mproperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          30,
-          32
-        ]
-      }
-    }
-  },
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/03/28 14:45:52 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1014,7 +976,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1035,10 +997,48 @@
       }
     ]
   },
+  "ActiveRecord$AttributeMethods": {
+    "metadata": {
+      "filepath": "@rue/packages/activerecord/src/records/modules/attribute_methods/core.ts",
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
+    },
+    "class": [
+      {
+        "text": "export class ActiveRecord$AttributeMethods extends RueModule {\n  /**\n   * @see https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributeshttps://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributes\n   */\n  attributes(): Partial<it.Record$Params> {\n    // @ts-expect-error\n    const _this = this as ActiveRecord$Base;\n    return Object.keys(_this).reduce((acc, key) => {\n      if (!IGNORE_PROPERTIES.includes(key) && typeof _this[key] != 'function') {\n        acc[key] = _this[key];\n      }\n      return acc;\n    }, {} as it.Record$Params);\n  }\n\n  /**\n   * @alias attributes\n   */\n  properties(): Partial<it.Record$Params> {\n    return this.attributes();\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$AttributeMethods\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributeshttps://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods.html#method-i-attributes\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m_this\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mreduce\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39macc\u001b[38;2;248;248;242m,\u001b[39m key\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39m\u001b[38;2;249;38;114mIGNORE_PROPERTIES\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m&&\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m!=\u001b[39m \u001b[38;2;166;226;46m'function'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        acc\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m acc\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m it\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias attributes\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mproperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          12,
+          33
+        ]
+      }
+    ],
+    "instance": {
+      "attributes": {
+        "text": "attributes(): Partial<it.Record$Params> {\n    // @ts-expect-error\n    const _this = this as ActiveRecord$Base;\n    return Object.keys(_this).reduce((acc, key) => {\n      if (!IGNORE_PROPERTIES.includes(key) && typeof _this[key] != 'function') {\n        acc[key] = _this[key];\n      }\n      return acc;\n    }, {} as it.Record$Params);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveRecord$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m_this\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mreduce\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39macc\u001b[38;2;248;248;242m,\u001b[39m key\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39m\u001b[38;2;249;38;114mIGNORE_PROPERTIES\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mincludes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m&&\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m!=\u001b[39m \u001b[38;2;166;226;46m'function'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n        acc\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m _this\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;248;248;242m}\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m acc\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m it\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          16,
+          25
+        ]
+      },
+      "properties": {
+        "text": "properties(): Partial<it.Record$Params> {\n    return this.attributes();\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mproperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m Partial\u001b[38;2;248;248;242m<\u001b[39mit\u001b[38;2;248;248;242m.\u001b[39mRecord$Params\u001b[38;2;248;248;242m>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mattributes\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          30,
+          32
+        ]
+      }
+    }
+  },
   "ActiveRecord$Core": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1066,7 +1066,7 @@
   "ActiveRecord$Dirty": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/dirty/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1094,7 +1094,7 @@
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1294,7 +1294,7 @@
   "ActiveRecord$Querying": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/querying/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1642,7 +1642,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1658,7 +1658,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1674,7 +1674,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1712,7 +1712,7 @@
   "ActiveRecord$Associations$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1770,7 +1770,7 @@
   "ActiveRecord$Associations$PersistenceStrategy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence_strategy/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -1878,7 +1878,7 @@
   "ActiveRecord$FinderMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/finder_methods/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -2016,7 +2016,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/core.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {
@@ -2124,7 +2124,7 @@
   "ActiveRecord$QueryMethods$Evaluator": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/evaluator.ts",
-      "updatedAt": "2021/03/28 14:45:53 +09:00"
+      "updatedAt": "2021/03/28 15:19:18 +09:00"
     },
     "class": [
       {

@@ -5,12 +5,14 @@ const { RueCheck } = require('@rue/activemodel');
 const { ActiveForm } = require('../../lib/activeform')
 
 /**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
+/**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
  * @property {string} name
  * @property {string} email
  */
-
-@RueCheck()
 export class ContactForm extends ActiveForm {
   /**
    * @property {object} _state
@@ -32,7 +34,7 @@ export class ContactForm extends ActiveForm {
    * 
    */
   get uniqueKey() {
-    return ContactForm;
+    return 'ContactForm';
   }
 
   submit() {

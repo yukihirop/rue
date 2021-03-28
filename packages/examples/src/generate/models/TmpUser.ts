@@ -14,7 +14,10 @@ export type TmpUserParams = {
   age: number;
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class TmpUser extends ActiveModel {
   // Please do not change the name 'errors' arbitrarily.
   public errors: TmpUserParams['errors'];
@@ -23,7 +26,7 @@ export class TmpUser extends ActiveModel {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return TmpUser;
+    return 'TmpUser';
   }
 }
 

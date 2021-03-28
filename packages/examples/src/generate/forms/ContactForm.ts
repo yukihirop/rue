@@ -18,7 +18,10 @@ export type ContactFormParams = {
   email: string;
 };
 
-@RueCheck()
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class ContactForm extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: ContactFormParams['errors'];
@@ -34,7 +37,7 @@ export class ContactForm extends ActiveForm {
 
   // Used for recording records, etc.
   get uniqueKey(): string {
-    return ContactForm;
+    return 'ContactForm';
   }
 
   submit(): Promise<boolean> {

@@ -1,5 +1,9 @@
-const { ActiveModel$Base } = require('@rue/activemodel');
+const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 class ActiveModel extends ActiveModel$Base {
   /**
    * @param {strinng} key
@@ -10,7 +14,7 @@ class ActiveModel extends ActiveModel$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 }
 
