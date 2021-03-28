@@ -318,7 +318,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
     "oneName": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT EQUAL LENGTH"
+        "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],
     "oneAge": []

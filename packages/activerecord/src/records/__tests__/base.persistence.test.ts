@@ -368,7 +368,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       "name": [
         {
           "_namespace": "@rue/activemodel",
-          "_code": "PROPERTY IS NOT ABSENCE"
+          "_code": "PROPERTY_IS_NOT_ABSENCE"
         }
       ]
     }
@@ -699,7 +699,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "age": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT LESS THAN NUMERIC"
+        "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
   },
@@ -1114,7 +1114,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "age": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT LESS THAN NUMERIC"
+        "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
   },

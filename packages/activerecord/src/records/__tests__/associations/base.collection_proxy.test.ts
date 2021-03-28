@@ -1473,13 +1473,13 @@ describe('ActiveRecord$Associations (delegate to ActiveRecord$Associations$Colle
     "childName": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT EQUAL LENGTH"
+        "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],
     "childAge": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT LESS THAN NUMERIC"
+        "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
   },
