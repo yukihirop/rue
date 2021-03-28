@@ -7,7 +7,7 @@ import type * as et from '@/errors';
 export function validate<T = string | any[] | { [key in string | number]: any }, U = any>(
   self: U,
   propKey: string,
-  propVal: T,
+  propVal: T | undefined,
   length: t.Options['length'],
   translate: (propKey: string) => string,
   message?: string
@@ -15,7 +15,9 @@ export function validate<T = string | any[] | { [key in string | number]: any },
   let result = [];
   let propValLen;
 
-  if (typeof propVal == 'string' || Array.isArray(propVal)) {
+  if (!propVal) {
+    propValLen = 0;
+  } else if (typeof propVal == 'string' || Array.isArray(propVal)) {
     propValLen = propVal.length;
     if (length && length.tokenizer) {
       propValLen = length.tokenizer(propVal, self).length;

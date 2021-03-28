@@ -8,7 +8,7 @@ export function validate<
   T = any | any[] | { [key: string]: any } | { [key: number]: any } | undefined | null
 >(
   propKey: string,
-  propVal: T,
+  propVal: T | undefined,
   presence: Required<t.Options>['presence'],
   translate: (propKey: string) => string,
   message?: string

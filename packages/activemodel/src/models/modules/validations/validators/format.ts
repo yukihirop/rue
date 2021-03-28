@@ -15,7 +15,7 @@ const SUPPORT_BUILTIN_REGEXP = {
 
 export function validate(
   propKey: string,
-  propVal: string,
+  propVal: string | undefined,
   format: Required<t.Options>['format'],
   translate: (propKey: string) => string,
   message?: string
@@ -23,7 +23,9 @@ export function validate(
   let result = false;
 
   if (format.with) {
-    if (format.with instanceof RegExp && typeof propVal === 'string') {
+    if (!propVal) {
+      result = false;
+    } else if (format.with instanceof RegExp && typeof propVal === 'string') {
       result = propVal.match(format.with) != null;
     } else if (
       typeof format.with === 'string' &&

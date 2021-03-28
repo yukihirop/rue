@@ -110,6 +110,22 @@ describe('validateInclusion', () => {
           expect(errors[0].message).toEqual('override message');
         });
       });
+
+      describe("when 'propVal' is 'undefined'", () => {
+        const errors = validateInclusion(
+          'propKey',
+          undefined,
+          { in: [true, false] },
+          translate
+        ) as et.ErrObj[];
+        it('return errors', () => {
+          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_INCLUDED);
+          expect(errors[0].message).toEqual(
+            "'test.propKey' is not included in the '[true,false]'."
+          );
+        });
+      });
     });
 
     describe('when reurn true', () => {

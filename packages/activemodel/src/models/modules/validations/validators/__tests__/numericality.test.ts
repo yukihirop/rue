@@ -114,6 +114,20 @@ describe('validateNumericality', () => {
         expect(errors[0].message).toEqual('override message');
       });
     });
+
+    describe("when 'propVal' is 'undefined'", () => {
+      const errors = validateNumericality(
+        'propKey',
+        undefined,
+        { even: true },
+        translate
+      ) as et.ErrObj[];
+      it('return errors', () => {
+        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EVEN_NUMERIC);
+        expect(errors[0].message).toEqual("'test.propKey' is not even.");
+      });
+    });
   });
 
   describe('when return true', () => {

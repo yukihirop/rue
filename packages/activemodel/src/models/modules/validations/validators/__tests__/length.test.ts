@@ -122,6 +122,21 @@ describe('validateLength', () => {
         expect(errors[0].message).toEqual('override message');
       });
     });
+
+    describe("when 'propVal' is 'undefine'", () => {
+      const errors = validateLength(
+        {},
+        'propKey',
+        undefined,
+        { within: [1, 2] },
+        translate
+      ) as et.ErrObj[];
+      it('return errors', () => {
+        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_WITHIN_LENGTH);
+        expect(errors[0].message).toEqual("'test.propKey' is not within length (range: '[1,2]').");
+      });
+    });
   });
 
   describe('when return true', () => {
