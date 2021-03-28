@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/03/28 11:31:04 +09:00"
+      "updatedAt": "2021/03/28 14:39:43 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:43 +09:00"
     },
     "class": [
       {
@@ -34,7 +34,7 @@
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:43 +09:00"
     },
     "class": [
       {
@@ -92,7 +92,7 @@
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:44 +09:00"
     },
     "class": [
       {
@@ -168,7 +168,7 @@
   "registryForUninqueKeys": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:44 +09:00"
     },
     "class": [
       {
@@ -216,7 +216,7 @@
   "ActiveModel$MinifyMeasures": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/minify_measures/core.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:44 +09:00"
     },
     "class": [
       {
@@ -263,80 +263,10 @@
       }
     }
   },
-  "ActiveModel$Translation": {
-    "metadata": {
-      "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveModel$Translation extends RueModule {\n  static translate(key: string, opts?: any): string {\n    throw \"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\";\n  }\n\n  protected static checkTranslate(): boolean {\n    try {\n      this.translate('__rue_check__');\n      return true;\n    } catch (err) {\n      throw err;\n    }\n  }\n\n  humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }\n\n  // @alias\n  humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }\n\n  static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Translation\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckTranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'__rue_check__'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// @alias\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mrue.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          8,
-          36
-        ]
-      }
-    ],
-    "static": {
-      "translate": {
-        "text": "static translate(key: string, opts?: any): string {\n    throw \"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\";\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          9,
-          11
-        ]
-      },
-      "checkTranslate": {
-        "text": "protected static checkTranslate(): boolean {\n    try {\n      this.translate('__rue_check__');\n      return true;\n    } catch (err) {\n      throw err;\n    }\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckTranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'__rue_check__'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "protected",
-        "line": [
-          13,
-          20
-        ]
-      },
-      "__t": {
-        "text": "static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mrue.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          31,
-          35
-        ]
-      }
-    },
-    "instance": {
-      "humanPropertyName": {
-        "text": "humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          22,
-          24
-        ]
-      },
-      "humanPropName": {
-        "text": "humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          27,
-          29
-        ]
-      }
-    }
-  },
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/03/28 11:31:05 +09:00"
+      "updatedAt": "2021/03/28 14:39:44 +09:00"
     },
     "class": [
       {
@@ -399,6 +329,76 @@
         "line": [
           90,
           275
+        ]
+      }
+    }
+  },
+  "ActiveModel$Translation": {
+    "metadata": {
+      "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
+      "updatedAt": "2021/03/28 14:39:44 +09:00"
+    },
+    "class": [
+      {
+        "text": "export class ActiveModel$Translation extends RueModule {\n  static translate(key: string, opts?: any): string {\n    throw \"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\";\n  }\n\n  protected static checkTranslate(): boolean {\n    try {\n      this.translate('__rue_check__');\n      return true;\n    } catch (err) {\n      throw err;\n    }\n  }\n\n  humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }\n\n  // @alias\n  humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }\n\n  static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Translation\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckTranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'__rue_check__'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// @alias\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mrue.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          8,
+          36
+        ]
+      }
+    ],
+    "static": {
+      "translate": {
+        "text": "static translate(key: string, opts?: any): string {\n    throw \"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\";\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mthrow\u001b[39m \u001b[38;2;166;226;46m\"Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.\"\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          9,
+          11
+        ]
+      },
+      "checkTranslate": {
+        "text": "protected static checkTranslate(): boolean {\n    try {\n      this.translate('__rue_check__');\n      return true;\n    } catch (err) {\n      throw err;\n    }\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckTranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mtry\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'__rue_check__'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;174;129;255mtrue\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239mcatch\u001b[39m \u001b[38;2;248;248;242m(\u001b[39merr\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;102;217;239mthrow\u001b[39m err\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "protected",
+        "line": [
+          13,
+          20
+        ]
+      },
+      "__t": {
+        "text": "static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;166;226;46mrue.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          31,
+          35
+        ]
+      }
+    },
+    "instance": {
+      "humanPropertyName": {
+        "text": "humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          22,
+          24
+        ]
+      },
+      "humanPropName": {
+        "text": "humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          27,
+          29
         ]
       }
     }

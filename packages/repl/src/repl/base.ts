@@ -141,7 +141,10 @@ export class Repl$Base extends Repl$Impl {
   }
 
   private static forceRequire(modulePath: string): any {
-    delete require.cache[require.resolve(modulePath)];
-    return Repl$Base.esmRequire(modulePath);
+    if (require.cache[modulePath]) {
+      return require.cache[modulePath].exports;
+    } else {
+      return Repl$Base.esmRequire(modulePath);
+    }
   }
 }
