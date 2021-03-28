@@ -4,6 +4,7 @@ export { ActiveRecord$Error } from './errors';
 
 // functions
 export { errObj } from './errors';
+export { RueCheck } from '@rue/activemodel';
 
 // enums
 export { ErrCodes } from './errors';

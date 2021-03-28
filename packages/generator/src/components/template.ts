@@ -17,7 +17,10 @@ export default template;
  * - params
  * - libPath
  */
-template.record.defaultTS = helper`// locals
+template.record.defaultTS = helper`// rue packages
+import { RueCheck } from '@rue/activerecord';
+
+// locals
 import { ActiveRecord } from '<%- libPath %>';
 
 // types
@@ -33,6 +36,10 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   // Please do not change the name 'id' arbitrarily.
   public id: <%- className %>Params['id'];
@@ -41,10 +48,19 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   public <%- key %>: <%- className %>Params['<%- key %>'];
 <% }) -%>
 
+  // Used for recording records, etc.
+  get uniqueKey(): string {
+    return '<%- className %>';
+  }
+
   protected fetchAll(): Promise<<%- className %>Params[]> {
-    throw 'Please override';
+    throw "Please override 'fetchAll()'";
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;
 
 /**
@@ -54,9 +70,16 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
  * - params
  * - libPath
  */
-template.record.defaultJS = helper`// locals
+template.record.defaultJS = helper`// rue packages
+const { RueCheck } = require('@rue/activerecord');
+
+// locals
 const { ActiveRecord } = require('<%- libPath %>');
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 /**
  * @property {number|string} id - Please do not change the name 'id' arbitrarily.
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
@@ -66,13 +89,29 @@ const { ActiveRecord } = require('<%- libPath %>');
  */
 export class <%- className %> extends ActiveRecord {
   /**
+   * Used for recording records, etc.
+   * 
+   * @getter
+   * @return {string}
+   * 
+   */
+  get uniqueKey() {
+    return '<%- className %>';
+  }
+
+
+  /**
    * @protected
    * @return {Promise<Array<property>>}
    */
   fetchAll() {
-    throw 'Please override';
+    throw "Please override 'fetchAll()'";
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;
 
 /**
@@ -82,7 +121,10 @@ export class <%- className %> extends ActiveRecord {
  * - params
  * - libPath
  */
-template.model.defaultTS = helper`// locals
+template.model.defaultTS = helper`// rue packages
+import { RueCheck } from '@rue/activemodel';
+
+// locals
 import { ActiveModel } from '<%- libPath %>';
 
 // types
@@ -96,13 +138,26 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveModel {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
 <% Object.keys(params).forEach(function(key) { -%>
   public <%- key %>: <%- className %>Params['<%- key %>'];
 <% }) -%>
+
+  // Used for recording records, etc.
+  get uniqueKey(): string {
+    return '<%- className %>';
+  }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;
 
 /**
@@ -112,9 +167,16 @@ export class <%- className %> extends ActiveModel {
  * - params
  * - libPath
  */
-template.model.defaultJS = helper`// locals
+template.model.defaultJS = helper`// rue packages
+const { RueCheck } = require('@rue/activemodel');
+
+// locals
 const { ActiveModel } = require('<%- libPath %>');
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 /**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
@@ -122,7 +184,21 @@ const { ActiveModel } = require('<%- libPath %>');
 <% }) -%>
  */
 export class <%- className %> extends ActiveModel {
+  /**
+   * Used for recording records, etc.
+   * 
+   * @getter
+   * @return {string}
+   * 
+   */
+  get uniqueKey() {
+    return '<%- className %>';
+  }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;
 
 /**
@@ -132,7 +208,10 @@ export class <%- className %> extends ActiveModel {
  * - params
  * - libPath
  */
-template.form.defaultTS = helper`// locals
+template.form.defaultTS = helper`// rue packages
+import { RueCheck } from '@rue/activemodel';
+
+// locals
 import { ActiveForm } from '<%- libPath %>';
 
 // types
@@ -150,6 +229,10 @@ export type <%- className %>Params = {
 <% }) -%>
 };
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class <%- className %> extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: <%- className %>Params['errors'];
@@ -164,10 +247,19 @@ export class <%- className %> extends ActiveForm {
     throw "Please override 'this._state'";
   }
 
-  submit() {
-    throw 'Please override';
+  // Used for recording records, etc.
+  get uniqueKey(): string {
+    return '<%- className %>';
+  }
+
+  submit(): Promise<boolean> {
+    throw "Please override 'submit()'";
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;
 
 /**
@@ -177,9 +269,16 @@ export class <%- className %> extends ActiveForm {
  * - params
  * - libPath
  */
-template.form.defaultJS = helper`// locals
+template.form.defaultJS = helper`// rue packages
+const { RueCheck } = require('@rue/activemodel');
+
+// locals
 const { ActiveForm } = require('<%- libPath %>')
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 /**
  * @property {object} errors - Please do not change the name 'errors' arbitrarily.
 <% Object.keys(params).forEach(function(key) { -%>
@@ -199,8 +298,23 @@ export class <%- className %> extends ActiveForm {
     throw "Please override 'this._state'";
   }
 
+  /**
+   * Used for recording records, etc.
+   * 
+   * @getter
+   * @return {string}
+   * 
+   */
+  get uniqueKey() {
+    return '<%- className %>';
+  }
+
   submit() {
-    throw 'Please override';
+    throw "Please override 'submit()'";
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */
 `;

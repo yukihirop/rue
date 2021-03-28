@@ -1,5 +1,10 @@
 // third party
+import { RueCheck } from '@rue/activerecord';
+
+// locals
 import { ActiveRecord } from '../lib';
+
+// types
 import type * as t from '@rue/activerecord';
 
 type ProfileParams = {
@@ -8,10 +13,15 @@ type ProfileParams = {
   lastName: string;
 };
 
+@RueCheck()
 export class Profile extends ActiveRecord<ProfileParams> {
   public id: ProfileParams['id'];
   public firstName: ProfileParams['firstName'];
   public lastName: ProfileParams['lastName'];
+
+  get uniqueKey(): string {
+    return 'Profile';
+  }
 
   protected fetchAll(): Promise<ProfileParams[]> {
     return Promise.resolve([]);

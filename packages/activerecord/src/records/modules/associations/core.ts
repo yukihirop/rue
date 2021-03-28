@@ -80,7 +80,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     if (opts.validate === undefined) opts.validate = true;
     if (opts.autosave === undefined) opts.autosave = true;
 
-    AssociationRegistry.create(this.name, AssociationList.belongsTo, {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    AssociationRegistry.create(_this.uniqueKey, AssociationList.belongsTo, {
       [relationName]: {
         relationFn,
         saveStrategy: PersistenceStrategy.belongsToSaveStrategyFn(relationName, opts),
@@ -187,7 +189,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     if (opts.validate === undefined) opts.validate = true;
     if (opts.autosave === undefined) opts.autosave = true;
 
-    AssociationRegistry.create(this.name, AssociationList.hasOne, {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    AssociationRegistry.create(_this.uniqueKey, AssociationList.hasOne, {
       [relationName]: {
         relationFn,
         saveStrategy: PersistenceStrategy.hasOneSaveStrategyFn(relationName, opts),
@@ -323,7 +327,9 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
     /**
      * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many
      */
-    AssociationRegistry.create(this.name, AssociationList.hasMany, {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    AssociationRegistry.create(_this.uniqueKey, AssociationList.hasMany, {
       [relationName]: {
         relationFn,
         saveStrategy: PersistenceStrategy.hasManySaveStrategyFn(relationName, opts),
@@ -334,7 +340,7 @@ export class ActiveRecord$Associations extends ActiveRecord$Associations$Impl {
   }
 
   static _defineAssociations<T extends ActiveRecord$Base>(self: T) {
-    const allAssociations = AssociationRegistry.data[self.constructor.name];
+    const allAssociations = AssociationRegistry.data[self.uniqueKey];
     if (allAssociations == undefined) return;
 
     Object.keys(allAssociations).forEach((associationName: string) => {
@@ -403,7 +409,8 @@ function createRuntimeCollectionProxy<T extends ActiveRecord$Base, H>(
    */
   const { ActiveRecord$Associations$CollectionProxy } = require('../../associations');
 
-  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_Associations_CollectionProxy`;
+  // @ts-expect-error
+  const runtimeKlassName = `${recordKlass.uniqueKey}$ActiveRecord_Associations_CollectionProxy`;
   const runtimeKlass = {
     [runtimeKlassName]: class extends ActiveRecord$Associations$CollectionProxy<T> {},
   }[runtimeKlassName];
@@ -421,7 +428,8 @@ function createRuntimeAssociationRelation<T extends ActiveRecord$Base, H>(
    * @description I'm worried about the overhead, but load it dynamically to avoid circular references
    */
   const { ActiveRecord$Associations$Relation } = require('../../associations');
-  const runtimeKlassName = `${recordKlass.name}$ActiveRecord_AssociationRelation`;
+  // @ts-expect-error
+  const runtimeKlassName = `${recordKlass.uniqueKey}$ActiveRecord_AssociationRelation`;
   const runtimeKlass = {
     [runtimeKlassName]: class extends ActiveRecord$Associations$Relation<T> {},
   }[runtimeKlassName];

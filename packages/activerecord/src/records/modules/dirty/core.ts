@@ -13,8 +13,8 @@ export class ActiveRecord$Dirty extends RueModule {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     const { RECORD_ALL, RUE_RECORD_ID } = ActiveRecord$Base;
-    const klassName = this.constructor.name;
-    const records = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
+    const cacheKey = _this.uniqueKey;
+    const records = RecordCache.read<ActiveRecord$Base[]>(cacheKey, RECORD_ALL, 'array');
     const isBlankRecord = Object.values(_this.attributes()).every((v) => v === undefined);
 
     if (records.length === 0) {

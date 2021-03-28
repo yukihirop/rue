@@ -33,6 +33,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       protected fetchAll(): Promise<IsExistsRecordParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'IsExistsRecord';
+      }
     }
 
     let scope: IsExistsRecord[];
@@ -120,6 +124,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
       protected fetchAll(): Promise<FindRecordParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'FindRecord';
       }
     }
 
@@ -242,6 +250,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public id: FindByRecordParams['id'];
       public name: FindByRecordParams['name'];
       public age: FindByRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'FindByRecord';
+      }
     }
 
     let scope: FindByRecord[];
@@ -310,6 +322,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       protected fetchAll(): Promise<FindByOrThrowRecordParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'FindByOrThrowRecord';
+      }
     }
 
     let scope: FindByOrThrowRecord[];
@@ -377,6 +393,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
       protected fetchAll(): Promise<FirstRecordParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'FirstRecord';
       }
     }
 
@@ -525,6 +545,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       protected fetchAll(): Promise<FirstOrThrowParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'FirstOrThrowRecord';
+      }
     }
 
     let scope: FirstOrThrowRecord[];
@@ -593,6 +617,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       public id: IsIncludeRecordParams['id'];
       public name: IsIncludeRecordParams['name'];
       public age: IsIncludeRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsIncludeRecord';
+      }
     }
 
     let scope: IsIncludeRecord[];
@@ -669,6 +697,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
       protected fetchAll(): Promise<LastRecordParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'LastRecord';
       }
     }
 
@@ -817,6 +849,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
       protected fetchAll(): Promise<LastOrThrowParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'LastOrThrowRecord';
+      }
     }
 
     let scope: LastOrThrowRecord[];
@@ -888,6 +924,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
       protected fetchAll(): Promise<TakeRecordParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'TakeRecord';
       }
     }
 
@@ -1035,6 +1075,10 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
 
       protected fetchAll(): Promise<TakeOrThrowParams[]> {
         return Promise.resolve([]);
+      }
+
+      get uniqueKey(): string {
+        return 'TakeOrThrowRecord';
       }
     }
 

@@ -47,6 +47,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       static translate(key: string, opts?: any): string {
         return `test.${key}`;
       }
+
+      get uniqueKey(): string {
+        return 'TestDeleteRecord';
+      }
     }
 
     describe('when default', () => {
@@ -113,6 +117,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: IsDestroyedRecordParams['id'];
       public name: IsDestroyedRecordParams['name'];
       public age: IsDestroyedRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsDestroyedRecord';
+      }
     }
 
     describe('when return false', () => {
@@ -138,6 +146,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: IsNewRecordRecordParams['id'];
       public name: IsNewRecordRecordParams['name'];
       public age: IsNewRecordRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsNewRecordRecord';
+      }
     }
 
     describe('when return true', () => {
@@ -163,6 +175,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: IsPersistedRecordParams['id'];
       public name: IsPersistedRecordParams['name'];
       public age: IsPersistedRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsPersistedRecord';
+      }
     }
 
     describe('when return true', () => {
@@ -201,11 +217,19 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       static translate(key: string, opts?: any): string {
         return `test.${key}`;
       }
+
+      get uniqueKey(): string {
+        return 'TestSaveRecord';
+      }
     }
 
     describe('when default', () => {
       describe('when success', () => {
-        class TestSaveSuccessRecord extends TestSaveRecord {}
+        class TestSaveSuccessRecord extends TestSaveRecord {
+          get uniqueKey(): string {
+            return 'TestSaveSuccessRecord';
+          }
+        }
         // register validations
         TestSaveSuccessRecord.validates('profile.name', { presence: true });
         TestSaveSuccessRecord.validates('profile.age', { numericality: { onlyInteger: true } });
@@ -216,24 +240,30 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           // Even after saving once, the state does not change no matter how many times you saveSync
           expect(record.saveSync()).toEqual(true);
           expect(record.saveSync()).toEqual(true);
-          expect(RecordCache.read('TestSaveSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)).toEqual(
-            2
-          );
-          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.name).toEqual(
-            'name_1'
-          );
-          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].profile.age).toEqual(20);
-          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0].errors).toEqual({
+          expect(
+            RecordCache.read(TestSaveSuccessRecord.uniqueKey, RUE_AUTO_INCREMENT_RECORD_ID)
+          ).toEqual(2);
+          expect(
+            RecordCache.read(TestSaveSuccessRecord.uniqueKey, RECORD_ALL)[0].profile.name
+          ).toEqual('name_1');
+          expect(
+            RecordCache.read(TestSaveSuccessRecord.uniqueKey, RECORD_ALL)[0].profile.age
+          ).toEqual(20);
+          expect(RecordCache.read(TestSaveSuccessRecord.uniqueKey, RECORD_ALL)[0].errors).toEqual({
             profile: { name: [], age: [] },
           });
-          expect(RecordCache.read('TestSaveSuccessRecord', RECORD_ALL)[0][RUE_RECORD_ID]).toEqual(
-            1
-          );
+          expect(
+            RecordCache.read(TestSaveSuccessRecord.uniqueKey, RECORD_ALL)[0][RUE_RECORD_ID]
+          ).toEqual(1);
         });
       });
 
       describe('when failure', () => {
-        class TestSaveFailureRecord extends TestSaveRecord {}
+        class TestSaveFailureRecord extends TestSaveRecord {
+          get uniqueKey(): string {
+            return 'TestSaveFailureRecord';
+          }
+        }
         // register validations
         TestSaveFailureRecord.validates('profile.name', { absence: true });
 
@@ -270,10 +300,18 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       static translate(key: string, opts?: any): string {
         return `test.${key}`;
       }
+
+      get uniqueKey(): string {
+        return 'TestSaveOrThrowRecord';
+      }
     }
 
     describe('when success', () => {
-      class TestSaveOrThrowSuccessRecord extends TestSaveOrThrowRecord {}
+      class TestSaveOrThrowSuccessRecord extends TestSaveOrThrowRecord {
+        get uniqueKey(): string {
+          return 'TestSaveOrThrowSuccessRecord';
+        }
+      }
       // register validations
       TestSaveOrThrowSuccessRecord.validates('profile.name', { presence: true });
       TestSaveOrThrowSuccessRecord.validates('profile.age', {
@@ -305,7 +343,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when throw error', () => {
-      class TestSaveOrThrowFailureRecord extends TestSaveOrThrowRecord {}
+      class TestSaveOrThrowFailureRecord extends TestSaveOrThrowRecord {
+        get uniqueKey(): string {
+          return 'TestSaveOrThrowFailureRecord';
+        }
+      }
       // register validations
       TestSaveOrThrowFailureRecord.validates('profile.name', { absence: true });
 
@@ -365,6 +407,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       // override
       static translate(key: string, opts?: any): string {
         return `test.${key}`;
+      }
+
+      get uniqueKey(): string {
+        return 'TestDestroyRecord';
       }
     }
 
@@ -432,6 +478,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: IsDestroyedRecordParams['id'];
       public name: IsDestroyedRecordParams['name'];
       public age: IsDestroyedRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'IsDestroyedRecord';
+      }
     }
 
     describe('when return false', () => {
@@ -457,6 +507,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: TouchRecordParams['id'];
       public name: TouchRecordParams['name'];
       public age: TouchRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'TouchRecord';
+      }
     }
 
     beforeEach(() => {
@@ -549,6 +603,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           { id: 2, name: 'name_2', age: 2 },
         ]);
       }
+
+      get uniqueKey(): string {
+        return 'UpdateRecord';
+      }
     }
 
     UpdateRecord.validates('name', { length: { is: 6 } });
@@ -600,6 +658,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
+      }
+
+      get uniqueKey(): string {
+        return 'UpdateOrThrowRecord';
       }
     }
 
@@ -662,6 +724,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: UpdateAttributeRecordParams['id'];
       public name: UpdateAttributeRecordParams['name'];
       public age: UpdateAttributeRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'UpdateAttributeRecord';
+      }
     }
 
     UpdateAttributeRecord.validates('name', { length: { is: 6 } });
@@ -767,6 +833,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: CreateRecordParams['id'];
       public name: CreateRecordParams['name'];
       public age: CreateRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'CreateRecord';
+      }
     }
 
     beforeEach(() => {
@@ -891,6 +961,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'CreateOrThrowRecord';
       }
     }
 
@@ -1065,6 +1139,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       protected fetchAll(): Promise<DeleteRecordParams[]> {
         return Promise.resolve([]);
       }
+
+      get uniqueKey(): string {
+        return 'DeleteRecord';
+      }
     }
 
     beforeEach(() => {
@@ -1107,6 +1185,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: DestroyRecordParams['id'];
       public name: DestroyRecordParams['name'];
       public age: DestroyRecordParams['age'];
+
+      get uniqueKey(): string {
+        return 'DestroyRecord';
+      }
     }
 
     beforeEach(() => {
@@ -1214,6 +1296,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
       static translate(key: string, opts?: any): string {
         return key;
+      }
+
+      get uniqueKey(): string {
+        return 'StaticUpdateRecord';
       }
     }
 

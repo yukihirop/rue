@@ -25,6 +25,10 @@ class QueryingRecord extends Record {
   static translate(key: string, opts?: any): string {
     return key;
   }
+
+  get uniqueKey(): string {
+    return 'QueryingRecord';
+  }
 }
 
 describe('ActiveRecord$Base (Querying) (delegate to FinderMethods)', () => {

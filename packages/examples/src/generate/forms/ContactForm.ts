@@ -1,3 +1,6 @@
+// rue packages
+import { RueCheck } from '@rue/activemodel';
+
 // locals
 import { ActiveForm } from '../../lib/activeform';
 
@@ -15,6 +18,10 @@ export type ContactFormParams = {
   email: string;
 };
 
+/**
+ * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
+ */
+@RueCheck({ uniqueKey: true })
 export class ContactForm extends ActiveForm {
   // Please do not change the name 'errors' arbitrarily.
   public errors: ContactFormParams['errors'];
@@ -28,7 +35,16 @@ export class ContactForm extends ActiveForm {
     throw "Please override 'this._state'";
   }
 
-  submit() {
-    throw 'Please override';
+  // Used for recording records, etc.
+  get uniqueKey(): string {
+    return 'ContactForm';
+  }
+
+  submit(): Promise<boolean> {
+    throw "Please override 'submit()'";
   }
 }
+
+/**
+ * Be sure to define validations, scopes, and associations below.
+ */

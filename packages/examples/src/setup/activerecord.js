@@ -1,5 +1,9 @@
-const { ActiveRecord$Base } = require('@rue/activerecord');
+const { ActiveRecord$Base, RueCheck } = require('@rue/activerecord');
 
+/**
+ * Check if 'translate' are overridden
+ */
+@RueCheck({ translate: true })
 class ActiveRecord extends ActiveRecord$Base {
   /**
    * @param {strinng} key
@@ -10,7 +14,7 @@ class ActiveRecord extends ActiveRecord$Base {
     /**
      * e.g.) return i18n.t(key, opts)
      */
-    throw 'Please override';
+    throw "Please override 'static translate(key: string, opts?: any): string'";
   }
 
   /**

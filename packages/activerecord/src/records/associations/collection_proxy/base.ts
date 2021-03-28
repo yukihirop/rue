@@ -292,7 +292,8 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     if (ids.length === 0) {
       throw errObj({
         code: ErrCodes.RECORD_NOT_FOUND,
-        message: `Could'nt find '${this.recordKlass.name}' without an 'id'`,
+        // @ts-expect-error
+        message: `Could'nt find '${this.recordKlass.uniqueKey}' without an 'id'`,
       });
     } else {
       // @ts-expect-error
@@ -302,14 +303,16 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
             throw errObj({
               code: ErrCodes.RECORD_NOT_FOUND,
               params: {
-                resource: this.recordKlass.name,
+                // @ts-expect-error
+                resource: this.recordKlass.uniqueKey,
                 id: ids[0],
               },
             });
           } else {
             throw errObj({
               code: ErrCodes.RECORD_NOT_FOUND,
-              message: `Could't find all '${this.recordKlass.name}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
+              // @ts-expect-error
+              message: `Could't find all '${this.recordKlass.uniqueKey}' with 'id': [${ids}] (found 0 results, but was looking for ${ids.length})`,
             });
           }
         } else if (holder.scope.length === 1) {

@@ -26,6 +26,10 @@ class PersistenceRecord extends ActiveRecord$Base<PersistenceRecordParams> {
       { id: 4, name: 'name_4', age: 4 },
     ]);
   }
+
+  get uniqueKey(): string {
+    return 'PersistenceRecord';
+  }
 }
 
 PersistenceRecord.validates('name', { length: { is: 6 } });
@@ -55,6 +59,10 @@ class PersistenceChildRecord extends ActiveRecord$Base<PersistenceChildRecordPar
 
   static translate(key: string, opts?: any): string {
     return key;
+  }
+
+  get uniqueKey(): string {
+    return 'PersistenceChildRecord';
   }
 }
 
@@ -189,6 +197,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseRecord';
+        }
       }
 
       AutosaveFalseRecord.validates('name', { length: { is: 6 } });
@@ -218,6 +230,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
 
         static translate(key: string, opts?: any): string {
           return key;
+        }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseChildRecord';
         }
       }
 
@@ -395,6 +411,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedRecord';
+        }
       }
 
       class DependentUndefinnedChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -410,6 +430,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedChildRecord';
         }
       }
 
@@ -445,6 +469,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentNullifyRecord';
+        }
       }
 
       class DependentNullifyChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -460,6 +488,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentNullifyChildRecord';
         }
       }
 
@@ -545,6 +577,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyRecord';
+        }
       }
 
       class DependentDestroyChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -560,6 +596,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyChildRecord';
         }
       }
 
@@ -606,6 +646,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteAllRecord';
+        }
       }
 
       class DependentDeleteAllChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -621,6 +665,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteAllChildRecord';
         }
       }
 
@@ -667,6 +715,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithExceptionRecord';
+        }
       }
 
       class DependentRestrictWithExceptionChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -682,6 +734,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithExceptionChildRecord';
         }
       }
 
@@ -718,6 +774,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithErrorRecord';
+        }
       }
 
       class DependentRestrictWithErrorChildRecord extends ActiveRecord$Base<PersistenceChildRecordParams> {
@@ -733,6 +793,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithErrorChildRecord';
         }
       }
 

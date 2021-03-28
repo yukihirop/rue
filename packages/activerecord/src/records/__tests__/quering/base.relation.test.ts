@@ -26,6 +26,10 @@ class QueryingRecord extends Record {
   static translate(key: string, opts?: any): string {
     return key;
   }
+
+  get uniqueKey(): string {
+    return 'QueryingRecord';
+  }
 }
 
 describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
@@ -166,7 +170,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[staic] findOrCreateBy', () => {
-    class StaticFindOrCreateByRecord extends QueryingRecord {}
+    class StaticFindOrCreateByRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticFindOrCreateByRecord';
+      }
+    }
 
     StaticFindOrCreateByRecord.validates('name', { length: { is: 6 } });
     StaticFindOrCreateByRecord.validates('age', { numericality: { lessThan: 10 } });
@@ -206,7 +214,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             name: 'name_1',
             id: 1,
           });
-          expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(3);
+          expect(RecordCache.data[StaticFindOrCreateByRecord.uniqueKey][RECORD_ALL].length).toEqual(
+            3
+          );
           done();
         });
       });
@@ -250,7 +260,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             name: 'name_4',
             id: 4,
           });
-          expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(4);
+          expect(RecordCache.data[StaticFindOrCreateByRecord.uniqueKey][RECORD_ALL].length).toEqual(
+            4
+          );
           done();
         });
       });
@@ -278,7 +290,9 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
               name: 'name_4',
               id: 4,
             });
-            expect(RecordCache.data[StaticFindOrCreateByRecord.name][RECORD_ALL].length).toEqual(4);
+            expect(
+              RecordCache.data[StaticFindOrCreateByRecord.uniqueKey][RECORD_ALL].length
+            ).toEqual(4);
             done();
           });
         });
@@ -287,7 +301,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[static] findOrCreateByOrThrow', () => {
-    class StaticFindOrCreateByOrThrowRecord extends QueryingRecord {}
+    class StaticFindOrCreateByOrThrowRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticFindOrCreateByOrThrowRecord';
+      }
+    }
 
     StaticFindOrCreateByOrThrowRecord.validates('name', { length: { is: 6 } });
     StaticFindOrCreateByOrThrowRecord.validates('age', { numericality: { lessThan: 10 } });
@@ -305,7 +323,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     });
 
     afterEach(() => {
-      RecordCache.destroy(StaticFindOrCreateByOrThrowRecord.name);
+      RecordCache.destroy(StaticFindOrCreateByOrThrowRecord.uniqueKey);
     });
 
     describe("when return 'findBy' result", () => {
@@ -329,7 +347,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
             id: 1,
           });
           expect(
-            RecordCache.data[StaticFindOrCreateByOrThrowRecord.name][RECORD_ALL].length
+            RecordCache.data[StaticFindOrCreateByOrThrowRecord.uniqueKey][RECORD_ALL].length
           ).toEqual(3);
           done();
         });
@@ -511,7 +529,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[static] createOrFindByOrThrow', () => {
-    class StaticCreateOrFindByOrThrowRecord extends QueryingRecord {}
+    class StaticCreateOrFindByOrThrowRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticCreateOrFindByOrThrowRecord';
+      }
+    }
 
     StaticCreateOrFindByOrThrowRecord.validates('name', { length: { is: 6 } });
     StaticCreateOrFindByOrThrowRecord.validates('age', {
@@ -679,7 +701,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[static] updateAll', () => {
-    class StaticUpdateAllRecord extends QueryingRecord {}
+    class StaticUpdateAllRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticUpdateAllRecord';
+      }
+    }
 
     StaticUpdateAllRecord.validates('name', { length: { is: 6 } });
     StaticUpdateAllRecord.validates('age', { numericality: { lessThan: 10 } });
@@ -716,7 +742,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[static] touchAll', () => {
-    class StaticTouchAllRecord extends QueryingRecord {}
+    class StaticTouchAllRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticTouchAllRecord';
+      }
+    }
 
     StaticTouchAllRecord.validates('name', { length: { is: 6 } });
     StaticTouchAllRecord.validates('age', { numericality: { lessThan: 10 } });
@@ -931,7 +961,11 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   });
 
   describe('[static] deleteBy', () => {
-    class StaticDeleteByRecord extends QueryingRecord {}
+    class StaticDeleteByRecord extends QueryingRecord {
+      get uniqueKey(): string {
+        return 'StaticDeleteByRecord';
+      }
+    }
 
     let records;
     beforeEach(() => {
@@ -946,7 +980,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
       it('should correctly', (done) => {
         StaticDeleteByRecord.deleteBy().then((result) => {
           expect(result).toEqual(3);
-          expect(RecordCache.data[StaticDeleteByRecord.name][RECORD_ALL].length).toEqual(0);
+          expect(RecordCache.data[StaticDeleteByRecord.uniqueKey][RECORD_ALL].length).toEqual(0);
           done();
         });
       });
@@ -956,7 +990,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
       it('should correctly', (done) => {
         StaticDeleteByRecord.deleteBy({ age: [1, 2] }).then((result) => {
           expect(result).toEqual(2);
-          expect(RecordCache.data[StaticDeleteByRecord.name][RECORD_ALL].length).toEqual(1);
+          expect(RecordCache.data[StaticDeleteByRecord.uniqueKey][RECORD_ALL].length).toEqual(1);
           done();
         });
       });

@@ -10,7 +10,7 @@ module.exports = {
     },
   },
   repl: {
-    loadModules: ['src/**/{forms,models,records}/**/*.{js,ts}', '!src/**/__tests__/*.test.{js,ts}'],
+    loadModules: ['src/**/{forms,models,records}/**/*.ts', '!src/**/__tests__/*.test.{js,ts}'],
     moduleAliases: {
       '@': './src',
     },

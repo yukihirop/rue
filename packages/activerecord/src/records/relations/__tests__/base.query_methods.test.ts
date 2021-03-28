@@ -31,6 +31,10 @@ class QueryMethodsRecord extends Record<QueryMethodsRecordParams> {
   static translate(key: string, opts?: any): string {
     return key;
   }
+
+  get uniqueKey(): string {
+    return 'QueryMethodsRecord';
+  }
 }
 
 class QueryMethodsRelation extends Relation<QueryMethodsRecord> {}

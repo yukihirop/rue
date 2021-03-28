@@ -34,6 +34,10 @@ class PersistenceRecord extends ActiveRecord$Base<PersistenceRecordParams> {
     ]);
   }
 
+  get uniqueKey(): string {
+    return 'PersistenceRecord';
+  }
+
   buildOne(params?: Partial<PersistenceOneRecordParams>): Promise<PersistenceOneRecord> {
     return this.buildHasOneRecord<PersistenceOneRecord>('one', params);
   }
@@ -54,6 +58,10 @@ class PersistenceOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams>
 
   static translate(key: string, opts?: any): string {
     return key;
+  }
+
+  get uniqueKey(): string {
+    return 'PersistenceOneRecord';
   }
 }
 
@@ -164,6 +172,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
         buildOne(params?: Partial<AutosaveFalseOneRecordParams>): Promise<AutosaveFalseOneRecord> {
           return this.buildHasOneRecord<AutosaveFalseOneRecord>('one', params);
         }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseRecord';
+        }
       }
 
       AutosaveFalseRecord.validates('name', { length: { is: 6 } });
@@ -188,6 +200,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         static translate(key: string, opts?: any): string {
           return key;
+        }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseOneRecord';
         }
       }
 
@@ -338,6 +354,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedRecord';
+        }
       }
 
       class DependentUndefinnedOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -348,6 +368,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedOneRecord';
         }
       }
 
@@ -383,6 +407,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentNullifyRecord';
+        }
       }
 
       class DependentNullifyOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -393,6 +421,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentNullifyOneRecord';
         }
       }
 
@@ -451,6 +483,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyRecord';
+        }
       }
 
       class DependentDestroyOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -461,6 +497,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyOneRecord';
         }
       }
 
@@ -506,6 +546,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteRecord';
+        }
       }
 
       class DependentDeleteOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -516,6 +560,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteOneRecord';
         }
       }
 
@@ -549,6 +597,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithExceptionRecord';
+        }
       }
 
       class DependentRestrictWithExceptionOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -559,6 +611,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithExceptionOneRecord';
         }
       }
 
@@ -595,6 +651,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
             { id: 4, name: 'name_4', age: 4 },
           ]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithErrorRecord';
+        }
       }
 
       class DependentRestrictWithErrorOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams> {
@@ -605,6 +665,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<PersistenceOneRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, oneName: 'one_name_1', oneAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentRestrictWithErrorOneRecord';
         }
       }
 

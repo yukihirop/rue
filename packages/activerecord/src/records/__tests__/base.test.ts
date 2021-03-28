@@ -21,6 +21,10 @@ describe('Record', () => {
     class TestConstructorRecord extends Record {
       public name: string;
       public age: number;
+
+      get uniqueKey(): string {
+        return 'TestConstructorRecord';
+      }
     }
 
     describe('when data is empty', () => {

@@ -31,6 +31,10 @@ class PersistenceBelongsToRecord extends ActiveRecord$Base<PersistenceBelongsToR
   static translate(key: string, opts?: any): string {
     return key;
   }
+
+  get uniqueKey(): string {
+    return 'PersistenceBelongsToRecord';
+  }
 }
 
 PersistenceBelongsToRecord.validates('belongsToName', { length: { is: 17 } });
@@ -58,6 +62,10 @@ class PersistenceRecord extends ActiveRecord$Base<PersistenceRecordParams> {
     params?: Partial<PersistenceBelongsToRecordParams>
   ): Promise<PersistenceBelongsToRecord> {
     return this.buildBelongsToRecord<PersistenceBelongsToRecord>('belongsTo', params);
+  }
+
+  get uniqueKey(): string {
+    return 'PersistenceRecord';
   }
 }
 
@@ -177,6 +185,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
         ): Promise<AutosaveFalseBelongsToRecord> {
           return this.buildBelongsToRecord<AutosaveFalseBelongsToRecord>('belongsTo', params);
         }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseRecord';
+        }
       }
 
       AutosaveFalseRecord.validates('name', { length: { is: 6 } });
@@ -201,6 +213,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
         static translate(key: string, opts?: any): string {
           return key;
+        }
+
+        get uniqueKey(): string {
+          return 'AutosaveFalseBelongsToRecord';
         }
       }
 
@@ -462,6 +478,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
         protected fetchAll(): Promise<PersistenceRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, name: 'name_1', age: 1 }]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedRecord';
+        }
       }
 
       class DependentUndefinnedBelongsToRecord extends ActiveRecord$Base<PersistenceBelongsToRecordParams> {
@@ -471,6 +491,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
         protected fetchAll(): Promise<PersistenceBelongsToRecordParams[]> {
           return Promise.resolve([{ id: 1, belongsToName: 'belongsTo_name_1', belongsToAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentUndefinnedBelongsToRecord';
         }
       }
 
@@ -502,6 +526,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
         protected fetchAll(): Promise<PersistenceRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, name: 'name_1', age: 1 }]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyRecord';
+        }
       }
 
       class DependentDestroyBelongsToRecord extends ActiveRecord$Base<PersistenceBelongsToRecordParams> {
@@ -511,6 +539,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
         protected fetchAll(): Promise<PersistenceBelongsToRecordParams[]> {
           return Promise.resolve([{ id: 1, belongsToName: 'belongs_to_name_1', belongsToAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDestroyBelongsToRecord';
         }
       }
 
@@ -551,6 +583,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
         protected fetchAll(): Promise<PersistenceRecordParams[]> {
           return Promise.resolve([{ id: 1, parentId: 1, name: 'name_1', age: 1 }]);
         }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteRecord';
+        }
       }
 
       class DependentDeleteBelongsToRecord extends ActiveRecord$Base<PersistenceBelongsToRecordParams> {
@@ -560,6 +596,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
         protected fetchAll(): Promise<PersistenceBelongsToRecordParams[]> {
           return Promise.resolve([{ id: 1, belongsToName: 'belongs_to_name_1', belongsToAge: 1 }]);
+        }
+
+        get uniqueKey(): string {
+          return 'DependentDeleteBelongsToRecord';
         }
       }
 

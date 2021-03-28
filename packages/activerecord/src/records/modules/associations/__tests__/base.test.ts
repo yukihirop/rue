@@ -5,17 +5,24 @@ import { ActiveRecord$Base as Record } from '@/records';
 
 // types
 import type * as t from '../types';
-import type * as at from '@/records/modules/associations';
 
 describe('ActiveRecord$Associations', () => {
   describe(`[static] belongsTo`, () => {
     class TestBelongsToRecord extends Record {
       public id: t.PrimaryKey;
+
+      get uniqueKey(): string {
+        return 'TestBelongsToRecord';
+      }
     }
     class TestBelongsToChildRecod extends Record {
       public id: t.PrimaryKey;
       public foreignKey: t.ForeignKey;
       public parent: t.BelongsTo<TestBelongsToRecord>;
+
+      get uniqueKey(): string {
+        return 'TestBelongsToChildRecod';
+      }
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestBelongsToRecord, { only: ['belongsTo'] });
@@ -40,10 +47,18 @@ describe('ActiveRecord$Associations', () => {
     class TestHasOneRecord extends Record {
       public id: t.PrimaryKey;
       public child: t.HasOne<TestHasOneChildRecod>;
+
+      get uniqueKey(): string {
+        return 'TestHasOneRecord';
+      }
     }
 
     class TestHasOneChildRecod extends Record {
       public id: t.PrimaryKey;
+
+      get uniqueKey(): string {
+        return 'TestHasOneChildRecod';
+      }
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasOneRecord, { only: ['hasOne'] });
@@ -66,10 +81,18 @@ describe('ActiveRecord$Associations', () => {
     class TestHasManyRecord extends Record {
       public id: t.PrimaryKey;
       public children: t.HasMany<TestHasManyChildRecod>;
+
+      get uniqueKey(): string {
+        return 'TestHasManyRecord';
+      }
     }
 
     class TestHasManyChildRecod extends Record {
       public id: t.PrimaryKey;
+
+      get uniqueKey(): string {
+        return 'TestHasManyChildRecod';
+      }
     }
 
     AssociationsModule.rueModuleExtendedFrom(TestHasManyRecord, { only: ['hasMany'] });

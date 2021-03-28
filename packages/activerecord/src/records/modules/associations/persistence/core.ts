@@ -35,8 +35,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   > {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-
-    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
+    const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
 
     return Promise.all(
       Object.keys(allAssociationStrategies).reduce((acc, associationName: AssociationList) => {
@@ -65,8 +64,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   save(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-
-    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
+    const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
 
     return Promise.all(
       Object.keys(allAssociationStrategies)
@@ -112,7 +110,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
 
     _this.saveSyncOrThrow();
 
-    const allAssociationStrategies = AssociationRegistry.data[_this.constructor.name];
+    const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
 
     return Promise.all(
       Object.keys(allAssociationStrategies)

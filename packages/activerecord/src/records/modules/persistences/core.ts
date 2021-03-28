@@ -67,8 +67,8 @@ export class ActiveRecord$Persistence extends RueModule {
     const _this = this as ActiveRecord$Base;
 
     if (!opts.validate || _this.isValid()) {
-      const klassName = this.constructor.name;
-      _ensureRecordCache(klassName);
+      const cacheKey = _this.uniqueKey;
+      _ensureRecordCache(cacheKey);
 
       const now = dayjs().format();
       _this[RUE_CREATED_AT] = _this[RUE_CREATED_AT] || now;
@@ -77,7 +77,7 @@ export class ActiveRecord$Persistence extends RueModule {
       // do not exists record
       if (!_this[RUE_RECORD_ID]) {
         let __record_aid__ = RecordCache.read<number>(
-          klassName,
+          cacheKey,
           RUE_AUTO_INCREMENT_RECORD_ID,
           'value'
         );
@@ -87,16 +87,16 @@ export class ActiveRecord$Persistence extends RueModule {
         _this._newRecord = false;
         __record_aid__ = __record_aid__ + 1;
 
-        RecordCache.update(klassName, RUE_AUTO_INCREMENT_RECORD_ID, __record_aid__);
-        RecordCache.create(klassName, RECORD_ALL, [this]);
+        RecordCache.update(cacheKey, RUE_AUTO_INCREMENT_RECORD_ID, __record_aid__);
+        RecordCache.create(cacheKey, RECORD_ALL, [this]);
       } else {
-        const allRecords = RecordCache.read<ActiveRecord$Base[]>(klassName, RECORD_ALL, 'array');
+        const allRecords = RecordCache.read<ActiveRecord$Base[]>(cacheKey, RECORD_ALL, 'array');
         const updatedAllRecords = allRecords.map((record) => {
           // @ts-expect-error
           if (record[RUE_RECORD_ID] === _this[RUE_RECORD_ID]) record = this;
           return record;
         });
-        RecordCache.update(klassName, RECORD_ALL, updatedAllRecords);
+        RecordCache.update(cacheKey, RECORD_ALL, updatedAllRecords);
       }
 
       return true;
@@ -128,14 +128,14 @@ export class ActiveRecord$Persistence extends RueModule {
     const { RECORD_ALL, RUE_RECORD_ID } = ActiveRecord$Persistence;
 
     if (_this.isPersisted()) {
-      const klassName = this.constructor.name;
-      const allData = RecordCache.read<T[]>(klassName, RECORD_ALL, 'array');
+      const cacheKey = _this.uniqueKey;
+      const allData = RecordCache.read<T[]>(cacheKey, RECORD_ALL, 'array');
       const filteredData = allData.filter(
         (record) => record[RUE_RECORD_ID] != _this[RUE_RECORD_ID]
       );
 
-      _ensureRecordCache(klassName);
-      RecordCache.update(klassName, RECORD_ALL, filteredData);
+      _ensureRecordCache(cacheKey);
+      RecordCache.update(cacheKey, RECORD_ALL, filteredData);
     }
 
     // @ts-expect-error

@@ -25,6 +25,10 @@ class AttributeMethodRecord extends Record<AttributeMethodRecordParams> {
       { id: 3, name: 'name_3', age: 3 },
     ]);
   }
+
+  get uniqueKey(): string {
+    return 'AttributeMethodRecord';
+  }
 }
 
 describe('ActiveRecord$Base (ActiveRecord$AttributeMethods)', () => {

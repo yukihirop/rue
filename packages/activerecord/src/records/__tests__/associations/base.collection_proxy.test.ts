@@ -34,6 +34,10 @@ class CollectionProxyRecord extends ActiveRecord$Base<CollectionProxyRecordParam
       { id: 4, name: 'name_4', age: 4 },
     ]);
   }
+
+  get uniqueKey(): string {
+    return 'CollectionProxyRecord';
+  }
 }
 
 class CollectionProxyChildRecord extends ActiveRecord$Base<CollectionProxyChildRecordParams> {
@@ -53,6 +57,10 @@ class CollectionProxyChildRecord extends ActiveRecord$Base<CollectionProxyChildR
 
   static translate(key: string, opts?: any): string {
     return key;
+  }
+
+  get uniqueKey(): string {
+    return 'CollectionProxyChildRecord';
   }
 }
 
