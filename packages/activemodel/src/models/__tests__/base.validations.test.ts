@@ -1,4 +1,4 @@
-import { ActiveModel$Base as Model } from '../base';
+import { ActiveModel$Base } from '../base';
 import i18n from '@/locales';
 import { registryForValidations as Registry } from '@/registries';
 import { RueCheck } from '@/decorators';
@@ -6,6 +6,17 @@ import { RueCheck } from '@/decorators';
 // types
 import type * as t from '@/models/modules/validations/types';
 import type * as rt from '@/registries';
+import type * as lt from '@/locales';
+
+class Model extends ActiveModel$Base {
+  static i18nConfig(): lt.I18nConfig {
+    return {
+      options: {
+        lng: 'en',
+      },
+    };
+  }
+}
 
 describe('ActiveModel$Base (ActiveModel$Validations)', () => {
   describe('constructor', () => {
@@ -42,25 +53,7 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
   describe('[static] translate', () => {
     describe('when default', () => {
       it('return correctly', () => {
-        expect(() => {
-          Model.translate('propKey', {});
-        }).toThrow();
-      });
-    });
-
-    describe('when override inherited class', () => {
-      class TestTranslateModel extends Model {
-        static translate(key: string, opts?: any): string {
-          return `test.${key}`;
-        }
-
-        get uniqueKey(): string {
-          return 'TestTranslateModel';
-        }
-      }
-
-      it('can override', () => {
-        expect(TestTranslateModel.translate('propKey', {})).toEqual('test.propKey');
+        expect(Model.translate('propKey', {})).toEqual('propKey');
       });
     });
   });
@@ -112,9 +105,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           static objType(): t.ObjType {
             return 'model';
           }
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidSkillModel';
@@ -150,10 +140,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           // override
           static objType(): t.ObjType {
             return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
           }
 
           get uniqueKey(): string {
@@ -225,10 +211,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
             return 'model';
           }
 
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidErrorsSkillModel';
           }
@@ -263,10 +245,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           // override
           static objType(): t.ObjType {
             return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
           }
 
           get uniqueKey(): string {
@@ -376,10 +354,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
             return 'model';
           }
 
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidSkipSkillModel';
           }
@@ -417,10 +391,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           // override
           static objType(): t.ObjType {
             return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
           }
 
           get uniqueKey(): string {
@@ -510,10 +480,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
             return 'model';
           }
 
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidAllowSkillModel';
           }
@@ -552,10 +518,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           // override
           static objType(): t.ObjType {
             return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
           }
 
           get uniqueKey(): string {
@@ -646,10 +608,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
             return 'model';
           }
 
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidOverrideMsgSkillModel';
           }
@@ -687,9 +645,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           // override
           static objType(): t.ObjType {
             return 'model';
-          }
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
           }
 
           get uniqueKey(): string {

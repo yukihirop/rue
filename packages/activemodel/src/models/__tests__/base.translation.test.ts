@@ -1,9 +1,25 @@
 // locals
-import { ActiveModel$Base as Model } from '../base';
+import { ActiveModel$Base } from '../base';
+
+// types
+import type * as lt from '@/locales';
+
+class Model extends ActiveModel$Base {
+  static i18nConfig(): lt.I18nConfig {
+    return {
+      options: {
+        lng: 'ja',
+      },
+      resources: {
+        ja: {},
+      },
+    };
+  }
+}
 
 describe('ActiveModel$Base (ActiveModel$Translation)', () => {
   describe('[static] translate', () => {
-    describe('when default (throw error)', () => {
+    describe('when default', () => {
       class TranslateModel extends Model {
         get uniqueKey(): string {
           return 'TranslateModel';
@@ -11,20 +27,12 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
       }
 
       it('should correctly', () => {
-        expect(() => {
-          TranslateModel.translate('test');
-        }).toThrowError(
-          "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class."
-        );
+        expect(TranslateModel.translate('test')).toEqual('test');
       });
     });
 
     describe('when override', () => {
       class TranslateModel extends Model {
-        static translate(key: string, opts?: any): string {
-          return key;
-        }
-
         get uniqueKey(): string {
           return 'TranslateModel';
         }
@@ -35,37 +43,32 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
     });
   });
 
-  describe('[static] checkTranslate', () => {
+  describe('[static] checkI18nConfig', () => {
     describe('when default (throw error)', () => {
-      class CheckTranslateModel extends Model {
+      class CheckTranslateModel extends ActiveModel$Base {
         get uniqueKey(): string {
           return 'CheckTranslateModel';
         }
       }
-
       it('should correctly', () => {
         expect(() => {
           // @ts-expect-error
-          CheckTranslateModel.checkTranslate();
+          CheckTranslateModel.checkI18nConfig();
         }).toThrowError(
-          "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class."
+          "Please implement 'static i18nConfig(): lt.I18nConfig' in Inherited Class."
         );
       });
     });
-
     describe('when override (return true)', () => {
       class CheckTranslateModel extends Model {
-        static translate(key: string, opts?: any): string {
-          return key;
-        }
-
         get uniqueKey(): string {
           return 'CheckTranslateModel';
         }
       }
+
       it('should correctly', () => {
         // @ts-expect-error
-        expect(CheckTranslateModel.checkTranslate()).toEqual(true);
+        expect(CheckTranslateModel.checkI18nConfig()).toEqual(true);
       });
     });
   });
@@ -80,10 +83,6 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
     class TestHumanPropertyNameModel extends Model {
       public profile?: TestHumanPropertyNameParams['profile'];
 
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestHumanPropertyNameModel';
       }
@@ -93,10 +92,10 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
 
     it('should correctly', () => {
       expect(model.humanPropertyName('profile.name')).toEqual(
-        'test.rue.models.TestHumanPropertyNameModel.profile.name'
+        'rue.models.TestHumanPropertyNameModel.profile.name'
       );
       expect(model.humanPropName('profile.age')).toEqual(
-        'test.rue.models.TestHumanPropertyNameModel.profile.age'
+        'rue.models.TestHumanPropertyNameModel.profile.age'
       );
     });
   });

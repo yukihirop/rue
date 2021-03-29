@@ -5,7 +5,8 @@ import { ActiveSupport$ImplBase as Support$ImplBase } from '@rue/activesupport';
 import { ActiveModel$Translation, ActiveModel$Validations, ActiveModel$Cachable } from './modules';
 
 // types
-import * as t from './types';
+import type * as t from './types';
+import type * as lt from '@/locales';
 
 // define static methods interface
 abstract class ActiveModel$Impl {
@@ -14,8 +15,9 @@ abstract class ActiveModel$Impl {
   static __rue_ancestors__ = [];
   // ActiveModel$Translation
   static translate: (key: string, opts?: any) => string;
-  protected static checkTranslate: () => boolean;
   static __t: (propKey: string) => string;
+  static i18nConfig: () => lt.I18nConfig;
+  protected static checkI18nOptions: () => boolean;
   // ActiveModel$Validations
   static objType: () => t.Validations$ObjType;
   static validates: <T = any, U extends ActiveModel$Validations = any>(
@@ -61,7 +63,7 @@ ActiveModel$Cachable.rueModuleIncludedFrom(ActiveModel$Impl, {
 });
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['translate', 'checkTranslate', '__t'],
+  only: ['translate', '__t', 'i18nConfig', 'checkI18nConfig'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['objType', 'validates'],
