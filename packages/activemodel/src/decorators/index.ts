@@ -1,1 +1,1 @@
-export { RueCheck } from './base';
+export { RueCheck, RueSetup } from './base';

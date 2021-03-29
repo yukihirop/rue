@@ -5,7 +5,7 @@ export { ActiveModel$Error } from './errors';
 
 // functions
 export { errObj } from './errors';
-export { RueCheck } from '@/decorators';
+export { RueCheck, RueSetup } from '@/decorators';
 
 // types
 // prettier-ignore
