@@ -131,7 +131,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
     describe('when failed save', () => {
       it('should correctly', async () => {
         const err = new Error(
-          "'rue.records.PersistenceOneRecord.oneName' is not equal length ('10' characters)."
+          "'records.PersistenceOneRecord.oneName' is not equal length ('10' characters)."
         );
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record.buildOne();
@@ -263,10 +263,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       it('associated records save is skipped (should return false / validation error)', async () => {
         const errForRecord = new Error('AutosaveFalseOneRecord is invalid.');
         const errForOneName = new Error(
-          "'rue.records.AutosaveFalseOneRecord.oneName' is not equal length ('10' characters)."
+          "'records.AutosaveFalseOneRecord.oneName' is not equal length ('10' characters)."
         );
         const errForOneAge = new Error(
-          "'rue.records.AutosaveFalseOneRecord.oneAge' is not less than '10'."
+          "'records.AutosaveFalseOneRecord.oneAge' is not less than '10'."
         );
         const record = (await AutosaveFalseRecord.first<AutosaveFalseRecord>()) as AutosaveFalseRecord;
         await record.buildOne({
@@ -304,7 +304,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         const errForOneName = new Error(
-          "'rue.records.PersistenceOneRecord.oneName' is not equal length ('10' characters)."
+          "'records.PersistenceOneRecord.oneName' is not equal length ('10' characters)."
         );
         await record.buildOne();
         try {

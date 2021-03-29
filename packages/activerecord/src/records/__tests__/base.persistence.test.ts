@@ -1428,7 +1428,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
               age: [],
               name: [
                 new Error(
-                  "'rue.records.StaticUpdateRecord.name' is too long (maximum '10' characters)."
+                  "'records.StaticUpdateRecord.name' is too long (maximum '10' characters)."
                 ),
               ],
             },
@@ -1447,7 +1447,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
               age: [],
               name: [
                 new Error(
-                  "'rue.records.StaticUpdateRecord.name' is too long (maximum '10' characters)."
+                  "'records.StaticUpdateRecord.name' is too long (maximum '10' characters)."
                 ),
               ],
             },

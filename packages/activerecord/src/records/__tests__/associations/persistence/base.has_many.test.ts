@@ -157,7 +157,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         const err = new Error(
-          "'rue.records.PersistenceChildRecord.childName' is not equal length ('12' characters)."
+          "'records.PersistenceChildRecord.childName' is not equal length ('12' characters)."
         );
         await record.children().build();
         expect(await record.save()).toEqual(false);
@@ -317,10 +317,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       it('associated records save is skipped (should return false / validation error)', async () => {
         const errForRecord = new Error('AutosaveFalseChildRecord is invalid.');
         const errChildNameForChild = new Error(
-          "'rue.records.AutosaveFalseChildRecord.childName' is not equal length ('12' characters)."
+          "'records.AutosaveFalseChildRecord.childName' is not equal length ('12' characters)."
         );
         const errChildAgeForChild = new Error(
-          "'rue.records.AutosaveFalseChildRecord.childAge' is not less than '10'."
+          "'records.AutosaveFalseChildRecord.childAge' is not less than '10'."
         );
         const record = (await AutosaveFalseRecord.first<AutosaveFalseRecord>()) as AutosaveFalseRecord;
         await record.children().build<AutosaveFalseChildRecordParams>({
@@ -360,7 +360,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         const err = new Error(
-          "'rue.records.PersistenceChildRecord.childName' is not equal length ('12' characters)."
+          "'records.PersistenceChildRecord.childName' is not equal length ('12' characters)."
         );
         await record.children().build<PersistenceChildRecordParams>();
         try {

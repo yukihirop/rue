@@ -92,10 +92,10 @@ describe('ActiveModel$Base (ActiveModel$Translation)', () => {
 
     it('should correctly', () => {
       expect(model.humanPropertyName('profile.name')).toEqual(
-        'rue.models.TestHumanPropertyNameModel.profile.name'
+        'models.TestHumanPropertyNameModel.profile.name'
       );
       expect(model.humanPropName('profile.age')).toEqual(
-        'rue.models.TestHumanPropertyNameModel.profile.age'
+        'models.TestHumanPropertyNameModel.profile.age'
       );
     });
   });

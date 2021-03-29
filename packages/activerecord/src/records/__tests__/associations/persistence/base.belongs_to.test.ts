@@ -132,7 +132,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
     describe('when failed save', () => {
       it('should correctly', async () => {
         const err = new Error(
-          "'rue.records.PersistenceBelongsToRecord.belongsToName' is not equal length ('17' characters)."
+          "'records.PersistenceBelongsToRecord.belongsToName' is not equal length ('17' characters)."
         );
         const record = (await PersistenceRecord.create<PersistenceRecord, PersistenceRecordParams>({
           id: 1,
@@ -281,10 +281,10 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
       it('associated records save is skipped (should return false / validation error)', async () => {
         const errForRecord = new Error('AutosaveFalseBelongsToRecord is invalid.');
         const errForBelongsToName = new Error(
-          "'rue.records.AutosaveFalseBelongsToRecord.belongsToName' is not equal length ('17' characters)."
+          "'records.AutosaveFalseBelongsToRecord.belongsToName' is not equal length ('17' characters)."
         );
         const errForBelongsToAge = new Error(
-          "'rue.records.AutosaveFalseBelongsToRecord.belongsToAge' is not less than '10'."
+          "'records.AutosaveFalseBelongsToRecord.belongsToAge' is not less than '10'."
         );
         const record = (await AutosaveFalseRecord.first<AutosaveFalseRecord>()) as AutosaveFalseRecord;
         await record.buildBelongsTo({
@@ -343,7 +343,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
       it('should correctly', async () => {
         const record = new PersistenceRecord({ id: 1, name: 'name_1', age: 1 });
         const errForBelongsToName = new Error(
-          "'rue.records.PersistenceBelongsToRecord.belongsToName' is not equal length ('17' characters)."
+          "'records.PersistenceBelongsToRecord.belongsToName' is not equal length ('17' characters)."
         );
         expect(await record.buildBelongsTo()).toEqual({
           __rue_record_id__: undefined,
@@ -458,9 +458,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 } is invalid.`);
         }
         const errForName = new Error(
-          "'rue.records.PersistenceRecord.name' is not equal length ('6' characters)."
+          "'records.PersistenceRecord.name' is not equal length ('6' characters)."
         );
-        const errForAge = new Error("'rue.records.PersistenceRecord.age' is not less than '10'.");
+        const errForAge = new Error("'records.PersistenceRecord.age' is not less than '10'.");
         expect(record.errors).toEqual({ age: [errForAge], name: [errForName] });
       });
     });
