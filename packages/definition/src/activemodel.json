@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:00 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:00 +09:00"
     },
     "class": [
       {
@@ -34,30 +34,18 @@
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:00 +09:00"
     },
     "class": [
       {
-        "text": "export class ActiveModel$Base extends ActiveModel$Impl {\n  public errors: Validations$Errors;\n\n  static getProperties(): string[] {\n    return Support.getProperties();\n  }\n\n  constructor(data: t.Params = {}) {\n    super();\n    this.errors = {};\n    if (!data) data = {};\n    Object.keys(data).forEach((key) => {\n      (this as any)[key] = data[key];\n    });\n  }\n\n  static get objType(): t.ObjType {\n    return 'model';\n  }\n\n  toObj(opts?: { flat: boolean }): t.Params {\n    opts = opts == undefined ? { flat: false } : opts;\n    const instance = Object.create(this);\n    const obj = Object.assign({}, instance.__proto__);\n    return opts.flat ? Object.assign(flatten(obj), { errors: obj.errors }) : obj;\n  }\n\n  inspect(): string {\n    return Support.inspect(this);\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Base\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m Validations$Errors\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mgetProperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Support\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mgetProperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mParams \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239msuper\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39merrors \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m data \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m data\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mObjType \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m'model'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mtoObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mopts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mParams \u001b[38;2;248;248;242m{\u001b[39m\n    opts \u001b[38;2;248;248;242m=\u001b[39m opts \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;102;217;239mundefined\u001b[39m \u001b[38;2;248;248;242m?\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;174;129;255mfalse\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;248;248;242m:\u001b[39m opts\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m obj \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m__proto__\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m opts\u001b[38;2;248;248;242m.\u001b[39mflat \u001b[38;2;248;248;242m?\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;230;219;116mflatten\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mobj\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m obj\u001b[38;2;248;248;242m.\u001b[39merrors \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m:\u001b[39m obj\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Support\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "export class ActiveModel$Base extends ActiveModel$Impl {\n  public errors: Validations$Errors;\n\n  constructor(data: t.Params = {}) {\n    super();\n    this.errors = {};\n    if (!data) data = {};\n    Object.keys(data).forEach((key) => {\n      (this as any)[key] = data[key];\n    });\n  }\n\n  static get objType(): t.ObjType {\n    return 'model';\n  }\n\n  toObj(opts?: { flat: boolean }): t.Params {\n    opts = opts == undefined ? { flat: false } : opts;\n    const instance = Object.create(this);\n    const obj = Object.assign({}, instance.__proto__);\n    return opts.flat ? Object.assign(flatten(obj), { errors: obj.errors }) : obj;\n  }\n\n  inspect(): string {\n    return Support.inspect(this);\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Base\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mpublic\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m Validations$Errors\u001b[38;2;248;248;242m;\u001b[39m\n\n  \u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mParams \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239msuper\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39merrors \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m data \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m data\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116mobjType\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mObjType \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;166;226;46m'model'\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mtoObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mopts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mParams \u001b[38;2;248;248;242m{\u001b[39m\n    opts \u001b[38;2;248;248;242m=\u001b[39m opts \u001b[38;2;248;248;242m==\u001b[39m \u001b[38;2;102;217;239mundefined\u001b[39m \u001b[38;2;248;248;242m?\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;174;129;255mfalse\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;248;248;242m:\u001b[39m opts\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m instance \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mcreate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m obj \u001b[38;2;248;248;242m=\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m instance\u001b[38;2;248;248;242m.\u001b[39m__proto__\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m opts\u001b[38;2;248;248;242m.\u001b[39mflat \u001b[38;2;248;248;242m?\u001b[39m Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116massign\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;230;219;116mflatten\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mobj\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m errors\u001b[38;2;248;248;242m:\u001b[39m obj\u001b[38;2;248;248;242m.\u001b[39merrors \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m:\u001b[39m obj\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Support\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116minspect\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           14,
-          44
+          40
         ]
       }
     ],
-    "static": {
-      "getProperties": {
-        "text": "static getProperties(): string[] {\n    return Support.getProperties();\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mgetProperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m Support\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mgetProperties\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "public",
-        "line": [
-          17,
-          19
-        ]
-      }
-    },
     "instance": {
       "toObj": {
         "text": "toObj(opts?: { flat: boolean }): t.Params {\n    opts = opts == undefined ? { flat: false } : opts;\n    const instance = Object.create(this);\n    const obj = Object.assign({}, instance.__proto__);\n    return opts.flat ? Object.assign(flatten(obj), { errors: obj.errors }) : obj;\n  }",
@@ -65,8 +53,8 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          34,
-          39
+          30,
+          35
         ]
       },
       "inspect": {
@@ -75,8 +63,8 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          41,
-          43
+          37,
+          39
         ]
       }
     },
@@ -84,15 +72,15 @@
       "text": "constructor(data: t.Params = {}) {\n    super();\n    this.errors = {};\n    if (!data) data = {};\n    Object.keys(data).forEach((key) => {\n      (this as any)[key] = data[key];\n    });\n  }",
       "highlightText": "\u001b[38;2;102;217;239mconstructor\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mParams \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239msuper\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39merrors \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m!\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m data \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    Object\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mkeys\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mdata\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mforEach\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m data\u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
       "line": [
-        21,
-        28
+        17,
+        24
       ]
     }
   },
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:01 +09:00"
     },
     "class": [
       {
@@ -168,7 +156,7 @@
   "registryForUniqueKeys": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:01 +09:00"
     },
     "class": [
       {
@@ -216,7 +204,7 @@
   "ActiveModel$Cachable": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/cachable/core.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:01 +09:00"
     },
     "class": [
       {
@@ -266,7 +254,7 @@
   "ActiveModel$Translation": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:01 +09:00"
     },
     "class": [
       {
@@ -346,7 +334,7 @@
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/03/31 00:58:04 +09:00"
+      "updatedAt": "2021/03/31 02:14:01 +09:00"
     },
     "class": [
       {
