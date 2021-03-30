@@ -2,7 +2,6 @@
 
 ## Methods
 
-- [x] [static]getProperties
 - [x] toObj
 
 ### ActiveModel$Validators

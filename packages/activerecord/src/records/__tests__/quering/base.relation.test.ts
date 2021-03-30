@@ -429,7 +429,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     "age": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT LESS THAN NUMERIC"
+        "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
   },
@@ -620,7 +620,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     "name": [
       {
         "_namespace": "@rue/activemodel",
-        "_code": "PROPERTY IS NOT EQUAL LENGTH"
+        "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],
     "age": []

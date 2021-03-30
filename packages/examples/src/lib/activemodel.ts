@@ -1,15 +1,17 @@
-import { ActiveModel$Base } from '@rue/activemodel';
-import i18n from '@/locales';
+import { ActiveModel$Base, RueSetup } from '@rue/activemodel';
+import { resources } from '@/locales';
 
 // types
-import type * as amt from '@rue/activemodel';
+import type * as t from '@rue/activemodel';
 
+@RueSetup
 export class ActiveModel extends ActiveModel$Base {
-  static objType(): amt.Model$ObjType {
-    return 'model';
-  }
-
-  static translate(key: string, opts?: any): string {
-    return i18n.t(key, opts);
+  static i18nConfig(): t.Model$I18nConfig {
+    return {
+      options: {
+        lng: 'ja',
+      },
+      resources,
+    };
   }
 }

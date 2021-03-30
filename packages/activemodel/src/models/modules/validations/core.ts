@@ -83,10 +83,6 @@ export class ActiveModel$Validations extends RueModule {
     return opts.flat ? flatten(obj) : obj;
   }
 
-  static objType(): t.ObjType {
-    return 'model';
-  }
-
   static validates<T = any, U extends ActiveModel$Validations = any>(
     propKey: string,
     opts: t.Options<T, U>

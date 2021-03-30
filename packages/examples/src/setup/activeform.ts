@@ -6,7 +6,7 @@ import * as t from '@rue/activemodel';
  */
 @RueCheck({ translate: true })
 export class ActiveForm extends ActiveModel$Base {
-  static objType(): t.Model$ObjType {
+  static get objType(): t.Model$ObjType {
     return 'form';
   }
 

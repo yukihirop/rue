@@ -1,6 +1,9 @@
 import i18n from 'i18next';
 import { ja, en } from './config';
 
+/**
+ * @see https://i18next.github.io/i18next/pages/doc_features.html
+ */
 i18n.init({
   fallbackLng: 'en',
   resources: {
@@ -14,3 +17,6 @@ i18n.init({
 });
 
 export default i18n;
+
+// types
+export { Languages, I18nOptions, I18nResources, I18nConfig } from './types';

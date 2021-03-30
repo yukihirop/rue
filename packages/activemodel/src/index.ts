@@ -5,7 +5,7 @@ export { ActiveModel$Error } from './errors';
 
 // functions
 export { errObj } from './errors';
-export { RueCheck } from '@/decorators';
+export { RueCheck, RueSetup } from '@/decorators';
 
 // types
 // prettier-ignore
@@ -15,6 +15,5 @@ export type {
 } from './models/modules/validations';
 export type { Model$Params, Model$ObjType } from './models';
 export type { ErrObj as Model$ErrObj, ErrMessage as Model$ErrMessage } from './errors';
-
-// enums
+export type { Languages as Model$Languages, I18nConfig as Model$I18nConfig } from './locales';
 export type { ErrCodes } from './errors';

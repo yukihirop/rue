@@ -174,6 +174,18 @@ describe('validateInclusion', () => {
           expect(result).toEqual(true);
         });
       });
+
+      describe("when 'propVal' is 'undefined'", () => {
+        const result = validateExclusion(
+          'propKey',
+          undefined,
+          { in: [1, 2] },
+          translate
+        ) as et.ErrObj[];
+        it('return true', () => {
+          expect(result).toEqual(true);
+        });
+      });
     });
   });
 });

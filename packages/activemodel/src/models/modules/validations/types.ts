@@ -42,5 +42,4 @@ export type Options<T = any, U = any> = Partial<{
   // common option
 }>;
 
-export type ObjType = 'form' | 'model' | 'record';
 export type Errors = { [propKey: string]: Array<et.ErrObj> };

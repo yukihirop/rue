@@ -2,17 +2,27 @@
 import { RueModule } from '@rue/activesupport';
 
 // locals
+import i18n from '@/locales';
 import { ActiveModel$Base } from '@/models';
+
+// types
+import type * as lt from '@/locales';
 
 // this is bound to an instance(class) of ActiveModel$Base
 export class ActiveModel$Translation extends RueModule {
   static translate(key: string, opts?: any): string {
-    throw "Please implement '[static] translate(key: string, opts?: any): string' in Inherited Class.";
+    return i18n.t(key, opts).toString();
   }
 
-  protected static checkTranslate(): boolean {
+  static i18nConfig(): lt.I18nConfig {
+    throw "Please implement 'static i18nConfig(): lt.I18nConfig' in Inherited Class.";
+  }
+
+  protected static checkI18nConfig(): boolean {
+    // @ts-expect-error
+    const _this = this as typeof ActiveModel$Base;
     try {
-      this.translate('__rue_check__');
+      _this.i18nConfig();
       return true;
     } catch (err) {
       throw err;
@@ -28,9 +38,9 @@ export class ActiveModel$Translation extends RueModule {
     return this.humanPropertyName(propKey);
   }
 
-  static __t(propKey: string): string {
+  protected static __t(propKey: string): string {
     // @ts-ignore
     const _this = this as typeof ActiveModel$Base;
-    return _this.translate(`rue.${_this.objType()}s.${_this.uniqueKey}.${propKey}`).toString();
+    return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();
   }
 }

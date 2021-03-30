@@ -6,7 +6,7 @@ import type * as et from '@/errors';
 
 export function validate(
   propKey: string,
-  propVal: number,
+  propVal: number | undefined,
   numericality: t.Options['numericality'],
   translate: (propKey: string) => string,
   message?: string

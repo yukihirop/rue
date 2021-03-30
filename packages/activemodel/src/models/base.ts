@@ -14,10 +14,6 @@ import type { Validations$Errors } from '@/models/modules/validations';
 export class ActiveModel$Base extends ActiveModel$Impl {
   public errors: Validations$Errors;
 
-  static getProperties(): string[] {
-    return Support.getProperties();
-  }
-
   constructor(data: t.Params = {}) {
     super();
     this.errors = {};
@@ -25,6 +21,10 @@ export class ActiveModel$Base extends ActiveModel$Impl {
     Object.keys(data).forEach((key) => {
       (this as any)[key] = data[key];
     });
+  }
+
+  static get objType(): t.ObjType {
+    return 'model';
   }
 
   toObj(opts?: { flat: boolean }): t.Params {

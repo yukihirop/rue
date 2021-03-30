@@ -4,12 +4,13 @@ export { ActiveRecord$Error } from './errors';
 
 // functions
 export { errObj } from './errors';
-export { RueCheck } from '@rue/activemodel';
+export { RueCheck, RueSetup } from '@rue/activemodel';
 
 // enums
 export { ErrCodes } from './errors';
 
 // types
+export type { I18nConfig as Record$I18nConfig } from './types';
 
 // prettier-ignore
 export type {

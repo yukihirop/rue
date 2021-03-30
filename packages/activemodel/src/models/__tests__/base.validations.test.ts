@@ -1,11 +1,21 @@
-import { ActiveModel$Base as Model } from '../base';
-import i18n from '@/locales';
+import { ActiveModel$Base } from '../base';
 import { registryForValidations as Registry } from '@/registries';
 import { RueCheck } from '@/decorators';
 
 // types
 import type * as t from '@/models/modules/validations/types';
 import type * as rt from '@/registries';
+import type * as lt from '@/locales';
+
+class Model extends ActiveModel$Base {
+  static i18nConfig(): lt.I18nConfig {
+    return {
+      options: {
+        lng: 'en',
+      },
+    };
+  }
+}
 
 describe('ActiveModel$Base (ActiveModel$Validations)', () => {
   describe('constructor', () => {
@@ -15,52 +25,10 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
     });
   });
 
-  describe('[static] objType', () => {
-    describe('when default', () => {
-      it('return correctly', () => {
-        expect(Model.objType()).toEqual('model');
-      });
-    });
-
-    describe('when override inherited class', () => {
-      class TestConstructorModel extends Model {
-        static objType(): t.ObjType {
-          return 'form';
-        }
-
-        get uniqueKey(): string {
-          return 'TestConstructorModel';
-        }
-      }
-
-      it('can override', () => {
-        expect(TestConstructorModel.objType()).toEqual('form');
-      });
-    });
-  });
-
   describe('[static] translate', () => {
     describe('when default', () => {
       it('return correctly', () => {
-        expect(() => {
-          Model.translate('propKey', {});
-        }).toThrow();
-      });
-    });
-
-    describe('when override inherited class', () => {
-      class TestTranslateModel extends Model {
-        static translate(key: string, opts?: any): string {
-          return `test.${key}`;
-        }
-
-        get uniqueKey(): string {
-          return 'TestTranslateModel';
-        }
-      }
-
-      it('can override', () => {
-        expect(TestTranslateModel.translate('propKey', {})).toEqual('test.propKey');
+        expect(Model.translate('propKey', {})).toEqual('propKey');
       });
     });
   });
@@ -108,14 +76,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidSkillModel';
           }
@@ -146,15 +106,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidModel';
@@ -220,15 +171,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidErrorsSkillModel';
           }
@@ -259,15 +201,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidErrorsSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidErrorsModel';
@@ -321,46 +254,46 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           const result = instance.isValid();
           expect(result).toEqual(false);
           expect(instance.errors['profile']['name'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.profile.name' can't be empty."
+            "'models.TestIsValidErrorsModel.profile.name' can't be empty."
           );
           expect(instance.errors['profile']['year'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.profile.year' is not only integer."
+            "'models.TestIsValidErrorsModel.profile.year' is not only integer."
           );
           expect(instance.errors['profile']['sex'][0].message).toEqual(
-            '\'rue.models.TestIsValidErrorsModel.profile.sex\' is not included in the \'["man","weman"]\'.'
+            '\'models.TestIsValidErrorsModel.profile.sex\' is not included in the \'["man","weman"]\'.'
           );
           expect(instance.errors['profile']['email'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.profile.email' is too long (maximum '1' characters)."
+            "'models.TestIsValidErrorsModel.profile.email' is too long (maximum '1' characters)."
           );
           expect(instance.errors['profile']['email'][1].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.profile.email' do not meet the format: 'email'."
+            "'models.TestIsValidErrorsModel.profile.email' do not meet the format: 'email'."
           );
           expect(instance.errors['ipv4'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.ipv4' do not meet the format: 'IPv4'."
+            "'models.TestIsValidErrorsModel.ipv4' do not meet the format: 'IPv4'."
           );
           expect(instance.errors['ipv6'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.ipv6' do not meet the format: 'IPv6'."
+            "'models.TestIsValidErrorsModel.ipv6' do not meet the format: 'IPv6'."
           );
           expect(instance.errors['tags'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.tags' is too long (maximum '3' words)."
+            "'models.TestIsValidErrorsModel.tags' is too long (maximum '3' words)."
           );
           expect(instance.errors['tags'][1].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.tags' is not equal length ('1' characters)."
+            "'models.TestIsValidErrorsModel.tags' is not equal length ('1' characters)."
           );
           expect(instance.errors['skills'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsModel.skills' do not meet the condition: 'valid all skills'."
+            "'models.TestIsValidErrorsModel.skills' do not meet the condition: 'valid all skills'."
           );
           expect(instance.skills[0].errors['name'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsSkillModel.name' can't be empty."
+            "'models.TestIsValidErrorsSkillModel.name' can't be empty."
           );
           expect(instance.skills[0].errors['year'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsSkillModel.year' is not only integer."
+            "'models.TestIsValidErrorsSkillModel.year' is not only integer."
           );
           expect(instance.skills[1].errors['name'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsSkillModel.name' can't be empty."
+            "'models.TestIsValidErrorsSkillModel.name' can't be empty."
           );
           expect(instance.skills[1].errors['year'][0].message).toEqual(
-            "'rue.models.TestIsValidErrorsSkillModel.year' is not only integer."
+            "'models.TestIsValidErrorsSkillModel.year' is not only integer."
           );
         });
       });
@@ -370,15 +303,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
         class TestIsValidSkipSkillModel extends Model {
           public name: string;
           public year: number;
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidSkipSkillModel';
@@ -413,15 +337,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidSkipSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidSkipModel';
@@ -505,15 +420,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidAllowSkillModel';
           }
@@ -548,15 +454,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidAllowSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidAllowModel';
@@ -641,15 +538,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidOverrideMsgSkillModel';
           }
@@ -683,14 +571,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidOverrideMsgSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-          static translate(key: string, opts?: any): string {
-            return i18n.t(key, opts).toString();
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidOverrideMsgModel';
@@ -762,46 +642,46 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           const result = instance.isValid();
           expect(result).toEqual(false);
           expect(instance.errors['profile']['name'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.profile.name|undefined'
+            'models.TestIsValidOverrideMsgModel.profile.name|undefined'
           );
           expect(instance.errors['profile']['year'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.profile.year|0.1'
+            'models.TestIsValidOverrideMsgModel.profile.year|0.1'
           );
           expect(instance.errors['profile']['sex'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.profile.sex|unknown'
+            'models.TestIsValidOverrideMsgModel.profile.sex|unknown'
           );
           expect(instance.errors['profile']['email'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.profile.email|email address'
+            'models.TestIsValidOverrideMsgModel.profile.email|email address'
           );
           expect(instance.errors['profile']['email'][1].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.profile.email|email address'
+            'models.TestIsValidOverrideMsgModel.profile.email|email address'
           );
           expect(instance.errors['ipv4'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.ipv4|123456789'
+            'models.TestIsValidOverrideMsgModel.ipv4|123456789'
           );
           expect(instance.errors['ipv6'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.ipv6|1234567890'
+            'models.TestIsValidOverrideMsgModel.ipv6|1234567890'
           );
           expect(instance.errors['tags'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
+            'models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
           );
           expect(instance.errors['tags'][1].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
+            'models.TestIsValidOverrideMsgModel.tags|rails,vue,typescript,react'
           );
           expect(instance.errors['skills'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgModel.skills|[{"errors":{},"year":0.4},{"errors":{},"name":null,"year":0.3}]|0.1'
+            'models.TestIsValidOverrideMsgModel.skills|[{"errors":{},"year":0.4},{"errors":{},"name":null,"year":0.3}]|0.1'
           );
           expect(instance.skills[0].errors['name'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgSkillModel.name|undefined'
+            'models.TestIsValidOverrideMsgSkillModel.name|undefined'
           );
           expect(instance.skills[0].errors['year'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgSkillModel.year|0.4'
+            'models.TestIsValidOverrideMsgSkillModel.year|0.4'
           );
           expect(instance.skills[1].errors['name'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgSkillModel.name|null'
+            'models.TestIsValidOverrideMsgSkillModel.name|null'
           );
           expect(instance.skills[1].errors['year'][0].message).toEqual(
-            'rue.models.TestIsValidOverrideMsgSkillModel.year|0.3'
+            'models.TestIsValidOverrideMsgSkillModel.year|0.3'
           );
         });
       });

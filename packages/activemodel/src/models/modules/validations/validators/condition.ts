@@ -7,7 +7,7 @@ import type * as et from '@/errors';
 export function validate<T = any, U = any>(
   self: U,
   propKey: string,
-  propVal: T,
+  propVal: T | undefined,
   condition: Required<t.Options<T>>['condition'],
   translate: (propKey: string) => string,
   message?: string

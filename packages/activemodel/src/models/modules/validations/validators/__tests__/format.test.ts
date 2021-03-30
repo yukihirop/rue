@@ -86,6 +86,22 @@ describe('validateFormat', () => {
         expect(errors[0].message).toEqual('override message');
       });
     });
+
+    describe("when 'propVal' is 'undefined'", () => {
+      const errors = validateFormat(
+        'propKey',
+        undefined,
+        {
+          with: 'email',
+        },
+        translate
+      ) as et.ErrObj[];
+      it('return errors', () => {
+        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
+        expect(errors[0].message).toEqual("'test.propKey' do not meet the format: 'email'.");
+      });
+    });
   });
 
   describe('when return true', () => {
