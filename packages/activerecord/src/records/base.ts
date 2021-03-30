@@ -35,7 +35,7 @@ export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveReco
   }
 
   // override
-  static objType(): t.ObjType {
+  static get objType(): t.ObjType {
     return 'record';
   }
 

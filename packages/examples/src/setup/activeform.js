@@ -8,7 +8,7 @@ class ActiveForm extends ActiveModel$Base {
   /**
    * @return {'model'|'form'|'record'}
    */
-  static objType() {
+  static get objType() {
     return 'form';
   }
 

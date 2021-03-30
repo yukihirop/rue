@@ -25,30 +25,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
     });
   });
 
-  describe('[static] objType', () => {
-    describe('when default', () => {
-      it('return correctly', () => {
-        expect(Model.objType()).toEqual('model');
-      });
-    });
-
-    describe('when override inherited class', () => {
-      class TestConstructorModel extends Model {
-        static objType(): t.ObjType {
-          return 'form';
-        }
-
-        get uniqueKey(): string {
-          return 'TestConstructorModel';
-        }
-      }
-
-      it('can override', () => {
-        expect(TestConstructorModel.objType()).toEqual('form');
-      });
-    });
-  });
-
   describe('[static] translate', () => {
     describe('when default', () => {
       it('return correctly', () => {
@@ -100,11 +76,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidSkillModel';
           }
@@ -135,11 +106,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidModel';
@@ -205,11 +171,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidErrorsSkillModel';
           }
@@ -240,11 +201,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidErrorsSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidErrorsModel';
@@ -348,11 +304,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidSkipSkillModel';
           }
@@ -386,11 +337,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidSkipSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidSkipModel';
@@ -474,11 +420,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidAllowSkillModel';
           }
@@ -513,11 +454,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidAllowSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidAllowModel';
@@ -602,11 +538,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public name: string;
           public year: number;
 
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
-
           get uniqueKey(): string {
             return 'TestIsValidOverrideMsgSkillModel';
           }
@@ -640,11 +571,6 @@ describe('ActiveModel$Base (ActiveModel$Validations)', () => {
           public ipv6: string;
           public tags: string;
           public skills: TestIsValidOverrideMsgSkillModel[];
-
-          // override
-          static objType(): t.ObjType {
-            return 'model';
-          }
 
           get uniqueKey(): string {
             return 'TestIsValidOverrideMsgModel';

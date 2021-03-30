@@ -19,7 +19,6 @@ abstract class ActiveModel$Impl {
   static i18nConfig: () => lt.I18nConfig;
   protected static checkI18nOptions: () => boolean;
   // ActiveModel$Validations
-  static objType: () => t.Validations$ObjType;
   static validates: <T = any, U extends ActiveModel$Validations = any>(
     propKey: string,
     opts: t.Validations$Options<T, U>
@@ -66,7 +65,7 @@ ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['translate', '__t', 'i18nConfig', 'checkI18nConfig'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['objType', 'validates'],
+  only: ['validates'],
 });
 ActiveModel$Cachable.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['uniqueKey', 'checkUniqueKey', '_uniqueKey'],

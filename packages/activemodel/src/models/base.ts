@@ -27,6 +27,10 @@ export class ActiveModel$Base extends ActiveModel$Impl {
     });
   }
 
+  static get objType(): t.ObjType {
+    return 'model';
+  }
+
   toObj(opts?: { flat: boolean }): t.Params {
     opts = opts == undefined ? { flat: false } : opts;
     const instance = Object.create(this);
