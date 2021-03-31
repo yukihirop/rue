@@ -40,7 +40,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         const { holder, scope } = value;
 
         if (scope instanceof Promise) {
-          scope.then((r) => {
+          scope.rueThen((r) => {
             holder.scope = r as T[];
             Evaluator.all(holder);
 
@@ -94,7 +94,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   ): Promise<U> {
     return this.superThen(({ holder, scope }) => {
       if (scope instanceof Promise) {
-        return scope.then((records) => {
+        return scope.rueThen((records) => {
           holder.scope = records as T[];
           /**
            * @description Pass by value so that 「proxy === record」 does not occur

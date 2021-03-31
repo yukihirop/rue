@@ -482,7 +482,11 @@ describe('ActiveRecord$Base (ActiveRecord$Associations)', () => {
 
     it('should correctly', async () => {
       const record = (await TestAssociationHasManyRecord.first<TestAssociationHasManyRecord>()) as TestAssociationHasManyRecord;
-      const result = (await record.children()) as TestAssociationHasManyChildRecord[];
+      /**
+       * I overridden then at runtime because the type definition of then is buggy. Since it affects type inference and bugs, it is avoided by any.
+       * @bug https://github.com/microsoft/TypeScript/issues/33416
+       */
+      const result = (await record.children()) as any;
       expect(result.length).toEqual(2);
       expect(result).toEqual([
         {

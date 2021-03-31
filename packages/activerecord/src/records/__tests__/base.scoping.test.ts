@@ -42,7 +42,7 @@ describe('Record (Scoping)', () => {
   describe('[static] all', () => {
     describe('when do not exists cahce', () => {
       it('should correctly', (done) => {
-        ScopingRecord.all<ScopingRecord>().then((records: ScopingRecord[]) => {
+        ScopingRecord.all<ScopingRecord>().rueThen((records: ScopingRecord[]) => {
           expect(records).toEqual([
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',

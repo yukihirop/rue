@@ -105,11 +105,16 @@ export class ActiveRecord$Relation$Base<
   /**
    * @see https://gist.github.com/domenic/8ed6048b187ee8f2ec75
    * @alias rueThen
+   *
+   * @bug typescript bug
+   * @description Since the type definition of Promise is buggy, it cannot be implemented with the type of then overridden.
+   * @description If healed, comment out.
+   * @see https://github.com/microsoft/TypeScript/issues/33416
+   *
    */
-  // @ts-expect-error
-  then(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
-    return this.rueThen(onFulfilled, onRejected);
-  }
+  // then(onFulfilled: t.PromiseResolve<T, S>, onRejected?: t.PromiseReject<any>) {
+  //   return this.rueThen(onFulfilled, onRejected);
+  // }
 
   protected superThen(
     onFulfilled: t.PromiseResolveHolder<T, H, S>,
@@ -121,11 +126,15 @@ export class ActiveRecord$Relation$Base<
 
   /**
    * @alias rueCatch
+   *
+   * @bug typescript bug
+   * @description Since the type definition of Promise is buggy, it cannot be implemented with the type of then overridden.
+   * @description If healed, comment out.
+   * @see https://github.com/microsoft/TypeScript/issues/33416
    */
-  // @ts-expect-error
-  catch(errFn: (err: any) => void | PromiseLike<void>) {
-    return this.rueCatch(errFn);
-  }
+  // catch(errFn: (err: any) => void | PromiseLike<void>) {
+  //   return this.rueCatch(errFn);
+  // }
 
   rueCatch(errFn: (err: any) => void | PromiseLike<void>) {
     return (
@@ -529,3 +538,27 @@ export class ActiveRecord$Relation$Base<
     return this.toA();
   }
 }
+
+/**
+ * When I define it in a class, I get a Promise type definition error.
+ * So I'm avoiding type definition errors by overriding then at runtime.
+ * @bug https://github.com/microsoft/TypeScript/issues/33416
+ */
+Object.defineProperty(ActiveRecord$Relation$Base.prototype, 'then', {
+  writable: false,
+  configurable: false,
+  enumerable: false,
+  value: ActiveRecord$Relation$Base.prototype.rueThen,
+});
+
+/**
+ * When I define it in a class, I get a Promise type definition error.
+ * So I'm avoiding type definition errors by overriding then at runtime.
+ * @bug https://github.com/microsoft/TypeScript/issues/33416
+ */
+Object.defineProperty(ActiveRecord$Relation$Base.prototype, 'catch', {
+  writable: false,
+  configurable: false,
+  enumerable: false,
+  value: ActiveRecord$Relation$Base.prototype.rueCatch,
+});

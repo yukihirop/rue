@@ -614,7 +614,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when return true', () => {
       it('should correctly', (done) => {
-        UpdateRecord.all<UpdateRecord>().then((records: UpdateRecord[]) => {
+        UpdateRecord.all<UpdateRecord>().rueThen((records: UpdateRecord[]) => {
           const record = records[0];
           const updateResult = record.update({ name: 'rename' });
           expect(updateResult).toEqual(true);
@@ -626,7 +626,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('whenn return false', () => {
       it('should correctly', (done) => {
-        UpdateRecord.all<UpdateRecord>().then((records: UpdateRecord[]) => {
+        UpdateRecord.all<UpdateRecord>().rueThen((records: UpdateRecord[]) => {
           const record = records[1];
           const updateResult = record.update({ age: 100 });
           expect(updateResult).toEqual(false);
@@ -670,7 +670,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when return true', () => {
       it('should correctly', (done) => {
-        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().then((records: UpdateOrThrowRecord[]) => {
+        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().rueThen((records: UpdateOrThrowRecord[]) => {
           const record = records[0];
           const updateResult = record.updateOrThrow({ name: 'rename' });
           expect(updateResult).toEqual(true);
@@ -682,7 +682,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when throw error', () => {
       it('should correctly', (done) => {
-        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().then((records: UpdateOrThrowRecord[]) => {
+        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().rueThen((records: UpdateOrThrowRecord[]) => {
           const record = records[1];
           expect(() => {
             record.updateOrThrow({ age: 100 });
