@@ -15,6 +15,12 @@ import type * as it from '@/index';
 import type * as rmt from '@/records/relations/modules';
 import type * as rt from '@/records/relations/types';
 
+/**
+ * The arrow function is used to avoid the typescript(TS2425) problem.
+ * Currently, this workaround seems to be the best.
+ *
+ * @see https://github.com/Microsoft/TypeScript/issues/27965#issuecomment-430984234
+ */
 export class ActiveRecord$Associations$CollectionProxy$Base<
   T extends ActiveRecord$Base
 > extends ActiveRecord$Associations$CollectionProxy$Impl<T> {
@@ -118,21 +124,19 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  where<U extends it.Record$Params>(params: Partial<U>): this {
+  where = <U extends it.Record$Params>(params: Partial<U>): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       Object.assign(holder.scopeParams.where, params || {});
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  rewhere<U extends it.Record$Params>(params: Partial<U>): this {
+  rewhere = <U extends it.Record$Params>(params: Partial<U>): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       holder.scopeParams.where = params || {};
@@ -140,39 +144,36 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  order<U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this {
+  order = <U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       Object.assign(holder.scopeParams.order, params || {});
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  reorder<U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this {
+  reorder = <U = { [key: string]: rmt.QueryMethods$Directions }>(params: U): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       holder.scopeParams.order = params || {};
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  reverseOrder(): this {
+  reverseOrder = (): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       const orderParams = holder.scopeParams.order;
@@ -191,40 +192,37 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  offset(value: number): this {
+  offset = (value: number): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       holder.scopeParams.offset = value;
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  limit(value: number): this {
+  limit = (value: number): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       holder.scopeParams.limit = value;
     });
 
     return this;
-  }
+  };
 
   /**
    * @description Behavior is different from rails group
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  group<U = { [key: string]: any }>(...props: Array<keyof U>): this {
+  group = <U = { [key: string]: any }>(...props: Array<keyof U>): this => {
     // @ts-expect-error
     this.scope().superThen(({ holder }) => {
       // @ts-expect-error
@@ -232,13 +230,12 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     });
 
     return this;
-  }
+  };
 
   /**
    * @description delegate to `scope`
    */
-  // @ts-expect-error
-  unscope(...scopeMethods: rmt.QueryMethods$ScopeMethods[]): this {
+  unscope = (...scopeMethods: rmt.QueryMethods$ScopeMethods[]): this => {
     const { SCOPE_METHODS } = ActiveRecord$QueryMethods;
 
     // @ts-expect-error
@@ -272,7 +269,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
     });
 
     return this;
-  }
+  };
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-empty-3F
@@ -287,8 +284,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-find
    */
-  // @ts-expect-error
-  find<U extends it.Record$Params>(...ids: it.Record$PrimaryKey[]): Promise<T | T[]> {
+  find = <U extends it.Record$Params>(...ids: it.Record$PrimaryKey[]): Promise<T | T[]> => {
     if (ids.length === 0) {
       throw errObj({
         code: ErrCodes.RECORD_NOT_FOUND,
@@ -322,7 +318,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         }
       });
     }
-  }
+  };
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-any-3F
@@ -553,8 +549,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-first
    * @description use holder.proxy
    */
-  // @ts-expect-error
-  first(limit?: number): Promise<T | T[]> {
+  first = (limit?: number): Promise<T | T[]> => {
     if (!limit) limit = 1;
     return this.scoping((holder) => {
       const records = holder.proxy;
@@ -567,14 +562,13 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         return slicedRecords;
       }
     });
-  }
+  };
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-include-3F
    * @description use holder.proxy
    */
-  // @ts-expect-error
-  isInclude(record: T | T[] | Promise<T | T[]>): Promise<boolean> {
+  isInclude = (record: T | T[] | Promise<T | T[]>): Promise<boolean> => {
     return this.scoping<boolean>((holder) => {
       const allRecordIds = holder.proxy.map((r) => r['id']);
       if (record instanceof Promise) {
@@ -599,14 +593,13 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         }
       }
     });
-  }
+  };
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-last
    * @description use holder.proxy
    */
-  // @ts-expect-error
-  last(limit?: number): Promise<T | T[]> {
+  last = (limit?: number): Promise<T | T[]> => {
     if (!limit) limit = 1;
     return this.scoping((holder) => {
       const records = holder.proxy;
@@ -619,7 +612,7 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         return slicedRecords;
       }
     });
-  }
+  };
 
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html#method-i-many-3F
