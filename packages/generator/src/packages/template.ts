@@ -1,44 +1,38 @@
 const template = Object.create({ activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
 
-template.activerecord.defaultTS = `import { ActiveRecord$Base, RueCheck } from '@rue/activerecord';
-import type * as t from '@rue/activerecord';
+template.activerecord.defaultTS = `import { ActiveRecord$Base, RueCheck } from '@rue/rue';
+import type * as t from '@rue/rue';
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
-  static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  static i18nConfig(): t.Model$I18nConfig {
+    throw "Please implement 'static i18nConfig(): t.Model$I18nConfig' in Inherited Class"
   }
 
   protected fetchAll(): Promise<T[]> {
-    throw "Please implement 'fetchAll' in Inherited Class";
+    throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
   }
 }
 `;
 
-template.activerecord.defaultJS = `const { ActiveRecord$Base, RueCheck } = require('@rue/activerecord');
+template.activerecord.defaultJS = `const { ActiveRecord$Base, RueCheck } = require('@rue/rue');
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 class ActiveRecord extends ActiveRecord$Base {
   /**
-   * @param {strinng} key
-   * @param {object} opts
-   * @return {string}
+   * @return {object}
+   * 
+   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
    */
-  static translate(key, opts) {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  static i18nConfig() {
+    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 
   /**
@@ -53,72 +47,68 @@ class ActiveRecord extends ActiveRecord$Base {
 exports.ActiveRecord = ActiveRecord;
 `;
 
-template.activemodel.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/activemodel';
+template.activemodel.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/rue';
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 export class ActiveModel extends ActiveModel$Base {
-  static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  /**
+   * @return {object}
+   * 
+   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
+   */
+  static i18nConfig() {
+    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 }
 `;
 
-template.activemodel.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
+template.activemodel.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/rue');
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 class ActiveModel extends ActiveModel$Base {
   /**
-   * @param {strinng} key
-   * @param {object} opts
-   * @return {string}
+   * @return {object}
+   * 
+   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
    */
-  static translate(key, opts) {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  static i18nConfig() {
+    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 }
 
 exports.ActiveModel = ActiveModel;
 `;
 
-template.activeform.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/activemodel';
-import * as t from '@rue/activemodel';
+template.activeform.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/rue';
+import * as t from '@rue/rue';
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 export class ActiveForm extends ActiveModel$Base {
   static get objType(): t.Model$ObjType {
     return 'form';
   }
 
-  static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  static i18nConfig(): t.Model$I18nConfig {
+    throw "Please implement 'static i18nConfig(): t.Model$I18nConfig' in Inherited Class"
   }
 }
 `;
 
-template.activeform.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
+template.activeform.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/rue');
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 class ActiveForm extends ActiveModel$Base {
   /**
    * @return {'model'|'form'|'record'}
@@ -128,15 +118,12 @@ class ActiveForm extends ActiveModel$Base {
   }
 
   /**
-   * @param {strinng} key
-   * @param {object} opts
-   * @return {string}
+   * @return {object}
+   * 
+   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
    */
-  static translate(key, opts) {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  static i18nConfig() {
+    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 }
 
