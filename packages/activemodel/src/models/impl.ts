@@ -6,7 +6,6 @@ import { ActiveModel$Translation, ActiveModel$Validations, ActiveModel$Cachable 
 
 // types
 import type * as t from './types';
-import type * as lt from '@/locales';
 
 // define static methods interface
 abstract class ActiveModel$Impl {
@@ -16,7 +15,6 @@ abstract class ActiveModel$Impl {
   // ActiveModel$Translation
   static translate: (key: string, opts?: any) => string;
   static __t: (propKey: string) => string;
-  static i18nConfig: () => lt.I18nConfig;
   protected static checkI18nOptions: () => boolean;
   // ActiveModel$Validations
   static validates: <T = any, U extends ActiveModel$Validations = any>(
@@ -62,7 +60,7 @@ ActiveModel$Cachable.rueModuleIncludedFrom(ActiveModel$Impl, {
 });
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['translate', '__t', 'i18nConfig', 'checkI18nConfig'],
+  only: ['translate', '__t'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['validates'],

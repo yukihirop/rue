@@ -1,17 +1,17 @@
+// rue packages
+import { Rue } from '@rue/config';
+
+// locals
 import i18n from '@/locales';
 
 // types
 import type * as t from './types';
-import type * as lt from '@/locales';
 
 export const RueCheck = (opts?: t.RueCheckOptions) => (target) => {
-  if (!opts) opts = { uniqueKey: true, i18nConfig: true };
+  if (!opts) opts = { uniqueKey: true };
   try {
     if (opts.uniqueKey) {
       target.checkUniqueKey();
-    }
-    if (opts.i18nConfig) {
-      target.checkI18nConfig();
     }
   } catch (err) {
     throw err;
@@ -23,7 +23,7 @@ export const RueCheck = (opts?: t.RueCheckOptions) => (target) => {
  * @see https://www.i18next.com/overview/api#addresourcebundle
  */
 const RueSetupI18n = (target) => {
-  const { options, resources } = target.i18nConfig() as lt.I18nConfig;
+  const { options, resources } = Rue.i18n;
   const { lng } = options;
   const namespace = 'translation';
   i18n.changeLanguage(lng);

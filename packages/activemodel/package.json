@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@rue/activesupport": "^0.0.0",
+    "@rue/config": "^0.0.0",
     "i18next": "^19.8.7",
     "obj-flatten": "^2.0.6",
     "obj-unflatten": "^1.0.10"

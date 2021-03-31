@@ -5,9 +5,6 @@ export { ActiveRecord$Error } from './errors';
 // functions
 export { errObj as ActiveRecord$errObj } from './errors';
 
-// types
-export type { I18nConfig as Record$I18nConfig } from './types';
-
 // prettier-ignore
 export type {
   Associations$PrimaryKey as Record$PrimaryKey,
