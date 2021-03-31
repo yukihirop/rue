@@ -2,7 +2,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 01:58:01 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 01:58:01 +09:00"
     },
     "class": [
       {
@@ -76,7 +76,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -104,7 +104,7 @@
   "ActiveRecord$Associations$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/holder.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -128,7 +128,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -434,7 +434,7 @@
   "ActiveRecord$Relation$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/holder.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -458,7 +458,7 @@
   "ActiveRecord$Relation$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -471,10 +471,26 @@
       }
     ]
   },
+  "ActiveRecord$Associations$Relation$Base": {
+    "metadata": {
+      "filepath": "@rue/packages/activerecord/src/records/associations/relation/base.ts",
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
+    },
+    "class": [
+      {
+        "text": "export class ActiveRecord$Associations$Relation$Base<\n  T extends ActiveRecord$Base,\n  H extends ActiveRecord$Associations$CollectionProxy$Holder<T>,\n  S = T[] | Promise<T>\n> extends ActiveRecord$Relation<T, H, S> {}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Associations$Relation$Base\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mH\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Associations$CollectionProxy$Holder\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mS\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m|\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Relation\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mH\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mS\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m",
+        "line": [
+          5,
+          9
+        ]
+      }
+    ]
+  },
   "ActiveRecord$Associations$CollectionProxy$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/base.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -662,7 +678,7 @@
   "ActiveRecord$Associations$CollectionProxy$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/holder.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -686,7 +702,7 @@
   "ActiveRecord$Associations$CollectionProxy$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -707,26 +723,10 @@
       }
     ]
   },
-  "ActiveRecord$Associations$Relation$Base": {
-    "metadata": {
-      "filepath": "@rue/packages/activerecord/src/records/associations/relation/base.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
-    },
-    "class": [
-      {
-        "text": "export class ActiveRecord$Associations$Relation$Base<\n  T extends ActiveRecord$Base,\n  H extends ActiveRecord$Associations$CollectionProxy$Holder<T>,\n  S = T[] | Promise<T>\n> extends ActiveRecord$Relation<T, H, S> {}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Associations$Relation$Base\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Base\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mH\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;102;217;239mextends\u001b[39m\u001b[38;2;230;219;116m ActiveRecord$Associations$CollectionProxy$Holder\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m  \u001b[38;2;249;38;114mS\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m=\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;248;248;242m|\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;166;226;46mPromise\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m\n\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveRecord$Relation\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mH\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m,\u001b[39m\u001b[38;2;230;219;116m \u001b[38;2;249;38;114mS\u001b[39m\u001b[38;2;230;219;116m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;230;219;116m\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\u001b[38;2;248;248;242m}\u001b[39m",
-        "line": [
-          5,
-          9
-        ]
-      }
-    ]
-  },
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:02 +09:00"
     },
     "class": [
       {
@@ -816,7 +816,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -840,7 +840,7 @@
   "ActiveRecord$AttributeMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/attribute_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -878,7 +878,7 @@
   "ActiveRecord$Core": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -906,7 +906,7 @@
   "ActiveRecord$Dirty": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/dirty/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -934,7 +934,7 @@
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1134,7 +1134,7 @@
   "ActiveRecord$Querying": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/querying/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1482,7 +1482,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1498,7 +1498,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1514,7 +1514,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1552,7 +1552,7 @@
   "ActiveRecord$Associations$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1610,7 +1610,7 @@
   "ActiveRecord$Associations$PersistenceStrategy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence_strategy/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1718,7 +1718,7 @@
   "ActiveRecord$FinderMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/finder_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1856,7 +1856,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:03 +09:00"
     },
     "class": [
       {
@@ -1964,7 +1964,7 @@
   "ActiveRecord$QueryMethods$Evaluator": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/evaluator.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 01:58:04 +09:00"
     },
     "class": [
       {

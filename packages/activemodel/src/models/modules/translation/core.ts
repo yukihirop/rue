@@ -11,13 +11,63 @@ export class ActiveModel$Translation extends RueModule {
     return i18n.t(key, opts).toString();
   }
 
-  humanPropertyName(propKey: string): string {
+  static $t(propKey: string): string {
+    // @ts-expect-error
+    return (this as typeof ActiveModel$Base).__t(propKey);
+  }
+
+  /**
+   * @alias $t
+   */
+  static humanPropertyName(propKey: string): string {
+    // @ts-expect-error
+    return (this as typeof ActiveModel$Base).$t(propKey);
+  }
+
+  /**
+   * @alias $t
+   */
+  static humanPropName(propKey: string): string {
+    // @ts-expect-error
+    return (this as typeof ActiveModel$Base).$t(propKey);
+  }
+
+  /**
+   * @alias $t
+   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name
+   */
+  static humanAttributeName(propKey: string): string {
+    // @ts-expect-error
+    return (this as typeof ActiveModel$Base).$t(propKey);
+  }
+
+  $t(propKey: string): string {
     return (this.constructor as typeof ActiveModel$Base).__t(propKey);
   }
 
-  // @alias
+  /**
+   * @alias $t
+   */
+  humanPropertyName(propKey: string): string {
+    // @ts-expect-error
+    return (this as ActiveModel$Base).$t(propKey);
+  }
+
+  /**
+   * @alias $t
+   */
   humanPropName(propKey: string): string {
-    return this.humanPropertyName(propKey);
+    // @ts-expect-error
+    return (this as ActiveModel$Base).$t(propKey);
+  }
+
+  /**
+   * @alias $t
+   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name
+   */
+  humanAttributeName(propKey: string): string {
+    // @ts-expect-error
+    return (this as ActiveModel$Base).$t(propKey);
   }
 
   protected static __t(propKey: string): string {

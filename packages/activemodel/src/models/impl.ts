@@ -13,6 +13,10 @@ abstract class ActiveModel$Impl {
   static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;
   static __rue_ancestors__ = [];
   // ActiveModel$Translation
+  static $t: (propKey: string) => string;
+  static humanPropertyName: (propKey: string) => string;
+  static humanPropName: (propKey: string) => string;
+  static humanAttributeName: (propKey: string) => string;
   static translate: (key: string, opts?: any) => string;
   static __t: (propKey: string) => string;
   protected static checkI18nOptions: () => boolean;
@@ -41,8 +45,10 @@ abstract class ActiveModel$Impl {
 
 interface ActiveModel$Impl {
   // ActiveModel$Translation
+  $t(propKey: string): string;
   humanPropertyName(propKey: string): string;
   humanPropName(propKey: string): string;
+  humanAttributeName(propKey: string): string;
   // ActiveModel$Validations
   isValid(): boolean;
   isInvalid(): boolean;
@@ -50,7 +56,7 @@ interface ActiveModel$Impl {
 }
 
 ActiveModel$Translation.rueModuleIncludedFrom(ActiveModel$Impl, {
-  only: ['humanPropertyName', 'humanPropName'],
+  only: ['$t', 'humanPropertyName', 'humanPropName', 'humanAttributeName'],
 });
 ActiveModel$Validations.rueModuleIncludedFrom(ActiveModel$Impl, {
   only: ['isInvalid', 'isValid', '_toObj'],
@@ -60,7 +66,7 @@ ActiveModel$Cachable.rueModuleIncludedFrom(ActiveModel$Impl, {
 });
 
 ActiveModel$Translation.rueModuleExtendedFrom(ActiveModel$Impl, {
-  only: ['translate', '__t'],
+  only: ['translate', '$t', 'humanPropertyName', 'humanPropName', 'humanAttributeName', '__t'],
 });
 ActiveModel$Validations.rueModuleExtendedFrom(ActiveModel$Impl, {
   only: ['validates'],
