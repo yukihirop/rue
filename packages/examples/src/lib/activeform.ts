@@ -1,8 +1,8 @@
-import { ActiveModel$Base, RueSetup } from '@rue/activemodel';
+import { ActiveModel$Base, RueSetup } from '@rue/rue';
 import { resources } from '@/locales';
 
 // types
-import * as t from '@rue/activemodel';
+import * as t from '@rue/rue';
 
 @RueSetup
 export class ActiveForm extends ActiveModel$Base {

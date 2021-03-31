@@ -1,11 +1,11 @@
 // rue packages
-import { RueCheck } from '@rue/activerecord';
+import { RueCheck } from '@rue/rue';
 
 // locals
 import { ActiveRecord } from '../../lib/activerecord';
 
 // types
-import * as t from '@rue/activerecord';
+import * as t from '@rue/rue';
 
 export type UserParams = {
   // Please do not change the name 'id' arbitrarily.

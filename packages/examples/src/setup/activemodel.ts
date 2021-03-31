@@ -1,14 +1,16 @@
-import { ActiveModel$Base, RueCheck } from '@rue/activemodel';
+import { ActiveModel$Base, RueCheck } from '@rue/rue';
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 export class ActiveModel extends ActiveModel$Base {
-  static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
+  /**
+   * @return {object}
+   * 
+   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
+   */
+  static i18nConfig() {
+    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 }

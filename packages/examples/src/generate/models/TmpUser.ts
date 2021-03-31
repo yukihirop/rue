@@ -1,11 +1,11 @@
 // rue packages
-import { RueCheck } from '@rue/activemodel';
+import { RueCheck } from '@rue/rue';
 
 // locals
 import { ActiveModel } from '../../lib/activemodel';
 
 // types
-import * as t from '@rue/activemodel';
+import * as t from '@rue/rue';
 
 export type TmpUserParams = {
   // Please do not change the name 'errors' arbitrarily.
