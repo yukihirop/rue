@@ -1,5 +1,31 @@
-const template = Object.create({ activemodel: {}, activerecord: {}, activeform: {} });
+const template = Object.create({ rc: {}, activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
+
+template.rc.defaultTS = `import { Rue } from '@rue/rue';
+
+/**
+ * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
+ */
+Rue.configure({
+  i18n: {
+    options: {
+      lng: 'en',
+    },
+  }
+});`;
+
+template.rc.defaultJS = `const { Rue } = require('@rue/rue');
+
+/**
+ * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
+ */
+Rue.configure({
+  i18n: {
+    options: {
+      lng: 'en',
+    },
+  }
+});`;
 
 template.activerecord.defaultTS = `import { ActiveRecord$Base, RueCheck } from '@rue/rue';
 import type * as t from '@rue/rue';
@@ -9,10 +35,6 @@ import type * as t from '@rue/rue';
  */
 @RueSetup
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
-  static i18nConfig(): t.Model$I18nConfig {
-    throw "Please implement 'static i18nConfig(): t.Model$I18nConfig' in Inherited Class"
-  }
-
   protected fetchAll(): Promise<T[]> {
     throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
   }
@@ -26,15 +48,6 @@ template.activerecord.defaultJS = `const { ActiveRecord$Base, RueCheck } = requi
  */
 @RueSetup
 class ActiveRecord extends ActiveRecord$Base {
-  /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
-  }
-
   /**
    * @protected
    * @return {Promise<Array<object>>}
@@ -54,14 +67,6 @@ template.activemodel.defaultTS = `import { ActiveModel$Base, RueCheck } from '@r
  */
 @RueSetup
 export class ActiveModel extends ActiveModel$Base {
-  /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
-  }
 }
 `;
 
@@ -72,14 +77,6 @@ template.activemodel.defaultJS = `const { ActiveModel$Base, RueCheck } = require
  */
 @RueSetup
 class ActiveModel extends ActiveModel$Base {
-  /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
-  }
 }
 
 exports.ActiveModel = ActiveModel;
@@ -96,10 +93,6 @@ export class ActiveForm extends ActiveModel$Base {
   static get objType(): t.Model$ObjType {
     return 'form';
   }
-
-  static i18nConfig(): t.Model$I18nConfig {
-    throw "Please implement 'static i18nConfig(): t.Model$I18nConfig' in Inherited Class"
-  }
 }
 `;
 
@@ -115,15 +108,6 @@ class ActiveForm extends ActiveModel$Base {
    */
   static get objType() {
     return 'form';
-  }
-
-  /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
   }
 }
 

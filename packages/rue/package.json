@@ -30,7 +30,8 @@
   "dependencies": {
     "@rue/activemodel": "^1.0.0",
     "@rue/activerecord": "^0.0.0",
-    "@rue/cli": "^0.0.0"
+    "@rue/cli": "^0.0.0",
+    "@rue/config": "^0.0.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
