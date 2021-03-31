@@ -4,7 +4,6 @@ export { ActiveModel$Base } from './models';
 export { ActiveModel$Error } from './errors';
 
 // functions
-export { errObj } from './errors';
 export { RueCheck, RueSetup } from '@/decorators';
 
 // types
@@ -16,4 +15,3 @@ export type {
 export type { Model$Params, Model$ObjType } from './models';
 export type { ErrObj as Model$ErrObj, ErrMessage as Model$ErrMessage } from './errors';
 export type { Languages as Model$Languages, I18nConfig as Model$I18nConfig } from './locales';
-export type { ErrCodes } from './errors';
