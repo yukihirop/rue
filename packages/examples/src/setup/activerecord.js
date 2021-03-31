@@ -6,15 +6,6 @@ const { ActiveRecord$Base, RueCheck } = require('@rue/rue');
 @RueSetup
 class ActiveRecord extends ActiveRecord$Base {
   /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
-  }
-
-  /**
    * @protected
    * @return {Promise<Array<object>>}
    */

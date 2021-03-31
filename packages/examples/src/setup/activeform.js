@@ -11,15 +11,6 @@ class ActiveForm extends ActiveModel$Base {
   static get objType() {
     return 'form';
   }
-
-  /**
-   * @return {object}
-   * 
-   * e.g.) return value is { optoins: { lng: 'ja' }, resources }
-   */
-  static i18nConfig() {
-    throw "Please implement 'static i18nConfig()' in Inherited Class"
-  }
 }
 
 exports.ActiveForm = ActiveForm;

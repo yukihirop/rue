@@ -9,8 +9,4 @@ export class ActiveForm extends ActiveModel$Base {
   static get objType(): t.Model$ObjType {
     return 'form';
   }
-
-  static i18nConfig(): t.Model$I18nConfig {
-    throw "Please implement 'static i18nConfig(): t.Model$I18nConfig' in Inherited Class"
-  }
 }
