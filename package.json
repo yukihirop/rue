@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "fmt": "prettier --write **/src/**/*.ts",
-    "build": "yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:definition && yarn build:config && yarn build:repl && yarn build:cli",
+    "build": "yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:definition && yarn build:config && yarn build:repl && yarn build:cli && yarn build:rue",
     "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "build:activerecord": "cd packages/activerecord && yarn build && cd -",
     "build:activesupport": "cd packages/activesupport && yarn build && cd -",
@@ -17,6 +17,7 @@
     "build:generator": "cd packages/generator && yarn build && cd -",
     "build:definition": "cd packages/definition && yarn build && cd -",
     "build:config": "cd packages/config && yarn build && cd -",
+    "build:rue": "cd packages/rue && yarn build && cd -",
     "test": "yarn test:activemodel && yarn test:activerecord && yarn test:activesupport && yarn test:config",
     "test:activemodel": "cd packages/activemodel && yarn test && cd -",
     "test:activerecord": "cd packages/activerecord && yarn test && cd -",
