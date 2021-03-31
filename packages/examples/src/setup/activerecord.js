@@ -1,22 +1,10 @@
-const { ActiveRecord$Base, RueCheck } = require('@rue/activerecord');
+const { ActiveRecord$Base, RueCheck } = require('@rue/rue');
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 class ActiveRecord extends ActiveRecord$Base {
-  /**
-   * @param {strinng} key
-   * @param {object} opts
-   * @return {string}
-   */
-  static translate(key, opts) {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
-  }
-
   /**
    * @protected
    * @return {Promise<Array<object>>}

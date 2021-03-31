@@ -3,19 +3,9 @@ import { registryForValidations as Registry } from '@/registries';
 import { RueCheck } from '@/decorators';
 
 // types
-import type * as t from '@/models/modules/validations/types';
 import type * as rt from '@/registries';
-import type * as lt from '@/locales';
 
-class Model extends ActiveModel$Base {
-  static i18nConfig(): lt.I18nConfig {
-    return {
-      options: {
-        lng: 'en',
-      },
-    };
-  }
-}
+class Model extends ActiveModel$Base {}
 
 describe('ActiveModel$Base (ActiveModel$Validations)', () => {
   describe('constructor', () => {

@@ -1,5 +1,5 @@
 // rue packages
-const { RueCheck } = require('@rue/activerecord');
+const { RueCheck } = require('@rue/rue');
 
 // locals
 const { ActiveRecord } = require('../../lib/activerecord');

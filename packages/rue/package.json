@@ -1,0 +1,41 @@
+{
+  "name": "@rue/rue",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "yukihirop <te108186@gmail.com>",
+  "homepage": "https://github.com/yukihirop/rue#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yukihirop/rue.git"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib"
+  },
+  "bugs": {
+    "url": "https://github.com/yukihirop/rue/issues"
+  },
+  "dependencies": {
+    "@rue/activemodel": "^1.0.0",
+    "@rue/activerecord": "^0.0.0",
+    "@rue/cli": "^0.0.0",
+    "@rue/config": "^0.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "tscpaths": "^0.0.9",
+    "typescript": "^4.2.3"
+  }
+}

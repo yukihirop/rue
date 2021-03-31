@@ -16,3 +16,7 @@ export type I18nConfig = {
   options: I18nOptions;
   resources?: I18nResources;
 };
+
+export type RueRuntimeConfig = {
+  i18n: I18nConfig;
+};

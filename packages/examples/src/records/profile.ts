@@ -1,11 +1,11 @@
 // third party
-import { RueCheck } from '@rue/activerecord';
+import { RueCheck } from '@rue/rue';
 
 // locals
 import { ActiveRecord } from '../lib';
 
 // types
-import type * as t from '@rue/activerecord';
+import type * as t from '@rue/rue';
 
 type ProfileParams = {
   id: t.Record$ForeignKey;

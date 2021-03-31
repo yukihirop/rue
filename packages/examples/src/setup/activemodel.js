@@ -1,21 +1,10 @@
-const { ActiveModel$Base, RueCheck } = require('@rue/activemodel');
+const { ActiveModel$Base, RueCheck } = require('@rue/rue');
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 class ActiveModel extends ActiveModel$Base {
-  /**
-   * @param {strinng} key
-   * @param {object} opts
-   * @return {string}
-   */
-  static translate(key, opts) {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
-  }
 }
 
 exports.ActiveModel = ActiveModel;

@@ -17,6 +17,3 @@ i18n.init({
 });
 
 export default i18n;
-
-// types
-export { Languages, I18nOptions, I18nResources, I18nConfig } from './types';

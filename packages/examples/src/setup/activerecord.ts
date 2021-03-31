@@ -1,19 +1,12 @@
-import { ActiveRecord$Base, RueCheck } from '@rue/activerecord';
-import type * as t from '@rue/activerecord';
+import { ActiveRecord$Base, RueCheck } from '@rue/rue';
+import type * as t from '@rue/rue';
 
 /**
- * Check if 'translate' are overridden
+ * Execute i18nConfig to configure i18next.
  */
-@RueCheck({ translate: true })
+@RueSetup
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
-  static translate(key: string, opts?: any): string {
-    /**
-     * e.g.) return i18n.t(key, opts)
-     */
-    throw "Please override 'static translate(key: string, opts?: any): string'";
-  }
-
   protected fetchAll(): Promise<T[]> {
-    throw "Please implement 'fetchAll' in Inherited Class";
+    throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
   }
 }

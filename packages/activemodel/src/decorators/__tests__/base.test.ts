@@ -2,9 +2,6 @@
 import { RueCheck } from '../base';
 import { ActiveModel$Base as Model } from '@/models';
 
-// types
-import type * as lt from '@/locales';
-
 describe('Decorator', () => {
   describe('RueCheck', () => {
     describe('when success', () => {
@@ -15,14 +12,6 @@ describe('Decorator', () => {
             get uniqueKey(): string {
               return 'RueCheckModel';
             }
-
-            static i18nConfig(): lt.I18nConfig {
-              return {
-                options: {
-                  lng: 'en',
-                },
-              };
-            }
           }
         }).not.toThrowError();
       });
@@ -32,14 +21,6 @@ describe('Decorator', () => {
         class RueCheckModel extends Model {
           get uniqueKey(): string {
             return 'RueCheckGetterModel';
-          }
-
-          static i18nConfig(): lt.I18nConfig {
-            return {
-              options: {
-                lng: 'en',
-              },
-            };
           }
         }
         expect(RueCheckModel.prototype['__rue_uniqueKey__']).toEqual('RueCheckGetterModel');
@@ -62,11 +43,7 @@ describe('Decorator', () => {
         it('should correctly', () => {
           expect(() => {
             @RueCheck()
-            class RueCheckModel extends Model {
-              static translate(key: string, otps?: string): string {
-                return key;
-              }
-            }
+            class RueCheckModel extends Model {}
           }).toThrowError("Please implement '[static] uniqueKey(): string' in Inherited Class.");
         });
       });

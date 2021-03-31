@@ -1,12 +1,12 @@
 // third party
-import { RueCheck } from '@rue/activerecord';
+import { RueCheck } from '@rue/rue';
 
 // locals
 import { ActiveRecord } from '../lib';
 import { Task, Profile } from '@/records';
 
 // types
-import type * as t from '@rue/activerecord';
+import type * as t from '@rue/rue';
 
 type AccountParams = {
   id: t.Record$ForeignKey;

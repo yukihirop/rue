@@ -1,1 +1,1 @@
-export { Constructor, valueOf, I18nConfig } from './core';
+export { Constructor, valueOf } from './core';

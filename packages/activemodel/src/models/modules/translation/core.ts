@@ -5,28 +5,10 @@ import { RueModule } from '@rue/activesupport';
 import i18n from '@/locales';
 import { ActiveModel$Base } from '@/models';
 
-// types
-import type * as lt from '@/locales';
-
 // this is bound to an instance(class) of ActiveModel$Base
 export class ActiveModel$Translation extends RueModule {
   static translate(key: string, opts?: any): string {
     return i18n.t(key, opts).toString();
-  }
-
-  static i18nConfig(): lt.I18nConfig {
-    throw "Please implement 'static i18nConfig(): lt.I18nConfig' in Inherited Class.";
-  }
-
-  protected static checkI18nConfig(): boolean {
-    // @ts-expect-error
-    const _this = this as typeof ActiveModel$Base;
-    try {
-      _this.i18nConfig();
-      return true;
-    } catch (err) {
-      throw err;
-    }
   }
 
   humanPropertyName(propKey: string): string {

@@ -32,7 +32,7 @@ export default class Setup extends Command {
       name: 'pkgName',
       required: true,
       description: 'package name',
-      options: ['activerecord', 'activemodel', 'activeform'],
+      options: ['rc', 'activerecord', 'activemodel', 'activeform'],
     },
     { name: 'saveDir', required: false, description: 'save dir path', default: './src/lib' },
   ];
