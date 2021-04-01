@@ -10,6 +10,13 @@ rue:
     Account:
       name: name
       email: Email
+    Task:
+      content: Content
+      status: Status
+    Task/status:
+      wip: WIP
+      failure: Failure
+      success: Success
   forms:
     ContactFrom:
       name: Name

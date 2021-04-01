@@ -73,6 +73,13 @@ export class ActiveModel$Translation extends RueModule {
   protected static __t(propKey: string): string {
     // @ts-ignore
     const _this = this as typeof ActiveModel$Base;
-    return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();
+    const isEnum = propKey.startsWith('/');
+    if (isEnum) {
+      // e.g.) 'models.ActiveModel/status.wip'
+      return _this.translate(`${_this.objType}s.${_this.uniqueKey}${propKey}`).toString();
+    } else {
+      // e.g.) 'models.TestHumanPropertyNameModel.profile.name'
+      return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();
+    }
   }
 }
