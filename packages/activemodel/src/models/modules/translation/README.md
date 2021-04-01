@@ -2,8 +2,17 @@
 
 ## Methods
 
-- [x] humanPropertyName (alias to `humanPropName`)
-- [x] humanPropName
+- [x] $t
+- [x] humanPropertyName (alias to `$t`)
+- [x] humanPropName (alias to `$t`)
+- [x] humanAttributeName (alias to `$t`)
+
+## Static Methods
+
+- [x] $t
+- [x] humanPropertyName (alias to `$t`)
+- [x] humanPropName (alias to `$t`)
+- [x] humanAttributeName (alias to `$t`)
 
 ## Reference
 

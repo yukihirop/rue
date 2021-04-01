@@ -2,7 +2,7 @@
   "ActiveModel$Error": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -18,7 +18,7 @@
   "ErrObj": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -34,7 +34,7 @@
   "ActiveModel$Base": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -80,34 +80,44 @@
   "ActiveModel$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
-        "text": "abstract class ActiveModel$Impl {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;\n  static __rue_ancestors__ = [];\n  // ActiveModel$Translation\n  static translate: (key: string, opts?: any) => string;\n  static __t: (propKey: string) => string;\n  protected static checkI18nOptions: () => boolean;\n  // ActiveModel$Validations\n  static validates: <T = any, U extends ActiveModel$Validations = any>(\n    propKey: string,\n    opts: t.Validations$Options<T, U>\n  ) => void;\n  // ActiveModel$Cachable\n  protected static checkUniqueKey: () => boolean;\n  static get uniqueKey(): string {\n    // @ts-expect-error\n    return this._uniqueKey();\n  }\n\n  /**\n   * define prototype\n   */\n\n  // ActiveModel$Cachable\n  get uniqueKey(): string {\n    // @ts-expect-error\n    return this._uniqueKey();\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_impl_class__ \u001b[38;2;248;248;242m=\u001b[39m Support$ImplBase\u001b[38;2;248;248;242m.\u001b[39m__rue_impl_class__\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_ancestors__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Translation\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckI18nOptions\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Validations\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m validates\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mU\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveModel$Validations\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    propKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n    opts\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mValidations$Options\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;102;217;239mvoid\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Cachable\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckUniqueKey\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116muniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * define prototype\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n\n  \u001b[38;2;130;146;162m// ActiveModel$Cachable\u001b[39m\n  \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116muniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "abstract class ActiveModel$Impl {\n  // Prepared for checking with hasOwnProperty ()\n  static __rue_impl_class__ = Support$ImplBase.__rue_impl_class__;\n  static __rue_ancestors__ = [];\n  // ActiveModel$Translation\n  static $t: (propKey: string) => string;\n  static humanPropertyName: (propKey: string) => string;\n  static humanPropName: (propKey: string) => string;\n  static humanAttributeName: (propKey: string) => string;\n  static translate: (key: string, opts?: any) => string;\n  static __t: (propKey: string) => string;\n  protected static checkI18nOptions: () => boolean;\n  // ActiveModel$Validations\n  static validates: <T = any, U extends ActiveModel$Validations = any>(\n    propKey: string,\n    opts: t.Validations$Options<T, U>\n  ) => void;\n  // ActiveModel$Cachable\n  protected static checkUniqueKey: () => boolean;\n  static get uniqueKey(): string {\n    // @ts-expect-error\n    return this._uniqueKey();\n  }\n\n  /**\n   * define prototype\n   */\n\n  // ActiveModel$Cachable\n  get uniqueKey(): string {\n    // @ts-expect-error\n    return this._uniqueKey();\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mabstract\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// Prepared for checking with hasOwnProperty ()\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_impl_class__ \u001b[38;2;248;248;242m=\u001b[39m Support$ImplBase\u001b[38;2;248;248;242m.\u001b[39m__rue_impl_class__\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m __rue_ancestors__ \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;248;248;242m[\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Translation\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckI18nOptions\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Validations\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m validates\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mU\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mActiveModel$Validations\u001b[39m \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\n    propKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m\n    opts\u001b[38;2;248;248;242m:\u001b[39m t\u001b[38;2;248;248;242m.\u001b[39mValidations$Options\u001b[38;2;248;248;242m<\u001b[39m\u001b[38;2;249;38;114mT\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m \u001b[38;2;249;38;114mU\u001b[39m\u001b[38;2;248;248;242m>\u001b[39m\n  \u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;102;217;239mvoid\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Cachable\u001b[39m\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mcheckUniqueKey\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m=>\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116muniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * define prototype\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n\n  \u001b[38;2;130;146;162m// ActiveModel$Cachable\u001b[39m\n  \u001b[38;2;102;217;239mget\u001b[39m \u001b[38;2;230;219;116muniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m_uniqueKey\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           11,
-          40
+          44
         ]
       },
       {
-        "text": "interface ActiveModel$Impl {\n  // ActiveModel$Translation\n  humanPropertyName(propKey: string): string;\n  humanPropName(propKey: string): string;\n  // ActiveModel$Validations\n  isValid(): boolean;\n  isInvalid(): boolean;\n  _toObj(opts?: { flat: boolean }): { [key: string]: any };\n}",
-        "highlightText": "\u001b[38;2;102;217;239minterface\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Translation\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Validations\u001b[39m\n  \u001b[38;2;230;219;116misValid\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116misInvalid\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116m_toObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mopts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m \u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "interface ActiveModel$Impl {\n  // ActiveModel$Translation\n  $t(propKey: string): string;\n  humanPropertyName(propKey: string): string;\n  humanPropName(propKey: string): string;\n  humanAttributeName(propKey: string): string;\n  // ActiveModel$Validations\n  isValid(): boolean;\n  isInvalid(): boolean;\n  _toObj(opts?: { flat: boolean }): { [key: string]: any };\n}",
+        "highlightText": "\u001b[38;2;102;217;239minterface\u001b[39m \u001b[38;2;230;219;116mActiveModel$Impl\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Translation\u001b[39m\n  \u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;130;146;162m// ActiveModel$Validations\u001b[39m\n  \u001b[38;2;230;219;116misValid\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116misInvalid\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;230;219;116m_toObj\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mopts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m flat\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mboolean\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m \u001b[38;2;248;248;242m[\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m]\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m \u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
-          42,
-          50
+          46,
+          56
         ]
       }
     ],
     "instance": {
+      "$t": {
+        "text": "$t(propKey: string): string;",
+        "highlightText": "\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          48,
+          0
+        ]
+      },
       "humanPropertyName": {
         "text": "humanPropertyName(propKey: string): string;",
         "highlightText": "\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m",
         "isAsync": false,
         "visibility": "public",
         "line": [
-          44,
+          49,
           0
         ]
       },
@@ -117,7 +127,17 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          45,
+          50,
+          0
+        ]
+      },
+      "humanAttributeName": {
+        "text": "humanAttributeName(propKey: string): string;",
+        "highlightText": "\u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          51,
           0
         ]
       },
@@ -127,7 +147,7 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          47,
+          53,
           0
         ]
       },
@@ -137,7 +157,7 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          48,
+          54,
           0
         ]
       },
@@ -147,7 +167,7 @@
         "isAsync": false,
         "visibility": "public",
         "line": [
-          49,
+          55,
           0
         ]
       }
@@ -156,7 +176,7 @@
   "registryForUniqueKeys": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -204,7 +224,7 @@
   "ActiveModel$Cachable": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/cachable/core.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -254,15 +274,15 @@
   "ActiveModel$Translation": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/04/01 01:00:54 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
-        "text": "export class ActiveModel$Translation extends RueModule {\n  static translate(key: string, opts?: any): string {\n    return i18n.t(key, opts).toString();\n  }\n\n  humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }\n\n  // @alias\n  humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }\n\n  protected static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();\n  }\n}",
-        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Translation\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m i18n\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mt\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m// @alias\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
+        "text": "export class ActiveModel$Translation extends RueModule {\n  static translate(key: string, opts?: any): string {\n    return i18n.t(key, opts).toString();\n  }\n\n  static $t(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).__t(propKey);\n  }\n\n  /**\n   * @alias $t\n   */\n  static humanPropertyName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }\n\n  /**\n   * @alias $t\n   */\n  static humanPropName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }\n\n  /**\n   * @alias $t\n   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name\n   */\n  static humanAttributeName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }\n\n  $t(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }\n\n  /**\n   * @alias $t\n   */\n  humanPropertyName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }\n\n  /**\n   * @alias $t\n   */\n  humanPropName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }\n\n  /**\n   * @alias $t\n   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name\n   */\n  humanAttributeName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }\n\n  protected static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    const isEnum = propKey.startsWith('/');\n    if (isEnum) {\n      // e.g.) 'models.ActiveModel/status.wip'\n      return _this.translate(`${_this.objType}s.${_this.uniqueKey}${propKey}`).toString();\n    } else {\n      // e.g.) 'models.TestHumanPropertyNameModel.profile.name'\n      return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();\n    }\n  }\n}",
+        "highlightText": "\u001b[38;2;102;217;239mexport\u001b[39m \u001b[38;2;102;217;239mclass\u001b[39m \u001b[38;2;230;219;116mActiveModel$Translation\u001b[39m \u001b[38;2;102;217;239mextends\u001b[39m \u001b[38;2;230;219;116mRueModule\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m?\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46many\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m i18n\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mt\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mkey\u001b[38;2;248;248;242m,\u001b[39m opts\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;130;146;162m/**\u001b[39m\n\u001b[38;2;130;146;162m   * @alias $t\u001b[39m\n\u001b[38;2;130;146;162m   * @see https://api.rubyonrails.org/classes/ActiveModel/Translation.html#method-i-human_attribute_name\u001b[39m\n\u001b[38;2;130;146;162m   */\u001b[39m\n  \u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\n  \u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m isEnum \u001b[38;2;248;248;242m=\u001b[39m propKey\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstartsWith\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'/'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39misEnum\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// e.g.) 'models.ActiveModel/status.wip'\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// e.g.) 'models.TestHumanPropertyNameModel.profile.name'\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m\n\u001b[38;2;248;248;242m}\u001b[39m",
         "line": [
           9,
-          28
+          85
         ]
       }
     ],
@@ -277,36 +297,96 @@
           12
         ]
       },
-      "__t": {
-        "text": "protected static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();\n  }",
-        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
-        "isAsync": false,
-        "visibility": "protected",
-        "line": [
-          23,
-          27
-        ]
-      }
-    },
-    "instance": {
-      "humanPropertyName": {
-        "text": "humanPropertyName(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+      "$t": {
+        "text": "static $t(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).__t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
         "isAsync": false,
         "visibility": "public",
         "line": [
           14,
-          16
+          17
         ]
       },
-      "humanPropName": {
-        "text": "humanPropName(propKey: string): string {\n    return this.humanPropertyName(propKey);\n  }",
-        "highlightText": "\u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+      "humanPropertyName": {
+        "text": "static humanPropertyName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
         "isAsync": false,
         "visibility": "public",
         "line": [
-          19,
-          21
+          22,
+          25
+        ]
+      },
+      "humanPropName": {
+        "text": "static humanPropName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          30,
+          33
+        ]
+      },
+      "humanAttributeName": {
+        "text": "static humanAttributeName(propKey: string): string {\n    // @ts-expect-error\n    return (this as typeof ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          39,
+          42
+        ]
+      },
+      "__t": {
+        "text": "protected static __t(propKey: string): string {\n    // @ts-ignore\n    const _this = this as typeof ActiveModel$Base;\n    const isEnum = propKey.startsWith('/');\n    if (isEnum) {\n      // e.g.) 'models.ActiveModel/status.wip'\n      return _this.translate(`${_this.objType}s.${_this.uniqueKey}${propKey}`).toString();\n    } else {\n      // e.g.) 'models.TestHumanPropertyNameModel.profile.name'\n      return _this.translate(`${_this.objType}s.${_this.uniqueKey}.${propKey}`).toString();\n    }\n  }",
+        "highlightText": "\u001b[38;2;102;217;239mprotected\u001b[39m \u001b[38;2;102;217;239mstatic\u001b[39m \u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-ignore\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m _this \u001b[38;2;248;248;242m=\u001b[39m \u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mconst\u001b[39m isEnum \u001b[38;2;248;248;242m=\u001b[39m propKey\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mstartsWith\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m'/'\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;102;217;239mif\u001b[39m \u001b[38;2;248;248;242m(\u001b[39misEnum\u001b[38;2;248;248;242m)\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// e.g.) 'models.ActiveModel/status.wip'\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m \u001b[38;2;102;217;239melse\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n      \u001b[38;2;130;146;162m// e.g.) 'models.TestHumanPropertyNameModel.profile.name'\u001b[39m\n      \u001b[38;2;102;217;239mreturn\u001b[39m _this\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtranslate\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39mobjType\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46ms.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39m_this\u001b[38;2;248;248;242m.\u001b[39muniqueKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m.\u001b[39m\u001b[38;2;248;248;242m${\u001b[39mpropKey\u001b[38;2;248;248;242m}\u001b[39m\u001b[38;2;166;226;46m`\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116mtoString\u001b[39m\u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n    \u001b[38;2;248;248;242m}\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "protected",
+        "line": [
+          73,
+          84
+        ]
+      }
+    },
+    "instance": {
+      "$t": {
+        "text": "$t(propKey: string): string {\n    return (this.constructor as typeof ActiveModel$Base).__t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;102;217;239mconstructor\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m \u001b[38;2;102;217;239mtypeof\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m__t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          14,
+          17
+        ]
+      },
+      "humanPropertyName": {
+        "text": "humanPropertyName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mhumanPropertyName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          22,
+          25
+        ]
+      },
+      "humanPropName": {
+        "text": "humanPropName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mhumanPropName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          30,
+          33
+        ]
+      },
+      "humanAttributeName": {
+        "text": "humanAttributeName(propKey: string): string {\n    // @ts-expect-error\n    return (this as ActiveModel$Base).$t(propKey);\n  }",
+        "highlightText": "\u001b[38;2;230;219;116mhumanAttributeName\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m:\u001b[39m \u001b[38;2;166;226;46mstring\u001b[39m \u001b[38;2;248;248;242m{\u001b[39m\n    \u001b[38;2;130;146;162m// @ts-expect-error\u001b[39m\n    \u001b[38;2;102;217;239mreturn\u001b[39m \u001b[38;2;248;248;242m(\u001b[39m\u001b[38;2;102;217;239mthis\u001b[39m \u001b[38;2;102;217;239mas\u001b[39m ActiveModel$Base\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m.\u001b[39m\u001b[38;2;230;219;116m$t\u001b[39m\u001b[38;2;248;248;242m(\u001b[39mpropKey\u001b[38;2;248;248;242m)\u001b[39m\u001b[38;2;248;248;242m;\u001b[39m\n  \u001b[38;2;248;248;242m}\u001b[39m",
+        "isAsync": false,
+        "visibility": "public",
+        "line": [
+          39,
+          42
         ]
       }
     }
@@ -314,7 +394,7 @@
   "ActiveModel$Validations": {
     "metadata": {
       "filepath": "@rue/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/04/01 01:00:55 +09:00"
+      "updatedAt": "2021/04/01 21:35:30 +09:00"
     },
     "class": [
       {
@@ -374,7 +454,7 @@
   "ActiveRecord$Error": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/errors/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 21:35:39 +09:00"
     },
     "class": [
       {
@@ -390,7 +470,7 @@
   "ActiveRecord$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 21:35:39 +09:00"
     },
     "class": [
       {
@@ -448,7 +528,7 @@
   "ActiveRecord$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/impl.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -476,7 +556,7 @@
   "ActiveRecord$Associations$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/holder.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -500,7 +580,7 @@
   "ActiveRecord$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/base.ts",
-      "updatedAt": "2021/04/01 01:01:03 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -806,7 +886,7 @@
   "ActiveRecord$Relation$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/holder.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -830,7 +910,7 @@
   "ActiveRecord$Relation$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -846,7 +926,7 @@
   "ActiveRecord$Associations$CollectionProxy$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/base.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:40 +09:00"
     },
     "class": [
       {
@@ -1034,7 +1114,7 @@
   "ActiveRecord$Associations$CollectionProxy$Holder": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/holder.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1058,7 +1138,7 @@
   "ActiveRecord$Associations$CollectionProxy$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/collection_proxy/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1082,7 +1162,7 @@
   "ActiveRecord$Associations$Relation$Base": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/associations/relation/base.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1098,7 +1178,7 @@
   "ActiveRecord$Associations": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1188,7 +1268,7 @@
   "ActiveRecord$Associations$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/impl.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1212,7 +1292,7 @@
   "ActiveRecord$AttributeMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/attribute_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1250,7 +1330,7 @@
   "ActiveRecord$Core": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/core/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1278,7 +1358,7 @@
   "ActiveRecord$Dirty": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/dirty/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1306,7 +1386,7 @@
   "ActiveRecord$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/persistences/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1506,7 +1586,7 @@
   "ActiveRecord$Querying": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/querying/core.ts",
-      "updatedAt": "2021/04/01 01:01:04 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1854,7 +1934,7 @@
   "ActiveRecord$Scoping": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1870,7 +1950,7 @@
   "ActiveRecord$Scoping$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/impl.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1886,7 +1966,7 @@
   "ActiveRecord$Scoping$Named": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/scoping/named.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1924,7 +2004,7 @@
   "ActiveRecord$Associations$Persistence": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -1982,7 +2062,7 @@
   "ActiveRecord$Associations$PersistenceStrategy": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/modules/associations/persistence_strategy/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -2090,7 +2170,7 @@
   "ActiveRecord$FinderMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/finder_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -2228,7 +2308,7 @@
   "ActiveRecord$QueryMethods": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/core.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:41 +09:00"
     },
     "class": [
       {
@@ -2336,7 +2416,7 @@
   "ActiveRecord$QueryMethods$Evaluator": {
     "metadata": {
       "filepath": "@rue/packages/activerecord/src/records/relations/modules/query_methods/evaluator.ts",
-      "updatedAt": "2021/04/01 01:01:05 +09:00"
+      "updatedAt": "2021/04/01 21:35:42 +09:00"
     },
     "class": [
       {
@@ -2444,7 +2524,7 @@
   "RueModule": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2490,7 +2570,7 @@
   "RueModuleAncestorController": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2546,7 +2626,7 @@
   "ActiveSupport$Registry$Base": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/registries/base.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2622,7 +2702,7 @@
   "ActiveSupport$Base": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/base.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2650,7 +2730,7 @@
   "ActiveSupport$ImplBase": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2666,7 +2746,7 @@
   "ActiveSupport$Impl": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {
@@ -2690,7 +2770,7 @@
   "ActiveSupport$Info": {
     "metadata": {
       "filepath": "@rue/packages/activesupport/src/supports/modules/info/core.ts",
-      "updatedAt": "2021/04/01 01:00:47 +09:00"
+      "updatedAt": "2021/04/01 21:35:23 +09:00"
     },
     "class": [
       {

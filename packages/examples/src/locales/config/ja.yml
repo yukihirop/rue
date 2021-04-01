@@ -10,6 +10,13 @@ rue:
     Account:
       name: 名前
       email: Eメール
+    Task:
+      content: 内容
+      status: 状態
+    Task/status:
+      wip: 途中
+      failure: 失敗
+      success: 成功
   forms:
     ContactFrom:
       name: 名前

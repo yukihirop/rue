@@ -5,7 +5,8 @@ Let's develop a SPA with a [rails](https://github.com/rails/rails) API.
 
 ## Packages
 
-- `@rue/activemodel`
-- `@rue/activerecord`
-- `@rue/activesupport`
-- `@rue/activeview`
+- `@rue/rue`
+  - `@rue/activemodel`
+  - `@rue/activerecord`
+  - `@rue/config`
+  - `@rue/cli`
