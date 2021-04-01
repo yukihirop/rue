@@ -41,22 +41,47 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
   static RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID;
-  static create: <T extends ActiveRecord$Base<U>, U extends t.Params>(
+  protected static createSync: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ) => T | T[];
-  static createOrThrow: <T extends ActiveRecord$Base<U>, U extends t.Params>(
+  protected static createSyncOrThrow: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ) => T | T[];
-  static delete: (id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]) => number;
-  static destroy: <T extends ActiveRecord$Base<t.Params>>(
+  protected static deleteSync: (
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]
+  ) => number;
+  protected static destroySync: <T extends ActiveRecord$Base<t.Params>>(
     id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]
   ) => T | T[];
-  static update: <T extends ActiveRecord$Base, U>(
+  protected static updateSync: <T extends ActiveRecord$Base, U>(
     id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ) => T | T[];
+
+  /**
+   * Please override to hit the external API.
+   */
+  static create: <T extends ActiveRecord$Base, U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ) => Promise<T | T[]>;
+  static createOrThrow: <T extends ActiveRecord$Base, U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ) => Promise<T | T[]>;
+  static delete: <T extends ActiveRecord$Base>(
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]
+  ) => Promise<number>;
+  static destroy: <T extends ActiveRecord$Base>(
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[]
+  ) => Promise<T | T[]>;
+  static update: <T extends ActiveRecord$Base, U>(
+    id: mat.Associations$PrimaryKey | mat.Associations$PrimaryKey[] | 'all',
+    params: Partial<U> | Array<Partial<U>>
+  ) => Promise<T | T[]>;
+
   // ActiveRecord$Associations
   static belongsTo: <T extends ActiveRecord$Base>(
     relationName: string,
@@ -182,15 +207,16 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    */
 
   // ActiveRecord$Persistence
+  protected deleteSync: () => this;
   public isNewRecord: () => boolean;
   public isPersisted: () => boolean;
-  public saveSync: (opts?: { validate: boolean }) => boolean;
-  public saveSyncOrThrow: () => void | boolean;
-  public destroySync: () => this;
+  protected saveSync: (opts?: { validate: boolean }) => boolean;
+  protected saveSyncOrThrow: () => void | boolean;
+  protected destroySync: () => this;
   public isDestroyed: () => boolean;
   public touch: (opts?: { withCreatedAt?: boolean; time?: string }) => boolean;
-  public update: (params?: Partial<P>) => boolean;
-  public updateOrThrow: (params?: Partial<P>) => boolean;
+  protected updateSync: (params?: Partial<P>) => boolean;
+  protected updateSyncOrThrow: (params?: Partial<P>) => boolean;
   public updateAttribute: (name: string, value: any) => boolean;
   /**
    * @alias updateAttribute
@@ -200,6 +226,15 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    * @alias updateAttribute
    */
   public updateProp: (name: string, value: any) => boolean;
+
+  /**
+   * Please override to hit the external API.
+   */
+  public save: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveOrThrow: () => Promise<void | boolean>;
+  public destroy: <T extends ActiveRecord$Base>() => Promise<T>;
+  public update: <U>(params?: Partial<U>) => Promise<boolean>;
+  public updateOrThrow: <U>(params?: Partial<U>) => Promise<boolean>;
 
   // ActiveRecord$Associations
   public buildHasOneRecord: <T extends ActiveRecord$Base>(
@@ -235,11 +270,17 @@ ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
 });
 
 ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['saveWithAssociations', 'saveWithAssociationsOrThrow', 'destroyWithAssociations', '_destroyAssociations'],
+  only: [
+    'saveWithAssociations',
+    'saveWithAssociationsOrThrow',
+    'destroyWithAssociations',
+    '_destroyAssociations',
+  ],
 });
 
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
   only: [
+    'deleteSync',
     'isNewRecord',
     'isPersisted',
     'saveSync',
@@ -247,11 +288,19 @@ ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
     'destroySync',
     'isDestroyed',
     'touch',
-    'update',
-    'updateOrThrow',
+    'updateSync',
+    'updateSyncOrThrow',
     'updateAttribute',
     'updateProperty',
     'updateProp',
+    /**
+     * Please override to hit the external API.
+     */
+    'save',
+    'saveOrThrow',
+    'destroy',
+    'update',
+    'updateOrThrow',
   ],
 });
 
@@ -266,14 +315,22 @@ ActiveRecord$Dirty.rueModuleIncludedFrom(ActiveRecord$Impl, {
 // extend module
 ActiveRecord$Persistence.rueModuleExtendedFrom(ActiveRecord$Impl, {
   only: [
+    'createSync',
+    'createSyncOrThrow',
+    'deleteSync',
+    'destroySync',
+    'updateSync',
+    'RUE_AUTO_INCREMENT_RECORD_ID',
+    'RUE_RECORD_ID',
+    'RECORD_ALL',
+    /**
+     * Please override to hit the external API.
+     */
     'create',
     'createOrThrow',
     'delete',
     'destroy',
     'update',
-    'RUE_AUTO_INCREMENT_RECORD_ID',
-    'RUE_RECORD_ID',
-    'RECORD_ALL',
   ],
 });
 ActiveRecord$Associations.rueModuleExtendedFrom(ActiveRecord$Impl, {

@@ -43,14 +43,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<IsExistsRecord>;
     let relation: Relation<IsExistsRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsExistsRecord.resetRecordCache();
 
-      scope = IsExistsRecord.create<IsExistsRecord, IsExistsRecordParams>([
+      scope = (await IsExistsRecord.create<IsExistsRecord, IsExistsRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as IsExistsRecord[];
+      ])) as IsExistsRecord[];
 
       holder = new Holder(IsExistsRecord, scope);
 
@@ -135,14 +135,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<FindRecord>;
     let relation: Relation<FindRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FindRecord.resetRecordCache();
 
-      scope = FindRecord.create<FindRecord, FindRecordParams>([
+      scope = (await FindRecord.create<FindRecord, FindRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindRecord[];
+      ])) as FindRecord[];
 
       holder = new Holder(FindRecord, scope);
 
@@ -260,14 +260,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<FindByRecord>;
     let relation: Relation<FindByRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FindByRecord.resetRecordCache();
 
-      scope = FindByRecord.create<FindByRecord, FindByRecordParams>([
+      scope = (await FindByRecord.create<FindByRecord, FindByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindByRecord[];
+      ])) as FindByRecord[];
 
       holder = new Holder(FindByRecord, scope);
 
@@ -332,14 +332,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<FindByOrThrowRecord>;
     let relation: Relation<FindByOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FindByOrThrowRecord.resetRecordCache();
 
-      scope = FindByOrThrowRecord.create<FindByOrThrowRecord, FindByOrThrowRecordParams>([
+      scope = (await FindByOrThrowRecord.create<FindByOrThrowRecord, FindByOrThrowRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindByOrThrowRecord[];
+      ])) as FindByOrThrowRecord[];
 
       holder = new Holder(FindByOrThrowRecord, scope);
 
@@ -404,14 +404,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<FirstRecord>;
     let relation: Relation<FirstRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FirstRecord.resetRecordCache();
 
-      scope = FirstRecord.create([
+      scope = (await FirstRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as FirstRecord[];
+      ])) as FirstRecord[];
 
       holder = new Holder(FirstRecord, scope);
 
@@ -555,14 +555,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<FirstOrThrowRecord>;
     let relation: Relation<FirstOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FirstOrThrowRecord.resetRecordCache();
 
-      scope = FirstOrThrowRecord.create([
+      scope = (await FirstOrThrowRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as FirstOrThrowRecord[];
+      ])) as FirstOrThrowRecord[];
 
       holder = new Holder(FirstOrThrowRecord, scope);
 
@@ -627,13 +627,13 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<IsIncludeRecord>;
     let relation: Relation<IsIncludeRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsIncludeRecord.resetRecordCache();
 
-      scope = IsIncludeRecord.create<IsIncludeRecord, IsIncludeRecordParams>([
+      scope = (await IsIncludeRecord.create<IsIncludeRecord, IsIncludeRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
-      ]) as IsIncludeRecord[];
+      ])) as IsIncludeRecord[];
 
       holder = new Holder(IsIncludeRecord, scope);
 
@@ -653,12 +653,12 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     });
 
     describe('when return false', () => {
-      it('should correctly', (done) => {
-        const record = IsIncludeRecord.create({ name: 'name_3', age: 3 }) as IsIncludeRecord;
-        relation.isInclude(record).then((result) => {
-          expect(result).toEqual(false);
-          done();
-        });
+      it('should correctly', async () => {
+        const record = (await IsIncludeRecord.create({
+          name: 'name_3',
+          age: 3,
+        })) as IsIncludeRecord;
+        expect(await relation.isInclude(record)).toEqual(false);
       });
     });
 
@@ -708,14 +708,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<LastRecord>;
     let relation: Relation<LastRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       LastRecord.resetRecordCache();
 
-      scope = LastRecord.create([
+      scope = (await LastRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as LastRecord[];
+      ])) as LastRecord[];
 
       holder = new Holder(LastRecord, scope);
 
@@ -859,14 +859,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<LastOrThrowRecord>;
     let relation: Relation<LastOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       LastOrThrowRecord.resetRecordCache();
 
-      scope = LastOrThrowRecord.create([
+      scope = (await LastOrThrowRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as LastOrThrowRecord[];
+      ])) as LastOrThrowRecord[];
 
       holder = new Holder(LastOrThrowRecord, scope);
 
@@ -935,14 +935,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<TakeRecord>;
     let relation: Relation<TakeRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       TakeRecord.resetRecordCache();
 
-      scope = TakeRecord.create([
+      scope = (await TakeRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as TakeRecord[];
+      ])) as TakeRecord[];
 
       holder = new Holder(TakeRecord, scope);
 
@@ -1086,14 +1086,14 @@ describe('ActiveRecord$Relation (FinderMethods)', () => {
     let holder: Holder<TakeOrThrowRecord>;
     let relation: Relation<TakeOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       TakeOrThrowRecord.resetRecordCache();
 
-      scope = TakeOrThrowRecord.create([
+      scope = (await TakeOrThrowRecord.create([
         { name: 'name_1', age: 1 },
         { name: 'name_2', age: 2 },
         { name: 'name_3', age: 3 },
-      ]) as TakeOrThrowRecord[];
+      ])) as TakeOrThrowRecord[];
 
       holder = new Holder(TakeOrThrowRecord, scope);
 

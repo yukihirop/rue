@@ -9,10 +9,10 @@
 - [-] cacheKey
 - [-] cacheKeyWithVersion
 - [-] cacheVersion
-- [x] create
-- [x] createOrThrow
-- [x] createOrFindBy
-- [x] createOrFindByOrThrow
+- [ ] create
+- [ ] createOrThrow
+- [ ] createOrFindBy
+- [ ] createOrFindByOrThrow
 - [x] destoryAll
 - [x] deleteBy
 - [x] deleteAll
@@ -49,6 +49,13 @@
 - [-] whereValuesHash
 - [x] toA
 - [x] toArray (alias to `toA`)
+
+## Original Methods
+
+- [x] createSync
+- [x] createSyncOrThrow
+- [x] createOrFindBySync
+- [x] createOrFindBySyncOrThrow
 
 ## Reference
 
