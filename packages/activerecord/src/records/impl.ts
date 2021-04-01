@@ -216,10 +216,10 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   ) => Promise<T>;
 
   // ActiveRecord$Associations$Persistence
-  public destroy: () => Promise<this | boolean>;
+  public destroyWithAssociations: () => Promise<this | boolean>;
   protected _destroyAssociations: () => Promise<this[]>;
-  public save: (opts?: { validate: boolean }) => Promise<boolean>;
-  public saveOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveWithAssociations: (opts?: { validate: boolean }) => Promise<boolean>;
+  public saveWithAssociationsOrThrow: (opts?: { validate: boolean }) => Promise<boolean>;
 
   // ActiveRecord$AttributeMethods
   public attributes: () => Partial<P>;
@@ -235,7 +235,7 @@ ActiveRecord$Associations.rueModuleIncludedFrom(ActiveRecord$Impl, {
 });
 
 ActiveRecord$Associations$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {
-  only: ['save', 'saveOrThrow', 'destroy', '_destroyAssociations'],
+  only: ['saveWithAssociations', 'saveWithAssociationsOrThrow', 'destroyWithAssociations', '_destroyAssociations'],
 });
 
 ActiveRecord$Persistence.rueModuleIncludedFrom(ActiveRecord$Impl, {

@@ -13,7 +13,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
    */
-  destroy<T extends ActiveRecord$Base>(): Promise<T | boolean> {
+  destroyWithAssociations<T extends ActiveRecord$Base>(): Promise<T | boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     // @ts-expect-error
@@ -61,7 +61,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save
    */
-  save(opts?: { validate: boolean }): Promise<boolean> {
+  saveWithAssociations(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
@@ -104,7 +104,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save-21
    */
-  saveOrThrow(opts?: { validate: boolean }): Promise<boolean> {
+  saveWithAssociationsOrThrow(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
 

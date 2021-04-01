@@ -113,7 +113,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           id: 1,
           parentId: 1,
         });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.belongsTo()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
@@ -148,7 +148,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           id: 1,
           parentId: 1,
         });
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(await record.belongsTo()).toEqual({
           __rue_record_id__: undefined,
           _associationCache: {},
@@ -265,7 +265,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           parentId: 1,
         });
         belongsToRecord.belongsToName = 'belongs_to_name_2';
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.belongsTo()).toEqual({
           __rue_record_id__: undefined,
           _associationCache: {},
@@ -292,7 +292,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           belongsToName: 'invalid_name_1',
           belongsToAge: 100,
         });
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(record.errors['belongsTo']['belongsTo']).toEqual([errForRecord]);
         expect(await record.belongsTo()).toEqual({
           __rue_record_id__: undefined,
@@ -323,7 +323,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           id: 1,
           parentId: 1,
         });
-        expect(await record.saveOrThrow()).toEqual(true);
+        expect(await record.saveWithAssociationsOrThrow()).toEqual(true);
         expect(await record.belongsTo()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
@@ -354,7 +354,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           parentId: 1,
         });
         try {
-          await record.saveOrThrow();
+          await record.saveWithAssociationsOrThrow();
         } catch (err) {
           expect(err.toString()).toEqual(`Error: PersistenceBelongsToRecord {
   "_associationCache": {},
@@ -395,7 +395,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
           parentId: 1,
         });
         try {
-          await record.saveOrThrow();
+          await record.saveWithAssociationsOrThrow();
         } catch (err) {
           expect(err.toString()).toEqual(`Error: PersistenceRecord {
   "_associationCache": {
@@ -506,7 +506,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
       it('should throw error', async () => {
         try {
           const record = (await DependentUndefinnedRecord.first<DependentUndefinnedRecord>()) as DependentUndefinnedRecord;
-          await record.destroy();
+          await record.destroyWithAssociations();
         } catch (err) {
           expect(err.toString()).toEqual(
             "Error: Cannot delete or update a 'DependentUndefinnedRecord' record: a foreign key (parentId) constraint fails"
@@ -554,7 +554,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDestroyRecord.first<DependentDestroyRecord>()) as DependentDestroyRecord;
-        const destroyedRecord = await record.destroy();
+        const destroyedRecord = await record.destroyWithAssociations();
         expect(destroyedRecord['_destroyed']).toEqual(true);
         expect(await record.dependentDestroy()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -611,7 +611,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDeleteRecord.first<DependentDeleteRecord>()) as DependentDeleteRecord;
-        const destroyedRecord = await record.destroy();
+        const destroyedRecord = await record.destroyWithAssociations();
         expect(destroyedRecord['_destroyed']).toEqual(true);
         expect(await record.dependentDelete()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',

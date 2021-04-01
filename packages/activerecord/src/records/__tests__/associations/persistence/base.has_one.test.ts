@@ -112,7 +112,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
           oneName: 'one_name_5',
           parentId: 1,
         });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.one()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
@@ -135,7 +135,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
         );
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record.buildOne();
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(await record.one()).toEqual({
           __rue_record_id__: undefined,
           _associationCache: {},
@@ -247,7 +247,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
           oneName: 'one_name_5',
           parentId: 1,
         });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.one()).toEqual({
           __rue_record_id__: undefined,
           _associationCache: {},
@@ -274,7 +274,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
           oneName: 'invalid_name_5',
           oneAge: 100,
         });
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(record.errors['hasOne']['one']).toEqual([errForRecord]);
         expect(await record.one()).toEqual({
           __rue_record_id__: undefined,
@@ -296,7 +296,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record.buildOne({ id: 5, oneName: 'one_name_5' });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
       });
     });
 
@@ -308,7 +308,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
         );
         await record.buildOne();
         try {
-          await record.saveOrThrow();
+          await record.saveWithAssociationsOrThrow();
         } catch (err) {
           expect(err.toString()).toEqual(`Error: PersistenceOneRecord {
   "_associationCache": {},
@@ -383,7 +383,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       it('should throw error', async () => {
         try {
           const record = (await DependentUndefinnedRecord.first<DependentUndefinnedRecord>()) as DependentUndefinnedRecord;
-          await record.destroy();
+          await record.destroyWithAssociations();
         } catch (err) {
           expect(err.toString()).toEqual(
             "Error: Cannot delete or update a 'DependentUndefinnedRecord' record: a foreign key (parentId) constraint fails"
@@ -436,7 +436,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentNullifyRecord.first<DependentNullifyRecord>()) as DependentNullifyRecord;
-        await record.destroy();
+        await record.destroyWithAssociations();
         expect(await record.dependentNullify()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
@@ -512,7 +512,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDestroyRecord.first<DependentDestroyRecord>()) as DependentDestroyRecord;
-        const destroyedRecord = await record.destroy();
+        const destroyedRecord = await record.destroyWithAssociations();
         expect(destroyedRecord['_destroyed']).toEqual(true);
         expect(await record.dependentDestroy()).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -575,7 +575,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDeleteRecord.first<DependentDeleteRecord>()) as DependentDeleteRecord;
-        const destroyedRecord = await record.destroy();
+        const destroyedRecord = await record.destroyWithAssociations();
         expect(destroyedRecord['_destroyed']).toEqual(true);
         expect(await record.dependentDeleteAll()).toEqual(undefined);
         expect(await DependentDeleteOneRecord.all()).toEqual([]);
@@ -627,7 +627,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       it('should correctly', async () => {
         const record = (await DependentRestrictWithExceptionRecord.first<DependentRestrictWithExceptionRecord>()) as DependentRestrictWithExceptionRecord;
         try {
-          await record.destroy();
+          await record.destroyWithAssociations();
         } catch (err) {
           expect(err.toString()).toEqual(
             "Error: Cannot delete record because of dependent 'DependentRestrictWithExceptionOneRecord' records"
@@ -683,7 +683,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
           "Cannot delete record because of dependent 'DependentRestrictWithErrorOneRecord' records"
         );
         const record = (await DependentRestrictWithErrorRecord.first<DependentRestrictWithErrorRecord>()) as DependentRestrictWithErrorRecord;
-        const destroyedRecord = await record.destroy();
+        const destroyedRecord = await record.destroyWithAssociations();
         expect(destroyedRecord).toEqual(false);
         expect(record.errors).toEqual({ hasOne: { dependentDeleteAll: [err] } });
       });
