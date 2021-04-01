@@ -28,10 +28,6 @@ class PersistenceBelongsToRecord extends ActiveRecord$Base<PersistenceBelongsToR
     return Promise.resolve([]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'PersistenceBelongsToRecord';
   }
@@ -52,10 +48,6 @@ class PersistenceRecord extends ActiveRecord$Base<PersistenceRecordParams> {
 
   protected fetchAll(): Promise<PersistenceRecordParams[]> {
     return Promise.resolve([]);
-  }
-
-  static translate(key: string, opts?: any): string {
-    return key;
   }
 
   buildBelongsTo(
@@ -89,7 +81,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
     MockDate.reset();
   });
 
-  describe('#save', () => {
+  describe('#saveWithAssociations', () => {
     describe('when success save (default: autosave === true)', () => {
       it('should correctly', async () => {
         const record = new PersistenceRecord({ id: 1, name: 'name_1', age: 1 });
@@ -161,6 +153,22 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
       });
     });
 
+    describe("when 'record' is invalid", () => {
+      it('should correctly', async () => {
+        const errForBelongsToName = new Error(
+          "'records.PersistenceBelongsToRecord.belongsToName' is not equal length ('17' characters)."
+        );
+        const record = new PersistenceRecord();
+        await record.buildBelongsTo();
+        expect(await record.saveWithAssociations()).toEqual(false);
+        expect(record.errors).toEqual({});
+        expect((await record.belongsTo()).errors).toEqual({
+          belongsToAge: [],
+          belongsToName: [errForBelongsToName],
+        });
+      });
+    });
+
     describe('when specify autosave === false', () => {
       type AutosaveFalseRecordParams = {
         id: t.Record$PrimaryKey;
@@ -209,10 +217,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
 
         protected fetchAll(): Promise<AutosaveFalseBelongsToRecordParams[]> {
           return Promise.resolve([]);
-        }
-
-        static translate(key: string, opts?: any): string {
-          return key;
         }
 
         get uniqueKey(): string {
@@ -309,7 +313,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
     });
   });
 
-  describe('#saveOrThrow', () => {
+  describe('#saveWithAssociationsOrThrow', () => {
     describe('when success save', () => {
       it('should correctly', async () => {
         const record = new PersistenceRecord({ id: 1, name: 'name_1', age: 1 });
@@ -466,7 +470,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
     });
   });
 
-  describe('#destroy', () => {
+  describe('#destroyWithAssociations', () => {
     describe("when 'dependent === undefined' (default)", () => {
       class DependentUndefinnedRecord extends ActiveRecord$Base<PersistenceRecordParams> {
         public id: PersistenceRecordParams['id'];

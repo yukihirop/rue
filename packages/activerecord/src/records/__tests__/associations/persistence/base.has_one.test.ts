@@ -56,10 +56,6 @@ class PersistenceOneRecord extends ActiveRecord$Base<PersistenceOneRecordParams>
     return Promise.resolve([]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'PersistenceOneRecord';
   }
@@ -88,7 +84,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
     MockDate.reset();
   });
 
-  describe('#save', () => {
+  describe('#saveWithAssociations', () => {
     describe('when success save (default: autosave === true)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
@@ -147,6 +143,20 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
       });
     });
 
+    describe("when 'record' is invalid", () => {
+      it('should correctly', async () => {
+        const errForAge = new Error("'records.PersistenceRecord.age' is not less than '10'.");
+        const errForName = new Error(
+          "'records.PersistenceRecord.name' is not equal length ('6' characters)."
+        );
+        const record = new PersistenceRecord();
+        await record.buildOne();
+        expect(await record.saveWithAssociations()).toEqual(false);
+        expect(record.errors).toEqual({ age: [errForAge], name: [errForName] });
+        expect((await record.one()).errors).toEqual({});
+      });
+    });
+
     describe('when specify autosave === false', () => {
       type AutosaveFalseRecordParams = {
         id: t.Record$PrimaryKey;
@@ -196,10 +206,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
 
         protected fetchAll(): Promise<AutosaveFalseOneRecordParams[]> {
           return Promise.resolve([]);
-        }
-
-        static translate(key: string, opts?: any): string {
-          return key;
         }
 
         get uniqueKey(): string {
@@ -291,12 +297,12 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
     });
   });
 
-  describe('#saveOrThrow', () => {
+  describe('#saveWithAssociationsOrThrow', () => {
     describe('when success save', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record.buildOne({ id: 5, oneName: 'one_name_5' });
-        expect(await record.saveWithAssociations()).toEqual(true);
+        expect(await record.saveWithAssociationsOrThrow()).toEqual(true);
       });
     });
 

@@ -453,19 +453,20 @@ export class ActiveRecord$Associations$CollectionProxy$Base<
         return null;
       } else {
         return this.find<T>(...recordIds).then((records: T[]) => {
-          const destroyedRecords = records.map((record) => {
-            return record.destroySync();
-          });
-          const destroyedIds = destroyedRecords.map((r) => r.id);
-          const newScope = Array.from(holder.scope).reduce((acc, record) => {
-            if (!destroyedIds.includes(record.id)) {
-              acc.push(record);
+          return Promise.all(records.map((record) => record.destroy<T>())).then(
+            (destroyedRecords) => {
+              const destroyedIds = destroyedRecords.map((r) => r.id);
+              const newScope = Array.from(holder.scope).reduce((acc, record) => {
+                if (!destroyedIds.includes(record.id)) {
+                  acc.push(record);
+                }
+                return acc;
+              }, []);
+              holder.scope = Array.from(newScope);
+              holder.proxy = Array.from(newScope);
+              return destroyedRecords;
             }
-            return acc;
-          }, []);
-          holder.scope = Array.from(newScope);
-          holder.proxy = Array.from(newScope);
-          return destroyedRecords;
+          );
         });
       }
     });

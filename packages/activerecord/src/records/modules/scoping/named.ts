@@ -45,6 +45,10 @@ export class ActiveRecord$Scoping$Named extends RueModule {
             const records = data.map((d) => {
               const record = new _this(d);
 
+              /**
+               * I use saveSync because it saves to memory.
+               */
+              // @ts-expect-error
               record.saveSync();
 
               return clone(record);

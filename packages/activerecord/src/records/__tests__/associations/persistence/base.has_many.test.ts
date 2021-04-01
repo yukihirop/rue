@@ -57,10 +57,6 @@ class PersistenceChildRecord extends ActiveRecord$Base<PersistenceChildRecordPar
     ]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'PersistenceChildRecord';
   }
@@ -89,7 +85,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
     MockDate.reset();
   });
 
-  describe('#save', () => {
+  describe('#saveWithAssociations', () => {
     describe('when success save (default: autosave === true)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
@@ -176,6 +172,20 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       });
     });
 
+    describe("when 'record' is invalid", () => {
+      it('should correctly', async () => {
+        const errForAge = new Error("'records.PersistenceRecord.age' is not less than '10'.");
+        const errForName = new Error(
+          "'records.PersistenceRecord.name' is not equal length ('6' characters)."
+        );
+        const record = new PersistenceRecord();
+        await record.children().build();
+        expect(await record.saveWithAssociations()).toEqual(false);
+        expect(record.errors).toEqual({ age: [errForAge], name: [errForName] });
+        expect((await record.children())[0].errors).toEqual({});
+      });
+    });
+
     describe('when specify autosave === false', () => {
       type AutosaveFalseRecordParams = {
         id: t.Record$PrimaryKey;
@@ -226,10 +236,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
             { id: 3, parentId: 1, childName: 'child_name_3', childAge: 3 },
             { id: 4, parentId: 2, childName: 'child_name_4', childAge: 4 },
           ]);
-        }
-
-        static translate(key: string, opts?: any): string {
-          return key;
         }
 
         get uniqueKey(): string {
@@ -345,7 +351,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
     });
   });
 
-  describe('#saveOrThrow', () => {
+  describe('#saveWithAssociationsOrThrow', () => {
     describe('when success save', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
