@@ -23,10 +23,6 @@ class QueryingRecord extends Record {
     return Promise.resolve([]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'QueryingRecord';
   }

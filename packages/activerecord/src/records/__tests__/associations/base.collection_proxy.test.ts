@@ -55,10 +55,6 @@ class CollectionProxyChildRecord extends ActiveRecord$Base<CollectionProxyChildR
     ]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'CollectionProxyChildRecord';
   }

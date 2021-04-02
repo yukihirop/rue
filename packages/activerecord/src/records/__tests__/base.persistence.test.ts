@@ -43,11 +43,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       }
 
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestDeleteRecord';
       }
@@ -225,11 +220,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       }
 
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestSaveRecord';
       }
@@ -306,11 +296,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           { id: 1, profile: { name: 'name_1', age: 1 } },
           { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
-      }
-
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
       }
 
       get uniqueKey(): string {
@@ -414,11 +399,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           { id: 1, profile: { name: 'name_1', age: 1 } },
           { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
-      }
-
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
       }
 
       get uniqueKey(): string {
@@ -605,10 +585,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public name: UpdateRecordParams['name'];
       public age: UpdateRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<UpdateRecordParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
@@ -656,10 +632,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: UpdateOrThrowRecordParams['id'];
       public name: UpdateOrThrowRecordParams['name'];
       public age: UpdateOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       protected fetchAll(): Promise<UpdateOrThrowRecordParams[]> {
         return Promise.resolve([
@@ -964,10 +936,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: CreateOrThrowRecordParams['id'];
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'CreateOrThrowRecord';
@@ -1305,10 +1273,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: StaticUpdateRecordParams['id'];
       public name: StaticUpdateRecordParams['name'];
       public age: StaticUpdateRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'StaticUpdateRecord';

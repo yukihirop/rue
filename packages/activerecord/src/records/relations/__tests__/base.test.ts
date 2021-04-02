@@ -652,10 +652,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: CreateRecordParams['name'];
       public age: CreateRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'CreateRecord';
       }
@@ -820,10 +816,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: CreateOrThrowRecordParams['id'];
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'CreateOrThrowRecord';
@@ -1071,10 +1063,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: CreateOrFindByOrThrowRecordParams['name'];
       public age: CreateOrFindByOrThrowRecordParams['age'];
 
-      static translate(key: string, opts: string): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'CreateOrFindByOrThrowRecord';
       }
@@ -1170,10 +1158,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DeleteByRecordParams['name'];
       public age: DeleteByRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<DeleteByRecordParams[]> {
         return Promise.resolve([]);
       }
@@ -1243,10 +1227,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: DestoryByRecordParams['id'];
       public name: DestoryByRecordParams['name'];
       public age: DestoryByRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'DestroyByRecord';
@@ -1366,10 +1346,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DeleteAllRecordParams['name'];
       public age: DeleteAllRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<DeleteAllRecordParams[]> {
         return Promise.resolve([]);
       }
@@ -1424,10 +1400,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: DestroyAllRecordParams['id'];
       public name: DestroyAllRecordParams['name'];
       public age: DestroyAllRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       protected fetchAll(): Promise<DestroyAllRecordParams[]> {
         return Promise.resolve([]);
@@ -1630,10 +1602,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: FindOrCreateByOrThrowRecordParams['id'];
       public name: FindOrCreateByOrThrowRecordParams['name'];
       public age: FindOrCreateByOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'FindOrCreateByOrThrowRecord';
@@ -1847,10 +1815,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: UpdateAllRecordParams['id'];
       public name: UpdateAllRecordParams['name'];
       public age: UpdateAllRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       protected fetchAll(): Promise<UpdateAllRecordParams[]> {
         return Promise.resolve([
