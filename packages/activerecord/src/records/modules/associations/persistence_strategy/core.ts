@@ -307,7 +307,9 @@ export class ActiveRecord$Associations$PersistenceStrategy {
         ._currentScope()
         .then((childrens: T[]) => {
           if (opts.autosave) {
-            return Promise.all(childrens.map((c) => c.saveOrThrow())).then((result) => {
+            return Promise.all(
+              childrens.map((c) => c.saveOrThrow({ validate: opts.validate }))
+            ).then((result) => {
               return result.every(Boolean);
             });
           } else {

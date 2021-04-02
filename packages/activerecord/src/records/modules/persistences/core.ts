@@ -109,10 +109,11 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-saveSync-21
    */
-  protected saveSyncOrThrow(): void | boolean {
+  protected saveSyncOrThrow(opts?: { validate: boolean }): void | boolean {
+    opts = opts == undefined ? { validate: true } : opts;
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-    if (_this.isValid()) {
+    if (!opts.validate || _this.isValid()) {
       return this.saveSync({ validate: false });
     } else {
       throw errObj({
@@ -385,12 +386,12 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * Please override to hit the external API.
    */
-  saveOrThrow(): Promise<void | boolean> {
+  saveOrThrow(opts?: { validate: boolean }): Promise<void | boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     try {
       // @ts-expect-error
-      const result = _this.saveSyncOrThrow();
+      const result = _this.saveSyncOrThrow(opts);
       return Promise.resolve(result);
     } catch (err) {
       return Promise.reject(err);

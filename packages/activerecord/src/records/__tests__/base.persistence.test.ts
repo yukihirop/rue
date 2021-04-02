@@ -379,6 +379,27 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         }
       });
     });
+
+    describe("when specify '{ validate: false }'", () => {
+      class TestSaveOrThrowSkipValidation extends TestSaveOrThrowRecord {
+        get uniqueKey(): string {
+          return 'TestSaveOrThrowSkipValidation';
+        }
+      }
+
+      // register validations
+      TestSaveOrThrowSkipValidation.validates('profile.name', { absence: true });
+
+      const record = new TestSaveOrThrowSkipValidation({
+        id: 2,
+        profile: { name: 'name_2', age: 20 },
+      });
+
+      it('should throw error', async () => {
+        const result = await record.saveOrThrow({ validate: false });
+        expect(result).toEqual(true);
+      });
+    });
   });
 
   describe('#destroy', () => {

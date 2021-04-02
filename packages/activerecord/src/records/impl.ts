@@ -231,7 +231,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
    * Please override to hit the external API.
    */
   public save: (opts?: { validate: boolean }) => Promise<boolean>;
-  public saveOrThrow: () => Promise<void | boolean>;
+  public saveOrThrow: (opts?: { validate: boolean }) => Promise<void | boolean>;
   public destroy: <T extends ActiveRecord$Base>() => Promise<T>;
   public update: <U>(params?: Partial<U>) => Promise<boolean>;
   public updateOrThrow: <U>(params?: Partial<U>) => Promise<boolean>;
