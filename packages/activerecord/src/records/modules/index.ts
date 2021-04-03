@@ -1,4 +1,4 @@
-export { ActiveRecord$Persistence } from './persistences';
+export { ActiveRecord$Persistence } from './persistence';
 export { ActiveRecord$Associations, ActiveRecord$Associations$Persistence } from './associations';
 export { ActiveRecord$Scoping } from './scoping';
 export { ActiveRecord$Core } from './core';
