@@ -57,56 +57,56 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
     throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
   }
   save(opts?: { validate: boolean }): Promise<boolean> {
-    throw "Please override 'save' to hit the external API."
+    throw "Please override 'save' to hit the external API.";
   }
 
   saveOrThrow(): Promise<void | boolean> {
-    throw "Please override 'saveOrThrow' to hit the external API."
+    throw "Please override 'saveOrThrow' to hit the external API.";
   }
 
   destroy<T extends ActiveRecord$Base>(): Promise<T> {
-    throw "Please override 'destroy' to hit the external API."
+    throw "Please override 'destroy' to hit the external API.";
   }
 
   update<U>(params?: Partial<U>): Promise<boolean> {
-    throw "Please override 'update' to hit the external API."
+    throw "Please override 'update' to hit the external API.";
   }
 
   updateOrThrow<U>(params?: Partial<U>): Promise<boolean> {
-    throw "Please override 'updateOrThrow' to hit the external API."
+    throw "Please override 'updateOrThrow' to hit the external API.";
   }
 
   static create<T extends ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
-    throw "Please override 'static create' to hit the extenral API."
+    throw "Please override 'static create' to hit the extenral API.";
   }
 
   static createOrThrow<T extends ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
-    throw "Please override 'static createOrThrow' to hit the external API."
+    throw "Please override 'static createOrThrow' to hit the external API.";
   }
 
   static delete<T extends ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<number> {
-    throw "Please override 'static delete' to hit the external API."
+    throw "Please override 'static delete' to hit the external API.";
   }
 
   static destroy<T extends ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<T | T[]> {
-    throw "Please override 'static destroy' to hit the external API."
+    throw "Please override 'static destroy' to hit the external API.";
   }
 
   static update<T extends ActiveRecord$Base, U>(
     id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ): Promise<T | T[]> {
-    throw "Please override 'static update' to hit the external API."
+    throw "Please override 'static update' to hit the external API.";
   }
 }
 
@@ -164,21 +164,21 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<boolean>}
    */
   save(opts = undefined) {
-    throw "Please override 'save' to hit the external API."
+    throw "Please override 'save' to hit the external API.";
   }
 
   /**
    * @return {Promise<void | boolean>}
    */
   saveOrThrow() {
-    throw "Please override 'saveOrThrow' to hit the external API."
+    throw "Please override 'saveOrThrow' to hit the external API.";
   }
 
   /**
    * @return {Promise<ActiveRecord$Base>}
    */
   destroy() {
-    throw "Please override 'destroy' to hit the external API."
+    throw "Please override 'destroy' to hit the external API.";
   }
 
   /**
@@ -186,7 +186,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<boolean>}
    */
   update(params = undefined) {
-    throw "Please override 'update' to hit the external API."
+    throw "Please override 'update' to hit the external API.";
   }
 
   /**
@@ -194,7 +194,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<boolean>}
    */
   updateOrThrow(params = undefined) {
-    throw "Please override 'updateOrThrow' to hit the external API."
+    throw "Please override 'updateOrThrow' to hit the external API.";
   }
 
   /**
@@ -203,7 +203,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<T | T[]>}
    */
   static create(params = undefined, yielder = undefined) {
-    throw "Please override 'static create' to hit the extenral API."
+    throw "Please override 'static create' to hit the extenral API.";
   }
 
   /**
@@ -212,7 +212,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<T | T[]>}
    */
   static createOrThrow(params = undefined, yielder = undefined) {
-    throw "Please override 'static createOrThrow' to hit the external API."
+    throw "Please override 'static createOrThrow' to hit the external API.";
   }
 
   /**
@@ -220,7 +220,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<number>}
    */
   static delete(id) {
-    throw "Please override 'static delete' to hit the external API."
+    throw "Please override 'static delete' to hit the external API.";
   }
 
   /**
@@ -228,7 +228,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<T | T[]>}
    */
   static destroy(id) {
-    throw "Please override 'static destroy' to hit the external API."
+    throw "Please override 'static destroy' to hit the external API.";
   }
 
   /**
@@ -237,7 +237,7 @@ export class <%- className %> extends ActiveRecord {
    * @return {Promise<T | T[]>}
    */
   static update(id, params) {
-    throw "Please override 'static update' to hit the external API."
+    throw "Please override 'static update' to hit the external API.";
   }
 }
 
