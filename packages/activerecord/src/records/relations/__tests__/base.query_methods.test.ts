@@ -17,6 +17,9 @@ type QueryMethodsRecordParams = {
   id: t.Record$PrimaryKey;
   name: string;
   age: number;
+  info: {
+    github: string;
+  };
 };
 
 class QueryMethodsRecord extends Record<QueryMethodsRecordParams> {
@@ -45,9 +48,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
   // https://github.com/iamkun/dayjs/blob/dev/test/parse.test.js#L6
   beforeEach(async () => {
     MockDate.set('2021-03-05T23:03:21+09:00');
-    await relation.create({ id: 1, name: 'name_1', age: 1 });
-    await relation.create({ id: 2, name: 'name_2', age: 2 });
-    await relation.create({ id: 3, name: 'name_3', age: 3 });
+    await relation.create({ id: 1, name: 'name_1', age: 1, info: { github: 'aaa' } });
+    await relation.create({ id: 2, name: 'name_2', age: 2, info: { github: 'bbb' } });
+    await relation.create({ id: 3, name: 'name_3', age: 3, info: { github: 'ccc' } });
   });
 
   afterEach(() => {
@@ -78,6 +81,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -109,12 +115,38 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
             ]);
             done();
           });
+      });
+    });
+
+    describe("when specify 'flatten key'", () => {
+      it('should correctly', (done) => {
+        relation.where({ 'info.github': 'aaa' }).rueThen((records) => {
+          expect(records).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _associationCache: {},
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              id: 1,
+              info: { github: 'aaa' },
+              name: 'name_1',
+            },
+          ]);
+          done();
+        });
       });
     });
   });
@@ -133,6 +165,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -145,6 +180,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -157,6 +195,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -179,6 +220,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -191,6 +235,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -203,6 +250,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -225,6 +275,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -237,6 +290,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -249,6 +305,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -271,6 +330,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -283,6 +345,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -295,6 +360,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -333,6 +401,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -345,6 +416,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -357,6 +431,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -382,6 +459,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -394,6 +474,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -406,6 +489,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -431,6 +517,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -443,6 +532,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -455,6 +547,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -480,6 +575,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -492,6 +590,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -504,6 +605,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -542,6 +646,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -554,6 +661,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -576,6 +686,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               id: 1,
               name: 'name_1',
             },
@@ -588,6 +701,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               id: 2,
               name: 'name_2',
             },
@@ -600,6 +716,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               id: 3,
               name: 'name_3',
             },
@@ -625,6 +744,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -650,6 +772,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -662,6 +787,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -686,6 +814,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -720,6 +851,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -745,6 +879,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -757,6 +894,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -783,6 +923,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   _newRecord: false,
                   age: 1,
                   errors: {},
+                  info: {
+                    github: 'aaa',
+                  },
                   name: 'name_1',
                   id: 1,
                 },
@@ -797,6 +940,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   _newRecord: false,
                   age: 2,
                   errors: {},
+                  info: {
+                    github: 'bbb',
+                  },
                   name: 'name_2',
                   id: 2,
                 },
@@ -823,6 +969,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                   _newRecord: false,
                   age: 3,
                   errors: {},
+                  info: {
+                    github: 'ccc',
+                  },
                   name: 'name_3',
                   id: 3,
                 },
@@ -852,6 +1001,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -864,6 +1016,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -876,6 +1031,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
@@ -898,6 +1056,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 1,
               errors: {},
+              info: {
+                github: 'aaa',
+              },
               name: 'name_1',
               id: 1,
             },
@@ -910,6 +1071,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 2,
               errors: {},
+              info: {
+                github: 'bbb',
+              },
               name: 'name_2',
               id: 2,
             },
@@ -922,6 +1086,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
               _newRecord: false,
               age: 3,
               errors: {},
+              info: {
+                github: 'ccc',
+              },
               name: 'name_3',
               id: 3,
             },
@@ -949,6 +1116,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 1,
                 errors: {},
+                info: {
+                  github: 'aaa',
+                },
                 name: 'name_1',
                 id: 1,
               },
@@ -961,6 +1131,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 2,
                 errors: {},
+                info: {
+                  github: 'bbb',
+                },
                 name: 'name_2',
                 id: 2,
               },
@@ -973,6 +1146,9 @@ describe('ActiveRecord$Relation<T> (QueryMethods)', () => {
                 _newRecord: false,
                 age: 3,
                 errors: {},
+                info: {
+                  github: 'ccc',
+                },
                 name: 'name_3',
                 id: 3,
               },
