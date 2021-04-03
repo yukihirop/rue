@@ -1,3 +1,6 @@
+// third party
+import flatten from 'obj-flatten';
+
 // locals
 import { ActiveRecord$Base } from '@/records';
 import { ActiveRecord$Relation$Holder } from '@/records/relations';
@@ -33,18 +36,19 @@ export class ActiveRecord$QueryMethods$Evaluator<T extends ActiveRecord$Base, U>
   }
 
   where(): this {
-    const whereParams = this.scopeParams.where;
-    if (!isPresent(whereParams)) return this;
+    if (!isPresent(this.scopeParams.where)) return this;
 
+    const whereParams = flatten(this.scopeParams.where);
     const records = this.holder.scope;
     const result = records.reduce((acc: Array<T>, record: T) => {
+      const flattenRecord = flatten(JSON.parse(JSON.stringify(record)));
       const isMatch = Object.keys(whereParams)
         .map((key: string) => {
           const val = whereParams[key];
           if (Array.isArray(val)) {
-            return val.includes(record[key]);
+            return val.includes(flattenRecord[key]);
           } else {
-            return (record as any)[key] === val;
+            return (flattenRecord as any)[key] === val;
           }
         })
         .every(Boolean);

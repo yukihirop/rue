@@ -34,7 +34,8 @@
   "dependencies": {
     "@rue/activemodel": "^1.0.0",
     "@rue/activesupport": "^0.0.0",
-    "dayjs": "^1.10.4"
+    "dayjs": "^1.10.4",
+    "obj-flatten": "^2.0.6"
   },
   "devDependencies": {
     "@rue/generator": "^0.0.0",
