@@ -342,8 +342,8 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-delete_by
    */
   deleteBy<U>(params?: Partial<U>): Promise<number> {
-    const deleteRecordFn = (record: T): boolean => {
-      return !!record.destroySync();
+    const deleteRecordFn = (record: T): Promise<T> => {
+      return record.destroy();
     };
 
     return (
@@ -411,13 +411,14 @@ export class ActiveRecord$Relation$Base<
    */
   destroyAll(): Promise<T[]> {
     return this.scoping((holder) => {
-      const destroyed = holder.scope.map((record: T) => {
-        const destroyed = record.destroySync();
-        Object.freeze(destroyed);
-        return destroyed;
+      return Promise.all(
+        holder.scope.map((record: T) => {
+          return record.destroy<T>();
+        })
+      ).then((result) => {
+        holder.scope = [];
+        return result;
       });
-      holder.scope = [];
-      return destroyed;
     });
   }
 
@@ -479,7 +480,7 @@ export class ActiveRecord$Relation$Base<
    * @see https://api.rubyonrails.org/v6.1.3/classes/ActiveRecord/Relation.html#method-i-update_all
    */
   updateAll<U>(params: Partial<U>): Promise<number> {
-    const updateFn = (record: T): boolean => {
+    const updateFn = (record: T): Promise<boolean> => {
       return record.update(params);
     };
 

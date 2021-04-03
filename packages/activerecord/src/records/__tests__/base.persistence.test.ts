@@ -43,11 +43,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       }
 
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestDeleteRecord';
       }
@@ -57,9 +52,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       const record_3 = new TestDeleteRecord({ id: 3, profile: { name: 'name_3', age: 3 } });
       const record_4 = new TestDeleteRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
-      it('should return destory this', () => {
-        record_3.saveSync();
-        record_4.saveSync();
+      it('should return destory this', async () => {
+        await record_3.save();
+        await record_4.save();
         expect(RecordCache.read('TestDeleteRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -84,7 +79,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
             profile: { age: 4, name: 'name_4' },
           },
         ]);
-        record_4.destroySync();
+        await record_4.destroy();
         expect(record_4[RUE_RECORD_ID]).toEqual(2);
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);
@@ -124,14 +119,18 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     }
 
     describe('when return false', () => {
-      const record = new IsDestroyedRecord({ id: 1, name: 'name_1', age: 1 });
-      expect(record.isDestroyed()).toEqual(false);
+      it('should correctly', () => {
+        const record = new IsDestroyedRecord({ id: 1, name: 'name_1', age: 1 });
+        expect(record.isDestroyed()).toEqual(false);
+      });
     });
 
     describe('when return true', () => {
-      const record = new IsDestroyedRecord({ id: 2, name: 'name_2', age: 2 });
-      record.destroySync();
-      expect(record.isDestroyed()).toEqual(true);
+      it('should correctly', async () => {
+        const record = new IsDestroyedRecord({ id: 2, name: 'name_2', age: 2 });
+        await record.destroy();
+        expect(record.isDestroyed()).toEqual(true);
+      });
     });
   });
 
@@ -153,14 +152,18 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     }
 
     describe('when return true', () => {
-      const record = new IsNewRecordRecord({ id: 1, name: 'name_1', age: 1 });
-      expect(record.isNewRecord()).toEqual(true);
+      it('should correctly', () => {
+        const record = new IsNewRecordRecord({ id: 1, name: 'name_1', age: 1 });
+        expect(record.isNewRecord()).toEqual(true);
+      });
     });
 
     describe('when return false', () => {
-      const record = new IsNewRecordRecord({ id: 2, name: 'name_2', age: 2 });
-      record.saveSync();
-      expect(record.isNewRecord()).toEqual(false);
+      it('should correctly', async () => {
+        const record = new IsNewRecordRecord({ id: 2, name: 'name_2', age: 2 });
+        await record.save();
+        expect(record.isNewRecord()).toEqual(false);
+      });
     });
   });
 
@@ -182,18 +185,22 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     }
 
     describe('when return true', () => {
-      const record = new IsPersistedRecord({ id: 2, name: 'name_2', age: 2 });
-      record.saveSync();
-      expect(record.isPersisted()).toEqual(true);
+      it('should correctly', async () => {
+        const record = new IsPersistedRecord({ id: 2, name: 'name_2', age: 2 });
+        await record.save();
+        expect(record.isPersisted()).toEqual(true);
+      });
     });
 
     describe('when return false', () => {
-      const record = new IsPersistedRecord({ id: 1, name: 'name_1', age: 1 });
-      expect(record.isPersisted()).toEqual(false);
+      it('should correctly', () => {
+        const record = new IsPersistedRecord({ id: 1, name: 'name_1', age: 1 });
+        expect(record.isPersisted()).toEqual(false);
+      });
     });
   });
 
-  describe('#saveSync', () => {
+  describe('#save', () => {
     type TestSaveParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -213,11 +220,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       }
 
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestSaveRecord';
       }
@@ -235,11 +237,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         TestSaveSuccessRecord.validates('profile.age', { numericality: { onlyInteger: true } });
 
         const record = new TestSaveSuccessRecord({ id: 1, profile: { name: 'name_1', age: 20 } });
-        it('should return true', () => {
-          expect(record.saveSync()).toEqual(true);
+        it('should return true', async () => {
+          expect(await record.save()).toEqual(true);
           // Even after saving once, the state does not change no matter how many times you saveSync
-          expect(record.saveSync()).toEqual(true);
-          expect(record.saveSync()).toEqual(true);
+          expect(await record.save()).toEqual(true);
+          expect(await record.save()).toEqual(true);
           expect(
             RecordCache.read(TestSaveSuccessRecord.uniqueKey, RUE_AUTO_INCREMENT_RECORD_ID)
           ).toEqual(2);
@@ -268,15 +270,15 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         TestSaveFailureRecord.validates('profile.name', { absence: true });
 
         const record = new TestSaveFailureRecord({ id: 2, profile: { name: 'name_2', age: 30 } });
-        it('should retrun false', () => {
-          expect(record.saveSync()).toEqual(false);
+        it('should retrun false', async () => {
+          expect(await record.save()).toEqual(false);
           expect(RecordCache.data['TestSaveFailureRecord']).toEqual(undefined);
         });
       });
     });
   });
 
-  describe('#saveSyncOrThrow', () => {
+  describe('#saveOrThrow', () => {
     type TestSaveOrThrowParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -294,11 +296,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           { id: 1, profile: { name: 'name_1', age: 1 } },
           { id: 2, profile: { name: 'name_2', age: 2 } },
         ]);
-      }
-
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
       }
 
       get uniqueKey(): string {
@@ -322,8 +319,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         id: 1,
         profile: { name: 'name_1', age: 20 },
       });
-      it('should return true', () => {
-        expect(record.saveSync()).toEqual(true);
+      it('should return true', async () => {
+        expect(await record.save()).toEqual(true);
         expect(
           RecordCache.read('TestSaveOrThrowSuccessRecord', RUE_AUTO_INCREMENT_RECORD_ID)
         ).toEqual(2);
@@ -355,11 +352,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         id: 2,
         profile: { name: 'name_2', age: 30 },
       });
-      it('should throw error', () => {
-        expect(() => {
-          record.saveSyncOrThrow();
-        }).toThrowError(
-          `TestSaveOrThrowFailureRecord {
+      it('should throw error', async () => {
+        try {
+          await record.saveOrThrow();
+        } catch (err) {
+          expect(err.toString()).toEqual(`Error: TestSaveOrThrowFailureRecord {
   "_associationCache": {},
   "_destroyed": false,
   "_newRecord": true,
@@ -378,13 +375,34 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "name": "name_2",
     "age": 30
   }
-} is invalid.`
-        );
+} is invalid.`);
+        }
+      });
+    });
+
+    describe("when specify '{ validate: false }'", () => {
+      class TestSaveOrThrowSkipValidation extends TestSaveOrThrowRecord {
+        get uniqueKey(): string {
+          return 'TestSaveOrThrowSkipValidation';
+        }
+      }
+
+      // register validations
+      TestSaveOrThrowSkipValidation.validates('profile.name', { absence: true });
+
+      const record = new TestSaveOrThrowSkipValidation({
+        id: 2,
+        profile: { name: 'name_2', age: 20 },
+      });
+
+      it('should throw error', async () => {
+        const result = await record.saveOrThrow({ validate: false });
+        expect(result).toEqual(true);
       });
     });
   });
 
-  describe('#destroySync', () => {
+  describe('#destroy', () => {
     type TestDestroyParams = {
       id: t.Record$PrimaryKey;
       profile: {
@@ -404,11 +422,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       }
 
-      // override
-      static translate(key: string, opts?: any): string {
-        return `test.${key}`;
-      }
-
       get uniqueKey(): string {
         return 'TestDestroyRecord';
       }
@@ -418,9 +431,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       const record_3 = new TestDestroyRecord({ id: 3, profile: { name: 'name_3', age: 3 } });
       const record_4 = new TestDestroyRecord({ id: 4, profile: { name: 'name_4', age: 4 } });
 
-      it('should return destory this', () => {
-        record_3.saveSync();
-        record_4.saveSync();
+      it('should return destory this', async () => {
+        await record_3.save();
+        await record_4.save();
         expect(RecordCache.read('TestDestroyRecord', RECORD_ALL)).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -445,7 +458,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
             profile: { age: 4, name: 'name_4' },
           },
         ]);
-        record_4.destroySync();
+        await record_4.destroy();
         expect(record_4[RUE_RECORD_ID]).toEqual(2);
         expect(record_4.profile.name).toEqual('name_4');
         expect(record_4.profile.age).toEqual(4);
@@ -485,12 +498,12 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     }
 
     describe('when return false', () => {
-      it('should correctly', () => {
-        const record = IsDestroyedRecord.create<IsDestroyedRecord, IsDestroyedRecordParams>({
+      it('should correctly', async () => {
+        const record = (await IsDestroyedRecord.create<IsDestroyedRecord, IsDestroyedRecordParams>({
           id: 1,
           name: 'name_1',
           age: 1,
-        }) as IsDestroyedRecord;
+        })) as IsDestroyedRecord;
         expect(record.isDestroyed()).toEqual(false);
       });
     });
@@ -518,9 +531,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
+      it('should correctly', async () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.saveSync();
+        await record.save();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch()).toEqual(true);
         expect(record).toEqual({
@@ -539,9 +552,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'withCreatedAt'", () => {
-      it('should correctly', () => {
+      it('should correctly', async () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.saveSync();
+        await record.save();
         MockDate.set('2021-03-07T15:27:21+09:00');
         expect(record.touch({ withCreatedAt: true })).toEqual(true);
         expect(record).toEqual({
@@ -560,9 +573,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'time'", () => {
-      it('should correctly', () => {
+      it('should correctly', async () => {
         const record = new TouchRecord({ id: 1, name: 'name_1', age: 1 });
-        record.saveSync();
+        await record.save();
         const time = dayjs().format();
         expect(record.touch({ time })).toEqual(true);
         expect(record).toEqual({
@@ -593,10 +606,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public name: UpdateRecordParams['name'];
       public age: UpdateRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<UpdateRecordParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
@@ -613,26 +622,22 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     UpdateRecord.validates('age', { numericality: { lessThan: 10 } });
 
     describe('when return true', () => {
-      it('should correctly', (done) => {
-        UpdateRecord.all<UpdateRecord>().rueThen((records: UpdateRecord[]) => {
-          const record = records[0];
-          const updateResult = record.update({ name: 'rename' });
-          expect(updateResult).toEqual(true);
-          expect(record.name).toEqual('rename');
-          done();
-        });
+      it('should correctly', async () => {
+        const records = await UpdateRecord.all<UpdateRecord>();
+        const record = records[0];
+        const updateResult = await record.update({ name: 'rename' });
+        expect(updateResult).toEqual(true);
+        expect(record.name).toEqual('rename');
       });
     });
 
     describe('whenn return false', () => {
-      it('should correctly', (done) => {
-        UpdateRecord.all<UpdateRecord>().rueThen((records: UpdateRecord[]) => {
-          const record = records[1];
-          const updateResult = record.update({ age: 100 });
-          expect(updateResult).toEqual(false);
-          expect(record.age).toEqual(2);
-          done();
-        });
+      it('should correctly', async () => {
+        const records = await UpdateRecord.all<UpdateRecord>();
+        const record = records[1];
+        const updateResult = await record.update({ age: 100 });
+        expect(updateResult).toEqual(false);
+        expect(record.age).toEqual(2);
       });
     });
   });
@@ -648,10 +653,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: UpdateOrThrowRecordParams['id'];
       public name: UpdateOrThrowRecordParams['name'];
       public age: UpdateOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       protected fetchAll(): Promise<UpdateOrThrowRecordParams[]> {
         return Promise.resolve([
@@ -669,24 +670,23 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     UpdateOrThrowRecord.validates('age', { numericality: { lessThan: 10 } });
 
     describe('when return true', () => {
-      it('should correctly', (done) => {
-        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().rueThen((records: UpdateOrThrowRecord[]) => {
-          const record = records[0];
-          const updateResult = record.updateOrThrow({ name: 'rename' });
-          expect(updateResult).toEqual(true);
-          expect(record.name).toEqual('rename');
-          done();
-        });
+      it('should correctly', async () => {
+        const records = await UpdateOrThrowRecord.all<UpdateOrThrowRecord>();
+        const record = records[0];
+        const updateResult = await record.updateOrThrow({ name: 'rename' });
+        expect(updateResult).toEqual(true);
+        expect(record.name).toEqual('rename');
       });
     });
 
     describe('when throw error', () => {
-      it('should correctly', (done) => {
-        UpdateOrThrowRecord.all<UpdateOrThrowRecord>().rueThen((records: UpdateOrThrowRecord[]) => {
-          const record = records[1];
-          expect(() => {
-            record.updateOrThrow({ age: 100 });
-          }).toThrowError(`UpdateOrThrowRecord {
+      it('should correctly', async () => {
+        const records = await UpdateOrThrowRecord.all<UpdateOrThrowRecord>();
+        const record = records[1];
+        try {
+          await record.updateOrThrow({ age: 100 });
+        } catch (err) {
+          expect(err.toString()).toEqual(`Error: UpdateOrThrowRecord {
   "__rue_created_at__": "2021-03-05T23:03:21+09:00",
   "__rue_record_id__": 2,
   "__rue_updated_at__": "2021-03-05T23:03:21+09:00",
@@ -706,9 +706,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
   "id": 2,
   "name": "name_2"
 } is invalid.`);
-          expect(record.age).toEqual(2);
-          done();
-        });
+        }
+        expect(record.age).toEqual(2);
       });
     });
   });
@@ -739,9 +738,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when return true', () => {
       describe('when default', () => {
-        it('should correctly', () => {
+        it('should correctly', async () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.saveSync();
+          await record.save();
           expect(record.updateAttribute('name', 'rename')).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -759,9 +758,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       });
 
       describe('when give invalid value (age = 100)', () => {
-        it('should correctly', () => {
+        it('should correctly', async () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.saveSync();
+          await record.save();
           expect(record.updateProperty('age', 100)).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -779,9 +778,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       });
 
       describe('when given invalid value (name = invalid)', () => {
-        it('should correctly', () => {
+        it('should correctly', async () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.saveSync();
+          await record.save();
           expect(record.updateProp('name', 'invalid')).toEqual(true);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -801,9 +800,9 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when return false', () => {
       describe('when given do not exist attribute', () => {
-        it('should correctly', () => {
+        it('should correctly', async () => {
           const record = new UpdateAttributeRecord({ id: 1, name: 'name_1', age: 1 });
-          record.saveSync();
+          await record.save();
           expect(record.updateAttribute('doNotExist', 1)).toEqual(false);
           expect(record).toEqual({
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -844,8 +843,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        const record = CreateRecord.create<CreateRecord, CreateRecordParams>();
+      it('should correctly', async () => {
+        const record = await CreateRecord.create<CreateRecord, CreateRecordParams>();
         expect(record).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
@@ -859,8 +858,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'params'", () => {
-      it('should correctly', () => {
-        const record = CreateRecord.create<CreateRecord, CreateRecordParams>({
+      it('should correctly', async () => {
+        const record = await CreateRecord.create<CreateRecord, CreateRecordParams>({
           name: 'name_1',
           age: 1,
         });
@@ -879,11 +878,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'array of params'", () => {
-      it('should correctly', () => {
-        const records = CreateRecord.create<CreateRecord, CreateRecordParams>([
+      it('should correctly', async () => {
+        const records = (await CreateRecord.create<CreateRecord, CreateRecordParams>([
           { name: 'name_1', age: 1 },
           { name: 'name_2', age: 2 },
-        ]) as CreateRecord[];
+        ])) as CreateRecord[];
         expect(records.length).toEqual(2);
         expect(records[0]).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -911,13 +910,13 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'yielder'", () => {
-      it('should correctly', () => {
-        const records = CreateRecord.create<CreateRecord, CreateRecordParams>(
+      it('should correctly', async () => {
+        const records = (await CreateRecord.create<CreateRecord, CreateRecordParams>(
           [{ name: 'name_1' }, { name: 'name_2' }],
           (self) => {
             self.age = 3;
           }
-        ) as CreateRecord[];
+        )) as CreateRecord[];
         expect(records.length).toEqual(2);
         expect(records).toEqual([
           {
@@ -959,10 +958,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'CreateOrThrowRecord';
       }
@@ -976,8 +971,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        const record = CreateOrThrowRecord.createOrThrow<
+      it('should correctly', async () => {
+        const record = await CreateOrThrowRecord.createOrThrow<
           CreateOrThrowRecord,
           CreateOrThrowRecordParams
         >({ name: 'name_1', age: 1 });
@@ -996,8 +991,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'params'", () => {
-      it('should correctly', () => {
-        const record = CreateOrThrowRecord.createOrThrow<
+      it('should correctly', async () => {
+        const record = await CreateOrThrowRecord.createOrThrow<
           CreateOrThrowRecord,
           CreateOrThrowRecordParams
         >({
@@ -1019,14 +1014,14 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'array of params'", () => {
-      it('should correctly', () => {
-        const records = CreateOrThrowRecord.createOrThrow<
+      it('should correctly', async () => {
+        const records = (await CreateOrThrowRecord.createOrThrow<
           CreateOrThrowRecord,
           CreateOrThrowRecordParams
         >([
           { name: 'name_1', age: 1 },
           { name: 'name_2', age: 2 },
-        ]) as CreateOrThrowRecord[];
+        ])) as CreateOrThrowRecord[];
         expect(records.length).toEqual(2);
         expect(records).toEqual([
           {
@@ -1056,8 +1051,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'yielder'", () => {
-      it('should correctly', () => {
-        const records = CreateOrThrowRecord.createOrThrow<
+      it('should correctly', async () => {
+        const records = (await CreateOrThrowRecord.createOrThrow<
           CreateOrThrowRecord,
           CreateOrThrowRecordParams
         >(
@@ -1068,7 +1063,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
           (self) => {
             self.age = 3;
           }
-        ) as CreateOrThrowRecord[];
+        )) as CreateOrThrowRecord[];
         expect(records.length).toEqual(2);
         expect(records).toEqual([
           {
@@ -1098,13 +1093,14 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when throw error', () => {
-      it('should correctly', () => {
-        expect(() => {
-          CreateOrThrowRecord.createOrThrow<CreateOrThrowRecord, CreateOrThrowRecordParams>([
+      it('should correctly', async () => {
+        try {
+          (await CreateOrThrowRecord.createOrThrow<CreateOrThrowRecord, CreateOrThrowRecordParams>([
             { name: 'name_1', age: 100 },
             { name: 'name_2', age: 2 },
-          ]) as CreateOrThrowRecord[];
-        }).toThrowError(`CreateOrThrowRecord {
+          ])) as CreateOrThrowRecord[];
+        } catch (err) {
+          expect(err.toString()).toEqual(`Error: CreateOrThrowRecord {
   "_associationCache": {},
   "_destroyed": false,
   "_newRecord": true,
@@ -1120,6 +1116,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
   },
   "name": "name_1"
 } is invalid.`);
+        }
       });
     });
   });
@@ -1150,25 +1147,25 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
+      it('should correctly', async () => {
+        await DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(DeleteRecord.delete(1)).toEqual(1);
+        expect(await DeleteRecord.delete(1)).toEqual(1);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(1);
       });
     });
 
     describe("when specify 'array of id'", () => {
-      it('should correctly', () => {
-        DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
+      it('should correctly', async () => {
+        await DeleteRecord.create<DeleteRecord, DeleteRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(DeleteRecord.delete([1, 2])).toEqual(2);
+        expect(await DeleteRecord.delete([1, 2])).toEqual(2);
         expect(RecordCache.data[DeleteRecord.name][RECORD_ALL].length).toEqual(0);
       });
     });
@@ -1191,18 +1188,18 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       }
     }
 
-    beforeEach(() => {
-      RecordCache.destroy(DestroyRecord.name);
+    beforeEach(async () => {
+      await RecordCache.destroy(DestroyRecord.name);
     });
 
     describe('when default', () => {
-      it('should correctly', () => {
-        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+      it('should correctly', async () => {
+        await DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(DestroyRecord.destroy(1)).toEqual({
+        expect(await DestroyRecord.destroy(1)).toEqual({
           __rue_created_at__: '2021-03-05T23:03:21+09:00',
           __rue_record_id__: 1,
           __rue_updated_at__: '2021-03-05T23:03:21+09:00',
@@ -1218,13 +1215,13 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when specify 'array of params'", () => {
-      it('should correctly', () => {
-        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+      it('should correctly', async () => {
+        await DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(DestroyRecord.destroy([1, 2])).toEqual([
+        expect(await DestroyRecord.destroy([1, 2])).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
             __rue_record_id__: 1,
@@ -1254,30 +1251,34 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe('when throw error when params is not array', () => {
-      it('should correctly', () => {
-        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+      it('should correctly', async () => {
+        await DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(() => {
-          DestroyRecord.destroy(3);
-        }).toThrowError("Couldn't find 'DestroyRecord' with 'id' = '3'");
+        try {
+          await DestroyRecord.destroy(3);
+        } catch (err) {
+          expect(err.toString()).toEqual("Error: Couldn't find 'DestroyRecord' with 'id' = '3'");
+        }
       });
     });
 
     describe('when throw error when params is array', () => {
-      it('should correctly', () => {
-        DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
+      it('should correctly', async () => {
+        await DestroyRecord.create<DestroyRecord, DestroyRecordParams>([
           { id: 1, name: 'name_1', age: 1 },
           { id: 2, name: 'name_2', age: 2 },
         ]);
         expect(RecordCache.data[DestroyRecord.name][RECORD_ALL].length).toEqual(2);
-        expect(() => {
-          DestroyRecord.destroy([3, 4]);
-        }).toThrowError(
-          "Could't find all 'DestroyRecord' with 'id': [3,4] (found 0 results, but was looking for 2)"
-        );
+        try {
+          await DestroyRecord.destroy([3, 4]);
+        } catch (err) {
+          expect(err.toString()).toEqual(
+            "Error: Could't find all 'DestroyRecord' with 'id': [3,4] (found 0 results, but was looking for 2)"
+          );
+        }
       });
     });
   });
@@ -1293,10 +1294,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
       public id: StaticUpdateRecordParams['id'];
       public name: StaticUpdateRecordParams['name'];
       public age: StaticUpdateRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'StaticUpdateRecord';
@@ -1315,8 +1312,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when give 'id = all'", () => {
-      it('should correctly', () => {
-        const updatedRecord = StaticUpdateRecord.update<
+      it('should correctly', async () => {
+        const updatedRecord = await StaticUpdateRecord.update<
           StaticUpdateRecord,
           StaticUpdateRecordParams
         >('all', {
@@ -1352,8 +1349,8 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when give 'id'", () => {
-      it('should correctly', () => {
-        const updatedRecord = StaticUpdateRecord.update<
+      it('should correctly', async () => {
+        const updatedRecord = await StaticUpdateRecord.update<
           StaticUpdateRecord,
           StaticUpdateRecordParams
         >(1, {
@@ -1375,11 +1372,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     });
 
     describe("when given 'array of id'", () => {
-      it('should correctly', () => {
-        const updatedRecords = StaticUpdateRecord.update<
+      it('should correctly', async () => {
+        const updatedRecords = (await StaticUpdateRecord.update<
           StaticUpdateRecord,
           StaticUpdateRecordParams
-        >([1, 2], [{ name: 'rename_1' }, { name: 'rename_2' }]) as StaticUpdateRecord[];
+        >([1, 2], [{ name: 'rename_1' }, { name: 'rename_2' }])) as StaticUpdateRecord[];
         expect(updatedRecords.length).toEqual(2);
         expect(updatedRecords).toEqual([
           {
@@ -1409,11 +1406,14 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
         ]);
       });
 
-      it('validation is skipped. The errors of the record to be updated are set and it returns as it is', () => {
-        const updatedRecords = StaticUpdateRecord.update<
+      it('validation is skipped. The errors of the record to be updated are set and it returns as it is', async () => {
+        const updatedRecords = (await StaticUpdateRecord.update<
           StaticUpdateRecord,
           StaticUpdateRecordParams
-        >([1, 2], [{ name: 'invalid_name_1' }, { name: 'invalid_name_2' }]) as StaticUpdateRecord[];
+        >(
+          [1, 2],
+          [{ name: 'invalid_name_1' }, { name: 'invalid_name_2' }]
+        )) as StaticUpdateRecord[];
         expect(updatedRecords.length).toEqual(2);
         expect(updatedRecords).toEqual([
           {
@@ -1460,19 +1460,23 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
 
     describe('when throw error', () => {
       describe("when can't find record when specify 'id'", () => {
-        it('should correctly', () => {
-          expect(() => {
-            StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(3, {
+        it('should correctly', async () => {
+          try {
+            await StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(3, {
               name: 'rename_3',
             });
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Couldn't find 'StaticUpdateRecord' with 'id' = '3'"
+            );
+          }
         });
       });
 
       describe("when can't find records when specify 'array of id'", () => {
-        it('should correctly', () => {
-          expect(() => {
-            StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(
+        it('should correctly', async () => {
+          try {
+            await StaticUpdateRecord.update<StaticUpdateRecord, StaticUpdateRecordParams>(
               [3, 4],
               [
                 {
@@ -1483,7 +1487,11 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
                 },
               ]
             );
-          }).toThrowError("Couldn't find 'StaticUpdateRecord' with 'id' = '3'");
+          } catch (err) {
+            expect(err.toString()).toEqual(
+              "Error: Couldn't find 'StaticUpdateRecord' with 'id' = '3'"
+            );
+          }
         });
       });
     });

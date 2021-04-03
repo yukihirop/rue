@@ -12,8 +12,8 @@
 - [x] isNewRecord
 - [x] isPersisted
 - [-] isPreviouslyNewRecord
-- [-] save (nanmed AciveRecord$Associations$Persistence.prototype.save)
-- [-] saveOrThrow (named ActiveRecord$Associations$Persistence.prototype.saveOrThrow)
+- [x] save (nanmed AciveRecord$Associations$Persistence.prototype.save)
+- [x] saveOrThrow (named ActiveRecord$Associations$Persistence.prototype.saveOrThrow)
 - [-] toggle
 - [-] toggleOrThrow
 - [x] touch
@@ -25,10 +25,13 @@
 
 ## Orignal Methods
 
+- [x] deleteSync
 - [x] saveSync
 - [x] saveSyncOrThrow
 - [x] destroySync
 - [-] destroySyncOrThrow
+- [x] updateSync
+- [x] updateSyncOrThrow
 
 ## Static Methods
 
@@ -43,6 +46,14 @@
 - [x] update
 - [-] upsert
 - [-] upsertAll
+
+## Original Static Methods
+
+- [x] createSync
+- [x] createSyncOrThrow
+- [x] deleteSync
+- [x] destroySync
+- [x] updateSync
 
 ## Reference
 

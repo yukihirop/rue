@@ -28,10 +28,6 @@ class QueryMethodsRecord extends Record<QueryMethodsRecordParams> {
     return Promise.resolve([]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'QueryMethodsRecord';
   }

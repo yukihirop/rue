@@ -24,9 +24,10 @@ export class ActiveRecord$Persistence extends RueModule {
 
   /**
    * It's the same now because there is no beforeDestroy callback
+   * Comment out because it is the same as destroySync
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-delete
    */
-  delete<T extends ActiveRecord$Base>(): T {
+  protected deleteSync<T extends ActiveRecord$Base>(): T {
     return this.destroySync();
   }
 
@@ -53,7 +54,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-persisted-3F
    */
-  saveSync(opts?: { validate: boolean }): boolean {
+  protected saveSync(opts?: { validate: boolean }): boolean {
     const {
       RUE_RECORD_ID,
       RUE_AUTO_INCREMENT_RECORD_ID,
@@ -108,9 +109,11 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-saveSync-21
    */
-  saveSyncOrThrow(): void | boolean {
-    const _this = this as any;
-    if (_this.isValid()) {
+  protected saveSyncOrThrow(opts?: { validate: boolean }): void | boolean {
+    opts = opts == undefined ? { validate: true } : opts;
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    if (!opts.validate || _this.isValid()) {
       return this.saveSync({ validate: false });
     } else {
       throw errObj({
@@ -122,7 +125,7 @@ export class ActiveRecord$Persistence extends RueModule {
     }
   }
 
-  destroySync<T extends ActiveRecord$Base>(): T {
+  protected destroySync<T extends ActiveRecord$Base>(): T {
     // @ts-ignore
     const _this = this as ActiveRecord$Base;
     const { RECORD_ALL, RUE_RECORD_ID } = ActiveRecord$Persistence;
@@ -172,7 +175,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update
    */
-  update<T>(params?: Partial<T>): boolean {
+  protected updateSync<T>(params?: Partial<T>): boolean {
     const updateProps = (record: ActiveRecord$Base) => {
       Object.keys(params).forEach((key) => {
         record[key] = params[key];
@@ -186,6 +189,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     if (oldRecord.isValid()) {
       updateProps(_this);
+      // @ts-expect-error
       _this.saveSync({ validate: false });
       return true;
     } else {
@@ -197,7 +201,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-update-21
    */
-  updateOrThrow<T>(params?: Partial<T>): boolean {
+  protected updateSyncOrThrow<T>(params?: Partial<T>): boolean {
     const updateProps = (record: ActiveRecord$Base) => {
       Object.keys(params).forEach((key) => {
         record[key] = params[key];
@@ -211,6 +215,7 @@ export class ActiveRecord$Persistence extends RueModule {
 
     if (oldRecord.isValid()) {
       updateProps(_this);
+      // @ts-expect-error
       return _this.saveSync({ validate: false });
     } else {
       throw errObj({
@@ -230,6 +235,7 @@ export class ActiveRecord$Persistence extends RueModule {
     const _this = this as T;
     if (_this.hasOwnProperty(name)) {
       _this[name] = value;
+      // @ts-expect-error
       return _this.saveSync({ validate: false });
     } else {
       return false;
@@ -253,17 +259,18 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-create
    */
-  static create<T extends ActiveRecord$Base, U>(
+  protected static createSync<T extends ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): T | T[] {
     if (Array.isArray(params)) {
-      return params.map((param) => this.create<T, U>(param as Partial<U>, yielder) as T);
+      return params.map((param) => this.createSync<T, U>(param as Partial<U>, yielder) as T);
     } else {
       // @ts-expect-error
       const _this = this as ct.Constructor<T>;
       const record = new _this(params);
       if (yielder) yielder(record);
+      // @ts-expect-error
       record.saveSync();
       return record;
     }
@@ -272,17 +279,18 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-create-21
    */
-  static createOrThrow<T extends ActiveRecord$Base, U>(
+  protected static createSyncOrThrow<T extends ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): T | T[] {
     if (Array.isArray(params)) {
-      return params.map((param) => this.createOrThrow<T, U>(param as Partial<U>, yielder) as T);
+      return params.map((param) => this.createSyncOrThrow<T, U>(param as Partial<U>, yielder) as T);
     } else {
       // @ts-expect-error
       const _this = this as ct.Constructor<T>;
       const record = new _this(params);
       if (yielder) yielder(record);
+      // @ts-expect-error
       record.saveSyncOrThrow();
       return record;
     }
@@ -291,7 +299,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-delete
    */
-  static delete<T extends ActiveRecord$Base>(
+  protected static deleteSync<T extends ActiveRecord$Base>(
     id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
   ): number {
     const { RECORD_ALL } = ActiveRecord$Persistence;
@@ -311,14 +319,16 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-destroy
    */
-  static destroy<T extends ActiveRecord$Base>(
+  protected static destroySync<T extends ActiveRecord$Base>(
     id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
   ): T | T[] {
     // @ts-expect-error
     const _this = this as typeof ActiveRecord$Base;
     if (Array.isArray(id)) {
+      // @ts-expect-error
       return (_this.find<T>(...id) as T[]).map((r) => r.destroySync());
     } else {
+      // @ts-expect-error
       return (_this.find<T>(id) as T).destroySync();
     }
   }
@@ -326,7 +336,7 @@ export class ActiveRecord$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-update
    */
-  static update<T extends ActiveRecord$Base, U>(
+  protected static updateSync<T extends ActiveRecord$Base, U>(
     id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ): T | T[] {
@@ -339,17 +349,20 @@ export class ActiveRecord$Persistence extends RueModule {
       const { RECORD_ALL } = ActiveRecord$Persistence;
       const allRecords = RecordCache.read<T[]>(this.name, RECORD_ALL, 'array');
       updatedRecords = allRecords.map((record) => {
-        record.update(params);
+        // @ts-expect-error
+        record.updateSync(params);
         return record;
       });
     } else if (ids.length === 1) {
       const record = _this.find<T>(ids[0]) as T;
-      record.update(params);
+      // @ts-expect-error
+      record.updateSync(params);
       updatedRecords = [record];
     } else {
       updatedRecords = ids.map((id, index) => {
         const record = _this.find<T>(id) as T;
-        record.update(params[index]);
+        // @ts-expect-error
+        record.updateSync(params[index]);
         return record;
       });
     }
@@ -359,6 +372,128 @@ export class ActiveRecord$Persistence extends RueModule {
     } else {
       return updatedRecords;
     }
+  }
+
+  /**
+   * Please override to hit the external API.
+   */
+  save(opts?: { validate: boolean }): Promise<boolean> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.saveSync(opts));
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  saveOrThrow(opts?: { validate: boolean }): Promise<void | boolean> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    try {
+      // @ts-expect-error
+      const result = _this.saveSyncOrThrow(opts);
+      return Promise.resolve(result);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  destroy<T extends ActiveRecord$Base>(): Promise<T> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.destroySync<T>());
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  update<U>(params?: Partial<U>): Promise<boolean> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.updateSync(params));
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  updateOrThrow<U>(params?: Partial<U>): Promise<boolean> {
+    // @ts-expect-error
+    const _this = this as ActiveRecord$Base;
+    try {
+      // @ts-expect-error
+      const result = _this.updateSyncOrThrow(params);
+      return Promise.resolve(result);
+    } catch (err) {
+      return Promise.resolve(err);
+    }
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  static create<T extends ActiveRecord$Base, U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ): Promise<T | T[]> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.createSync(params, yielder));
+  }
+  /**
+   * Please override to hit the external API.
+   */
+  static createOrThrow<T extends ActiveRecord$Base, U>(
+    params?: Partial<U> | Array<Partial<U>>,
+    yielder?: (self: T) => void
+  ): Promise<T | T[]> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    try {
+      // @ts-expect-error
+      const result = _this.createSyncOrThrow(params, yielder);
+      return Promise.resolve(result);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  /**
+   * Please override to hit the external API.
+   */
+  static delete<T extends ActiveRecord$Base>(
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+  ): Promise<number> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.deleteSync(id));
+  }
+
+  /**
+   * Please override to hit the external API.
+   */
+  static destroy<T extends ActiveRecord$Base>(
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[]
+  ): Promise<T | T[]> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.destroySync<T>(id));
+  }
+
+  /**
+   * Please override to hit the external API.
+   */
+  static update<T extends ActiveRecord$Base, U>(
+    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
+    params: Partial<U> | Array<Partial<U>>
+  ): Promise<T | T[]> {
+    // @ts-expect-error
+    const _this = this as typeof ActiveRecord$Base;
+    // @ts-expect-error
+    return Promise.resolve(_this.updateSync<T, U>(id, params));
   }
 }
 

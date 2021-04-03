@@ -13,7 +13,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html#method-i-destroy
    */
-  destroy<T extends ActiveRecord$Base>(): Promise<T | boolean> {
+  destroyWithAssociations<T extends ActiveRecord$Base>(): Promise<T | boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     // @ts-expect-error
@@ -22,7 +22,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
         return false;
       } else {
         if (result.every(Boolean)) {
-          return _this.destroySync();
+          return _this.destroy();
         } else {
           return false;
         }
@@ -61,7 +61,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save
    */
-  save(opts?: { validate: boolean }): Promise<boolean> {
+  saveWithAssociations(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
     const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
@@ -74,21 +74,15 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
               const saveStrategy =
                 allAssociationStrategies[associationName][relationName]['saveStrategy'];
               if (saveStrategy) {
-                if (associationName === AssociationList.belongsTo) {
-                  const saveResultPromise = saveStrategy(_this) as Promise<boolean>;
-                  return saveResultPromise.then((result) => {
+                if (_this.isNewRecord() || _this.isChanged()) {
+                  return _this.save(opts).then((result) => {
                     if (result) {
-                      if (_this.isNewRecord() || _this.isChanged()) {
-                        return _this.saveSync(opts);
-                      } else {
-                        return _this.isValid();
-                      }
+                      return saveStrategy(_this) as Promise<boolean>;
                     } else {
-                      return false;
+                      return Promise.resolve(false);
                     }
                   });
                 } else {
-                  if (_this.isNewRecord() || _this.isChanged()) _this.saveSync(opts);
                   return saveStrategy(_this) as Promise<boolean>;
                 }
               }
@@ -104,12 +98,9 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
   /**
    * @see https://api.rubyonrails.org/classes/ActiveRecord/Validations.html#method-i-save-21
    */
-  saveOrThrow(opts?: { validate: boolean }): Promise<boolean> {
+  saveWithAssociationsOrThrow(opts?: { validate: boolean }): Promise<boolean> {
     // @ts-expect-error
     const _this = this as ActiveRecord$Base;
-
-    _this.saveSyncOrThrow();
-
     const allAssociationStrategies = AssociationRegistry.data[_this.uniqueKey];
 
     return Promise.all(
@@ -120,25 +111,15 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
               const saveOrThrowStrategy =
                 allAssociationStrategies[associationName][relationName]['saveOrThrowStrategy'];
               if (saveOrThrowStrategy) {
-                if (associationName === AssociationList.belongsTo) {
-                  const saveResultPromise = saveOrThrowStrategy(_this) as Promise<boolean>;
-                  return saveResultPromise
-                    .then((reslult) => {
-                      if (reslult) {
-                        if (_this.isNewRecord() || _this.isChanged()) {
-                          return _this.saveSyncOrThrow();
-                        } else {
-                          return _this.isValid();
-                        }
-                      } else {
-                        return false;
-                      }
-                    })
-                    .catch((err) => {
-                      throw err;
-                    });
+                if (_this.isNewRecord() || _this.isChanged()) {
+                  return _this.saveOrThrow(opts).then((result) => {
+                    if (result) {
+                      return saveOrThrowStrategy(_this) as Promise<boolean>;
+                    } else {
+                      return Promise.resolve(false);
+                    }
+                  });
                 } else {
-                  if (_this.isNewRecord() || _this.isChanged()) _this.saveSyncOrThrow();
                   return saveOrThrowStrategy(_this) as Promise<boolean>;
                 }
               }

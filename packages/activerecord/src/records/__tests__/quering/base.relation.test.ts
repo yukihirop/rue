@@ -23,10 +23,6 @@ class QueryingRecord extends Record {
     return Promise.resolve([]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'QueryingRecord';
   }
@@ -752,15 +748,15 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     StaticTouchAllRecord.validates('age', { numericality: { lessThan: 10 } });
 
     let records;
-    beforeEach(() => {
-      records = StaticTouchAllRecord.create<StaticTouchAllRecord, QueryingRecordParams>([
+    beforeEach(async () => {
+      records = await StaticTouchAllRecord.create<StaticTouchAllRecord, QueryingRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
       ]);
     });
 
-    afterEach(() => {
-      RecordCache.destroy(StaticTouchAllRecord.name);
+    afterEach(async () => {
+      await RecordCache.destroy(StaticTouchAllRecord.name);
     });
 
     describe('when default', () => {

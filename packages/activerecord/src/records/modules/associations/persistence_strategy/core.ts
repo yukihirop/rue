@@ -19,7 +19,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
         if (opts.autosave) {
           belongsToRecord[opts.foreignKey] = self.id;
-          return belongsToRecord.saveSync({ validate: opts.validate });
+          return belongsToRecord.save({ validate: opts.validate });
         } else {
           if (opts.validate) {
             const validResult = belongsToRecord.isValid();
@@ -59,7 +59,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
 
         if (opts.autosave) {
           belongsToRecord[opts.foreignKey] = self.id;
-          const saveResult = belongsToRecord.saveSyncOrThrow({ validate: opts.validate });
+          const saveResult = belongsToRecord.saveOrThrow({ validate: opts.validate });
           return saveResult;
         } else {
           if (opts.validate) {
@@ -97,7 +97,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
     return (self: T): Promise<T | boolean | number> => {
       return self[relationName]().then((belongsToRecord) => {
         if (opts.dependent === DependentList.destroy) {
-          return belongsToRecord.destroySync();
+          return belongsToRecord.destroy();
         } else if (opts.dependent === DependentList.delete) {
           const belongsToKlass = opts.klass;
           /**
@@ -132,7 +132,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
         if (oneRecord === null) return true;
 
         if (opts.autosave) {
-          return oneRecord.saveSync({ validate: opts.validate });
+          return oneRecord.save({ validate: opts.validate });
         } else {
           if (opts.validate) {
             const validResult = oneRecord.isValid();
@@ -169,7 +169,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
     return (self: T): Promise<boolean> => {
       return self[relationName]().then((oneRecord) => {
         if (opts.autosave) {
-          return oneRecord.saveSyncOrThrow({ validate: opts.validate });
+          return oneRecord.saveOrThrow({ validate: opts.validate });
         } else {
           if (opts.validate) {
             const validResult = oneRecord.isValid();
@@ -206,7 +206,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
     return (self: T): Promise<T | boolean | number> => {
       return self[relationName]().then((oneRecord) => {
         if (opts.dependent === DependentList.destroy) {
-          return oneRecord.destroySync();
+          return oneRecord.destroy();
         } else if (opts.dependent === DependentList.nullify) {
           return oneRecord.update({ [opts.foreignKey]: undefined });
         } else if (opts.dependent === DependentList.delete) {
@@ -261,11 +261,11 @@ export class ActiveRecord$Associations$PersistenceStrategy {
         ._currentScope()
         .then((childrens: T[]) => {
           if (opts.autosave) {
-            return childrens
-              .map((c) => {
-                return c.saveSync({ validate: opts.validate });
-              })
-              .every(Boolean);
+            return Promise.all(childrens.map((c) => c.save({ validate: opts.validate }))).then(
+              (result) => {
+                return result.every(Boolean);
+              }
+            );
           } else {
             if (opts.validate) {
               const childrenResult = childrens
@@ -307,11 +307,11 @@ export class ActiveRecord$Associations$PersistenceStrategy {
         ._currentScope()
         .then((childrens: T[]) => {
           if (opts.autosave) {
-            return childrens
-              .map((c) => {
-                return c.saveSyncOrThrow();
-              })
-              .every(Boolean);
+            return Promise.all(
+              childrens.map((c) => c.saveOrThrow({ validate: opts.validate }))
+            ).then((result) => {
+              return result.every(Boolean);
+            });
           } else {
             /**
              * @description Skip saving associated records
@@ -331,7 +331,7 @@ export class ActiveRecord$Associations$PersistenceStrategy {
         .toA()
         .then((records: T[]) => {
           if (opts.dependent === DependentList.destroy) {
-            return records.map((r) => r.destroySync());
+            return Promise.all(records.map((r) => r.destroy()));
           } else if (opts.dependent === DependentList.nullify) {
             return records.map((r) => {
               r.update({ [opts.foreignKey]: undefined });

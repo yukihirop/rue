@@ -63,14 +63,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsManyRecord>;
     let relation: Relation<IsManyRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsManyRecord.resetRecordCache();
 
-      scope = IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
+      scope = (await IsManyRecord.create<IsManyRecord, IsManyRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as IsManyRecord[];
+      ])) as IsManyRecord[];
 
       holder = new Holder(IsManyRecord, scope);
       relation = new Relation<IsManyRecord>(
@@ -133,15 +133,15 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsNoneRecord>;
     let relation: Relation<IsNoneRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsNoneRecord.resetRecordCache();
 
       scope = [
-        IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
+        (await IsNoneRecord.create<IsNoneRecord, IsNoneRecordParams>({
           id: 1,
           name: 'name_1',
           age: 1,
-        }) as IsNoneRecord,
+        })) as IsNoneRecord,
       ];
 
       holder = new Holder(IsNoneRecord, scope);
@@ -205,13 +205,13 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsOneRecord>;
     let relation: Relation<IsOneRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsOneRecord.resetRecordCache();
 
-      scope = IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
+      scope = (await IsOneRecord.create<IsOneRecord, IsOneRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
-      ]) as IsOneRecord[];
+      ])) as IsOneRecord[];
 
       holder = new Holder(IsOneRecord, scope);
       relation = new Relation<IsOneRecord>(
@@ -274,14 +274,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<SizeRecord>;
     let relation: Relation<SizeRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       SizeRecord.resetRecordCache();
 
-      scope = SizeRecord.create<SizeRecord, SizeRecordParams>([
+      scope = (await SizeRecord.create<SizeRecord, SizeRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as SizeRecord[];
+      ])) as SizeRecord[];
 
       holder = new Holder(SizeRecord, scope);
       relation = new Relation<SizeRecord>(
@@ -345,10 +345,10 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsAnyRecord>;
     let relation: Relation<IsAnyRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsAnyRecord.resetRecordCache();
 
-      scope = [IsAnyRecord.create({ name: 'name_1', age: 1 }) as IsAnyRecord];
+      scope = [(await IsAnyRecord.create({ name: 'name_1', age: 1 })) as IsAnyRecord];
 
       holder = new Holder(IsAnyRecord, scope);
       relation = new Relation<IsAnyRecord>(
@@ -411,14 +411,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsBlankRecord>;
     let relation: Relation<IsBlankRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsBlankRecord.resetRecordCache();
 
-      scope = IsBlankRecord.create([
+      scope = (await IsBlankRecord.create([
         { id: 1, name: 'name_1', age: 1 },
         { id: 1, name: 'name_2', age: 2 },
         { id: 1, name: 'name_3', age: 3 },
-      ]) as IsBlankRecord[];
+      ])) as IsBlankRecord[];
 
       holder = new Holder(IsBlankRecord, scope);
       relation = new Relation<IsBlankRecord>(
@@ -472,15 +472,15 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<IsEmptyRecord>;
     let relation: Relation<IsEmptyRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       IsEmptyRecord.resetRecordCache();
 
       scope = [
-        IsEmptyRecord.create<IsEmptyRecord, IsEmptyRecordParams>({
+        (await IsEmptyRecord.create<IsEmptyRecord, IsEmptyRecordParams>({
           id: 1,
           name: 'name_1',
           age: 1,
-        }) as IsEmptyRecord,
+        })) as IsEmptyRecord,
       ];
 
       holder = new Holder(IsEmptyRecord, scope);
@@ -533,14 +533,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<BuildRecord>;
     let relation: Relation<BuildRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       BuildRecord.resetRecordCache();
 
-      scope = BuildRecord.create<BuildRecord, BuildRecordParams>([
+      scope = (await BuildRecord.create<BuildRecord, BuildRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as BuildRecord[];
+      ])) as BuildRecord[];
 
       holder = new Holder(BuildRecord, scope);
       relation = new Relation<BuildRecord>(
@@ -640,7 +640,7 @@ describe('ActiveRecord$Relation$Base', () => {
     });
   });
 
-  describe('#create', () => {
+  describe('#createSync', () => {
     type CreateRecordParams = {
       id: t.Record$PrimaryKey;
       name: string;
@@ -651,10 +651,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: CreateRecordParams['id'];
       public name: CreateRecordParams['name'];
       public age: CreateRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'CreateRecord';
@@ -668,14 +664,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<CreateRecord>;
     let relation: Relation<CreateRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       CreateRecord.resetRecordCache();
 
-      scope = CreateRecord.create<CreateRecord, CreateRecordParams>([
+      scope = (await CreateRecord.create<CreateRecord, CreateRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as CreateRecord[];
+      ])) as CreateRecord[];
 
       holder = new Holder(CreateRecord, scope);
       relation = new Relation<CreateRecord>(
@@ -809,7 +805,7 @@ describe('ActiveRecord$Relation$Base', () => {
     });
   });
 
-  describe('#createOrThrow', () => {
+  describe('#createSyncOrThrow', () => {
     type CreateOrThrowRecordParams = {
       id: t.Record$PrimaryKey;
       name: string;
@@ -820,10 +816,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public id: CreateOrThrowRecordParams['id'];
       public name: CreateOrThrowRecordParams['name'];
       public age: CreateOrThrowRecordParams['age'];
-
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
 
       get uniqueKey(): string {
         return 'CreateOrThrowRecord';
@@ -1012,14 +1004,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<CreateOrFindByRecord>;
     let relation: Relation<CreateOrFindByRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       CreateOrFindByRecord.resetRecordCache();
 
-      scope = CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
+      scope = (await CreateOrFindByRecord.create<CreateOrFindByRecord, CreateOrFindByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 1, name: 'name_2', age: 2 },
         { id: 1, name: 'name_3', age: 3 },
-      ]) as CreateOrFindByRecord[];
+      ])) as CreateOrFindByRecord[];
 
       holder = new Holder(CreateOrFindByRecord, scope);
       relation = new Relation<CreateOrFindByRecord>(
@@ -1071,10 +1063,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: CreateOrFindByOrThrowRecordParams['name'];
       public age: CreateOrFindByOrThrowRecordParams['age'];
 
-      static translate(key: string, opts: string): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'CreateOrFindByOrThrowRecord';
       }
@@ -1086,17 +1074,17 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<CreateOrFindByOrThrowRecord>;
     let relation: Relation<CreateOrFindByOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       CreateOrFindByOrThrowRecord.resetRecordCache();
 
-      scope = CreateOrFindByOrThrowRecord.create<
+      scope = (await CreateOrFindByOrThrowRecord.create<
         CreateOrFindByOrThrowRecord,
         CreateOrFindByOrThrowRecordParams
       >([
         { id: 1, name: 'name_1', age: 1 },
         { id: 1, name: 'name_2', age: 2 },
         { id: 1, name: 'name_3', age: 3 },
-      ]) as CreateOrFindByOrThrowRecord[];
+      ])) as CreateOrFindByOrThrowRecord[];
 
       holder = new Holder(CreateOrFindByOrThrowRecord, scope);
       relation = new Relation<CreateOrFindByOrThrowRecord>(
@@ -1170,10 +1158,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DeleteByRecordParams['name'];
       public age: DeleteByRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<DeleteByRecordParams[]> {
         return Promise.resolve([]);
       }
@@ -1190,14 +1174,14 @@ describe('ActiveRecord$Relation$Base', () => {
     // @important
     // records are object.freeze when destroyed
 
-    beforeEach(() => {
+    beforeEach(async () => {
       DeleteByRecord.resetRecordCache();
 
-      scope = DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
+      scope = (await DeleteByRecord.create<DeleteByRecord, DeleteByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as DeleteByRecord[];
+      ])) as DeleteByRecord[];
       holder = new Holder(DeleteByRecord, scope);
       relation = new Relation<DeleteByRecord>(
         (resolve, _reject) => resolve({ holder, scope })
@@ -1244,10 +1228,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DestoryByRecordParams['name'];
       public age: DestoryByRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'DestroyByRecord';
       }
@@ -1267,13 +1247,13 @@ describe('ActiveRecord$Relation$Base', () => {
     // @important
     // records are object.freeze when destroyed
 
-    beforeEach(() => {
+    beforeEach(async () => {
       RecordCache.destroy(DestroyByRecord.name);
-      scope = DestroyByRecord.create<DestroyByRecord, DestoryByRecordParams>([
+      scope = (await DestroyByRecord.create<DestroyByRecord, DestoryByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as DestroyByRecord[];
+      ])) as DestroyByRecord[];
       holder = new Holder(DestroyByRecord, scope);
       relation = new Relation<DestroyByRecord>(
         (resolve, _reject) => resolve({ holder, scope })
@@ -1366,10 +1346,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DeleteAllRecordParams['name'];
       public age: DeleteAllRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<DeleteAllRecordParams[]> {
         return Promise.resolve([]);
       }
@@ -1383,14 +1359,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<DeleteAllRecord>;
     let relation: Relation<DeleteAllRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       DeleteAllRecord.resetRecordCache();
 
-      scope = DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
+      scope = (await DeleteAllRecord.create<DeleteAllRecord, DeleteAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as DeleteAllRecord[];
+      ])) as DeleteAllRecord[];
 
       holder = new Holder(DeleteAllRecord, scope);
       relation = new Relation<DeleteAllRecord>(
@@ -1425,10 +1401,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: DestroyAllRecordParams['name'];
       public age: DestroyAllRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<DestroyAllRecordParams[]> {
         return Promise.resolve([]);
       }
@@ -1442,14 +1414,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<DestroyAllRecord>;
     let relation: Relation<DestroyAllRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       DestroyAllRecord.resetRecordCache();
 
-      scope = DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
+      scope = (await DestroyAllRecord.create<DestroyAllRecord, DestroyAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as DestroyAllRecord[];
+      ])) as DestroyAllRecord[];
 
       holder = new Holder(DestroyAllRecord, scope);
       relation = new Relation<DestroyAllRecord>(
@@ -1529,14 +1501,14 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<FindOrCreateByRecord>;
     let relation: Relation<FindOrCreateByRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       RecordCache.destroy(FindOrCreateByRecord.name);
 
-      scope = FindOrCreateByRecord.create<FindOrCreateByRecord, FindOrCreateByRecordParams>([
+      scope = (await FindOrCreateByRecord.create<FindOrCreateByRecord, FindOrCreateByRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindOrCreateByRecord[];
+      ])) as FindOrCreateByRecord[];
 
       holder = new Holder(FindOrCreateByRecord, scope);
       relation = new Relation<FindOrCreateByRecord>(
@@ -1631,10 +1603,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: FindOrCreateByOrThrowRecordParams['name'];
       public age: FindOrCreateByOrThrowRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       get uniqueKey(): string {
         return 'FindOrCreateByOrThrowRecord';
       }
@@ -1647,17 +1615,17 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<FindOrCreateByOrThrowRecord>;
     let relation: Relation<FindOrCreateByOrThrowRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FindOrCreateByOrThrowRecord.resetRecordCache();
 
-      scope = FindOrCreateByOrThrowRecord.create<
+      scope = (await FindOrCreateByOrThrowRecord.create<
         FindOrCreateByOrThrowRecord,
         FindOrCreateByOrThrowRecordParams
       >([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindOrCreateByOrThrowRecord[];
+      ])) as FindOrCreateByOrThrowRecord[];
 
       holder = new Holder(FindOrCreateByOrThrowRecord, scope);
       relation = new Relation<FindOrCreateByOrThrowRecord>(
@@ -1785,17 +1753,17 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<FindOrInitializeByRecord>;
     let relation: Relation<FindOrInitializeByRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       FindOrInitializeByRecord.resetRecordCache();
 
-      scope = FindOrInitializeByRecord.create<
+      scope = (await FindOrInitializeByRecord.create<
         FindOrInitializeByRecord,
         FindOrInitializeByRecordParams
       >([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
-      ]) as FindOrInitializeByRecord[];
+      ])) as FindOrInitializeByRecord[];
 
       holder = new Holder(FindOrInitializeByRecord, scope);
       relation = new Relation<FindOrInitializeByRecord>(
@@ -1848,10 +1816,6 @@ describe('ActiveRecord$Relation$Base', () => {
       public name: UpdateAllRecordParams['name'];
       public age: UpdateAllRecordParams['age'];
 
-      static translate(key: string, opts?: any): string {
-        return key;
-      }
-
       protected fetchAll(): Promise<UpdateAllRecordParams[]> {
         return Promise.resolve([
           { id: 1, name: 'name_1', age: 1 },
@@ -1871,13 +1835,13 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<UpdateAllRecord>;
     let relation: Relation<UpdateAllRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       UpdateAllRecord.resetRecordCache();
 
-      scope = UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
+      scope = (await UpdateAllRecord.create<UpdateAllRecord, UpdateAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
-      ]) as UpdateAllRecord[];
+      ])) as UpdateAllRecord[];
 
       holder = new Holder(UpdateAllRecord, scope);
       relation = new Relation<UpdateAllRecord>(
@@ -1926,13 +1890,13 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<TouchAllRecord>;
     let relation: Relation<TouchAllRecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       TouchAllRecord.resetRecordCache();
 
-      scope = TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
+      scope = (await TouchAllRecord.create<TouchAllRecord, TouchAllRecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
-      ]) as TouchAllRecord[];
+      ])) as TouchAllRecord[];
 
       holder = new Holder(TouchAllRecord, scope);
       relation = new Relation<TouchAllRecord>(
@@ -2068,15 +2032,15 @@ describe('ActiveRecord$Relation$Base', () => {
     let holder: Holder<ToARecord>;
     let relation: Relation<ToARecord>;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       ToARecord.resetRecordCache();
 
-      scope = ToARecord.create<ToARecord, ToARecordParams>([
+      scope = (await ToARecord.create<ToARecord, ToARecordParams>([
         { id: 1, name: 'name_1', age: 1 },
         { id: 2, name: 'name_2', age: 2 },
         { id: 3, name: 'name_3', age: 3 },
         { id: 4, name: 'name_4', age: 4 },
-      ]) as ToARecord[];
+      ])) as ToARecord[];
 
       holder = new Holder(ToARecord, scope);
       relation = new Relation<ToARecord>(

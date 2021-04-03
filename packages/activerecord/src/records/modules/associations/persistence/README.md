@@ -4,7 +4,7 @@ This is rue original module
 
 ## Methods
 
-- [x] save
-- [x] saveOrThrow
-- [x] destroy
+- [x] saveWithAssociations
+- [x] saveWithAssociationsOrThrow
+- [x] destroyWithAssociations
 

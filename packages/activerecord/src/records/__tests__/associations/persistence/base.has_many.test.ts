@@ -57,10 +57,6 @@ class PersistenceChildRecord extends ActiveRecord$Base<PersistenceChildRecordPar
     ]);
   }
 
-  static translate(key: string, opts?: any): string {
-    return key;
-  }
-
   get uniqueKey(): string {
     return 'PersistenceChildRecord';
   }
@@ -89,14 +85,14 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
     MockDate.reset();
   });
 
-  describe('#save', () => {
+  describe('#saveWithAssociations', () => {
     describe('when success save (default: autosave === true)', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record
           .children()
           .build<PersistenceChildRecordParams>({ id: 5, childName: 'child_name_5' });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.children()).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -160,7 +156,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
           "'records.PersistenceChildRecord.childName' is not equal length ('12' characters)."
         );
         await record.children().build();
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(await record.children().size()).toEqual(4);
         expect(await record.children().last()).toEqual({
           __rue_record_id__: undefined,
@@ -173,6 +169,20 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
           },
           parentId: 1,
         });
+      });
+    });
+
+    describe("when 'record' is invalid", () => {
+      it('should correctly', async () => {
+        const errForAge = new Error("'records.PersistenceRecord.age' is not less than '10'.");
+        const errForName = new Error(
+          "'records.PersistenceRecord.name' is not equal length ('6' characters)."
+        );
+        const record = new PersistenceRecord();
+        await record.children().build();
+        expect(await record.saveWithAssociations()).toEqual(false);
+        expect(record.errors).toEqual({ age: [errForAge], name: [errForName] });
+        expect((await record.children())[0].errors).toEqual({});
       });
     });
 
@@ -228,10 +238,6 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
           ]);
         }
 
-        static translate(key: string, opts?: any): string {
-          return key;
-        }
-
         get uniqueKey(): string {
           return 'AutosaveFalseChildRecord';
         }
@@ -260,7 +266,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
         await record
           .children()
           .build<AutosaveFalseChildRecordParams>({ id: 5, childName: 'child_name_5' });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
         expect(await record.children()).toEqual([
           {
             __rue_created_at__: '2021-03-05T23:03:21+09:00',
@@ -328,7 +334,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
           childName: 'invalid_name_5',
           childAge: 100,
         });
-        expect(await record.save()).toEqual(false);
+        expect(await record.saveWithAssociations()).toEqual(false);
         expect(record.errors['hasMany']['children']).toEqual([errForRecord]);
         expect(await record.children().last()).toEqual({
           __rue_record_id__: undefined,
@@ -345,14 +351,14 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
     });
   });
 
-  describe('#saveOrThrow', () => {
+  describe('#saveWithAssociationsOrThrow', () => {
     describe('when success save', () => {
       it('should correctly', async () => {
         const record = (await PersistenceRecord.first<PersistenceRecord>()) as PersistenceRecord;
         await record
           .children()
           .build<PersistenceChildRecordParams>({ id: 5, childName: 'child_name_5' });
-        expect(await record.save()).toEqual(true);
+        expect(await record.saveWithAssociations()).toEqual(true);
       });
     });
 
@@ -364,7 +370,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
         );
         await record.children().build<PersistenceChildRecordParams>();
         try {
-          await record.saveOrThrow();
+          await record.saveWithAssociationsOrThrow();
         } catch (err) {
           expect(err.toString()).toEqual(`Error: PersistenceChildRecord {
   "_associationCache": {},
@@ -445,7 +451,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       it('should throw error', async () => {
         try {
           const record = (await DependentUndefinnedRecord.first<DependentUndefinnedRecord>()) as DependentUndefinnedRecord;
-          await record.destroy();
+          await record.destroyWithAssociations();
         } catch (err) {
           expect(err.toString()).toEqual(
             "Error: Cannot delete or update a 'DependentUndefinnedRecord' record: a foreign key (parentId) constraint fails"
@@ -503,7 +509,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentNullifyRecord.first<DependentNullifyRecord>()) as DependentNullifyRecord;
-        await record.destroy();
+        await record.destroyWithAssociations();
         expect(await record.dependentNullify()).toEqual([]);
         expect(await DependentNullifyChildRecord.all()).toEqual([
           {
@@ -611,7 +617,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDestroyRecord.first<DependentDestroyRecord>()) as DependentDestroyRecord;
-        await record.destroy();
+        await record.destroyWithAssociations();
         expect(await record.dependentDestroy()).toEqual([]);
         expect(await DependentDestroyChildRecord.all()).toEqual([
           {
@@ -680,7 +686,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
 
       it('should correctly', async () => {
         const record = (await DependentDeleteAllRecord.first<DependentDeleteAllRecord>()) as DependentDeleteAllRecord;
-        await record.destroy();
+        await record.destroyWithAssociations();
         expect(await record.dependentDeleteAll()).toEqual([]);
         expect(await DependentDeleteAllChildRecord.all()).toEqual([
           {
@@ -750,7 +756,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
       it('should correctly', async () => {
         const record = (await DependentRestrictWithExceptionRecord.first<DependentRestrictWithExceptionRecord>()) as DependentRestrictWithExceptionRecord;
         try {
-          await record.destroy();
+          await record.destroyWithAssociations();
         } catch (err) {
           expect(err.toString()).toEqual(
             "Error: Cannot delete record because of dependent 'DependentRestrictWithExceptionChildRecord' records"
@@ -811,7 +817,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
           "Cannot delete record because of dependent 'DependentRestrictWithErrorChildRecord' records"
         );
         const record = (await DependentRestrictWithErrorRecord.first<DependentRestrictWithErrorRecord>()) as DependentRestrictWithErrorRecord;
-        expect(await record.destroy()).toEqual(false);
+        expect(await record.destroyWithAssociations()).toEqual(false);
         expect(record.errors).toEqual({ hasMany: { dependentDeleteAll: [err] } });
       });
     });
