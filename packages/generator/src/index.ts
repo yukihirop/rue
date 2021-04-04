@@ -2,6 +2,7 @@
 export { Generator$Definitions$Base as Generator$Definitions } from './definitions';
 export { Generator$Packages$Base as Generator$Packages } from './packages';
 export { Generator$Components$Base as Generator$Components } from './components';
+export { Generator$MockServer$Base as Generator$MockServer } from './mock_server';
 
 // types
 export type {
