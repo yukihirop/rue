@@ -14,6 +14,15 @@ const projectRoot = require('pkg-dir').sync() || process.cwd();
 export class Config$Base {
   static fileName = 'rue.config.js';
   static default: t.RueConfig = {
+    backend: {
+      mock_server: {
+        loadData: ['./backend/mock_server/data/**/*.json'],
+        dist: {
+          db: './backend/mock_server/db.json',
+          routes: './backend/mock_server/routes.json',
+        },
+      },
+    },
     cli: {
       commands: {
         console: {
@@ -59,6 +68,10 @@ export class Config$Base {
 
   static rueREPL(): t.RueRueREPLConfig {
     return this.all()['repl'];
+  }
+
+  static get backend(): t.RueBackendConfig {
+    return this.all()['backend'];
   }
 
   // https://stackoverflow.com/a/11233515/9434894

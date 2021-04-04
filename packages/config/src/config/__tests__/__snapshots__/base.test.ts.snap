@@ -2,6 +2,15 @@
 
 exports[`Config$Base static properties should correctly 1`] = `
 "module.exports = {
+  backend: {
+    mock_server: {
+      loadData: [
+        './backend/mock_server/data/**/*.json'
+      ],
+      loadDB: './backend/mock_server/db.json',
+      loadRoutes: './backend/mock_server/routes.json'
+    }
+  },
   cli: {
     commands: {
       console: {
