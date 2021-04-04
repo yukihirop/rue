@@ -13,7 +13,6 @@ export class Repl$Commands$Definitions$Base {
     if (input) {
       try {
         let [maybeKlassName, maybeProto, methodName] = input.split('.');
-
         const isBuiltinClass =
           typeof repl.context[maybeKlassName] === 'function' &&
           maybeProto == undefined &&
@@ -77,9 +76,21 @@ export class Repl$Commands$Definitions$Base {
             })
           );
         } else if (isUDFInstance) {
-          // maybeProto is methodName
-          console.error(
-            `Documentation was not found about '${input}' in REPL context. It may be a user-defined instace.`
+          methodName = maybeProto;
+          const instance = this.evalInContext(maybeKlassName, repl.context);
+          const ownerKlass = Support.getOwnerFrom(instance, methodName);
+          const ownerKlassName = ownerKlass['name'];
+          methodData = definitions[ownerKlassName]['instance'][methodName];
+          const metadata = definitions[ownerKlassName]['metadata'];
+          const isRueModule = ownerKlass['__rue_module__'];
+
+          console.log(
+            this._formatMethodDefinition({
+              klassName: ownerKlassName,
+              methodData,
+              metadata,
+              isRueModule,
+            })
           );
         } else if (isInstance) {
           if (methodName == 'constructor') {
@@ -97,7 +108,15 @@ export class Repl$Commands$Definitions$Base {
             );
           } else {
             const klass = repl.context[maybeKlassName];
-            const ownerKlass = Support.getOwnerFrom(new klass(), methodName);
+
+            let instance;
+            if (this.isPromisePrototype(klass)) {
+              instance = new klass((_resolve, _reject) => {});
+            } else {
+              instance = new klass();
+            }
+
+            const ownerKlass = Support.getOwnerFrom(instance, methodName);
             const ownerKlassName = ownerKlass['name'];
             methodData = definitions[ownerKlassName]['instance'][methodName];
             const metadata = definitions[ownerKlassName]['metadata'];
@@ -124,7 +143,12 @@ export class Repl$Commands$Definitions$Base {
     }
   }
 
-  static evalInContext(str: string, context: any) {
+  private static isPromisePrototype(klass): boolean {
+    const ancestors = Support.getAncestors(klass);
+    return ancestors.includes('Promise');
+  }
+
+  private static evalInContext(str: string, context: any) {
     return function () {
       try {
         return eval(`this.${str}`);
