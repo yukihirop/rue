@@ -13,6 +13,17 @@ export default class MockServer extends Command {
       description: 'mock server port',
       required: false,
     }),
+    method: flags.string({
+      char: 'm',
+      description: 'mock server method',
+      required: false,
+      options: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'get', 'post', 'put', 'delete', 'patch'],
+    }),
+    resource: flags.string({
+      char: 'r',
+      description: 'mock server resource',
+      required: false,
+    }),
   };
 
   static args = [
@@ -30,7 +41,11 @@ export default class MockServer extends Command {
       if (!args.subCommand) {
         Backend$MockServer.createServer({ port: flags.port });
       } else if (args.subCommand === 'routes') {
-        Backend$MockServer.printTable();
+        let method = flags.method ? flags.method.toUpperCase() : undefined;
+        Backend$MockServer.printTable({
+          method,
+          resource: flags.resource,
+        });
       }
     } catch (e) {
       console.error(

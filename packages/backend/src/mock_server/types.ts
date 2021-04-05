@@ -9,6 +9,7 @@ export type MockServerHttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type MockServerRoute = {
   method: MockServerHttpMethod;
   resource: string;
-  uri: string;
-  count: number;
+  'uri pattern': string;
+  path?: string;
+  count?: number;
 };
