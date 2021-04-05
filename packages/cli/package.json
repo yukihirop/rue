@@ -51,6 +51,7 @@
     "@oclif/plugin-autocomplete": "^0.3.0",
     "@oclif/plugin-help": "^3.2.2",
     "@oclif/plugin-not-found": "^1.2.4",
+    "@rue/backend": "^0.0.0",
     "@rue/config": "^0.0.0",
     "@rue/generator": "^0.0.0",
     "@rue/repl": "^0.0.0",
