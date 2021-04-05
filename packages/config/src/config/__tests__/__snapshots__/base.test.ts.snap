@@ -5,10 +5,12 @@ exports[`Config$Base static properties should correctly 1`] = `
   backend: {
     mock_server: {
       loadData: [
-        './backend/mock_server/data/**/*.json'
+        './backend/mock_server/data/**/*.{js,json}'
       ],
-      loadDB: './backend/mock_server/db.json',
-      loadRoutes: './backend/mock_server/routes.json'
+      dist: {
+        db: './backend/mock_server/db.json',
+        routes: './backend/mock_server/routes.json'
+      }
     }
   },
   cli: {

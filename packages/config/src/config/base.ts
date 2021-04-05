@@ -16,7 +16,7 @@ export class Config$Base {
   static default: t.RueConfig = {
     backend: {
       mock_server: {
-        loadData: ['./backend/mock_server/data/**/*.json'],
+        loadData: ['./backend/mock_server/data/**/*.{js,json}'],
         dist: {
           db: './backend/mock_server/db.json',
           routes: './backend/mock_server/routes.json',
