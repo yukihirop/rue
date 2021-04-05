@@ -1,0 +1,145 @@
+[
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts",
+      "pathRegexp": "/api/v1/accounts"
+    },
+    "response": {
+      "body": [
+        { "id": 1, "name": "name_1", "email": "name_1@example.com", "info": { "github": "aaa" } },
+        { "id": 2, "name": "name_2", "email": "name_2@example.com", "info": { "github": "bbb" } },
+        { "id": 3, "name": "name_3", "email": "name_3@example.com", "info": { "github": "ccc" } },
+        { "id": 4, "name": "name_4", "email": "name_4@example.com", "info": { "github": "ddd" } },
+        { "id": 5, "name": "name_5", "email": "name_5@example.com", "info": { "github": "eee" } },
+        { "id": 6, "name": "name_6", "email": "name_6@example.com", "info": { "github": "fff" } },
+        {
+          "id": 7,
+          "name": "name_7",
+          "email": "name_7@example.com",
+          "info": { "github": "yukihirop" }
+        }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/1",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 1, "name": "name_1", "email": "name_1@example.com", "info": { "github": "aaa" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/2",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 2, "name": "name_2", "email": "name_2@example.com", "info": { "github": "bbb" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/3",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 3, "name": "name_3", "email": "name_3@example.com", "info": { "github": "ccc" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/4",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 4, "name": "name_4", "email": "name_4@example.com", "info": { "github": "ddd" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/5",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 5, "name": "name_5", "email": "name_5@example.com", "info": { "github": "eee" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/6",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        { "id": 6, "name": "name_6", "email": "name_6@example.com", "info": { "github": "fff" } }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "GET",
+      "path": "/api/v1/accounts/7",
+      "pathRegexp": "/api/v1/accounts/:account_id"
+    },
+    "response": {
+      "body": [
+        {
+          "id": 7,
+          "name": "name_7",
+          "email": "name_7@example.com",
+          "info": { "github": "yukihirop" }
+        }
+      ]
+    }
+  },
+  {
+    "resource": "account",
+    "request": {
+      "method": "POST",
+      "path": "/api/v1/accounts",
+      "pathRegexp": "/api/v1/accounts",
+      "body": {
+        "name": "name_8",
+        "email": "name_8@example.com",
+        "info": { "github": "dhh" }
+      }
+    },
+    "response": {
+      "body": [
+        {
+          "id": 8,
+          "name": "name_8",
+          "email": "name_8@example.com",
+          "info": { "github": "dhh" }
+        }
+      ]
+    }
+  }
+]
