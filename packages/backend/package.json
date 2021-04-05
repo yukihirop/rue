@@ -21,13 +21,17 @@
     "url": "git+https://github.com/yukihirop/rue.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "rimraf ./lib && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./lib",
+    "fmt": "prettier --write **/src/**/*.ts"
   },
   "bugs": {
     "url": "https://github.com/yukihirop/rue/issues"
   },
   "dependencies": {
-    "@rue/config": "^0.0.0"
+    "@agreed/server": "^5.2.0",
+    "@rue/config": "^0.0.0",
+    "globby": "^11.0.3",
+    "pkg-dir": "^5.0.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
