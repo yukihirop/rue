@@ -99,9 +99,7 @@ export class Generator$MockServer$Base {
 
         let pathWithQuery;
         if (query) {
-          pathWithQuery = `${requestPath}?${Generator$MockServer$Base.paramsToQueryString(
-            query
-          )}`;
+          pathWithQuery = `${requestPath}?${Generator$MockServer$Base.paramsToQueryString(query)}`;
         } else {
           pathWithQuery = requestPath;
         }
