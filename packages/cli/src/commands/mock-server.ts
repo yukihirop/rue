@@ -39,6 +39,7 @@ export default class MockServer extends Command {
     try {
       const { flags, args } = this.parse(MockServer);
       if (!args.subCommand) {
+        console.log(`🚀[Rue] Start mock server on http://localhost:${flags.port}`);
         Backend$MockServer.createServer({ port: flags.port });
       } else if (args.subCommand === 'routes') {
         let method = flags.method ? flags.method.toUpperCase() : undefined;
@@ -48,8 +49,9 @@ export default class MockServer extends Command {
         });
       }
     } catch (e) {
+      console.log(e);
       console.error(
-        'Rue is not available yet, make sure "yarn build" or "yarn dev" has completed compiling'
+        '💥[Rue] Rue is not available yet, make sure "yarn build" or "yarn dev" has completed compiling'
       );
       process.exit(1);
     }
