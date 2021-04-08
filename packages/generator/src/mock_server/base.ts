@@ -65,7 +65,7 @@ export class Generator$MockServer$Base {
     if (!this.data) await this.loadData();
 
     const { dist } = mockServer;
-    const db = this.data.map(this.transformToAgreedData);
+    const db = this.data.map(this.transformToAgreedData.bind(this));
     const distDBPath = path.join(projectRoot, dist.db);
     const relativeDistDBPath = path.relative(projectRoot, distDBPath);
     fs.writeFile(distDBPath, JSON.stringify(db), (err) => {
@@ -80,7 +80,7 @@ export class Generator$MockServer$Base {
     const routes = {} as t.MockServerRoutes;
     this.data.forEach(
       ({ resource, request }: { resource: string; request: t.MockServerData['request'] }) => {
-        const { method, path: uri, pathRegexp, queryRegexp } = request;
+        const { method, path: requestPath, query, pathRegexp, queryRegexp } = request;
 
         // update count
         let pathWithQueryRegexp = pathRegexp;
@@ -97,8 +97,17 @@ export class Generator$MockServer$Base {
           routes[method] = { [pathWithQueryRegexp]: { count: 1, paths: [], resource } };
         }
 
+        let pathWithQuery;
+        if (query) {
+          pathWithQuery = `${requestPath}\\?${Generator$MockServer$Base.paramsToQueryString(
+            query
+          )}`;
+        } else {
+          pathWithQuery = requestPath;
+        }
+
         // update paths
-        routes[method][pathWithQueryRegexp].paths.push(uri);
+        routes[method][pathWithQueryRegexp].paths.push(pathWithQuery);
       }
     );
 
@@ -116,7 +125,7 @@ export class Generator$MockServer$Base {
       request: {
         path: data.request.path,
         method: data.request.method,
-        query: data.request.query,
+        query: this.transformValueToString(data.request.query),
         body: data.request.body,
       },
       response: {
@@ -124,5 +133,33 @@ export class Generator$MockServer$Base {
         body: data.response.body,
       },
     };
+  }
+
+  private static paramsToQueryString(params): string {
+    return Object.entries(params)
+      .map((e) => `${e[0]}=${e[1]}`)
+      .join('=');
+  }
+
+  /**
+   * The query string should be a string, not a number.
+   */
+  private transformValueToString(params: Record<string, any>) {
+    const isNumber = function (value) {
+      return typeof value === 'number' && isFinite(value);
+    };
+
+    if (params) {
+      return Object.keys(params).reduce((acc, key) => {
+        let value = params[key];
+        if (isNumber(value)) value = String(value);
+
+        acc[key] = value;
+
+        return acc;
+      }, {});
+    } else {
+      return params;
+    }
   }
 }

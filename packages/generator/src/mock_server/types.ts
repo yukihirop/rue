@@ -34,7 +34,7 @@ export type MockServerAgreedData = {
   request: {
     path: string;
     method: MockServerHttpMethod;
-    query?: Record<string, string | number>;
+    query?: Record<string, string>;
     body?: Record<string, any>;
   };
   response: {
