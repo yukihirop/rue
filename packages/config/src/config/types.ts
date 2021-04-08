@@ -1,4 +1,13 @@
 export type RueConfig = {
+  backend: {
+    mock_server: {
+      loadData: string[];
+      dist: {
+        db: string;
+        routes: string;
+      };
+    };
+  };
   cli: {
     commands: {
       console: {
@@ -19,3 +28,4 @@ export type RueConfig = {
 
 export type RueNodeREPLConfig = RueConfig['cli']['commands']['console']['nodeREPL'];
 export type RueRueREPLConfig = RueConfig['repl'];
+export type RueBackendConfig = RueConfig['backend'];

@@ -1,5 +1,5 @@
 {
-  "name": "@rue/generator",
+  "name": "@rue/backend",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -27,25 +27,17 @@
   "bugs": {
     "url": "https://github.com/yukihirop/rue/issues"
   },
-  "devDependencies": {
-    "@types/ejs": "^3.0.6",
-    "@types/jsdom": "^16.2.6",
-    "@types/prismjs": "^1.16.3",
-    "rimraf": "^3.0.2",
-    "ts-node": "^9.1.1",
-    "tscpaths": "^0.0.9",
-    "typescript": "^4.2.2",
-    "typescript-parser": "^2.6.1"
-  },
   "dependencies": {
+    "@agreed/server": "^5.2.0",
     "@rue/config": "^0.0.0",
     "chalk": "^4.1.0",
-    "dayjs": "^1.10.4",
-    "ejs": "^3.1.6",
-    "globby": "^11.0.2",
-    "jsdom": "^16.4.0",
-    "pkg-dir": "^5.0.0",
-    "prismjs": "^1.23.0",
-    "typescript-parser": "^2.6.1"
+    "globby": "^11.0.3",
+    "pkg-dir": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "rimraf": "^3.0.2",
+    "tscpaths": "^0.0.9",
+    "typescript": "^4.2.3"
   }
 }

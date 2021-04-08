@@ -25,6 +25,11 @@
     "rue:init": "rue init",
     "rue:setup": "rue setup",
     "rue:gen": "rue g",
+    "rue:mockserver:routes": "yarn rue:mockserver:gen:all && rue mock-server routes",
+    "rue:mockserver:run": "yarn rue:mockserver:gen:all && rue mock-server --port",
+    "rue:mockserver:gen:all": "rue mock-generate server",
+    "rue:mockserver:gen:db": "rue mock-generate server db",
+    "rue:mockserver:gen:routes": "rue mock-generate server routes",
     "fmt": "prettier --write **/src/**/*.ts"
   },
   "bugs": {

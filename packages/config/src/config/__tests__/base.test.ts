@@ -5,6 +5,15 @@ describe('Config$Base', () => {
     it('should correctly', () => {
       expect(Config.fileName).toEqual('rue.config.js');
       expect(Config.default).toEqual({
+        backend: {
+          mock_server: {
+            loadData: ['./backend/mock_server/data/**/*.{js,json}'],
+            dist: {
+              db: './backend/mock_server/db.json',
+              routes: './backend/mock_server/routes.json',
+            },
+          },
+        },
         cli: {
           commands: {
             console: {
@@ -31,6 +40,15 @@ describe('Config$Base', () => {
     describe('when default', () => {
       it('should correctly', () => {
         expect(Config.all()).toEqual({
+          backend: {
+            mock_server: {
+              loadData: ['./backend/mock_server/data/**/*.{js,json}'],
+              dist: {
+                db: './backend/mock_server/db.json',
+                routes: './backend/mock_server/routes.json',
+              },
+            },
+          },
           cli: {
             commands: {
               console: {
@@ -73,6 +91,22 @@ describe('Config$Base', () => {
             '!src/**/__tests__/*.test.{js,ts}',
           ],
           moduleAliases: { '@': './src' },
+        });
+      });
+    });
+  });
+
+  describe('[getter] backend', () => {
+    describe('when default', () => {
+      it('should correctly', () => {
+        expect(Config.backend).toEqual({
+          mock_server: {
+            loadData: ['./backend/mock_server/data/**/*.{js,json}'],
+            dist: {
+              db: './backend/mock_server/db.json',
+              routes: './backend/mock_server/routes.json',
+            },
+          },
         });
       });
     });
