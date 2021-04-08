@@ -30,10 +30,12 @@
   "dependencies": {
     "@agreed/server": "^5.2.0",
     "@rue/config": "^0.0.0",
+    "chalk": "^4.1.0",
     "globby": "^11.0.3",
     "pkg-dir": "^5.0.0"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
     "rimraf": "^3.0.2",
     "tscpaths": "^0.0.9",
     "typescript": "^4.2.3"

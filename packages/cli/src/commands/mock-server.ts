@@ -9,7 +9,7 @@ export default class MockServer extends Command {
   static aliases = ['ms'];
 
   static flags = {
-    port: flags.string({
+    port: flags.integer({
       description: 'mock server port',
       required: false,
     }),
@@ -40,6 +40,7 @@ export default class MockServer extends Command {
       const { flags, args } = this.parse(MockServer);
       if (!args.subCommand) {
         console.log(`🚀[Rue] Start mock server on http://localhost:${flags.port}`);
+        Backend$MockServer.printAvailableResources({ port: flags.port });
         Backend$MockServer.createServer({ port: flags.port });
       } else if (args.subCommand === 'routes') {
         let method = flags.method ? flags.method.toUpperCase() : undefined;
