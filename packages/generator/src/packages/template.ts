@@ -11,8 +11,9 @@ Rue.configure({
     options: {
       lng: 'en',
     },
-  }
-});`;
+  },
+});
+`;
 
 template.rc.defaultJS = `const { Rue } = require('@rue/rue');
 
@@ -24,10 +25,11 @@ Rue.configure({
     options: {
       lng: 'en',
     },
-  }
-});`;
+  },
+});
+`;
 
-template.activerecord.defaultTS = `import { ActiveRecord$Base, RueCheck } from '@rue/rue';
+template.activerecord.defaultTS = `import { ActiveRecord$Base, RueSetup } from '@rue/rue';
 import type * as t from '@rue/rue';
 
 /**
@@ -41,7 +43,7 @@ export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T
 }
 `;
 
-template.activerecord.defaultJS = `const { ActiveRecord$Base, RueCheck } = require('@rue/rue');
+template.activerecord.defaultJS = `const { ActiveRecord$Base, RueSetup } = require('@rue/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -60,29 +62,27 @@ class ActiveRecord extends ActiveRecord$Base {
 exports.ActiveRecord = ActiveRecord;
 `;
 
-template.activemodel.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/rue';
+template.activemodel.defaultTS = `import { ActiveModel$Base, RueSetup } from '@rue/rue';
 
 /**
  * Execute i18nConfig to configure i18next.
  */
 @RueSetup
-export class ActiveModel extends ActiveModel$Base {
-}
+export class ActiveModel extends ActiveModel$Base {}
 `;
 
-template.activemodel.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/rue');
+template.activemodel.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@rue/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
  */
 @RueSetup
-class ActiveModel extends ActiveModel$Base {
-}
+class ActiveModel extends ActiveModel$Base {}
 
 exports.ActiveModel = ActiveModel;
 `;
 
-template.activeform.defaultTS = `import { ActiveModel$Base, RueCheck } from '@rue/rue';
+template.activeform.defaultTS = `import { ActiveModel$Base, RueSetup } from '@rue/rue';
 import * as t from '@rue/rue';
 
 /**
@@ -96,7 +96,7 @@ export class ActiveForm extends ActiveModel$Base {
 }
 `;
 
-template.activeform.defaultJS = `const { ActiveModel$Base, RueCheck } = require('@rue/rue');
+template.activeform.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@rue/rue');
 
 /**
  * Execute i18nConfig to configure i18next.

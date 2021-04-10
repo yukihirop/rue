@@ -1,4 +1,4 @@
-import { ActiveRecord$Base, RueCheck } from '@rue/rue';
+import { ActiveRecord$Base, RueSetup } from '@rue/rue';
 import type * as t from '@rue/rue';
 
 /**

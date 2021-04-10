@@ -1,5 +1,4 @@
 import { ActiveModel$Base, RueSetup } from '@rue/rue';
-import { resources } from '@/locales';
 
 // types
 import * as t from '@rue/rue';
