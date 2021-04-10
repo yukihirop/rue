@@ -19,6 +19,15 @@ module.exports = {
     },
   },
   repl: {
+    actions: {
+      ancestors: 'ancs',
+      descriptors: 'desc',
+      loadedModules: 'loaded',
+      propertyList: 'lp',
+      methodList: 'ls',
+      prototype: 'proto',
+      definition: 'show',
+    },
     loadModules: [
       'src/**/{forms,models,records}/**/*.ts',
       'src/setup/rc.ts',
