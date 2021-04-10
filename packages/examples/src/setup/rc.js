@@ -8,5 +8,5 @@ Rue.configure({
     options: {
       lng: 'en',
     },
-  }
+  },
 });

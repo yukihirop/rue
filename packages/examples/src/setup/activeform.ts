@@ -1,4 +1,4 @@
-import { ActiveModel$Base, RueCheck } from '@rue/rue';
+import { ActiveModel$Base, RueSetup } from '@rue/rue';
 import * as t from '@rue/rue';
 
 /**

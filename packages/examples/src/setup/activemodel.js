@@ -1,10 +1,9 @@
-const { ActiveModel$Base, RueCheck } = require('@rue/rue');
+const { ActiveModel$Base, RueSetup } = require('@rue/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
  */
 @RueSetup
-class ActiveModel extends ActiveModel$Base {
-}
+class ActiveModel extends ActiveModel$Base {}
 
 exports.ActiveModel = ActiveModel;

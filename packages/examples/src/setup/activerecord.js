@@ -1,4 +1,4 @@
-const { ActiveRecord$Base, RueCheck } = require('@rue/rue');
+const { ActiveRecord$Base, RueSetup } = require('@rue/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
