@@ -19,6 +19,15 @@ export type RueConfig = {
     };
   };
   repl: {
+    actions?: {
+      ancestors?: string;
+      descriptors?: string;
+      loadedModules?: string;
+      propertyList?: string;
+      methodList?: string;
+      prototype?: string;
+      definition?: string;
+    };
     loadModules: string[];
     moduleAliases: {
       [aliasName: string]: string;

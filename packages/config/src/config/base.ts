@@ -34,6 +34,15 @@ export class Config$Base {
       },
     },
     repl: {
+      actions: {
+        ancestors: 'ancs',
+        descriptors: 'desc',
+        loadedModules: 'loaded',
+        propertyList: 'lp',
+        methodList: 'ls',
+        prototype: 'proto',
+        definition: 'show',
+      },
       loadModules: [
         'src/**/{forms,models,records}/**/*.{js,ts}',
         '!src/**/__tests__/*.test.{js,ts}',

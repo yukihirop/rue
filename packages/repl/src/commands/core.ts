@@ -1,6 +1,7 @@
 import { REPLServer } from 'repl';
 // rue packages
 import { ActiveSupport$Base as Support } from '@rue/activesupport';
+import { Config$Base as Config } from '@rue/config';
 
 // locals
 import { Repl$Base as Repl } from '@/repl';
@@ -35,9 +36,18 @@ function execAction(objName: string, repl: replt.REPLServer, callback: (obj: any
   }
 }
 
+const defaultAliases = Config.default.repl.actions;
+const udfAliases = Config.rueREPL().actions;
+const useAliases = Object.keys(defaultAliases).reduce((acc, key) => {
+  const defaultValue = defaultAliases[key];
+  const udfValue = udfAliases[key];
+  acc[key] = udfValue && udfValue != '' ? udfValue : defaultValue;
+  return acc;
+}, {} as typeof udfAliases);
+
 // this is bound to an instance(class) of Repl(Builtin)
 const commands: t.Commands = {
-  ls: {
+  [useAliases.methodList]: {
     help: '[Rue] Display method list',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
@@ -50,7 +60,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  lp: {
+  [useAliases.propertyList]: {
     help: '[Rue] Display property list',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
@@ -63,7 +73,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  proto: {
+  [useAliases.prototype]: {
     help: '[Rue] Display Object.getPrototypeOf result',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
@@ -76,7 +86,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  desc: {
+  [useAliases.descriptors]: {
     help: '[Rue] Display Object.getOwnPropertyDescriptors result',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
@@ -89,7 +99,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  ancs: {
+  [useAliases.ancestors]: {
     help: '[Rue] Display ancestors (like Ruby)',
     action: function (objName: string) {
       const _this = this as replt.REPLServer;
@@ -102,7 +112,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  loaded: {
+  [useAliases.loadedModules]: {
     help: '[Rue] Display loaded Classes or RueModules',
     action: async function () {
       const _this = this as replt.REPLServer;
@@ -114,7 +124,7 @@ const commands: t.Commands = {
       _this.displayPrompt();
     },
   },
-  show: {
+  [useAliases.definition]: {
     help:
       '[Rue] Display method definition (format: <Class> or <Class>.<staticMethod> or <Class>.prototype.<instanceMethod>)',
     action: function (objName: string) {
