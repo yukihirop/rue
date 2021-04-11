@@ -1,11 +1,11 @@
-# `@rue/backend`
+# `@ruejs/backend`
 
 > TODO: description
 
 ## Usage
 
 ```
-const backend = require('@rue/backend');
+const backend = require('@ruejs/backend');
 
 // TODO: DEMONSTRATE API
 ```

@@ -1,5 +1,5 @@
-// @rue/packages
-import { Config$Base as Config } from '@rue/config';
+// @ruejs/packages
+import { Config$Base as Config } from '@ruejs/config';
 
 // third party
 import { Command } from '@oclif/command';

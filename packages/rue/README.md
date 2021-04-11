@@ -1,11 +1,11 @@
-# `@rue/rue`
+# `@ruejs/rue`
 
 > TODO: description
 
 ## Usage
 
 ```
-const rue = require('@rue/rue');
+const rue = require('@ruejs/rue');
 
 // TODO: DEMONSTRATE API
 ```

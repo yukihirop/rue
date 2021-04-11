@@ -1,5 +1,5 @@
 // rue/packages
-import { Config$Base as Config } from '@rue/config';
+import { Config$Base as Config } from '@ruejs/config';
 
 // builtin
 import path from 'path';

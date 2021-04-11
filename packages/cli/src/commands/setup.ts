@@ -1,5 +1,5 @@
 // rue packages
-import { Generator$Packages } from '@rue/generator';
+import { Generator$Packages } from '@ruejs/generator';
 
 // third party
 import { Command, flags } from '@oclif/command';

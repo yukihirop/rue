@@ -364,7 +364,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "profile": {
       "name": [
         {
-          "_namespace": "@rue/activemodel",
+          "_namespace": "@ruejs/activemodel",
           "_code": "PROPERTY_IS_NOT_ABSENCE"
         }
       ]
@@ -698,7 +698,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "name": [],
     "age": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
@@ -1109,7 +1109,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence)', () => {
     "name": [],
     "age": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]

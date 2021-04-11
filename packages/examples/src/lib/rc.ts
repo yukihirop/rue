@@ -1,5 +1,5 @@
 // rue packages
-import { Rue } from '@rue/rue';
+import { Rue } from '@ruejs/rue';
 
 // locals
 import { resources } from '@/locales';

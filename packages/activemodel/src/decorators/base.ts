@@ -1,5 +1,5 @@
 // rue packages
-import { Rue } from '@rue/config';
+import { Rue } from '@ruejs/config';
 
 // locals
 import i18n from '@/locales';

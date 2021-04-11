@@ -379,7 +379,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasMany)', () => {
   "errors": {
     "childName": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],

@@ -1,5 +1,5 @@
 // rue packages
-import { RueModule } from '@rue/activesupport';
+import { RueModule } from '@ruejs/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';
@@ -44,7 +44,7 @@ export class ActiveRecord$Associations$Persistence extends RueModule {
             const destroyStrategy =
               allAssociationStrategies[associationName][relationName]['destroyStrategy'];
             if (destroyStrategy) {
-              // @ts-expect-error
+              // @ts-ignore
               return destroyStrategy(_this);
             }
           }

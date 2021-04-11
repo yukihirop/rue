@@ -1,5 +1,5 @@
 // rue packages
-import { RueModule } from '@rue/activesupport';
+import { RueModule } from '@ruejs/activesupport';
 
 // locals
 import { ErrCodes, errObj } from '@/errors';

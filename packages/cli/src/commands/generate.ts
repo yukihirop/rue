@@ -1,5 +1,5 @@
 // rue packages
-import { Generator$Components } from '@rue/generator';
+import { Generator$Components } from '@ruejs/generator';
 
 // third party
 import { Command, flags } from '@oclif/command';
@@ -8,7 +8,7 @@ import { Command, flags } from '@oclif/command';
 import path from 'path';
 
 // types
-import type * as t from '@rue/generator';
+import type * as t from '@ruejs/generator';
 
 const TYPESCRIPT_SUPPORT_PRIMITIVE_TYPES = [
   'boolean',

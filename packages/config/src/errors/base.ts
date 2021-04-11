@@ -4,7 +4,7 @@ import { ErrMessages } from './code';
 
 import * as t from './types';
 
-const NAMESPACE = '@rue/activemodel';
+const NAMESPACE = '@ruejs/activemodel';
 
 // The namespace is given to the name so that "ActiveModel$Error" is displayed when viewed on the console.
 export class RueConfig$Error extends Error implements t.ErrObj {

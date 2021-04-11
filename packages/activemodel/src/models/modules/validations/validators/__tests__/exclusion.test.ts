@@ -17,7 +17,7 @@ describe('validateInclusion', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual(
             '\'test.propKey\' is not excluded in the \'["propVal","propVal_1"]\'.'
@@ -28,7 +28,7 @@ describe('validateInclusion', () => {
       describe("when 'propVal' is not excluded 'list' (when number)", () => {
         const errors = validateExclusion('propKey', 1, { in: [1, 2] }, translate) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual("'test.propKey' is not excluded in the '[1,2]'.");
         });
@@ -42,7 +42,7 @@ describe('validateInclusion', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual(
             "'test.propKey' is not excluded in the '[true,false]'."
@@ -58,7 +58,7 @@ describe('validateInclusion', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual(
             "'test.propKey' is not excluded in the '[\"undefined\"]'."
@@ -69,7 +69,7 @@ describe('validateInclusion', () => {
       describe("when 'propVal' is not excluded 'list' (when null)", () => {
         const errors = validateExclusion('propKey', null, { in: [null] }, translate) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual("'test.propKey' is not excluded in the '[null]'.");
         });
@@ -83,7 +83,7 @@ describe('validateInclusion', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual(
             '\'test.propKey\' is not excluded in the \'["propVal",1,true,false,"undefined",null]\'.'
@@ -100,7 +100,7 @@ describe('validateInclusion', () => {
           'override message'
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EXCLUDED);
           expect(errors[0].message).toEqual('override message');
         });

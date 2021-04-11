@@ -1,5 +1,5 @@
 // rue packages
-import { Registry } from '@rue/activesupport';
+import { Registry } from '@ruejs/activesupport';
 
 // types
 import * as t from './types';

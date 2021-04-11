@@ -1,5 +1,5 @@
 // rue packages
-import { RueModule } from '@rue/activesupport';
+import { RueModule } from '@ruejs/activesupport';
 
 // builtin
 import path from 'path';

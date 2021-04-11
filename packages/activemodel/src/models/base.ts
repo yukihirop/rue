@@ -1,5 +1,5 @@
 // rue packages
-import { ActiveSupport$Base as Support } from '@rue/activesupport';
+import { ActiveSupport$Base as Support } from '@ruejs/activesupport';
 
 // third party
 import flatten from 'obj-flatten';

@@ -16,7 +16,7 @@ describe('validateFormat', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual("'test.propKey' do not meet the format: 'email'.");
       });
@@ -32,7 +32,7 @@ describe('validateFormat', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual("'test.propKey' do not meet the format: 'IPv4'.");
       });
@@ -48,7 +48,7 @@ describe('validateFormat', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual("'test.propKey' do not meet the format: 'IPv6'.");
       });
@@ -64,7 +64,7 @@ describe('validateFormat', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual("'test.propKey' do not meet the format: '/\\d+/'.");
       });
@@ -81,7 +81,7 @@ describe('validateFormat', () => {
         'override message'
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual('override message');
       });
@@ -97,7 +97,7 @@ describe('validateFormat', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_FORMAT);
         expect(errors[0].message).toEqual("'test.propKey' do not meet the format: 'email'.");
       });

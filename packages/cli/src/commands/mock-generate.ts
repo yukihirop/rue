@@ -1,5 +1,5 @@
 // rue packages
-import { Generator$MockServer } from '@rue/generator';
+import { Generator$MockServer } from '@ruejs/generator';
 
 // third party
 import { Command } from '@oclif/command';

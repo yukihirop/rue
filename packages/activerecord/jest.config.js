@@ -9,10 +9,10 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)sx?$': 'ts-jest',
   },
-  transformIgnorePatterns: ['node_modules'],
+  transformIgnorePatterns: ['node_modules', '^.+\\.js$'],
   testMatch: ['**/__tests__/**/*.test.ts'],
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
   },
-  moduleFileExtensions: ['ts', 'js', 'json']
+  moduleFileExtensions: ['ts', 'js', 'json'],
 };

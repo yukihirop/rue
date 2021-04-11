@@ -1,4 +1,4 @@
-const { ActiveModel$Base, RueSetup } = require('@rue/rue');
+const { ActiveModel$Base, RueSetup } = require('@ruejs/rue');
 
 /**
  * Execute i18nConfig to configure i18next.

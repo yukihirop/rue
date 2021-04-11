@@ -1,5 +1,5 @@
 {
-  "name": "@rue/backend",
+  "name": "@ruejs/backend",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@agreed/server": "^5.2.0",
-    "@rue/config": "^0.0.0",
+    "@ruejs/config": "^0.0.0",
     "chalk": "^4.1.0",
     "globby": "^11.0.3",
     "pkg-dir": "^5.0.0"

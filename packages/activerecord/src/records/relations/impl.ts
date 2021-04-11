@@ -1,5 +1,5 @@
 // rue packages
-import { ActiveSupport$ImplBase } from '@rue/activesupport';
+import { ActiveSupport$ImplBase } from '@ruejs/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';

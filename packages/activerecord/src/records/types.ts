@@ -1,4 +1,4 @@
-import * as amt from '@rue/activemodel';
+import * as amt from '@ruejs/activemodel';
 import * as mat from '@/records/modules/associations';
 
 export type Params = amt.Model$Params & {

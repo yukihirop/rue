@@ -1,5 +1,5 @@
 // rue packages
-const { RueCheck } = require('@rue/rue');
+const { RueCheck } = require('@ruejs/rue');
 
 // locals
 const { ActiveForm } = require('../../lib/activeform')

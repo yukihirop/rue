@@ -1,5 +1,5 @@
 // rue packages
-import { Backend$MockServer } from '@rue/backend';
+import { Backend$MockServer } from '@ruejs/backend';
 
 // third party
 import { Command, flags } from '@oclif/command';

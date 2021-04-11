@@ -6,9 +6,13 @@
   "repository": "https://github.com/yukihirop/rue",
   "author": "yukihirop",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "fmt": "prettier --write **/src/**/*.ts",
-    "build": "yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:definition && yarn build:config && yarn build:backend && yarn build:repl && yarn build:cli && yarn build:rue",
+    "build": "yarn build:config && yarn build:generator && yarn build:activesupport && yarn build:activemodel && yarn build:activerecord && yarn build:definition && yarn build:backend && yarn build:repl && yarn build:cli && yarn build:rue",
     "build:activemodel": "cd packages/activemodel && yarn build && cd -",
     "build:activerecord": "cd packages/activerecord && yarn build && cd -",
     "build:activesupport": "cd packages/activesupport && yarn build && cd -",
@@ -33,8 +37,5 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.1",
     "typescript": "^4.1.3"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+  }
 }

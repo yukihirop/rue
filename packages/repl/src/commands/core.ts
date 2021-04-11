@@ -1,7 +1,7 @@
 import { REPLServer } from 'repl';
 // rue packages
-import { ActiveSupport$Base as Support } from '@rue/activesupport';
-import { Config$Base as Config } from '@rue/config';
+import { ActiveSupport$Base as Support } from '@ruejs/activesupport';
+import { Config$Base as Config } from '@ruejs/config';
 
 // locals
 import { Repl$Base as Repl } from '@/repl';

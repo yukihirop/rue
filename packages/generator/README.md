@@ -1,11 +1,11 @@
-# `@rue/generator`
+# `@ruejs/generator`
 
 > TODO: description
 
 ## Usage
 
 ```
-const generator = require('@rue/generator');
+const generator = require('@ruejs/generator');
 
 // TODO: DEMONSTRATE API
 ```

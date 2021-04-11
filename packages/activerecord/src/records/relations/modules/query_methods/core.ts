@@ -1,4 +1,4 @@
-import { RueModule } from '@rue/activesupport';
+import { RueModule } from '@ruejs/activesupport';
 
 // locals
 import { ActiveRecord$Base } from '@/records';

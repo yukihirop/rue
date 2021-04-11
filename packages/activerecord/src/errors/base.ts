@@ -1,5 +1,5 @@
 // rue packages
-import { ActiveModel$Error } from '@rue/activemodel';
+import { ActiveModel$Error } from '@ruejs/activemodel';
 
 // local
 import { ErrMessages } from './code';
@@ -7,7 +7,7 @@ import { ErrMessages } from './code';
 // types
 import * as t from './types';
 
-const NAMESPACE = '@rue/activerecord';
+const NAMESPACE = '@ruejs/activerecord';
 
 export class ActiveRecord$Error extends ActiveModel$Error {}
 

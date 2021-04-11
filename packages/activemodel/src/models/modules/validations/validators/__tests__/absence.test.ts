@@ -11,7 +11,7 @@ describe('validateAbsence', () => {
     describe("when 'propVal' is 'string (not empty)'", () => {
       const errors = validateAbsence('propKey', 'propVal', true, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -20,7 +20,7 @@ describe('validateAbsence', () => {
     describe("when 'propVal' is 'string (empty)'", () => {
       const errors = validateAbsence('propKey', '', true, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -29,7 +29,7 @@ describe('validateAbsence', () => {
     describe("when 'propVal' is 'array (not empty)'", () => {
       const errors = validateAbsence('propKey', ['propVal'], true, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -38,7 +38,7 @@ describe('validateAbsence', () => {
     describe("when 'propVal' is 'array (not empty)'", () => {
       const errors = validateAbsence('propKey', [], true, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -52,7 +52,7 @@ describe('validateAbsence', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -61,7 +61,7 @@ describe('validateAbsence', () => {
     describe("when 'propVal' is 'object (not empty)'", () => {
       const errors = validateAbsence('propKey', {}, true, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual("'test.propKey' must be blank.");
       });
@@ -76,7 +76,7 @@ describe('validateAbsence', () => {
         'override message'
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ABSENCE);
         expect(errors[0].message).toEqual('override message');
       });

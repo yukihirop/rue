@@ -1,4 +1,4 @@
-import { ActiveModel$Base, RueSetup } from '@rue/rue';
+import { ActiveModel$Base, RueSetup } from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.

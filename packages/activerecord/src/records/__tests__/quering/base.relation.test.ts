@@ -424,7 +424,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
     "name": [],
     "age": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]
@@ -615,7 +615,7 @@ describe('ActiveRecord$Base (Querying) (delegate to Relation)', () => {
   "errors": {
     "name": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],

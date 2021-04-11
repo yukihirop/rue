@@ -1,12 +1,12 @@
 // third party
-import { RueCheck } from '@rue/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveRecord } from '../lib';
 import { Account } from '@/records';
 
 // types
-import type * as t from '@rue/rue';
+import type * as t from '@ruejs/rue';
 
 type TaskParams = {
   id: t.Record$ForeignKey;
@@ -29,7 +29,7 @@ export class Task extends ActiveRecord<TaskParams> {
 
   protected static fetchAll(): Promise<TaskParams[]> {
     return Promise.resolve([
-      { id: 1, content: 'Create @rue of web micro framework', status: 'wip', accountId: 1 },
+      { id: 1, content: 'Create @ruejs of web micro framework', status: 'wip', accountId: 1 },
       { id: 2, content: 'Update r2-oas gem', status: 'success', accountId: 1 },
       { id: 3, content: 'Work since morning', status: 'failure', accountId: 2 },
       { id: 4, content: 'Get it done to the end', status: 'wip', accountId: 2 },

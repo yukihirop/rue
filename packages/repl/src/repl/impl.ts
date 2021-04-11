@@ -1,5 +1,5 @@
 // rue packages
-import { ActiveSupport$ImplBase as Support$ImplBase } from '@rue/activesupport';
+import { ActiveSupport$ImplBase as Support$ImplBase } from '@ruejs/activesupport';
 
 // locals
 import { Repl$History, Repl$FileWatchers } from './modules';

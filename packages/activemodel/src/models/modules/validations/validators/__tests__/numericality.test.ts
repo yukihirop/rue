@@ -16,7 +16,7 @@ describe('validateNumericality', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ONLY_INTEGER_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not only integer.");
       });
@@ -30,7 +30,7 @@ describe('validateNumericality', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_GREATER_THAN_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not greater than '1'.");
       });
@@ -44,7 +44,7 @@ describe('validateNumericality', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_GREATER_THAN_OR_EQUAL_TO_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not greater than or equal to '2'.");
       });
@@ -53,7 +53,7 @@ describe('validateNumericality', () => {
     describe("when specify 'equalTo'", () => {
       const errors = validateNumericality('propKey', 1, { equalTo: 2 }, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EQUAL_TO_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not equal to '2'.");
       });
@@ -62,7 +62,7 @@ describe('validateNumericality', () => {
     describe("when specify 'lessThan'", () => {
       const errors = validateNumericality('propKey', 1, { lessThan: 1 }, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_LESS_THAN_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not less than '1'.");
       });
@@ -76,7 +76,7 @@ describe('validateNumericality', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_LESS_THAN_OR_EQUAL_TO_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not less than or equal to '1'.");
       });
@@ -85,7 +85,7 @@ describe('validateNumericality', () => {
     describe("when specify 'odd'", () => {
       const errors = validateNumericality('propKey', 2, { odd: true }, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_ODD_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not odd.");
       });
@@ -94,7 +94,7 @@ describe('validateNumericality', () => {
     describe("when specify 'even'", () => {
       const errors = validateNumericality('propKey', 3, { even: true }, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EVEN_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not even.");
       });
@@ -109,7 +109,7 @@ describe('validateNumericality', () => {
         'override message'
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EVEN_NUMERIC);
         expect(errors[0].message).toEqual('override message');
       });
@@ -123,7 +123,7 @@ describe('validateNumericality', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EVEN_NUMERIC);
         expect(errors[0].message).toEqual("'test.propKey' is not even.");
       });
