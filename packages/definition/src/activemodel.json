@@ -1,8 +1,8 @@
 {
   "ActiveModel$Error": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/errors/base.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/errors/base.ts",
+      "updatedAt": "2021/04/12 03:05:24 +09:00"
     },
     "class": [
       {
@@ -17,8 +17,8 @@
   },
   "ErrObj": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/errors/types.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/errors/types.ts",
+      "updatedAt": "2021/04/12 03:05:24 +09:00"
     },
     "class": [
       {
@@ -33,8 +33,8 @@
   },
   "ActiveModel$Base": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/models/base.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/models/base.ts",
+      "updatedAt": "2021/04/12 03:05:24 +09:00"
     },
     "class": [
       {
@@ -79,8 +79,8 @@
   },
   "ActiveModel$Impl": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/models/impl.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/models/impl.ts",
+      "updatedAt": "2021/04/12 03:05:24 +09:00"
     },
     "class": [
       {
@@ -175,8 +175,8 @@
   },
   "registryForUniqueKeys": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/registries/base.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/registries/base.ts",
+      "updatedAt": "2021/04/12 03:05:24 +09:00"
     },
     "class": [
       {
@@ -223,8 +223,8 @@
   },
   "ActiveModel$Cachable": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/models/modules/cachable/core.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/models/modules/cachable/core.ts",
+      "updatedAt": "2021/04/12 03:05:25 +09:00"
     },
     "class": [
       {
@@ -273,8 +273,8 @@
   },
   "ActiveModel$Translation": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/models/modules/translation/core.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/models/modules/translation/core.ts",
+      "updatedAt": "2021/04/12 03:05:25 +09:00"
     },
     "class": [
       {
@@ -393,8 +393,8 @@
   },
   "ActiveModel$Validations": {
     "metadata": {
-      "filepath": "@ruejs/packages/activemodel/src/models/modules/validations/core.ts",
-      "updatedAt": "2021/04/12 02:45:35 +09:00"
+      "filepath": "rue/packages/activemodel/src/models/modules/validations/core.ts",
+      "updatedAt": "2021/04/12 03:05:25 +09:00"
     },
     "class": [
       {

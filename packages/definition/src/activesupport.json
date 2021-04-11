@@ -1,8 +1,8 @@
 {
   "RueModule": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/modules/base.ts",
+      "updatedAt": "2021/04/12 03:05:17 +09:00"
     },
     "class": [
       {
@@ -47,8 +47,8 @@
   },
   "RueModuleAncestorController": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/modules/base.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/modules/base.ts",
+      "updatedAt": "2021/04/12 03:05:17 +09:00"
     },
     "class": [
       {
@@ -103,8 +103,8 @@
   },
   "ActiveSupport$Registry$Base": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/registries/base.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/registries/base.ts",
+      "updatedAt": "2021/04/12 03:05:18 +09:00"
     },
     "class": [
       {
@@ -179,8 +179,8 @@
   },
   "ActiveSupport$Base": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/supports/base.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/supports/base.ts",
+      "updatedAt": "2021/04/12 03:05:18 +09:00"
     },
     "class": [
       {
@@ -207,8 +207,8 @@
   },
   "ActiveSupport$ImplBase": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/supports/impl.ts",
+      "updatedAt": "2021/04/12 03:05:18 +09:00"
     },
     "class": [
       {
@@ -223,8 +223,8 @@
   },
   "ActiveSupport$Impl": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/supports/impl.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/supports/impl.ts",
+      "updatedAt": "2021/04/12 03:05:18 +09:00"
     },
     "class": [
       {
@@ -247,8 +247,8 @@
   },
   "ActiveSupport$Info": {
     "metadata": {
-      "filepath": "@ruejs/packages/activesupport/src/supports/modules/info/core.ts",
-      "updatedAt": "2021/04/12 02:45:28 +09:00"
+      "filepath": "rue/packages/activesupport/src/supports/modules/info/core.ts",
+      "updatedAt": "2021/04/12 03:05:18 +09:00"
     },
     "class": [
       {

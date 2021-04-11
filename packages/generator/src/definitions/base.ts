@@ -16,7 +16,7 @@ import type * as tpt from 'typescript-parser';
 
 export class Generator$Definitions$Base {
   private static parser = new TypescriptParser();
-  private static basePath = '@ruejs/packages';
+  private static basePath = 'rue/packages';
   private static dateFormat = 'YYYY/MM/DD HH:mm:ss Z';
 
   static async generate(
