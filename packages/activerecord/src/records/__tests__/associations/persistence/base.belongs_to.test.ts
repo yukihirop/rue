@@ -368,7 +368,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
   "errors": {
     "belongsToName": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],
@@ -447,13 +447,13 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / belongsTo)', () => {
   "errors": {
     "name": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],
     "age": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_LESS_THAN_NUMERIC"
       }
     ]

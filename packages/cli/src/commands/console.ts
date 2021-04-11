@@ -1,6 +1,6 @@
 // rue packages
-import { Repl$Base as Repl } from '@rue/repl';
-import { Config$Base as Config } from '@rue/config';
+import { Repl$Base as Repl } from '@ruejs/repl';
+import { Config$Base as Config } from '@ruejs/config';
 
 // third party
 import { Command, flags } from '@oclif/command';

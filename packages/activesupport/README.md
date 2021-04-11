@@ -1,11 +1,11 @@
-# `@rue/activesupport`
+# `@ruejs/activesupport`
 
 > TODO: description
 
 ## Usage
 
 ```
-const activesupport = require('@rue/activesupport');
+const activesupport = require('@ruejs/activesupport');
 
 // TODO: DEMONSTRATE API
 ```

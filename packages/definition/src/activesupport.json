@@ -1,7 +1,7 @@
 {
   "RueModule": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/modules/base.ts",
+      "filepath": "@ruejs/packages/activesupport/src/modules/base.ts",
       "updatedAt": "2021/04/04 00:19:58 +09:00"
     },
     "class": [
@@ -47,7 +47,7 @@
   },
   "RueModuleAncestorController": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/modules/base.ts",
+      "filepath": "@ruejs/packages/activesupport/src/modules/base.ts",
       "updatedAt": "2021/04/04 00:19:58 +09:00"
     },
     "class": [
@@ -103,7 +103,7 @@
   },
   "ActiveSupport$Registry$Base": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/registries/base.ts",
+      "filepath": "@ruejs/packages/activesupport/src/registries/base.ts",
       "updatedAt": "2021/04/04 00:19:59 +09:00"
     },
     "class": [
@@ -179,7 +179,7 @@
   },
   "ActiveSupport$Base": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/base.ts",
+      "filepath": "@ruejs/packages/activesupport/src/supports/base.ts",
       "updatedAt": "2021/04/04 00:19:59 +09:00"
     },
     "class": [
@@ -207,7 +207,7 @@
   },
   "ActiveSupport$ImplBase": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
+      "filepath": "@ruejs/packages/activesupport/src/supports/impl.ts",
       "updatedAt": "2021/04/04 00:19:59 +09:00"
     },
     "class": [
@@ -223,7 +223,7 @@
   },
   "ActiveSupport$Impl": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/impl.ts",
+      "filepath": "@ruejs/packages/activesupport/src/supports/impl.ts",
       "updatedAt": "2021/04/04 00:19:59 +09:00"
     },
     "class": [
@@ -247,7 +247,7 @@
   },
   "ActiveSupport$Info": {
     "metadata": {
-      "filepath": "@rue/packages/activesupport/src/supports/modules/info/core.ts",
+      "filepath": "@ruejs/packages/activesupport/src/supports/modules/info/core.ts",
       "updatedAt": "2021/04/04 00:19:59 +09:00"
     },
     "class": [

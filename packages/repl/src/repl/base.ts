@@ -1,5 +1,5 @@
 // rue/packages
-import { Config$Base as Config } from '@rue/config';
+import { Config$Base as Config } from '@ruejs/config';
 
 // builtin
 import * as REPL from 'repl';
@@ -43,16 +43,16 @@ export class Repl$Base extends Repl$Impl {
   static async getRueModulePaths(): Promise<string[]> {
     const paths = await globby(
       [
-        `node_modules/@rue/activesupport/lib/**/*.js`,
-        `node_modules/@rue/activemodel/lib/**/*.js`,
-        `node_modules/@rue/activerecord/lib/**/*.js`,
-        `!node_modules/@rue/activesupport/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
-        `!node_modules/@rue/activemodel/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
-        `!node_modules/@rue/activerecord/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
+        `node_modules/@ruejs/activesupport/lib/**/*.js`,
+        `node_modules/@ruejs/activemodel/lib/**/*.js`,
+        `node_modules/@ruejs/activerecord/lib/**/*.js`,
+        `!node_modules/@ruejs/activesupport/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
+        `!node_modules/@ruejs/activemodel/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
+        `!node_modules/@ruejs/activerecord/{src,lib}/**/__tests__/**/*.test.{js,ts}`,
         // Duplicate name does not load correctly
-        `!node_modules/@rue/activemodel/{src,lib}/**/validators/*.{js,ts}`,
+        `!node_modules/@ruejs/activemodel/{src,lib}/**/validators/*.{js,ts}`,
         // Avoid matching the test code in the rue package
-        '!node_modules/@rue/**/src/**/__tests__/**/*.test.{js,ts}',
+        '!node_modules/@ruejs/**/src/**/__tests__/**/*.test.{js,ts}',
         ...rueREPLConfig['loadModules'],
       ],
       {
@@ -91,7 +91,7 @@ export class Repl$Base extends Repl$Impl {
 
   // ref: https://github.com/kenotron/simple-esm-module-alias/blob/master/index.js
   private static resolveModuleAliases() {
-    // TODO: Use @rue/config
+    // TODO: Use @ruejs/config
     Repl$Base.esmRequire('module-alias').addAliases(moduleAliases);
   }
 

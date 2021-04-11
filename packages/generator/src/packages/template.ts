@@ -1,7 +1,7 @@
 const template = Object.create({ rc: {}, activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
 
-template.rc.defaultTS = `import { Rue } from '@rue/rue';
+template.rc.defaultTS = `import { Rue } from '@ruejs/rue';
 
 /**
  * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
@@ -15,7 +15,7 @@ Rue.configure({
 });
 `;
 
-template.rc.defaultJS = `const { Rue } = require('@rue/rue');
+template.rc.defaultJS = `const { Rue } = require('@ruejs/rue');
 
 /**
  * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
@@ -29,8 +29,8 @@ Rue.configure({
 });
 `;
 
-template.activerecord.defaultTS = `import { ActiveRecord$Base, RueSetup } from '@rue/rue';
-import type * as t from '@rue/rue';
+template.activerecord.defaultTS = `import { ActiveRecord$Base, RueSetup } from '@ruejs/rue';
+import type * as t from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -43,7 +43,7 @@ export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T
 }
 `;
 
-template.activerecord.defaultJS = `const { ActiveRecord$Base, RueSetup } = require('@rue/rue');
+template.activerecord.defaultJS = `const { ActiveRecord$Base, RueSetup } = require('@ruejs/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -62,7 +62,7 @@ class ActiveRecord extends ActiveRecord$Base {
 exports.ActiveRecord = ActiveRecord;
 `;
 
-template.activemodel.defaultTS = `import { ActiveModel$Base, RueSetup } from '@rue/rue';
+template.activemodel.defaultTS = `import { ActiveModel$Base, RueSetup } from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -71,7 +71,7 @@ template.activemodel.defaultTS = `import { ActiveModel$Base, RueSetup } from '@r
 export class ActiveModel extends ActiveModel$Base {}
 `;
 
-template.activemodel.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@rue/rue');
+template.activemodel.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@ruejs/rue');
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -82,8 +82,8 @@ class ActiveModel extends ActiveModel$Base {}
 exports.ActiveModel = ActiveModel;
 `;
 
-template.activeform.defaultTS = `import { ActiveModel$Base, RueSetup } from '@rue/rue';
-import * as t from '@rue/rue';
+template.activeform.defaultTS = `import { ActiveModel$Base, RueSetup } from '@ruejs/rue';
+import * as t from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.
@@ -96,7 +96,7 @@ export class ActiveForm extends ActiveModel$Base {
 }
 `;
 
-template.activeform.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@rue/rue');
+template.activeform.defaultJS = `const { ActiveModel$Base, RueSetup } = require('@ruejs/rue');
 
 /**
  * Execute i18nConfig to configure i18next.

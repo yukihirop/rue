@@ -1,7 +1,7 @@
-import { ActiveModel$Base, RueSetup } from '@rue/rue';
+import { ActiveModel$Base, RueSetup } from '@ruejs/rue';
 
 // types
-import * as t from '@rue/rue';
+import * as t from '@ruejs/rue';
 
 @RueSetup
 export class ActiveForm extends ActiveModel$Base {

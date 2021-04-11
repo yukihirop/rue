@@ -323,7 +323,7 @@ describe('ActiveRecord$Base (ActiveRecord$Persistence / hasOne)', () => {
   "errors": {
     "oneName": [
       {
-        "_namespace": "@rue/activemodel",
+        "_namespace": "@ruejs/activemodel",
         "_code": "PROPERTY_IS_NOT_EQUAL_LENGTH"
       }
     ],

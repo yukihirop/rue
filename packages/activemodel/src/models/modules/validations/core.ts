@@ -1,5 +1,5 @@
 // rue packages
-import { RueModule } from '@rue/activesupport';
+import { RueModule } from '@ruejs/activesupport';
 
 // thrid party
 import flatten from 'obj-flatten';

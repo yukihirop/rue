@@ -18,13 +18,13 @@ export default template;
  * - libPath
  */
 template.record.defaultTS = helper`// rue packages
-import { RueCheck } from '@rue/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveRecord } from '<%- libPath %>';
 
 // types
-import * as t from '@rue/rue';
+import * as t from '@ruejs/rue';
 
 export type <%- className %>Params = {
   // Please do not change the name 'id' arbitrarily.
@@ -123,7 +123,7 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
  * - libPath
  */
 template.record.defaultJS = helper`// rue packages
-const { RueCheck } = require('@rue/rue');
+const { RueCheck } = require('@ruejs/rue');
 
 // locals
 const { ActiveRecord } = require('<%- libPath %>');
@@ -254,13 +254,13 @@ export class <%- className %> extends ActiveRecord {
  * - libPath
  */
 template.model.defaultTS = helper`// rue packages
-import { RueCheck } from '@rue/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveModel } from '<%- libPath %>';
 
 // types
-import * as t from '@rue/rue';
+import * as t from '@ruejs/rue';
 
 export type <%- className %>Params = {
   // Please do not change the name 'errors' arbitrarily.
@@ -300,7 +300,7 @@ export class <%- className %> extends ActiveModel {
  * - libPath
  */
 template.model.defaultJS = helper`// rue packages
-const { RueCheck } = require('@rue/rue');
+const { RueCheck } = require('@ruejs/rue');
 
 // locals
 const { ActiveModel } = require('<%- libPath %>');
@@ -341,13 +341,13 @@ export class <%- className %> extends ActiveModel {
  * - libPath
  */
 template.form.defaultTS = helper`// rue packages
-import { RueCheck } from '@rue/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveForm } from '<%- libPath %>';
 
 // types
-import * as t from '@rue/rue';
+import * as t from '@ruejs/rue';
 
 export type <%- className %>State = {
   // Please override
@@ -402,7 +402,7 @@ export class <%- className %> extends ActiveForm {
  * - libPath
  */
 template.form.defaultJS = helper`// rue packages
-const { RueCheck } = require('@rue/rue');
+const { RueCheck } = require('@ruejs/rue');
 
 // locals
 const { ActiveForm } = require('<%- libPath %>')

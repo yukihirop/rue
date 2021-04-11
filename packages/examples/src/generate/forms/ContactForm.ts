@@ -1,11 +1,11 @@
 // rue packages
-import { RueCheck } from '@rue/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveForm } from '../../lib/activeform';
 
 // types
-import * as t from '@rue/rue';
+import * as t from '@ruejs/rue';
 
 export type ContactFormState = {
   // Please override

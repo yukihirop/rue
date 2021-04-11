@@ -1,5 +1,5 @@
 // rue packages
-import { Config$Base as Config } from '@rue/config';
+import { Config$Base as Config } from '@ruejs/config';
 
 // third party
 const AgreedServer = require('@agreed/server');

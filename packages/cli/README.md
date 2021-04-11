@@ -1,11 +1,11 @@
-# `@rue/cli`
+# `@ruejs/cli`
 
 > TODO: description
 
 ## Usage
 
 ```
-const cli = require('@rue/cli');
+const cli = require('@ruejs/cli');
 
 // TODO: DEMONSTRATE API
 ```

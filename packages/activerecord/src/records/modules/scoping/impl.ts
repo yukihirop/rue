@@ -1,4 +1,4 @@
-import { RueModule, ActiveSupport$ImplBase } from '@rue/activesupport';
+import { RueModule, ActiveSupport$ImplBase } from '@ruejs/activesupport';
 
 // modles
 import { ActiveRecord$Scoping$Named } from './named';

@@ -17,7 +17,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be exist.'."
@@ -34,7 +34,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be 1'."
@@ -51,7 +51,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be true'."
@@ -71,7 +71,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be contained in the list.'."
@@ -88,7 +88,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be contained in the list.'."
@@ -105,7 +105,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must be contained in the list.'."
@@ -122,7 +122,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must not be empty'."
@@ -139,7 +139,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'self value must be empty'."
@@ -157,7 +157,7 @@ describe('validateCondition', () => {
         'override message'
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual('override message');
       });
@@ -172,7 +172,7 @@ describe('validateCondition', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_DO_NOT_MEET_THE_CONDITION);
         expect(errors[0].message).toEqual(
           "'test.propKey' do not meet the condition: 'propVal must not be undefined'."

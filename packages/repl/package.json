@@ -1,5 +1,5 @@
 {
-  "name": "@rue/repl",
+  "name": "@ruejs/repl",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -39,9 +39,9 @@
     "typescript": "^4.1.5"
   },
   "dependencies": {
-    "@rue/activesupport": "^0.0.0",
-    "@rue/config": "^0.0.0",
-    "@rue/definition": "^0.0.0",
+    "@ruejs/activesupport": "^0.0.0",
+    "@ruejs/config": "^0.0.0",
+    "@ruejs/definition": "^0.0.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.5.1",
     "esm": "^3.2.25",

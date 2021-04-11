@@ -1,5 +1,5 @@
-import { ActiveModel$Base, RueSetup } from '@rue/rue';
-import * as t from '@rue/rue';
+import { ActiveModel$Base, RueSetup } from '@ruejs/rue';
+import * as t from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.

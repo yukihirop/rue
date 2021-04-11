@@ -1,6 +1,6 @@
 // rue packages
-import definitions from '@rue/definition';
-import { ActiveSupport$Base as Support } from '@rue/activesupport';
+import definitions from '@ruejs/definition';
+import { ActiveSupport$Base as Support } from '@ruejs/activesupport';
 
 // third party
 import chalk from 'chalk';

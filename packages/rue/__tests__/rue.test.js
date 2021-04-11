@@ -2,6 +2,6 @@
 
 const rue = require('..');
 
-describe('@rue/rue', () => {
+describe('@ruejs/rue', () => {
     it('needs tests');
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@rue/activesupport",
+  "name": "@ruejs/activesupport",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -32,7 +32,7 @@
     "url": "https://github.com/yukihirop/rue/issues"
   },
   "devDependencies": {
-    "@rue/generator": "^0.0.0",
+    "@ruejs/generator": "^0.0.0",
     "@types/jest": "^26.0.20",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.1",

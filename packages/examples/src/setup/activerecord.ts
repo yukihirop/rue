@@ -1,5 +1,5 @@
-import { ActiveRecord$Base, RueSetup } from '@rue/rue';
-import type * as t from '@rue/rue';
+import { ActiveRecord$Base, RueSetup } from '@ruejs/rue';
+import type * as t from '@ruejs/rue';
 
 /**
  * Execute i18nConfig to configure i18next.

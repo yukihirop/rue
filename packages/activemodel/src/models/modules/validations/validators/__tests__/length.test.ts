@@ -17,7 +17,7 @@ describe('validateLength', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_TOO_LONG_CHARS_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is too long (maximum '6' characters).");
       });
@@ -31,7 +31,7 @@ describe('validateLength', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_TOO_LONG_WORDS_LENGTH);
           expect(errors[0].message).toEqual("'test.propKey' is too long (maximum '3' words).");
         });
@@ -47,7 +47,7 @@ describe('validateLength', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_TOO_SHORT_CHARS_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is too short (minimum '8' characters).");
       });
@@ -61,7 +61,7 @@ describe('validateLength', () => {
           translate
         ) as et.ErrObj[];
         it('return errors', () => {
-          expect(errors[0].namespace).toEqual('@rue/activemodel');
+          expect(errors[0].namespace).toEqual('@ruejs/activemodel');
           expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_TOO_SHORT_WORDS_LENGTH);
           expect(errors[0].message).toEqual("'test.propKey' is too short (minimum '5' words).");
         });
@@ -71,7 +71,7 @@ describe('validateLength', () => {
     describe("when specify 'is'", () => {
       const errors = validateLength({}, 'propKey', 'propVal', { is: 6 }, translate) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_EQUAL_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is not equal length ('6' characters).");
       });
@@ -86,7 +86,7 @@ describe('validateLength', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_WITHIN_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is not within length (range: '[1,2]').");
       });
@@ -101,7 +101,7 @@ describe('validateLength', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_WITHIN_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is not within length (range: '[1,2]').");
       });
@@ -117,7 +117,7 @@ describe('validateLength', () => {
         'override message'
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_WITHIN_LENGTH);
         expect(errors[0].message).toEqual('override message');
       });
@@ -132,7 +132,7 @@ describe('validateLength', () => {
         translate
       ) as et.ErrObj[];
       it('return errors', () => {
-        expect(errors[0].namespace).toEqual('@rue/activemodel');
+        expect(errors[0].namespace).toEqual('@ruejs/activemodel');
         expect(errors[0].code).toEqual(ErrCodes.PROPERTY_IS_NOT_WITHIN_LENGTH);
         expect(errors[0].message).toEqual("'test.propKey' is not within length (range: '[1,2]').");
       });

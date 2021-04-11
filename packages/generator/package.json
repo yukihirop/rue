@@ -1,5 +1,5 @@
 {
-  "name": "@rue/generator",
+  "name": "@ruejs/generator",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -38,7 +38,7 @@
     "typescript-parser": "^2.6.1"
   },
   "dependencies": {
-    "@rue/config": "^0.0.0",
+    "@ruejs/config": "^0.0.0",
     "chalk": "^4.1.0",
     "dayjs": "^1.10.4",
     "ejs": "^3.1.6",

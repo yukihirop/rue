@@ -1,5 +1,5 @@
 {
-  "name": "@rue/activemodel",
+  "name": "@ruejs/activemodel",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -32,14 +32,14 @@
     "url": "https://github.com/yukihirop/rue/issues"
   },
   "dependencies": {
-    "@rue/activesupport": "^0.0.0",
-    "@rue/config": "^0.0.0",
+    "@ruejs/activesupport": "^0.0.0",
+    "@ruejs/config": "^0.0.0",
     "i18next": "^19.8.7",
     "obj-flatten": "^2.0.6",
     "obj-unflatten": "^1.0.10"
   },
   "devDependencies": {
-    "@rue/generator": "^0.0.0",
+    "@ruejs/generator": "^0.0.0",
     "@types/i18next": "^13.0.0",
     "@types/jest": "^26.0.3",
     "jest": "^26.6.3",

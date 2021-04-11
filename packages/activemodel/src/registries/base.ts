@@ -1,8 +1,8 @@
 // rue packages
-import { Registry } from '@rue/activesupport';
+import { Registry } from '@ruejs/activesupport';
 
 // types
-import type * as st from '@rue/activesupport';
+import type * as st from '@ruejs/activesupport';
 import type * as t from './types';
 
 // define singletons

@@ -1,5 +1,5 @@
 // rue packages
-import { RueModule, ActiveSupport$ImplBase } from '@rue/activesupport';
+import { RueModule, ActiveSupport$ImplBase } from '@ruejs/activesupport';
 
 abstract class ActiveRecord$Associations$Impl extends RueModule {
   // Prepared for checking with hasOwnProperty ()

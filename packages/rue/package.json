@@ -1,5 +1,5 @@
 {
-  "name": "@rue/rue",
+  "name": "@ruejs/rue",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "yukihirop <te108186@gmail.com>",
@@ -28,10 +28,10 @@
     "url": "https://github.com/yukihirop/rue/issues"
   },
   "dependencies": {
-    "@rue/activemodel": "^1.0.0",
-    "@rue/activerecord": "^0.0.0",
-    "@rue/cli": "^0.0.0",
-    "@rue/config": "^0.0.0"
+    "@ruejs/activemodel": "^1.0.0",
+    "@ruejs/activerecord": "^0.0.0",
+    "@ruejs/cli": "^0.0.0",
+    "@ruejs/config": "^0.0.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",

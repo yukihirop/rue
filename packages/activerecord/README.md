@@ -1,11 +1,11 @@
-# `@rue/activerecord`
+# `@ruejs/activerecord`
 
 > TODO: description
 
 ## Usage
 
 ```
-const activerecord = require('@rue/activerecord');
+const activerecord = require('@ruejs/activerecord');
 
 // TODO: DEMONSTRATE API
 ```
