@@ -16,8 +16,6 @@
       "@/*": ["src/*"]
     },
     "allowJs": true,
-    "lib": [
-      "ES2019.Array"
-    ]
+    "lib": ["ES2019.Array", "dom"]
   }
 }
