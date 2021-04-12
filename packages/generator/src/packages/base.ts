@@ -52,8 +52,8 @@ export class Generator$Packages$Base {
       return template.activemodel;
     } else if (pkgName === 'activeform') {
       return template.activeform;
-    } else if (pkgName === 'rc') {
-      return template.rc;
+    } else if (pkgName === 'bootstrap') {
+      return template.bootstrap;
     }
   }
 }

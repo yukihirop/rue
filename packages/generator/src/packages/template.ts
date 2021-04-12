@@ -1,7 +1,7 @@
-const template = Object.create({ rc: {}, activemodel: {}, activerecord: {}, activeform: {} });
+const template = Object.create({ bootstrap: {}, activemodel: {}, activerecord: {}, activeform: {} });
 export default template;
 
-template.rc.defaultTS = `import { Rue } from '@ruejs/rue';
+template.bootstrap.defaultTS = `import { Rue } from '@ruejs/rue';
 
 /**
  * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
@@ -15,7 +15,7 @@ Rue.configure({
 });
 `;
 
-template.rc.defaultJS = `const { Rue } = require('@ruejs/rue');
+template.bootstrap.defaultJS = `const { Rue } = require('@ruejs/rue');
 
 /**
  * Please Override 'i18n.resources'. 'i18n.resources' is a translation file of activerecord/activemodel/activeform.
