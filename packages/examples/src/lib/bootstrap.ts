@@ -7,7 +7,7 @@ import { resources } from '@/locales';
 Rue.configure({
   i18n: {
     options: {
-      lng: 'ja',
+      lng: 'en',
     },
     resources,
   },

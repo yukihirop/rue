@@ -1,0 +1,22 @@
+models:
+  TmpUser:
+    name: 名前
+    age: 年齢
+records:
+  User:
+    name: 名前
+    age: 年齢
+  Account:
+    name: 名前
+    email: Eメール
+  Task:
+    content: 内容
+    status: 状態
+  Task/status:
+    wip: 途中
+    failure: 失敗
+    success: 成功
+forms:
+  ContactFrom:
+    name: 名前
+    email: Eメール
