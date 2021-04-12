@@ -34,6 +34,7 @@ export class Config$Base {
       },
     },
     repl: {
+      ruePackageRootPath: undefined,
       actions: {
         ancestors: 'ancs',
         descriptors: 'desc',

@@ -25,6 +25,7 @@ describe('Config$Base', () => {
           },
         },
         repl: {
+          ruePackageRootPath: undefined,
           actions: {
             ancestors: 'ancs',
             descriptors: 'desc',
@@ -69,6 +70,7 @@ describe('Config$Base', () => {
             },
           },
           repl: {
+            ruePackageRootPath: undefined,
             actions: {
               ancestors: 'ancs',
               descriptors: 'desc',
@@ -104,6 +106,7 @@ describe('Config$Base', () => {
     describe('when default', () => {
       it('should correctly', () => {
         expect(Config.rueREPL()).toEqual({
+          ruePackageRootPath: undefined,
           actions: {
             ancestors: 'ancs',
             descriptors: 'desc',
