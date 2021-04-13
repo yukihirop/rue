@@ -33,6 +33,7 @@ module.exports = {
     },
     loadModules: [
       'src/**/{forms,models,records}/**/*.ts',
+      '!src/rue/{forms,models,records}/**',
       'src/setup/rc.ts',
       '!src/**/__tests__/*.test.{js,ts}',
     ],
