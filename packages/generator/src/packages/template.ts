@@ -1,4 +1,9 @@
-const template = Object.create({ bootstrap: {}, activemodel: {}, activerecord: {}, activeform: {} });
+const template = Object.create({
+  bootstrap: {},
+  activemodel: {},
+  activerecord: {},
+  activeform: {},
+});
 export default template;
 
 template.bootstrap.defaultTS = `import { Rue } from '@ruejs/rue';

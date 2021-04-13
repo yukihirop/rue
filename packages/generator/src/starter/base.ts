@@ -1,5 +1,6 @@
 // third party
 import recursive from 'recursive-readdir';
+import rimraf from 'rimraf';
 
 // builtin
 import fs from 'fs';
@@ -7,8 +8,6 @@ import path from 'path';
 
 // types
 import * as t from './types';
-
-const currentDir = process.cwd();
 
 export class Generator$Starter$Base {
   static async generate({
@@ -24,9 +23,10 @@ export class Generator$Starter$Base {
       fs.mkdirSync(outputDirPath, { recursive: true });
     } else {
       if (force) {
-        fs.rmSync(outputDirPath, { recursive: true });
+        rimraf.sync(outputDirPath);
       } else {
-        console.error(`❗️ [Rue] The directory exists in '${outputDirPath}'`);
+        console.error(`💥 [Rue] The directory exists in '${outputDirPath}'`);
+        process.exit(1);
       }
     }
 
@@ -34,24 +34,26 @@ export class Generator$Starter$Base {
     let files = await recursive(templateDirPath);
     files = files.sort();
 
-    console.log(`✨ [Rue] Generate Rue Starter`);
-    
+    console.log(`✨ [Rue] Generate Rue Starter 💫`);
+
     files.forEach((file) => {
-      const dir = path.dirname(file);
-      if (!force && !fs.existsSync(dir)) {
-        fs.mkdirSync(outputDirPath, { recursive: true });
+      const relativePath = path.relative(templateDirPath, file);
+      const destPath = path.resolve(`${outputDirPath}/${relativePath}`);
+      const dir = path.dirname(destPath);
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
       }
 
-      const relativePath = path.relative(templateDirPath, file);
-      const destPath = `${outputDirPath}/${relativePath}`;
       fs.copyFileSync(file, destPath);
-      console.log(`✨ [Rue] Generate '${outputDirPath}/${relativePath}'`);
+      console.log(`✨ [Rue] create '${outputDirPath}/${relativePath}'`);
     });
   }
 
   private static getTemplateDir(extname: t.ExtName): string {
     if (extname == 'ts') {
-      return path.join(currentDir, 'template', extname);
+      const pathInlib = path.join(__dirname, 'template', extname);
+      return pathInlib.replace('/lib/', '/src/');
     } else {
       console.error(`💥 [Rue] '${extname}' is an unsupported extension.`);
     }
