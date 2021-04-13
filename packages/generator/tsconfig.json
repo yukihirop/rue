@@ -1,7 +1,6 @@
 {
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
+  "exclude": ["src/starter/template/ts"],
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
@@ -11,13 +10,12 @@
     "declarationMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
     "rootDir": "src",
     "outDir": "lib",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "allowJs": true
   }

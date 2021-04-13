@@ -41,7 +41,12 @@ export class Repl$Base extends Repl$Impl {
   }
 
   static async getRueModulePaths(): Promise<string[]> {
-    const paths = await globby(
+    /**
+     * When checking locally, it is necessary to be able to dynamically return the root path
+     * because it refers to the globally installed package by yarn link.
+     */
+    const pkgRootPath = rueREPLConfig.ruePackageRootPath || Repl$Base.projectRoot;
+    const buildPaths = await globby(
       [
         `node_modules/@ruejs/activesupport/lib/**/*.js`,
         `node_modules/@ruejs/activemodel/lib/**/*.js`,
@@ -52,16 +57,24 @@ export class Repl$Base extends Repl$Impl {
         // Duplicate name does not load correctly
         `!node_modules/@ruejs/activemodel/{src,lib}/**/validators/*.{js,ts}`,
         // Avoid matching the test code in the rue package
-        '!node_modules/@ruejs/**/src/**/__tests__/**/*.test.{js,ts}',
-        ...rueREPLConfig['loadModules'],
+        `!node_modules/@ruejs/**/src/**/__tests__/**/*.test.{js,ts}`,
       ],
       {
-        cwd: Repl$Base.projectRoot,
+        cwd: pkgRootPath,
         gitignore: true,
       }
     );
 
-    return [...paths.map((p) => path.join(Repl$Base.projectRoot, p))];
+    const udfPaths = await globby(rueREPLConfig['loadModules'], {
+      cwd: Repl$Base.projectRoot,
+      gitignore: true,
+    });
+
+    const paths = [
+      ...buildPaths.map((p) => `${pkgRootPath}/${p}`),
+      ...udfPaths.map((p) => `${Repl$Base.projectRoot}/${p}`),
+    ];
+    return paths;
   }
 
   static async loadRueModulesForREPL(repl: REPLServer, modules?: t.Modules) {

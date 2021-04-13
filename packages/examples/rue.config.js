@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   backend: {
     mock_server: {
@@ -19,6 +21,7 @@ module.exports = {
     },
   },
   repl: {
+    ruePackageRootPath: process.env.RUE_PKG_ROOT_PATH,
     actions: {
       ancestors: 'ancs',
       descriptors: 'desc',
@@ -30,6 +33,7 @@ module.exports = {
     },
     loadModules: [
       'src/**/{forms,models,records}/**/*.ts',
+      '!src/rue/{forms,models,records}/**',
       'src/setup/rc.ts',
       '!src/**/__tests__/*.test.{js,ts}',
     ],

@@ -1,2 +1,2 @@
-export type PkgName = 'rc' | 'activerecord' | 'activemodel' | 'activeform';
+export type PkgName = 'bootstrap' | 'activerecord' | 'activemodel' | 'activeform';
 export type ExtName = 'js' | 'ts';
