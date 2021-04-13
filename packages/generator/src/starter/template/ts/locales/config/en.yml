@@ -1,0 +1,22 @@
+models:
+  TmpUser:
+    name: Name
+    age: Age
+records:
+  User:
+    name: Name
+    age: Age
+  Account:
+    name: name
+    email: Email
+  Task:
+    content: Content
+    status: Status
+  Task/status:
+    wip: WIP
+    failure: Failure
+    success: Success
+forms:
+  ContactFrom:
+    name: Name
+    email: Email
