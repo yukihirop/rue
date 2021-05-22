@@ -35,6 +35,7 @@ describe('Config$Base', () => {
             prototype: 'proto',
             definition: 'show',
           },
+          dotEnvPath: './.env',
           loadModules: [
             'src/**/{forms,models,records}/**/*.{js,ts}',
             '!src/**/__tests__/*.test.{js,ts}',
@@ -80,6 +81,7 @@ describe('Config$Base', () => {
               prototype: 'proto',
               definition: 'show',
             },
+            dotEnvPath: './.env',
             loadModules: [
               'src/**/{forms,models,records}/**/*.{js,ts}',
               '!src/**/__tests__/*.test.{js,ts}',
@@ -116,6 +118,7 @@ describe('Config$Base', () => {
             prototype: 'proto',
             definition: 'show',
           },
+          dotEnvPath: './.env',
           loadModules: [
             'src/**/{forms,models,records}/**/*.{js,ts}',
             '!src/**/__tests__/*.test.{js,ts}',
