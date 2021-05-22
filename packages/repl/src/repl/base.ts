@@ -87,6 +87,7 @@ export class Repl$Base extends Repl$Impl {
   }
 
   private static async initializeREPL(opts: replt.ReplOptions): Promise<replt.REPLServer> {
+    Repl$Base.loadDotEnv();
     Repl$Base.resolveModuleAliases();
 
     console.log(`[Node] Welcome to Node.js v${process.env.NODENV_VERSION}.`);
@@ -100,6 +101,10 @@ export class Repl$Base extends Repl$Impl {
     defineCommands(repl);
 
     return repl;
+  }
+
+  private static loadDotEnv() {
+    require('dotenv').config({ path: path.join(projectRoot, rueREPLConfig.dotEnvPath) });
   }
 
   // ref: https://github.com/kenotron/simple-esm-module-alias/blob/master/index.js

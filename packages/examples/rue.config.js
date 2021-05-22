@@ -31,6 +31,7 @@ module.exports = {
       prototype: 'proto',
       definition: 'show',
     },
+    dotEnvPath: './.env.dev',
     loadModules: [
       'src/**/{forms,models,records}/**/*.ts',
       '!src/rue/{forms,models,records}/**',
