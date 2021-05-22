@@ -29,6 +29,7 @@ export type RueConfig = {
       prototype?: string;
       definition?: string;
     };
+    dotEnvPath?: string;
     loadModules: string[];
     moduleAliases: {
       [aliasName: string]: string;
