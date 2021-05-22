@@ -33,7 +33,7 @@ export class Generator$Components$Base {
     if (!force && fs.existsSync(savePath)) {
       console.log(`❗️ [Rue] The file exists in '${savePath}'`);
     } else {
-      const libPath = `./src/lib/active${compName}`;
+      const libPath = `./src/lib`;
       const libRelPath = path.relative(outputDirPath, libPath);
       const template = this.getTemplate(compName, extname);
       fs.writeFileSync(savePath, template.build({ className, params, libPath: libRelPath }));

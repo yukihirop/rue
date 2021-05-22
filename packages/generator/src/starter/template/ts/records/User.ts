@@ -1,5 +1,5 @@
 // rue packages
-import { RueCheck, ActiveRecord$Base } from '@ruejs/rue';
+import { RueCheck } from '@ruejs/rue';
 
 // locals
 import { ActiveRecord } from '../lib';
@@ -61,33 +61,33 @@ export class User extends ActiveRecord<UserParams> {
     throw "Please override 'updateOrThrow' to hit the external API.";
   }
 
-  static create<T extends ActiveRecord$Base, U>(
+  static create<T extends t.ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     throw "Please override 'static create' to hit the extenral API.";
   }
 
-  static createOrThrow<T extends ActiveRecord$Base, U>(
+  static createOrThrow<T extends t.ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     throw "Please override 'static createOrThrow' to hit the external API.";
   }
 
-  static delete<T extends ActiveRecord$Base>(
+  static delete<T extends t.ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<number> {
     throw "Please override 'static delete' to hit the external API.";
   }
 
-  static destroy<T extends ActiveRecord$Base>(
+  static destroy<T extends t.ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<T | T[]> {
     throw "Please override 'static destroy' to hit the external API.";
   }
 
-  static update<T extends ActiveRecord$Base, U>(
+  static update<T extends t.ActiveRecord$Base, U>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ): Promise<T | T[]> {

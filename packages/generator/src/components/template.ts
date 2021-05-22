@@ -56,54 +56,60 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
   protected fetchAll(): Promise<<%- className %>Params[]> {
     throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
   }
+
+  // @ts-expect-error
   save(opts?: { validate: boolean }): Promise<boolean> {
     throw "Please override 'save' to hit the external API.";
   }
 
+  // @ts-expect-error
   saveOrThrow(): Promise<void | boolean> {
     throw "Please override 'saveOrThrow' to hit the external API.";
   }
 
-  destroy<T extends ActiveRecord$Base>(): Promise<T> {
+  // @ts-expect-error
+  destroy<T extends t.ActiveRecord$Base>(): Promise<T> {
     throw "Please override 'destroy' to hit the external API.";
   }
 
+  // @ts-expect-error
   update<U>(params?: Partial<U>): Promise<boolean> {
     throw "Please override 'update' to hit the external API.";
   }
 
+  // @ts-expect-error
   updateOrThrow<U>(params?: Partial<U>): Promise<boolean> {
     throw "Please override 'updateOrThrow' to hit the external API.";
   }
 
-  static create<T extends ActiveRecord$Base, U>(
+  static create<T extends t.ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     throw "Please override 'static create' to hit the extenral API.";
   }
 
-  static createOrThrow<T extends ActiveRecord$Base, U>(
+  static createOrThrow<T extends t.ActiveRecord$Base, U>(
     params?: Partial<U> | Array<Partial<U>>,
     yielder?: (self: T) => void
   ): Promise<T | T[]> {
     throw "Please override 'static createOrThrow' to hit the external API.";
   }
 
-  static delete<T extends ActiveRecord$Base>(
+  static delete<T extends t.ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<number> {
     throw "Please override 'static delete' to hit the external API.";
   }
 
-  static destroy<T extends ActiveRecord$Base>(
+  static destroy<T extends t.ActiveRecord$Base>(
     id: t.Record$PrimaryKey | t.Record$PrimaryKey[]
   ): Promise<T | T[]> {
     throw "Please override 'static destroy' to hit the external API.";
   }
 
-  static update<T extends ActiveRecord$Base, U>(
-    id: at.Associations$PrimaryKey | at.Associations$PrimaryKey[] | 'all',
+  static update<T extends t.ActiveRecord$Base, U>(
+    id: t.Record$PrimaryKey | t.Record$PrimaryKey[] | 'all',
     params: Partial<U> | Array<Partial<U>>
   ): Promise<T | T[]> {
     throw "Please override 'static update' to hit the external API.";
@@ -175,7 +181,7 @@ export class <%- className %> extends ActiveRecord {
   }
 
   /**
-   * @return {Promise<ActiveRecord$Base>}
+   * @return {Promise<t.ActiveRecord$Base>}
    */
   destroy() {
     throw "Please override 'destroy' to hit the external API.";

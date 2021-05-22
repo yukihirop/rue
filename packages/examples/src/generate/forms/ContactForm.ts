@@ -2,7 +2,7 @@
 import { RueCheck } from '@ruejs/rue';
 
 // locals
-import { ActiveForm } from '../../lib/activeform';
+import { ActiveForm } from '../../lib';
 
 // types
 import * as t from '@ruejs/rue';
