@@ -2,7 +2,7 @@
 const { RueCheck } = require('@ruejs/rue');
 
 // locals
-const { ActiveRecord } = require('../../lib/activerecord');
+const { ActiveRecord } = require('../../lib');
 
 /**
  * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
@@ -50,7 +50,7 @@ export class User extends ActiveRecord {
   }
 
   /**
-   * @return {Promise<ActiveRecord$Base>}
+   * @return {Promise<t.ActiveRecord$Base>}
    */
   destroy() {
     throw "Please override 'destroy' to hit the external API.";

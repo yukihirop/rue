@@ -35,7 +35,7 @@ export default class Setup extends Command {
       description: 'package name',
       options: ['activerecord', 'activemodel', 'activeform', 'bootstrap', 'starter'],
     },
-    { name: 'saveDir', required: false, description: 'save dir path', default: './src/lib' },
+    { name: 'saveDir', required: false, description: 'save dir path', default: './src/rue' },
   ];
 
   async run() {
@@ -43,7 +43,6 @@ export default class Setup extends Command {
 
     try {
       if (args.pkgName === 'starter') {
-        if (args.saveDir === './src/lib') args.saveDir = './src/rue';
         Generator$Starter.generate({
           outputDirPath: args.saveDir,
           extname: (flags.extname || defaultExtname) as 'js' | 'ts',
