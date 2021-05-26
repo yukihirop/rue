@@ -1,15 +1,5 @@
-// third party
-import { js as beautify } from 'js-beautify';
-import stringifyObject from 'stringify-object';
-
-// builtin
-import path from 'path';
-import fs from 'fs';
-
 // types
 import * as t from './types';
-
-const projectRoot = require('pkg-dir').sync() || process.cwd();
 
 export class Config$Base {
   static fileName = 'rue.config.js';
@@ -54,13 +44,24 @@ export class Config$Base {
       },
     },
   };
-  static defaultJS: string = beautify(Config$Base.getJSConfig(Config$Base.default), {
-    indent_size: 2,
-    space_in_empty_paren: true,
-    unescape_strings: false,
-  });
+  static defaultJS: string = require('js-beautify').js(
+    Config$Base.getJSConfig(Config$Base.default),
+    {
+      indent_size: 2,
+      space_in_empty_paren: true,
+      unescape_strings: false,
+    }
+  );
 
   static all(): t.RueConfig {
+    /**
+     * @description
+     * If you declare it with import, an error will occur when this class is loaded in the browser.
+     * Both fs and path can only be used on the server side.
+     */
+    const fs = require('fs');
+    const path = require('path');
+    const projectRoot = require('pkg-dir').sync() || process.cwd();
     const loadedCofigPath = path.join(projectRoot, this.fileName);
     let config;
 
@@ -88,6 +89,7 @@ export class Config$Base {
   // https://stackoverflow.com/a/11233515/9434894
   // https://stackoverflow.com/a/53990000/9434894
   private static getJSConfig(config: t.RueConfig): string {
+    const stringifyObject = require('stringify-object');
     return `
     module.exports = ${stringifyObject(config)};
     `;

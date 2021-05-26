@@ -1,8 +1,5 @@
-// classes
-export { Config$Base } from './config';
+export { Rue } from './runtime'; // Singleton
+export { Config$Base } from './development';
 
-// singletons
-export { Rue } from './rue';
-
-export type { RueConfig, RueNodeREPLConfig, RueRueREPLConfig } from './config';
-export type { RueRuntimeConfig } from './rue';
+export type { RueRuntimeConfig } from './runtime';
+export type { RueConfig, RueNodeREPLConfig, RueRueREPLConfig } from './development';
