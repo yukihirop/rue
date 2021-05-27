@@ -21,6 +21,7 @@ module.exports = {
     },
   },
   repl: {
+    bootstrapPath: './src/bootstrap.ts',
     ruePackageRootPath: process.env.RUE_PKG_ROOT_PATH,
     actions: {
       ancestors: 'ancs',
@@ -34,9 +35,8 @@ module.exports = {
     dotEnvPath: './.env.dev',
     loadModules: [
       'src/**/{forms,models,records}/**/*.ts',
-      '!src/rue/{forms,models,records}/**',
-      'src/setup/rc.ts',
       '!src/**/__tests__/*.test.{js,ts}',
+      '!src/rue/{forms,models,records}/**',
     ],
     moduleAliases: {
       '@': './src',

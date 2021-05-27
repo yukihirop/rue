@@ -25,6 +25,7 @@ describe('Config$Base', () => {
           },
         },
         repl: {
+          bootstrapPath: './src/rue/bootstrap.ts',
           ruePackageRootPath: undefined,
           actions: {
             ancestors: 'ancs',
@@ -71,6 +72,7 @@ describe('Config$Base', () => {
             },
           },
           repl: {
+            bootstrapPath: './src/rue/bootstrap.ts',
             ruePackageRootPath: undefined,
             actions: {
               ancestors: 'ancs',
@@ -108,6 +110,7 @@ describe('Config$Base', () => {
     describe('when default', () => {
       it('should correctly', () => {
         expect(Config.rueREPL()).toEqual({
+          bootstrapPath: './src/rue/bootstrap.ts',
           ruePackageRootPath: undefined,
           actions: {
             ancestors: 'ancs',

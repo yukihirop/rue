@@ -24,6 +24,7 @@ exports[`Config$Base static properties should correctly 1`] = `
     }
   },
   repl: {
+    bootstrapPath: './src/rue/bootstrap.ts',
     ruePackageRootPath: undefined,
     actions: {
       ancestors: 'ancs',

@@ -19,6 +19,7 @@ export type RueConfig = {
     };
   };
   repl: {
+    bootstrapPath: string;
     ruePackageRootPath?: string;
     actions?: {
       ancestors?: string;
