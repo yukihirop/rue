@@ -24,6 +24,7 @@ export class Config$Base {
       },
     },
     repl: {
+      bootstrapPath: './src/rue/bootstrap.ts',
       ruePackageRootPath: undefined,
       actions: {
         ancestors: 'ancs',
