@@ -89,6 +89,7 @@ export class Repl$Base extends Repl$Impl {
   private static async initializeREPL(opts: replt.ReplOptions): Promise<replt.REPLServer> {
     Repl$Base.loadDotEnv();
     Repl$Base.resolveModuleAliases();
+    Repl$Base.esmRequire(path.join(projectRoot, rueREPLConfig.bootstrapPath));
 
     console.log(`[Node] Welcome to Node.js v${process.env.NODENV_VERSION}.`);
     console.log(`[Node] Type ".help" for more information.`);
