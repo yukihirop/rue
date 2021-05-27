@@ -1,5 +1,5 @@
 // rue/packages
-import { Config$Base as Config } from '@ruejs/config';
+import { Config$Base as Config, Rue } from '@ruejs/config';
 
 // builtin
 import * as REPL from 'repl';
@@ -121,7 +121,7 @@ export class Repl$Base extends Repl$Impl {
     });
 
     const modules: t.Modules = Object.assign(
-      {},
+      { Rue }, // runtime config
       ...paths.map((modulePath) => {
         let name = path.parse(modulePath).name;
 
