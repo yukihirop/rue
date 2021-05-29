@@ -5,6 +5,7 @@ export { ActiveRecord$Core } from './core';
 export { ActiveRecord$Querying } from './querying';
 export { ActiveRecord$AttributeMethods } from './attribute_methods';
 export { ActiveRecord$Dirty } from './dirty';
+export { ActiveRecord$Meta } from './meta';
 
 // types
 export type {

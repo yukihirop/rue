@@ -21,6 +21,7 @@ export class ActiveRecord$Persistence extends RueModule {
   static readonly RUE_CREATED_AT = '__rue_created_at__';
   static readonly RUE_UPDATED_AT = '__rue_updated_at__';
   static readonly RECORD_ALL = 'all';
+  static readonly RECORD_META = 'meta';
 
   /**
    * It's the same now because there is no beforeDestroy callback

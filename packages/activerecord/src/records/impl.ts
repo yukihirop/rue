@@ -14,6 +14,7 @@ import {
   ActiveRecord$Core,
   ActiveRecord$AttributeMethods,
   ActiveRecord$Dirty,
+  ActiveRecord$Meta,
 } from '@/records/modules';
 
 // types
@@ -40,6 +41,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static RUE_CREATED_AT = ActiveRecord$Persistence.RUE_CREATED_AT;
   static RUE_UPDATED_AT = ActiveRecord$Persistence.RUE_UPDATED_AT;
   static RECORD_ALL = ActiveRecord$Persistence.RECORD_ALL;
+  static RECORD_META = ActiveRecord$Persistence.RECORD_META;
   static RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Persistence.RUE_AUTO_INCREMENT_RECORD_ID;
   protected static createSync: <T extends ActiveRecord$Base<U>, U extends t.Params>(
     params?: Partial<U> | Array<Partial<U>>,
@@ -201,6 +203,9 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
   static unscope: <T extends ActiveRecord$Base<t.Params>>(
     ...scopeMethods: rmt.QueryMethods$ScopeMethods[]
   ) => ActiveRecord$Relation<T>;
+
+  // ActiveRecord$Meta
+  static meta: <T>() => Promise<T>;
 
   /**
    * prototype
@@ -386,6 +391,10 @@ ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
     'group',
     'unscope',
   ],
+});
+
+ActiveRecord$Meta.rueModuleExtendedFrom(ActiveRecord$Impl, {
+  only: ['meta'],
 });
 
 export { ActiveRecord$Impl };
