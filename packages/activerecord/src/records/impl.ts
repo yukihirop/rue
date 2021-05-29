@@ -206,6 +206,7 @@ abstract class ActiveRecord$Impl<P extends t.Params = t.Params> extends ActiveMo
 
   // ActiveRecord$Meta
   static meta: <T>() => Promise<T>;
+  static recordsWithMeta: <T extends ActiveRecord$Base<t.Params>, V = any>() => Promise<[T[], V]>;
 
   /**
    * prototype
@@ -394,7 +395,7 @@ ActiveRecord$Querying.rueModuleExtendedFrom(ActiveRecord$Impl, {
 });
 
 ActiveRecord$Meta.rueModuleExtendedFrom(ActiveRecord$Impl, {
-  only: ['meta'],
+  only: ['meta', 'recordsWithMeta'],
 });
 
 export { ActiveRecord$Impl };
