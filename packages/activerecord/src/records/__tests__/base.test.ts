@@ -3,6 +3,7 @@ import {
   RUE_AUTO_INCREMENT_RECORD_ID,
   RUE_RECORD_ID,
   RECORD_ALL,
+  RECORD_META,
 } from '../base';
 import { cacheForRecords as RecordCache } from '@/registries';
 import MockDate from 'mockdate';
@@ -47,12 +48,17 @@ describe('Record', () => {
   });
 
   describe('[static] resetRecordCache', () => {
-    class TestResetRecordCacheRecord extends Record {}
+    class TestResetRecordCacheRecord extends Record {
+      get uniqueKey(): string {
+        return 'TestResetRecordCacheRecord';
+      }
+    }
     describe('should correctly', () => {
       TestResetRecordCacheRecord.resetRecordCache();
       expect(RecordCache.data['TestResetRecordCacheRecord']).toEqual({
         [RUE_AUTO_INCREMENT_RECORD_ID]: 1,
         [RECORD_ALL]: [],
+        [RECORD_META]: {},
       });
     });
   });

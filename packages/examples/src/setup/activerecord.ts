@@ -6,7 +6,7 @@ import type * as t from '@ruejs/rue';
  */
 @RueSetup
 export class ActiveRecord<T extends t.Record$Params> extends ActiveRecord$Base<T> {
-  protected fetchAll(): Promise<T[]> {
-    throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
+  protected fetchAll(): Promise<T[] | [] | { all?: T[]; meta?: any }> {
+    throw "Please implement 'protected fetchAll(): Promise<T[] | [] | { all?: T[]; meta?: any }>' in Inherited Class";
   }
 }

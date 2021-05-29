@@ -11,6 +11,7 @@ export const RUE_AUTO_INCREMENT_RECORD_ID = ActiveRecord$Impl[
 export const RUE_CREATED_AT = ActiveRecord$Impl['RUE_CREATED_AT'] as string;
 export const RUE_UPDATED_AT = ActiveRecord$Impl['RUE_UPDATED_AT'] as string;
 export const RECORD_ALL = ActiveRecord$Impl['RECORD_ALL'] as string;
+export const RECORD_META = ActiveRecord$Impl['RECORD_META'] as string;
 export const RUE_RECORD_ID = ActiveRecord$Impl['RUE_RECORD_ID'] as string;
 
 export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveRecord$Impl<P> {
@@ -39,20 +40,21 @@ export class ActiveRecord$Base<P extends t.Params = t.Params> extends ActiveReco
     return 'record';
   }
 
-  protected fetchAll(): Promise<Array<P> | []> {
+  protected fetchAll(): Promise<P[] | [] | { all?: P[]; meta?: any }> {
     throw "Please implement 'fetchAll' in Inherited Class";
   }
 
   // All starting points
-  protected static fetchAll(): Promise<Array<t.Params>> {
+  protected static fetchAll(): Promise<t.Params[] | { all?: t.Params[]; meta?: any }> {
     const instance = new this();
     return instance.fetchAll();
   }
 
   static resetRecordCache() {
-    const klassName = this.name;
-    RecordCache.destroy(klassName);
-    RecordCache.create(klassName, RECORD_ALL, []);
-    RecordCache.create(klassName, RUE_AUTO_INCREMENT_RECORD_ID, 1);
+    const cacheKey = this.uniqueKey;
+    RecordCache.destroy(cacheKey);
+    RecordCache.create(cacheKey, RECORD_ALL, []);
+    RecordCache.create(cacheKey, RECORD_META, {});
+    RecordCache.create(cacheKey, RUE_AUTO_INCREMENT_RECORD_ID, 1);
   }
 }

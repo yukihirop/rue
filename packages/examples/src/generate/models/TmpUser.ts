@@ -2,7 +2,7 @@
 import { RueCheck } from '@ruejs/rue';
 
 // locals
-import { ActiveModel } from '../../lib';
+import { ActiveModel } from '../lib';
 
 // types
 import * as t from '@ruejs/rue';

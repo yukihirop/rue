@@ -53,8 +53,8 @@ export class <%- className %> extends ActiveRecord<<%- className %>Params> {
     return '<%- className %>';
   }
 
-  protected fetchAll(): Promise<<%- className %>Params[]> {
-    throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
+  protected fetchAll(): Promise<<%- className %>Params[] | [] | { all?: <%- className %>Params[]; meta?: any }> {
+    throw "Please implement 'protected fetchAll(): Promise<<%- className %>Params[] | [] | { all?: <%- className %>Params[]; meta?: any }'";
   }
 
   // @ts-expect-error

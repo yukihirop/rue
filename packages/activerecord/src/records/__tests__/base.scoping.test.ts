@@ -1,4 +1,4 @@
-import { ActiveRecord$Base as Record, RECORD_ALL } from '../base';
+import { ActiveRecord$Base as Record, RECORD_ALL, RECORD_META } from '../base';
 import { cacheForRecords as RecordCache } from '@/registries';
 
 // third party
@@ -69,7 +69,67 @@ describe('Record (Scoping)', () => {
               name: 'name_2',
             },
           ]);
-          expect(RecordCache.data[ScopingRecord.name][RECORD_ALL]).toEqual([
+          expect(RecordCache.data[ScopingRecord.uniqueKey][RECORD_ALL]).toEqual([
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 1,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _associationCache: {},
+              _destroyed: false,
+              _newRecord: false,
+              age: 1,
+              errors: {},
+              id: 1,
+              name: 'name_1',
+            },
+            {
+              __rue_created_at__: '2021-03-05T23:03:21+09:00',
+              __rue_record_id__: 2,
+              __rue_updated_at__: '2021-03-05T23:03:21+09:00',
+              _associationCache: {},
+              _destroyed: false,
+              _newRecord: false,
+              age: 2,
+              errors: {},
+              id: 2,
+              name: 'name_2',
+            },
+          ]);
+          done();
+        });
+      });
+    });
+
+    describe("when specify 'meta'", () => {
+      type SpecifyMetaParams = {
+        id: t.Record$PrimaryKey;
+        name: string;
+        age: number;
+      };
+      class SpecifyMetaRecord extends Record<SpecifyMetaParams> {
+        protected fetchAll(): Promise<{ all: SpecifyMetaParams[]; meta: any }> {
+          return Promise.resolve({
+            all: [
+              { id: 1, name: 'name_1', age: 1 },
+              { id: 2, name: 'name_2', age: 2 },
+            ],
+            meta: {
+              recordsCount: 2,
+            },
+          });
+        }
+
+        get uniqueKey(): string {
+          return 'SpecifyMetaRecord';
+        }
+      }
+
+      it("Calling all also saves 'meta' in RecordCache.", (done) => {
+        SpecifyMetaRecord.all<SpecifyMetaRecord>().rueThen((records: SpecifyMetaRecord) => {
+          expect(RecordCache.data[SpecifyMetaRecord.uniqueKey][RECORD_META]).toEqual({
+            recordsCount: 2,
+          });
+          expect(records).toEqual([
             {
               __rue_created_at__: '2021-03-05T23:03:21+09:00',
               __rue_record_id__: 1,

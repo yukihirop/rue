@@ -1,3 +1,4 @@
+import { RECORD_META } from '@/records/base';
 // rue packages
 import { RueModule } from '@ruejs/activesupport';
 
@@ -41,8 +42,18 @@ export class ActiveRecord$Scoping$Named extends RueModule {
           // fetchAll is defined in ActiveRecord$Base but is protected so I get a typescript error.
           // @ts-expect-error
           .fetchAll()
-          .then((data) => {
-            const records = data.map((d) => {
+          .then((data: T[] | { all?: T[]; meta?: any }) => {
+            let allData, metaData;
+
+            if (Array.isArray(data)) {
+              allData = data;
+              metaData = {};
+            } else {
+              allData = data.all || [];
+              metaData = data.meta || {};
+            }
+
+            const records = allData.map((d) => {
               const record = new _this(d);
 
               /**
@@ -53,6 +64,14 @@ export class ActiveRecord$Scoping$Named extends RueModule {
 
               return clone(record);
             }) as Array<T>;
+
+            /**
+             * Save meta data
+             * When getting the record list, the incidental information is automatically saved so that the request does not fly to the backend unnecessarily.
+             * The opposite is difficult to understand, so I won't do it.
+             */
+            RecordCache.create(cacheKey, RECORD_META, metaData);
+
             return Array.from(records);
           });
         const holder = new Holder<T>(_this, []);
