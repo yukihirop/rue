@@ -2,7 +2,7 @@
 import { RueCheck } from '@ruejs/rue';
 
 // locals
-import { ActiveRecord } from '../../lib';
+import { ActiveRecord } from '../lib';
 
 // types
 import * as t from '@ruejs/rue';
@@ -32,8 +32,8 @@ export class User extends ActiveRecord<UserParams> {
     return 'User';
   }
 
-  protected fetchAll(): Promise<UserParams[]> {
-    throw "Please implement 'protected fetchAll(): Promise<T[]>' in Inherited Class";
+  protected fetchAll(): Promise<UserParams[] | [] | { all?: UserParams[]; meta?: any }> {
+    throw "Please implement 'protected fetchAll(): Promise<UserParams[] | [] | { all?: UserParams[]; meta?: any }'";
   }
 
   // @ts-expect-error
