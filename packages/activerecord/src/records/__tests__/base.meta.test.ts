@@ -53,7 +53,6 @@ describe('ActiveRecord$Meta', () => {
       it('should correctly', (done) => {
         MetaRecord.meta<MetaRecordMetaPrams>().then((data: MetaRecordMetaPrams) => {
           expect(data).toEqual({ recordsCount: 5 });
-          // @ts-expect-error
           expect(RecordCache.data[MetaRecord.uniqueKey][RECORD_META]).toEqual({ recordsCount: 5 });
           done();
         });
@@ -118,7 +117,6 @@ describe('ActiveRecord$Meta', () => {
               name: 'name_2',
             },
           ]);
-          // @ts-expect-error
           expect(RecordCache.data[MetaRecord.uniqueKey][RECORD_META]).toEqual({ recordsCount: 5 });
           done();
         });
