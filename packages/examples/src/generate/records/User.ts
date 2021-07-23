@@ -2,7 +2,7 @@
 import { RueCheck } from '@ruejs/rue';
 
 // locals
-import { ActiveRecord } from '../lib';
+import { ActiveRecord } from '../../lib';
 
 // types
 import * as t from '@ruejs/rue';

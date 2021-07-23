@@ -2,7 +2,7 @@
 const { RueCheck } = require('@ruejs/rue');
 
 // locals
-const { ActiveForm } = require('../lib')
+const { ActiveForm } = require('../../lib')
 
 /**
  * Check if 'uniqueKey' are overridden and if the set 'uniqueKey' overlaps with others.
