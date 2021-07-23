@@ -27,7 +27,8 @@
     "test:activemodel": "cd packages/activemodel && yarn test && cd -",
     "test:activerecord": "cd packages/activerecord && yarn test && cd -",
     "test:activesupport": "cd packages/activesupport && yarn test && cd -",
-    "test:config": "cd packages/config && yarn test && cd -"
+    "test:config": "cd packages/config && yarn test && cd -",
+    "console:examples": "cd packages/examples && yarn rue:console"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
